@@ -125,7 +125,7 @@ class UserController extends BaseController {
             $user->status = 3;
             $user->save();
             $data = $this->user->toFomatedData($user);
-            return \Response::json(array('status' => true, 'data' => $data, 'message' => 'User Blocked Successfully!' ));
+            return \Response::json(array('success' => true, 'data' => $data, 'message' => 'User Blocked Successfully!' ));
         }
         return $this->fail(['message' => 'Something went wrong. Please try again later']);
     }
@@ -140,8 +140,9 @@ class UserController extends BaseController {
             else
                 $user->status = 0;
             $user->save();
+            
             $data = $this->user->toFomatedData($user);
-            return \Response::json(array('status' => true, 'data' => $data, 'message' => 'User Unblocked Successfully!' ));
+            return \Response::json(array('success' => true, 'data' => $data, 'message' => 'User Unblocked Successfully!' ));
         }
         return $this->fail(['message' => 'Something went wrong. Please try again later']);
     }

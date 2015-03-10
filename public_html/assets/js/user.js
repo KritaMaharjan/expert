@@ -197,7 +197,7 @@ $(function () {
                 dataType: 'json',
             })
                 .done(function (response) {
-                    if (response.status === 1) {
+                    if (response.success === true) {
                         $('.mainContainer .box-solid').before(notify('success', response.message));
                         var action_html = showActionbtn(response.data);
                         parentTd.html(action_html);

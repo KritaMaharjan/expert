@@ -253,7 +253,7 @@ class Tenant {
         }
 
         $current_params = \Route::current()->parameters();
-        if (!empty($current_params) AND $current_params['account'] != '') {
+        if (isset($current_params['account']) AND $current_params['account'] != '') {
             return $current_params['account'];
         }
         {
@@ -356,7 +356,7 @@ class Tenant {
     {
         $domain = $this->getActualDomain();
 
-        if (env('APP_ENV') == 'ldcal') {
+        if (env('APP_ENV') == 'local') {
             return redirect($domain . '/' . trim($url, '/'));
         }
 
@@ -368,7 +368,12 @@ class Tenant {
     {
         $domain = $this->getActualDomain();
 
-        return url($domain . '/' . trim($url, '/'));
+        if (env('APP_ENV') == 'local') {
+            return redirect($domain . '/' . trim($url, '/'));
+        }
+
+        return 'http://' . $domain . '.mashbooks.no/' . trim($url, '/');
+
     }
 
     function getActualDomain()
