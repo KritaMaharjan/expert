@@ -1,0 +1,228 @@
+<?php namespace App\Models\Tenant;
+
+use Illuminate\Http\Request;
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use App\Models\Tenant\Profile;
+use Illuminate\Support\Facades\Request as FacadeRequest;
+use App\Models\Tenant\User as TenantUser;
+use DB;
+
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
+
+    use Authenticatable, CanResetPassword;
+
+
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'fb_users';
+    protected $primaryKey = 'id';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = ['username', 'fullname', 'email', 'password', 'status', 'activation_key', 'domain', 'role', 'permissions'];
+
+    /**
+     * The attributes excluded from the model's JSON form.
+     *
+     * @var array
+     */
+    protected $hidden = ['password', 'remember_token'];
+
+
+    protected  $role = [1=>'Admin', 2=>'Staff', 3=>'Accountant' ];
+
+    public function profile()
+    {
+        return $this->hasOne('App\Models\Tenant\Profile');
+    }
+
+    function saveUser($username = '', $details = array())
+    {
+        $setup = User::firstOrCreate(['username' => $username]);
+        $setup->fullname = $details['fullname'];
+        $setup->password = bcrypt($details['password']);
+        $setup->save();
+    }
+
+    function redirectIfValid($user)
+    {
+        if ($user->status == 0) {
+            \Auth::logout();
+            return redirect()->route('tenant.login')->withInput()->with('message', lang('Your account has not been activated.'));
+        } elseif ($user->status == 2) {
+            \Auth::logout();
+            return redirect()->route('tenant.login')->withInput()->with('message', lang('Your account has been suspended.'));
+        } elseif ($user->status == 3) {
+            \Auth::logout();
+            return redirect()->route('tenant.login')->withInput()->with('message', lang('Your account has been permanently blocked.'));
+        }
+
+        return redirect()->route('tenant.index');
+    }
+
+    function role()
+    {
+        return isset($this->role[$this->role])?$this->role[$this->role]: 'Unknown';
+    }
+
+
+    function withGuid($guid)
+    {
+       return User::with('Profile')->where('guid',$guid)->first(); 
+    }
+
+    public function getUserDetails($guid='')
+    {
+        $details = DB::table('fb_users')
+            ->join('fb_profile', 'fb_users.id', '=', 'fb_profile.user_id')
+            ->where('fb_users.guid', $guid)
+            ->first();
+        $details->permissions = unserialize($details->permissions);
+
+        if($details->personal_email_setting != NULL)
+        {
+            $personal_email_setting = @json_decode($details->personal_email_setting);
+            $details->incoming_server = $personal_email_setting->incoming_server;
+            $details->outgoing_server = $personal_email_setting->outgoing_server;
+            $details->email_username = $personal_email_setting->email_username;
+            $details->email_password = $personal_email_setting->email_password;
+        }
+        return $details;
+    }
+
+
+    /**
+     * Model events observe
+     *
+     * @return void
+     **/
+    public static function boot()
+    {
+        parent::boot();
+        static::creating(function($tenant) {
+            if($tenant->guid == '')
+                $tenant->guid = \FB::uniqueKey(10, 'fb_users','guid');
+        });
+    }
+
+    public function updateUser($details='')
+    {
+        $guid = $details['guid'];
+        if(isset($details['permissions'])){
+            $per = serialize($details['permissions']);
+        } else {
+            $per = '';
+        }
+        $user = TenantUser::where('guid', $guid)->first();
+        $user->fullname = $details['fullname'];
+        $user->role = 2;
+        $user->email = $details['email'];
+        $user->permissions = $per;
+        $user->save();
+
+        $user_id = $user->id;
+
+        $fileName = NULL;
+        if (FacadeRequest::hasFile('photo'))
+        {
+            $file = FacadeRequest::file('photo');
+            $fileName = \FB::uploadFile($file);
+        }
+
+        $email_setting_details = $details->only('incoming_server', 'outgoing_server', 'email_username', 'email_password');
+        $personal_email_setting = json_encode($email_setting_details);
+
+        $profile = Profile::where('user_id', $user_id)->first();
+        $profile->user_id = $user_id;
+        $profile->phone = $details['phone'];
+        $profile->address = $details['address'];
+        $profile->postcode = $details['postcode'];
+        $profile->town = $details['town'];
+        $profile->comment = $details['comment'];
+        if($fileName != NULL) $profile->photo = $fileName;
+        $profile->tax_card = $details['tax_card'];
+        $profile->social_security_number = $details['social_security_number'];
+        $profile->personal_email_setting = $personal_email_setting;
+        $profile->save();
+
+        return $profile;
+    }
+
+    function toData()
+    {
+        $this->show_url = tenant()->url('inventory/product/' . $this->id);
+        $this->edit_url = tenant()->url('inventory/product/' . $this->id . '/edit');
+        $this->created_at = $this->created_at();
+        return $this->toArray();
+    }
+
+
+    function dataTablePagination(Request $request, array $select = array())
+    {
+
+        if ((is_array($select) AND count($select) < 1)) {
+            $select = "*";
+        }
+
+        $take = ($request->input('length') > 0) ? $request->input('length') : 15;
+        $start = ($request->input('start') > 0) ? $request->input('start') : 0;
+
+        $search = $request->input('search');
+        $search = $search['value'];
+        $order = $request->input('order');
+        $column_id = $order[0]['column'];
+        $columns = $request->input('columns');
+        $orderColumn = $columns[$column_id]['data'];
+        $orderdir = $order[0]['dir'];
+
+        $users = array();
+        $query = $this->select($select);
+
+        if ($orderColumn != '' AND $orderdir != '') {
+            $query = $query->orderBy($orderColumn, $orderdir);
+        }
+
+        if ($search != '') {
+            $query = $query->where('fullname', 'LIKE', "%$search%");
+        }
+        $users['total'] = $query->count();
+
+        $query->skip($start)->take($take);
+
+        $data = $query->get();
+
+        foreach ($data as $key => &$value) {
+            if($value->status == 1)
+                $value->status = '<span class="label label-success">Active</span>';
+            elseif($value->status == 2)
+                $value->status = '<span class="label label-warning">Suspended</span>';
+            elseif($value->status == 3)
+                $value->status = '<span class="label label-danger">Blocked</span>';
+            else
+                $value->status = '<span class="label label-warning">Pending</span>';
+
+            $value->created = $value->created_at->format('d-M-Y');
+        }    
+
+        $users['data'] = $data->toArray();
+
+        $json = new \stdClass();
+        $json->draw = ($request->input('draw') > 0) ? $request->input('draw') : 1;
+        $json->recordsTotal = $users['total'];
+        $json->recordsFiltered = $users['total'];
+        $json->data = $users['data'];
+
+        return $json;
+    }
+
+}

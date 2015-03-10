@@ -1,0 +1,139 @@
+@media screen and (max-width:1120px){
+    .address-info,.right-from{
+        margin-right: 0!important;
+    }
+
+}
+
+
+@media screen and (max-width:1024px){
+    .invoice-col .form-group label {
+        width: 40%!important;
+    }
+}
+
+@media screen and (max-width:980px){
+
+}
+
+@media screen and (max-width:800px){
+
+}
+@media screen and (max-width:767px){
+
+    .top .dataTables_filter {
+        width: 300px;
+    }    
+    .top #customers_list_filter > label {
+        float: left;
+        width: 100%;
+    }
+
+    .top .form-control.input-sm {
+        width: 250px;
+        margin-left: 5px;
+        display: inline-block;
+    }
+}
+@media screen and (max-width:767px){
+
+    .payment-info label,.payment-info input{
+        width: 100%;
+        display: block;
+    }
+    .custom-table-responsive{
+        overflow-x: auto;
+    }
+
+}
+
+@media screen and (max-width:610px){
+    .input-custom{
+        margin-left: 10%!important;
+    }
+}
+@media screen and (max-width:580px){
+    .input-custom{
+        margin-left: 8%!important;
+    }
+}
+
+@media screen and (max-width:555px){
+    .input-custom{
+        margin-left: 6%!important;
+    }
+}
+
+@media screen and (max-width:540px){
+    .sm-mg-btn{
+        margin-bottom: 10px;
+    }
+    .input-custom{
+        margin-left: 0%!important;
+        clear: both;
+        width: 65%!important;
+    }
+
+    .modal-right .modal-dialog,.modal-right .modal-content{
+        width: 100%!important;
+    }
+
+}
+@media screen and (max-width:520px){
+    .half-width{
+        width: 100%!important;
+        display: block!important;
+    }
+
+}
+@media screen and (max-width:510px){
+    .btn-inside{
+        margin-bottom: 0!important;
+        padding-left: 10px;
+    }
+    .top .dataTables_filter {
+        width: 100%!important;
+    }
+    .top .dataTables_filter input{
+        margin-left: 0!important;
+        width: 100%;
+
+    }
+}
+@media screen and (max-width:420px){
+    .input-custom{
+        width: 100%!important;
+        float: none!important;
+        margin-bottom: 10px;
+    }
+}
+@media screen and (max-width:480px){
+.form-list > li {width: 50% !important;}
+
+}
+@media screen and (max-width:360px){
+    .top .dataTables_filter {
+        width: 100%!important;
+    }
+    .top .form-control.input-sm {
+        width: 100%!important;
+        margin-left: 0!important;
+    }
+}
+@media screen and (max-width:300px){
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
