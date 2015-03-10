@@ -113,13 +113,14 @@ $(function () {
             data: formData
         })
             .done(function (response) {
-                if (response.status === 'success') {
+                if (response.status === 'success' || response.status == 1) {
                     $('#fb-modal').modal('hide');
                     var tbody = $('.box-body table tbody');
                     if (requestType == 'Add') {
                         window.location.replace(response.redirect_url);
                     }
                     else {
+                        alert('dfdf');
                         $('.mainContainer .box-solid').before(notify('success', 'Customer updated Successfully'));
                         tbody.find('tr.customer-' + response.data.id).html(getTemplate(response, true));
                     }
@@ -171,15 +172,15 @@ function getTemplate(response, type) {
 
 
     var html = '<td>' + response.data.id + '</td>' +
-        '<td>' + response.data.number + '</td>' +
+        '<td>' + response.data.name + '</td>' +
         '<td>' +
         '<a href="#" data-toggle="modal" data-url="' + response.data.show_url + '" data-target="#fb-modal">' +
         response.data.name +
         '</a>' +
         '</td>' +
-        '<td>' + response.data.quantity + '</td>' +
-        '<td>' + response.data.purchase_cost + '</td>' +
-        '<td>' + response.data.selling_price + '</td>' +
+        '<td>' + response.data.email + '</td>' +
+        '<td>' + response.data.created_at + '</td>' +
+       
         '<td><div class="box-tools pull-right">' +
         '<a href="#" title="Edit" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' + response.data.edit_url + '" data-target="#fb-modal">' +
         '<i class="fa fa-edit"></i>' +

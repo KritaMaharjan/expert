@@ -115,6 +115,58 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         });
     }
 
+    public function addUserDetails($details)
+    {
+        if(isset($details['permissions'])){
+            $per = serialize($details['permissions']);
+        } else {
+            $per = '';
+        }
+        $user = User::create([
+                    'fullname' => $details['fullname'],
+                    'password' => \Hash::make($details['password']),
+                    'role' => 2, //sub-user
+                    'first_time' => 1,
+                    'email' => $details['email'],
+                    'status' => 0, //pending
+                    'activation_key' => \FB::uniqueKey(15, 'fb_users', 'activation_key'),
+                    'permissions' => $per
+            ]);
+
+        $user_id = $user->id;
+
+        $fileName = NULL;
+        if (FacadeRequest::hasFile('photo'))
+        {
+            $file = FacadeRequest::file('photo');
+            $fileName = \FB::uploadFile($file);
+        }
+
+        $email_setting_details = $details->only('incoming_server', 'outgoing_server', 'email_username', 'email_password');
+        $personal_email_setting = json_encode($email_setting_details);
+
+        $profile = Profile::create([
+                    'user_id' => $user_id,
+                    'phone' => $details['phone'],
+                    'address' => $details['address'],
+                    'postcode' => $details['postcode'],
+                    'town' => $details['town'],
+                    'comment' => $details['comment'],
+                    'tax_card' => $details['tax_card'],
+                    'photo' => $fileName,
+                    'social_security_number' => $details['social_security_number'],
+                    'personal_email_setting' => $personal_email_setting
+            ]);
+
+        $this->sendConfirmationMail($user->activation_key, $details['name'], $details['email']);
+
+        $added_user['data'] = $this->toFomatedData($user);
+        $added_user['template'] = $this->getTemplate($user);
+
+        return $added_user;
+    }
+
+
     public function updateUser($details='')
     {
         $guid = $details['guid'];
@@ -155,15 +207,42 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $profile->personal_email_setting = $personal_email_setting;
         $profile->save();
 
-        return $profile;
+        $updated_user['data'] = $this->toFomatedData($user);
+        $updated_user['template'] = $this->getTemplate($user);
+
+        return $updated_user;
     }
 
-    function toData()
+    public function getTemplate($details='')
     {
-        $this->show_url = tenant()->url('inventory/product/' . $this->id);
-        $this->edit_url = tenant()->url('inventory/product/' . $this->id . '/edit');
-        $this->created_at = $this->created_at();
-        return $this->toArray();
+        $details->fullname = "<a href=".\URL::route('subuser.profile', $details->guid).">".$details->fullname."</a>";
+        if($details->status == 1)
+            $details->status = '<span class="label label-success">Active</span>';
+        elseif($details->status == 2)
+            $details->status = '<span class="label label-warning">Suspended</span>';
+        elseif($details->status == 3)
+            $details->status = '<span class="label label-danger">Blocked</span>';
+        else
+            $details->status = '<span class="label label-warning">Pending</span>';
+
+        $details->created = $details->created_at->format('d-M-Y');
+
+
+        $template = "<td>".$details->fullname."</td>
+                     <td>".$details->created."</td>
+                     <td>".$details->email."</td>
+                     <td>".$details->status."</td>";
+        return $template;
+    }
+
+    function toFomatedData($data)
+    {
+        foreach($data as $k => &$items)
+        {
+            $this->toArray();
+        }
+
+       return $data;
     }
 
 
@@ -217,6 +296,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 $value->status = '<span class="label label-warning">Pending</span>';
 
             $value->created = $value->created_at->format('d-M-Y');
+            $value->DT_RowId = "row-".$value->guid;
         }    
 
         $users['data'] = $data->toArray();

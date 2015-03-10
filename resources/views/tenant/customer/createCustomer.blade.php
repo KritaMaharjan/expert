@@ -80,8 +80,7 @@
                             <option value="1">Active</option>
                         </select> 
                       </div>
-                       <div id="fineuploader">
-                       </div>
+                       
                       <div class="form-group">
                         <label>Upload Photo</label>
                         <div class="@if($errors->has('photo')) {{'has-error'}} @endif">
@@ -89,8 +88,7 @@
                          
                         </div>
                       </div> 
-                       <div class="form-group">
-                        
+                       
                       
                         
                       </div>
@@ -103,7 +101,45 @@
            {!! Form::close() !!}
 
 
+<script type="text/javascript">
 
+$(function(){
+  $(document).on('change','#photo',function(){
+  var file_data = $('#photo').prop('files')[0];
+  
+  var form_data = new FormData();
+  var token = $(this).closest('form').find('input[name=_token]').val();
+ 
+  form_data.append('file',file_data);
+  form_data.append('_token',token);
+  $.ajax({
+    url: appUrl + "/customer/upload",
+    dataType:'json',
+    cache:false,
+    contentType:false,
+    processData:false,
+    data:form_data,
+    type:"post",
+    beforeSend: function()
+            {
+              
+             
+            }
+    })
+    .done(function(data)
+    {
+             alert('hi');
+    })
+    .fail(function(jqXHR, ajaxOptions, thrownError)
+    {
+        alert('No response from server');
+        
+    });
+    return false;
 
  
- 
+})
+
+})
+
+</script>

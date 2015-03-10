@@ -139,6 +139,7 @@ return [
         'Illuminate\Html\HtmlServiceProvider',
         'Laracasts\Flash\FlashServiceProvider',
         'anlutro\cURL\Laravel\cURLServiceProvider',
+        'Clockwork\Support\Laravel\ClockworkServiceProvider',
 
         /*
          * Application Service Providers...
@@ -205,6 +206,7 @@ return [
         'Flash'     => 'Laracasts\Flash\Flash',
         'cURL'      => 'anlutro\cURL\Laravel\cURL',
         'Carbon'    => 'Carbon\Carbon',
+        'Clockwork' => 'Clockwork\Support\Laravel\Facade',
 
     ],
 

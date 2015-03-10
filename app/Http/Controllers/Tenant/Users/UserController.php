@@ -50,9 +50,9 @@ class UserController extends BaseController {
         if ($validator->fails())
             return \Response::json(array('fail' => true, 'errors' => $validator->getMessageBag()->toArray()));
 
-        $this->saveUserDetails($request);
+        $result = $this->user->addUserDetails($request);
         $redirect_url = \URL::route('tenant.users');
-        return \Response::json(array('success' => true, 'redirect_url' => $redirect_url ));
+        return \Response::json(array('success' => true, 'data' => $result['data'], 'template'=>$result['template'], 'redirect_url' => $redirect_url ));
     }
 
     public function saveUserDetails($details)
@@ -119,34 +119,44 @@ class UserController extends BaseController {
     public function blockUser($guid='')
     {
         $user = User::where('guid', $guid)->first();
-        $user->status = 3;
-        $user->save();
-        \Flash::success('User successfully blocked');
-        return redirect()->route('tenant.users');
+
+        if(!empty($user))
+        {
+            $user->status = 3;
+            $user->save();
+            return $this->success(['message' => 'User Blocked Successfully!']);
+        }
+        return $this->fail(['message' => 'Something went wrong. Please try again later']);
     }
 
     public function unblockUser($guid='')
     {
         $user = User::where('guid', $guid)->first();
-        if($user->activation_key == NULL)
-            $user->status = 1;
-        else
-            $user->status = 0;
-        $user->save();
-        \Flash::success('User successfully unblocked');
-        return redirect()->route('tenant.users');
+        if(!empty($user))
+        {
+            if($user->activation_key == NULL)
+                $user->status = 1;
+            else
+                $user->status = 0;
+            $user->save();
+            return $this->success(['message' => 'User Unblocked Successfully!']);
+        }
+        return $this->fail(['message' => 'Something went wrong. Please try again later']);
     }
 
     public function deleteUser($guid='')
     {
         $user = User::where('guid', $guid)->first();
-        //delete profile 
-        $profile = Profile::where('user_id', $user->id) ->first();
-        $profile->delete();
 
-        $user->delete();
-        \Flash::success('User successfully deleted');
-        return redirect()->route('tenant.users');
+        if(!empty($user))
+        {
+            //delete profile 
+            $profile = Profile::where('user_id', $user->id) ->first();
+            $profile->delete();
+            $user->delete();
+            return $this->success(['message' => 'User deleted Successfully!']);
+        }
+        return $this->fail(['message' => 'Something went wrong. Please try again later']);
     }
 
     public function authenticateUser($guid='')
@@ -179,16 +189,9 @@ class UserController extends BaseController {
 
         if ($validator->fails())
             return \Response::json(array('fail' => true, 'errors' => $validator->getMessageBag()->toArray()));
-        $this->updateUserDetails($request);
+        $result = $this->user->updateUser($request);
         $redirect_url = \URL::route('tenant.users');
-        return \Response::json(array('success' => true, 'redirect_url' => $redirect_url ));
-    }
-
-    public function updateUserDetails($details)
-    {
-        $this->user->updateUser($details);
-        $message = 'User updated successfully.';
-        \Flash::success($message);
+        return \Response::json(array('success' => true, 'data' => $result['data'], 'template'=>$result['template'], 'redirect_url' => $redirect_url ));
     }
 
     public function dataJson()

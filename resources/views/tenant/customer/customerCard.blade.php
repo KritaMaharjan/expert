@@ -40,14 +40,14 @@ Customers
                     <p><strong>{{$customer->telephone}}</strong> <small>(Telephone)</small><br />
                        <strong>{{$customer->mobile}}</strong> <small>(Mobile)</small>
                     </p>
-                  {{--   <a href="#" data-toggle="modal" data-target="#compose-modal">Ronj@gmail.com</a> --}}
+                   <a href="#" data-toggle="modal" data-target="#compose-modal">{{$customer->email}}</a>
 
                     <div class="form-group radio-box">
                       <label>
-                        <input type="radio" name="r1" class="minimal" <?php if($customer->status == 1){ echo 'checked=checked ';}else{ echo 'disabled'; } ?>  /> Active
+                        <input type="radio" name="r1" class="minimal minimal_status" <?php if($customer->status == 1) echo 'checked=checked '; ?> /> Active
                       </label>
                       <label>
-                        <input type="radio" name="r1" class="minimal" <?php if($customer->status == 0){ echo 'checked=checked ';}else{ echo 'disabled'; } ?>  /> Inactive
+                        <input type="radio" name="r1" class="minimal minimal_status" <?php if($customer->status == 0) echo 'checked=checked '; ?> /> Inactive
                       </label>
                       
                     </div>
@@ -236,4 +236,18 @@ Customers
  
 
           </div>
+
+          <script type="text/javascript">
+          
+          $( ".minimal_status" ).click(function() {
+            
+            if($('.minimal_status').is(':checked')){
+              $('.minimal_status').attr('disabled', 'disabled');
+              $(this).removeAttr('disabled');
+
+            }
+
+        });
+
+          </script>
 @stop

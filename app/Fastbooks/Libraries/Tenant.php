@@ -65,7 +65,7 @@ class Tenant {
         $config = App::make('config');
         $setting = $config->get('tenant.database');
         $this->DB_username = $setting['username'];
-        $this->DB_password =$setting['password'];
+        $this->DB_password = $setting['password'];
         $this->DB_prefix = $setting['db_prefix'];
 
     }
@@ -151,13 +151,13 @@ class Tenant {
         $user->first_time = 1; // yes first time
         $user->save();
 
-        $setting = TenantSettings::firstOrNew(['name'=>'company']);
+        $setting = TenantSettings::firstOrNew(['name' => 'company']);
 
-        $setting->value = serialize(array('company_name' => $sessionUser['company'] ));
+        $setting->value = serialize(array('company_name' => $sessionUser['company']));
         $setting->save();
 
 
-        $setting = $this->tenantSettings->firstOrNew(array('name' => 'domain')); 
+        $setting = $this->tenantSettings->firstOrNew(array('name' => 'domain'));
         $setting->value = $sessionUser['domain'];
         $setting->save();
     }
@@ -200,7 +200,7 @@ class Tenant {
     }
 
 
-    function setDomain($domain ='')
+    function setDomain($domain = '')
     {
         $this->domain = $domain;
     }
@@ -228,10 +228,22 @@ class Tenant {
      */
     function getTenantinfo()
     {
-        
+
         $users = SystemTenant::where('domain', $this->domain)->first();
 
         return $users;
+    }
+
+
+    function _getSubdomain()
+    {
+        $path = explode('/', $this->request->path());
+        $domain = trim($path[0]);
+
+        if ($domain) {
+            return $domain;
+        }
+        show_404();
     }
 
     /**
@@ -240,15 +252,24 @@ class Tenant {
      */
     function getSubdomain()
     {
-        // It will work for local environment for live need to change code
-        $path = explode('/', $this->request->path());
-        $domain = trim($path[0]);
 
-        if ($domain) {
-            return $domain;
-        } else {
+        if (env('APP_ENV') == 'local') {
+            // It will work for local environment for live need to change code
+            $path = explode('/', $this->request->path());
+            $domain = trim($path[0]);
+
+            if ($domain) {
+                return  $domain;
+            }
             show_404();
         }
+
+       $current_params = \Route::current()->parameters();
+        if (!empty($current_params) AND $current_params['account'] != '') {
+            return $current_params['account'] ;
+        }
+
+        show_404();
     }
 
     /**
@@ -340,22 +361,24 @@ class Tenant {
     }
 
 
-    function redirect($url='')
+    function redirect($url = '')
     {
         $domain = $this->getActualDomain();
-        return redirect($domain. '/' . trim($url, '/'));
+
+        return redirect($domain . '/' . trim($url, '/'));
     }
 
 
-    function url($url='')
+    function url($url = '')
     {
         $domain = $this->getActualDomain();
+
         return url($domain . '/' . trim($url, '/'));
     }
 
     function getActualDomain()
     {
-        if($this->domain =='login')
+        if ($this->domain == 'login')
             $domain = $this->redirectIfRemembered();
         else
             $domain = $this->domain;

@@ -151,33 +151,7 @@ class CustomerController extends BaseController {
         //     $file = \FacadeRequest::file('photo');
         //     $fileName = \FB::uploadFile($file);
         // }
-
-        if ($request['type'] == 2)
-            $dob = '';
-        elseif ($request['type'] == 1)
-            $dob = $request['year'] . '-' . $request['month'] . '-' . $request['day'];
-
-
-        $customer = Customer::create([
-            'type'           => $request['type'],
-            'name'           => $request['name'],
-            'email'           => $request['email'],
-            'user_id'        => $this->current_user->id,
-            'dob'            => $dob,
-            'company_number' => $request['company_number'],
-            'street_name'    => $request['street_name'],
-            'street_number'  => $request['street_number'],
-            'telephone'      => $request['telephone'],
-            'mobile'         => $request['mobile'],
-            'postcode'       => $request['postcode'],
-            'town'           => $request['town'],
-            'image'          => $fileName,
-            'status'         => $request['status'],
-
-
-        ]);
-
-
+        $this->customer->createCustomer($request);
     }
 
     public function dataJson()
@@ -210,6 +184,30 @@ class CustomerController extends BaseController {
         }
 
         return $this->fail(['message' => 'Something went wrong. Please try again later']);
+
+    }
+
+
+    public function upload() {
+        use Input;
+        $file = Input::file('image');
+        dd($file);
+        $input = array('image' => $file);
+        $rules = array(
+            'image' => 'image'
+        );
+        $validator = \Validator::make($input, $rules);
+        if ( $validator->fails() )
+        {
+            return \Response::json(['success' => false, 'errors' => $validator->getMessageBag()->toArray()]);
+
+        }
+        else {
+            $destinationPath = 'uploads/';
+            $filename = $file->getClientOriginalName();
+            Input::file('image')->move($destinationPath, $filename);
+            return \Response::json(['success' => true, 'file' => asset($destinationPath.$filename)]);
+        }
 
     }
 }

@@ -8,26 +8,32 @@
 |
 */
 
-Route::group(['domain' => '{account}.fastbooks.com', 'middleware' => 'subdomain'], function () {
+    if(env('APP_ENV') == 'live')
+    {
+        $group_superadmin =['domain' => '{account}.mashbooks.no'];
+        $group_guest = ['domain' => '{account}.mashbooks.no', 'middleware' => 'guest.tenant'];
+        $group_auth = ['domain' => '{account}.mashbooks.no', 'middleware' => 'auth.tenant'];
+    }
+    elseif(env('APP_ENV') == 'dev')
+    {
+        $group_superadmin =['domain' => '{account}.mashbooks.app'];
+        $group_guest = ['domain' => '{account}.mashbooks.app', 'middleware' => 'guest.tenant'];
+        $group_auth = ['domain' => '{account}.mashbooks.app', 'middleware' => 'auth.tenant'];
+    }
+    else{
+        $domain = env('MY_TENANT','manish_co');
+        $group_superadmin =['prefix' => $domain];
+        $group_guest = ['prefix' => $domain, 'middleware' => 'guest.tenant'];
+        $group_auth =['prefix' => $domain, 'middleware' => ['auth.tenant']];
+    }
 
-    Route::get('/', function ($account) {
-//    print_r(DB::connection()->table('customer')->get());
-        return "sub domain :" . $account;
-    });
 
-});
-
-//Route::group(['prefix' => 'Krita', 'middleware' => 'guest.tenant'], function () {
-//Route::group(['domain' => '{account}.fastbooks.com', 'middleware' => 'subdomain'], function () {
-
-    $domain = env('MY_TENANT','manish');
-
-    Route::group(['prefix' => $domain], function () {
+    Route::group($group_superadmin, function () {
         get('block/account', 'Tenant\AuthController@blockAccount');
     });
 
 
-    Route::group(['prefix' => $domain, 'middleware' => 'guest.tenant'], function () {
+    Route::group($group_guest, function () {
         get('login', ['as' => 'tenant.login', 'uses' => 'Tenant\AuthController@getLogin']);
         post('login', 'Tenant\AuthController@postLogin');
         post('register', ['as' => 'tenant.register', 'uses' => 'Tenant\AuthController@postRegister']);
@@ -39,7 +45,7 @@ Route::group(['domain' => '{account}.fastbooks.com', 'middleware' => 'subdomain'
     });
 
 
-    Route::group(['prefix' => $domain, 'middleware' => ['auth.tenant']], function () {
+    Route::group($group_auth, function () {
     	//registered by : Krita
         get('/', ['as' => 'tenant.index', 'uses' => 'Tenant\DashboardController@index']);
         get('/logout', ['as' => 'tenant.logout', 'uses' => 'Tenant\AuthController@logout']);
@@ -108,8 +114,9 @@ Route::group(['domain' => '{account}.fastbooks.com', 'middleware' => 'subdomain'
 		post('customer',['as'=>'tenant.customer.create', 'uses' => 'Tenant\Customer\CustomerController@create']);
         get('customer/CustomerCard/{id}',['as'=>'tenant.customer.CustomerCard', 'uses' => 'Tenant\Customer\CustomerController@customerCard']);
         get('customer/delete/{id}', ['as' => 'customer.delete', 'uses' => 'Tenant\Customer\CustomerController@deleteCustomer']);
-        get('customer/edit/{id}',['as'=>'tenant.customer.edit', 'uses'=>'Tenant\Customer\CustomerController@edit']);
-        post('customer/edit/{id}',['as'=>'tenant.customer.edit', 'uses'=>'Tenant\Customer\CustomerController@update']);
+        get('customer/{id}/edit',['as'=>'tenant.customer.edit', 'uses'=>'Tenant\Customer\CustomerController@edit']);
+        post('customer/{id}/edit',['as'=>'tenant.customer.edit', 'uses'=>'Tenant\Customer\CustomerController@update']);
         post('customer/data',['as'=>'tenant.customer.data', 'uses'=>'Tenant\Customer\CustomerController@dataJson']);
+        post('customer/upload',['as'=>'tenant.customer.upload', 'uses'=>'Tenant\Customer\CustomerController@upload']);
 
     });

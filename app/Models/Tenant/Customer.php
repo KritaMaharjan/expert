@@ -72,4 +72,32 @@ class Customer extends Model {
         return $this->toArray();
     }
 
+    public function createCustomer($request)
+    {
+         if ($request['type'] == 2)
+            $dob = '';
+        elseif ($request['type'] == 1)
+            $dob = $request['year'] . '-' . $request['month'] . '-' . $request['day'];
+
+
+        $customer = Customer::create([
+            'type'           => $request['type'],
+            'name'           => $request['name'],
+            'email'           => $request['email'],
+            'user_id'        => $this->current_user->id,
+            'dob'            => $dob,
+            'company_number' => $request['company_number'],
+            'street_name'    => $request['street_name'],
+            'street_number'  => $request['street_number'],
+            'telephone'      => $request['telephone'],
+            'mobile'         => $request['mobile'],
+            'postcode'       => $request['postcode'],
+            'town'           => $request['town'],
+            'image'          => $fileName,
+            'status'         => $request['status'],
+
+
+        ]);
+    }
+
 }
