@@ -12,7 +12,7 @@ class MyApplication extends Application {
      */
     public function publicPath()
     {
-        echo $this->basePath.'/public_html';
+        return $this->basePath.DIRECTORY_SEPARATOR.'public_html';
     }
 
 }
