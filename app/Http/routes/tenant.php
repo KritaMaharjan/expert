@@ -83,7 +83,7 @@ Route::group(['domain' => '{account}.fastbooks.com', 'middleware' => 'subdomain'
 
         // product routes
 		get('inventory/product',['as'=>'tenant.inventory.product.index', 'uses'=>'Tenant\Inventory\ProductController@index']);
-        get('inventory/product/data',['as'=>'tenant.inventory.product.data', 'uses'=>'Tenant\Inventory\ProductController@dataJson']);
+        post('inventory/product/data',['as'=>'tenant.inventory.product.data', 'uses'=>'Tenant\Inventory\ProductController@dataJson']);
         post('inventory/product',['as'=>'tenant.inventory.product.post', 'uses'=>'Tenant\Inventory\ProductController@create']);
         get('inventory/product/{id}',['as'=>'tenant.inventory.product.show', 'uses'=>'Tenant\Inventory\ProductController@show']);
         post('inventory/product/{id}/edit',['as'=>'tenant.inventory.product.update', 'uses'=>'Tenant\Inventory\ProductController@update']);

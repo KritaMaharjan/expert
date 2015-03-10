@@ -5,6 +5,12 @@
                         <input type="text" placeholder="Name" name="name" value="{{$customer->name}}" id="name" class="form-control">
                         
                       </div>
+
+                      <div class="form-group">
+                        <label for="">Email</label>
+                        <input type="email" placeholder="Email" name="email" value="{{$customer->email}}" id="email" class="form-control">
+                        
+                      </div>
                    
                       <div class="form-group dob_div">
                         <label for="">Date of birth</label>

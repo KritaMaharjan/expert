@@ -189,7 +189,10 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $query = $this->select($select);
 
         if ($orderColumn != '' AND $orderdir != '') {
-            $query = $query->orderBy($orderColumn, $orderdir);
+            if($orderColumn != 'created')
+                $query = $query->orderBy($orderColumn, $orderdir);
+            else
+                $query = $query->orderBy('created_at', $orderdir);
         }
 
         if ($search != '') {
@@ -202,6 +205,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $data = $query->get();
 
         foreach ($data as $key => &$value) {
+            $value->raw_status = $value->status;
+            $value->fullname = "<a href=".\URL::route('subuser.profile', $value->guid).">".$value->fullname."</a>";
             if($value->status == 1)
                 $value->status = '<span class="label label-success">Active</span>';
             elseif($value->status == 2)

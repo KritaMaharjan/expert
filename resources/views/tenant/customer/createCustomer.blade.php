@@ -6,6 +6,11 @@
                         <input type="text" placeholder="Name" name="name" value="" id="name" class="form-control">
                         
                       </div>
+                       <div class="form-group">
+                        <label for="">Email</label>
+                        <input type="email" placeholder="Email" name="email" value="" id="email" class="form-control">
+                        
+                      </div>
                       <div class="form-group dob_div">
                         <label for="">Date of birth</label>
                        <select name="day" class="form-control" id="day">
@@ -75,14 +80,15 @@
                             <option value="1">Active</option>
                         </select> 
                       </div>
-                       <div id="fine-uploader"></div>
-                {{--       <div class="form-group">
+                       <div id="fineuploader">
+                       </div>
+                      <div class="form-group">
                         <label>Upload Photo</label>
                         <div class="@if($errors->has('photo')) {{'has-error'}} @endif">
                           <input type="file" name="photo" id="photo">
                          
                         </div>
-                      </div> --}}
+                      </div> 
                        <div class="form-group">
                         
                       
@@ -95,6 +101,16 @@
                     </div>
                    
            {!! Form::close() !!}
+
+<script type="text/javascript">
+$(function(){
+   $('#fineuploader').fineuploader({
+    
+   })
+})
+</script>
+
+
  <script type="text/template" id="qq-template">
   <div class="qq-uploader-selector qq-uploader">
     <div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
@@ -126,12 +142,4 @@
   </div>
 </script>
 
-    <script>
-  // $(document).ready(function () {
-  //   $('#fine-uploader').fineUploader({
-  //     request: {
-  //       endpoint: 'server/handleUploads'
-  //     }
-  //   });
-  // });
-</script>  
+ 

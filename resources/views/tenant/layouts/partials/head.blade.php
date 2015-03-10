@@ -13,9 +13,11 @@
 <link href="{{ asset('assets/css/select2.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/plugins/datatables/dataTables.bootstrap.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/plugins/datepicker/datepicker3.css')}}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/plugins/fine-uploader/fine-uploader.css')}}" rel="stylesheet" type="text/css" />
 <script src="{{ asset('assets/js/jquery-1.11.1.min.js')}}" type="text/javascript"></script>
 <script src="{{ asset('assets/js/mustache.js')}}" type="text/javascript"></script>
 <script src="{{ asset('assets/js/jquery.dataTables.min.js')}}" type="text/javascript"></script>
+<script src="{{ asset('assets/plugins/fine-uploader/fine-uploader.js')}}" type="text/javascript"></script>
 
 
 <!--[if lt IE 9]>

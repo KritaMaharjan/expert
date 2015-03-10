@@ -45,6 +45,7 @@ class CustomerController extends BaseController {
         $validator = \Validator::make($request->all(),
             array(
                 'name'          => 'required|between:2,30',
+                'email'          => 'required',
                 'dob'           => '',
                 'street_name'   => 'required',
                 'street_number' => 'required',
@@ -103,6 +104,7 @@ class CustomerController extends BaseController {
         $validator = \Validator::make($this->request->all(),
             array(
                 'name'          => 'required|between:2,30',
+                   'email'          => 'required',
                 'dob'           => '',
                 'street_name'   => 'required',
                 'street_number' => 'required',
@@ -119,6 +121,7 @@ class CustomerController extends BaseController {
 
         $customer->type = $this->request->input('type');
         $customer->name = $this->request->input('name');
+        $customer->email = $this->request->input('email');
         $customer->user_id = $this->current_user->id;
         $customer->dob = $dob;
         $customer->company_number = $this->request->input('company_number');
@@ -158,6 +161,7 @@ class CustomerController extends BaseController {
         $customer = Customer::create([
             'type'           => $request['type'],
             'name'           => $request['name'],
+            'email'           => $request['email'],
             'user_id'        => $this->current_user->id,
             'dob'            => $dob,
             'company_number' => $request['company_number'],
@@ -179,7 +183,7 @@ class CustomerController extends BaseController {
     public function dataJson()
     {
         if ($this->request->ajax()) {
-            $select = ['id', 'name', 'created_at'];
+            $select = ['id', 'name','email','created_at'];
 
             $json = $this->customer->dataTablePagination($this->request, $select);
             echo json_encode($json, JSON_PRETTY_PRINT);

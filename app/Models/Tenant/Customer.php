@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 class Customer extends Model {
 	 protected $table = "fb_customers";
 
-    protected $fillable = ['user_id', 'type','name','dob','street_name','street_number','postcode','town','telephone','mobile','image','status'];
+    protected $fillable = ['user_id', 'type','name','email','dob','street_name','street_number','postcode','town','telephone','mobile','image','status'];
 
     protected $primaryKey = "id";
 
@@ -45,7 +45,16 @@ class Customer extends Model {
 
         $query->skip($start)->take($take);
 
-        $customer['data'] = $query->get()->toArray();
+         $data = $query->get();
+
+        foreach ($data as $key => &$value) {
+            $value->name = "<a href=".\URL::route('tenant.customer.CustomerCard', $value->id).">".$value->name."</a>";
+           $value->email = $value->email;
+            $value->created = $value->created_at->format('d-M-Y');
+        }    
+
+         $customer['data'] = $data->toArray();
+
 
         $json = new \stdClass();
         $json->draw = ($request->input('draw') > 0) ? $request->input('draw') : 1;

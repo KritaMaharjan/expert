@@ -98,13 +98,7 @@ class ClientController extends BaseController {
 
    function block()
    {
-     /* $domain=\Input::get('domain');
-      $guid=\Input::get('code');
-
-      $url  = \cURL::buildUrl( url($domain.'/block/account'),['code'=>$guid,'_token'=>csrf_token()]);
-      $data = \cURL::get($url);
-      echo $data->body;
-        exit();*/
+     
 
 
      if (\Input::get('code') == '') {

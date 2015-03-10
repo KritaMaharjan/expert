@@ -194,7 +194,7 @@ class UserController extends BaseController {
     public function dataJson()
     {
         if ($this->request->ajax()) {
-            $select = ['fullname', 'email', 'status', 'created_at'];
+            $select = ['guid', 'fullname', 'email', 'status', 'created_at'];
             $json = $this->user->dataTablePagination($this->request, $select);
             echo json_encode($json, JSON_PRETTY_PRINT);
         } else {

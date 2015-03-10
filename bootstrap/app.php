@@ -11,7 +11,8 @@
 |
 */
 
-$app = new Illuminate\Foundation\Application(
+
+$app = new App\Fastbooks\Utilities\MyApplication(
 	realpath(__DIR__.'/../')
 );
 

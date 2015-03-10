@@ -111,7 +111,7 @@ class Product extends Model {
 
         $query->skip($start)->take($take);
 
-        $products['data'] = $query->get()->toArray();
+        $products['data'] = $this->toFomatedData($query->get());
 
         $json = new \stdClass();
         $json->draw = ($request->input('draw') > 0) ? $request->input('draw') : 1;
@@ -121,4 +121,17 @@ class Product extends Model {
 
         return $json;
     }
+
+    function toFomatedData($data)
+    {
+        foreach($data as $k => &$items)
+        {
+            $items->toData();
+        }
+
+       return $data;
+    }
+
+
+
 }

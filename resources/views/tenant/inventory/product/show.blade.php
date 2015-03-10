@@ -17,10 +17,6 @@
                           <th>Product Name</th>
                           <td>{{$product->name or ''}}</td>
                         </tr>
-                        <tr>
-                          <th>Quantity</th>
-                          <td>{{$product->quantity or ''}}</td>
-                        </tr>
 
                          <tr>
                           <th>Vat</th>
@@ -36,17 +32,6 @@
                          <th>Selling Price (per Item)</th>
                          <td>{{$product->selling_price()}}</td>
                        </tr>
-
-
-                        <tr>
-                          <th>Total Purchase Cost</th>
-                          <td>{{$product->totalPurchaseCost()}}</td>
-                        </tr>
-
-                        <tr>
-                          <th>Total Selling Price</th>
-                          <td>{{$product->totalSellingPrice()}}</td>
-                        </tr>
 
 
                         <tr>

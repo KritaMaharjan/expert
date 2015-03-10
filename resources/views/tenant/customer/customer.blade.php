@@ -13,7 +13,7 @@ Customers
 @section('content')
 {{--<link href="{{assets('assets/plugins/iCheck/all.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{assets('assets/plugins/iCheck/minimal/blue.css')}}" rel="stylesheet" type="text/css" />--}}
-<link href="{{asset('assets/plugins/plupload/js/plupload.full.min.js')}}" rel="stylesheet" type="text/css" />
+
 	
 
 
@@ -32,6 +32,7 @@ Customers
                    <tr>
                      <th>ID</th>
                      <th>Customer name</th>
+                     <th>Email</th>
                      <th>Added Date</th>
                      <th></th>
                    </tr>
@@ -56,8 +57,9 @@ Customers
 
     {{--Load JS--}}
     {{FB::registerModal()}}
+   
     {{FB::js('assets/js/customer.js')}}
-
+   
 
 	@stop
 
