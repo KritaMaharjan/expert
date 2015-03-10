@@ -105,8 +105,8 @@
 
 $(function(){
   $(document).on('change','#photo',function(){
-  var file_data = $('#photo').prop('files')[0];
-  
+  var file_data = $(this).val();
+  console.log(file_data);
   var form_data = new FormData();
   var token = $(this).closest('form').find('input[name=_token]').val();
  
@@ -114,7 +114,7 @@ $(function(){
   form_data.append('_token',token);
   $.ajax({
     url: appUrl + "/customer/upload",
-    dataType:'json',
+    dataType:'script',
     cache:false,
     contentType:false,
     processData:false,

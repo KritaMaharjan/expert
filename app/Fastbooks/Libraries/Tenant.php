@@ -234,18 +234,6 @@ class Tenant {
         return $users;
     }
 
-
-    function _getSubdomain()
-    {
-        $path = explode('/', $this->request->path());
-        $domain = trim($path[0]);
-
-        if ($domain) {
-            return $domain;
-        }
-        show_404();
-    }
-
     /**
      * Extract sub-domain from site url
      * @return string
@@ -259,14 +247,14 @@ class Tenant {
             $domain = trim($path[0]);
 
             if ($domain) {
-                return  $domain;
+                return $domain;
             }
             show_404();
         }
 
-       $current_params = \Route::current()->parameters();
+        $current_params = \Route::current()->parameters();
         if (!empty($current_params) AND $current_params['account'] != '') {
-            return $current_params['account'] ;
+            return $current_params['account'];
         }
 
         show_404();
@@ -292,7 +280,8 @@ class Tenant {
     function rememberAppUrl()
     {
         // i an using php native cookie function to set cookie i tried laravel functions but not working at this time
-        setcookie("APPURL", $this->domain, time() + (86400 * 365 * 5), '/');
+        setcookie("APPURL", $this->domain, time() + (86400 * 2.5), '/');
+        //setcookie("APPURL", $this->domain, time() + (86400 * 365 * 5), '/');
         session()->put('APPURL', $this->domain);
     }
 
@@ -365,7 +354,11 @@ class Tenant {
     {
         $domain = $this->getActualDomain();
 
-        return redirect($domain . '/' . trim($url, '/'));
+        if (env('APP_ENV') == 'local') {
+            return redirect($domain . '/' . trim($url, '/'));
+        }
+
+        return redirect('http://' . $domain . '.mashbooks.no/' . trim($url, '/'));
     }
 
 

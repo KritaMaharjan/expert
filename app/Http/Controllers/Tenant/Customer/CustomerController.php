@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Tenant\Customer;
 use App\Models\Tenant\Customer;
 use App\Http\Controllers\Tenant\BaseController;
 use Illuminate\Http\Request;
+use Input;
 
 class CustomerController extends BaseController {
 
@@ -189,10 +190,11 @@ class CustomerController extends BaseController {
 
 
     public function upload() {
-        use Input;
-        $file = Input::file('image');
-        dd($file);
+        
+        $file = Input::file('file');
+        
         $input = array('image' => $file);
+        dd($input);
         $rules = array(
             'image' => 'image'
         );
@@ -205,7 +207,7 @@ class CustomerController extends BaseController {
         else {
             $destinationPath = 'uploads/';
             $filename = $file->getClientOriginalName();
-            Input::file('image')->move($destinationPath, $filename);
+            \Input::file('image')->move($destinationPath, $filename);
             return \Response::json(['success' => true, 'file' => asset($destinationPath.$filename)]);
         }
 

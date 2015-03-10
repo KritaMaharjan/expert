@@ -24,7 +24,7 @@ Customers
                 <div class="box-header">
                   <h3 class="box-title">Customer Card</h3>
                   <div class="icon-block">
-                    <a data-toggle="modal" data-url="{{tenant()->url('customer/edit/'.$customer['id'])}}" data-target="#fb-modal" title="Edit"><i class="fa fa-edit"></i></a>
+                    <a href="javascript:;" data-toggle="modal" data-url="{{tenant()->url('customer/edit/'.$customer['id'])}}" data-target="#fb-modal" title="Edit"><i class="fa fa-edit"></i></a>
                     <a href="{{ URL::route('customer.delete', $customer->id) }}" onclick="return confirm('Do you really want to delete customer?')" title="Delete"><i class="fa fa-trash-o"></i></a>
                   </div>
                 </div><!-- /.box-header -->
