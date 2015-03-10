@@ -104,8 +104,8 @@
 
 <script type="text/javascript">
 $(function(){
-   $('#fineuploader').fineuploader({
-    
+   $("#fineuploader").fineUploaderS3({ /* options ... */ });
+
    })
 })
 </script>
