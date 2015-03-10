@@ -194,7 +194,7 @@ class CustomerController extends BaseController {
         $file = Input::file('file');
         
         $input = array('image' => $file);
-        dd($input);
+       dd(Input::ALL());
         $rules = array(
             'image' => 'image'
         );

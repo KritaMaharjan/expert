@@ -256,8 +256,10 @@ class Tenant {
         if (!empty($current_params) AND $current_params['account'] != '') {
             return $current_params['account'];
         }
+        {
+            return "";
+        }
 
-        show_404();
     }
 
     /**
@@ -354,7 +356,7 @@ class Tenant {
     {
         $domain = $this->getActualDomain();
 
-        if (env('APP_ENV') == 'local') {
+        if (env('APP_ENV') == 'ldcal') {
             return redirect($domain . '/' . trim($url, '/'));
         }
 

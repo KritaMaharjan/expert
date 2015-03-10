@@ -144,7 +144,7 @@ class AuthController extends BaseController {
             return view('errors.404');
 
         $this->activateSubUser($subuser);
-        return redirect()->route('tenant.index');
+        return tenant($subuser->domain)->redirect('/');
         //return \FB::tenant_url($subuser->domain);
     }
 

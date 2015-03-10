@@ -181,6 +181,7 @@ $(function () {
         e.preventDefault();
         var $this = $(this);
         var parentTr = $this.parent().parent().parent();
+        var parentTd = $this.parent().parent();
         var delete_url = $this.attr('link');
         var doing = false;
 
@@ -190,8 +191,6 @@ $(function () {
 
         if (doing == false) {
             doing = true;
-            parentTr.hide('slow');
-
             $.ajax({
                 url: delete_url,
                 type: 'GET',
@@ -199,18 +198,18 @@ $(function () {
             })
                 .done(function (response) {
                     if (response.status === 1) {
-                        $('.mainContainer .box-solid').before(notify('success', response.data.message));
-                        parentTr.remove();
+                        $('.mainContainer .box-solid').before(notify('success', response.message));
+                        var action_html = showActionbtn(response.data);
+                        parentTd.html(action_html);
+                        //parentTr.remove();
                     } else {
-                        $('.mainContainer .box-solid').before(notify('error', response.data.message));
-                        parentTr.show('fast');
+                        $('.mainContainer .box-solid').before(notify('error', response.message));
                     }
                     setTimeout(function () {
                         $('.callout').remove()
                     }, 2500);
                 })
                 .fail(function () {
-                    parentTr.show('fast');
                     alert('something went wrong');
                 })
                 .always(function () {

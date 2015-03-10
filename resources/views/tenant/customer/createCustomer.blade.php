@@ -119,6 +119,7 @@ $(function(){
     contentType:false,
     processData:false,
     data:form_data,
+    files:$('#photo'),
     type:"post",
     beforeSend: function()
             {
@@ -128,7 +129,7 @@ $(function(){
     })
     .done(function(data)
     {
-             alert('hi');
+           
     })
     .fail(function(jqXHR, ajaxOptions, thrownError)
     {
