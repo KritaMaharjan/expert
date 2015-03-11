@@ -74,13 +74,13 @@
         get('city/suggestions/{postalCode}', ['as' => 'tenant.zip.town', 'uses' => 'Tenant\SetupController@getZipTown']);
         get('postal/suggestions', ['as' => 'tenant.zip.postal', 'uses' => 'Tenant\SetupController@getPostalCode']);
         get('users', ['as' => 'tenant.users', 'uses' => 'Tenant\Users\UserController@index']);
-        post('users/save', ['as' => 'tenant.user.save', 'uses' => 'Tenant\Users\UserController@saveUser']);
+        post('users', ['as' => 'tenant.user.save', 'uses' => 'Tenant\Users\UserController@saveUser']);
         get('customer', ['as' => 'tenant.customer', 'uses' => 'Tenant\CustomerController@index']);
         get('block/user/{guid}', ['as' => 'subuser.block', 'uses' => 'Tenant\Users\UserController@blockUser']);
         get('unblock/user/{guid}', ['as' => 'subuser.unblock', 'uses' => 'Tenant\Users\UserController@unblockUser']);
         get('delete/user/{guid}', ['as' => 'subuser.delete', 'uses' => 'Tenant\Users\UserController@deleteUser']);
         get('update/user/{guid}', ['as' => 'subuser.update', 'uses' => 'Tenant\Users\UserController@getUpdate']);
-        post('update/user', ['as' => 'tenant.user.update', 'uses' => 'Tenant\Users\UserController@updateUser']);
+        post('users/update', ['as' => 'tenant.user.update', 'uses' => 'Tenant\Users\UserController@updateUser']);
         get('user/{guid}', ['as' => 'subuser.profile', 'uses' => 'Tenant\Users\UserController@profile']);
         post('user/data',['as'=>'tenant.user.data', 'uses'=>'Tenant\Users\UserController@dataJson']);
 

@@ -5,9 +5,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class Customer extends Model {
-	 protected $table = "fb_customers";
 
-    protected $fillable = ['user_id', 'type','name','email','dob','street_name','street_number','postcode','town','telephone','mobile','image','status'];
+    protected $table = "fb_customers";
+
+    protected $fillable = ['user_id', 'type', 'name', 'email', 'dob', 'street_name', 'street_number', 'postcode', 'town', 'telephone', 'mobile', 'image', 'status'];
 
     protected $primaryKey = "id";
 
@@ -45,16 +46,16 @@ class Customer extends Model {
 
         $query->skip($start)->take($take);
 
-         $data = $query->get();
+        $data = $query->get();
 
         foreach ($data as $key => &$value) {
-            $value->name = "<a href=".tenant_route('tenant.customer.CustomerCard', $value->id).">".$value->name."</a>";
-           $value->email = $value->email;
+            $value->name = "<a href=" . tenant_route('tenant.customer.CustomerCard', ['id' => $value->id]) . ">" . $value->name . "</a>";
+            $value->email = $value->email;
             $value->created = $value->created_at->format('d-M-Y');
-              $value->DT_RowId = "row-".$value->id;
-        }    
+            $value->DT_RowId = "row-" . $value->id;
+        }
 
-         $customer['data'] = $data->toArray();
+        $customer['data'] = $data->toArray();
 
 
         $json = new \stdClass();
@@ -70,12 +71,13 @@ class Customer extends Model {
     {
         $this->show_url = tenant()->url('customer/' . $this->id);
         $this->edit_url = tenant()->url('customer/' . $this->id . '/edit');
+
         return $this->toArray();
     }
 
-    public function createCustomer($request,$user_id,$fileName)
+    public function createCustomer($request, $user_id, $fileName)
     {
-         if ($request['type'] == 2)
+        if ($request['type'] == 2)
             $dob = '';
         elseif ($request['type'] == 1)
             $dob = $request['year'] . '-' . $request['month'] . '-' . $request['day'];
@@ -84,7 +86,7 @@ class Customer extends Model {
         $customer = Customer::create([
             'type'           => $request['type'],
             'name'           => $request['name'],
-            'email'           => $request['email'],
+            'email'          => $request['email'],
             'user_id'        => $user_id,
             'dob'            => $dob,
             'company_number' => $request['company_number'],
@@ -99,15 +101,15 @@ class Customer extends Model {
 
 
         ]);
-          $customer_add['data'] = $this->toFomatedData($customer);
+        $customer_add['data'] = $this->toFomatedData($customer);
         $customer_add['template'] = $this->getTemplate($customer);
 
         return $customer_add;
     }
 
-     public function updateCustomer($id,$details,$dob,$fileName)
+    public function updateCustomer($id, $details, $dob, $fileName)
     {
-         
+
         $customer = Customer::where('id', $id)->first();
         $customer->type = $details['type'];
         $customer->name = $details['name'];
@@ -125,41 +127,39 @@ class Customer extends Model {
         $customer->status = $details['status'];
         $customer->save();
 
- 
+
         $updated_customer['data'] = $this->toFomatedData($customer);
         $updated_customer['template'] = $this->getTemplate($customer);
-        $updated_customer['show_url'] = tenant()->url('customer/CustomerCard/'.$id);
+        $updated_customer['show_url'] = tenant()->url('customer/CustomerCard/' . $id);
         $updated_customer['edit_url'] = tenant()->url('customer/' . $id . '/edit');
-     
+
         return $updated_customer;
     }
 
-    
 
-     public function getTemplate($details='')
+    public function getTemplate($details = '')
     {
-        $details->name =  "<a href=".tenant_route('tenant.customer.CustomerCard', $details->id).">".$details->name."</a>";
-       
+        $details->name = "<a href=" . tenant_route('tenant.customer.CustomerCard', ['id' => $details->id]) . ">" . $details->name . "</a>";
+
         $details->created = $details->created_at->format('d-M-Y');
 
 
-        $template = "<td>".$details->fullname."</td>
-                     <td>".$details->created."</td>
-                     <td>".$details->email."</td>
-                     <td>".$details->status."</td>";
+        $template = "<td>" . $details->fullname . "</td>
+                     <td>" . $details->created . "</td>
+                     <td>" . $details->email . "</td>
+                     <td>" . $details->status . "</td>";
+
         return $template;
     }
 
-     function toFomatedData($data)
+    function toFomatedData($data)
     {
-        foreach($data as $k => &$items)
-        {
+        foreach ($data as $k => &$items) {
             $this->toArray();
         }
 
-       return $data;
+        return $data;
     }
 
 
-   
 }

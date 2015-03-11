@@ -29,7 +29,7 @@ $(function () {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": appUrl + '/customer/data',
+            "url": appUrl + 'customer/data',
             "type": "POST"
         },
         "columnDefs": [{
@@ -71,7 +71,7 @@ $(function () {
             parentTr.hide('slow');
 
             $.ajax({
-                url: appUrl + '/customer/' + id + '/delete',
+                url: appUrl + 'customer/' + id + '/delete',
                 type: 'GET',
                 dataType: 'json',
             })
@@ -183,7 +183,7 @@ function notify(type, text) {
 
  function showActionbtn(row) {
     return '<div class="box-tools">' +
-    '<a href="#" title="Edit" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' + appUrl+'/customer/'+row.id +'/edit' +'" data-target="#fb-modal">' +
+    '<a href="#" title="Edit" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' + appUrl+'customer/'+row.id +'/edit' +'" data-target="#fb-modal">' +
     '<i class="fa fa-edit"></i>' +
     '</a>' +
     '<button class="btn btn-box-tool btn-delete-customer" data-toggle="tooltip" data-id="' + row.id + '" data-original-title="Remove"><i class="fa fa-times"></i></button>' +

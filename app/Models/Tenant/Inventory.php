@@ -90,12 +90,10 @@ class Inventory extends Model {
         return '$' . number_format($num, 2);
     }
 
-    function dataTablePagination(Request $request, array $select = array())
+    function dataTablePagination(Request $request, $select)
     {
 
-        if ((is_array($select) AND count($select) < 1)) {
-            $select = "*";
-        }
+
 
         $take = ($request->input('length') > 0) ? $request->input('length') : 15;
         $start = ($request->input('start') > 0) ? $request->input('start') : 0;

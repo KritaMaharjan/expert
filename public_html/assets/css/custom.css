@@ -573,6 +573,10 @@ fieldset.wrapper-box legend{
 
 
 /*print*/
+#print {
+    margin: 20px auto;
+    width: 700px;
+}
 #print .header-wrap{
     background: #fff34d;
     padding: 10px 20px;
@@ -584,16 +588,20 @@ fieldset.wrapper-box legend{
     margin: 0 0 10px;
 }
 #print h2 {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
+    margin:0;   
 }
 #print h3 {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
+    margin:0; 
 }
 #print label {
     display: block;
     font-weight: 600;
+    font-size: 12px;
+    margin-bottom: 0 !important;
 }
 #print input {
     height: 30px;
@@ -610,7 +618,7 @@ fieldset.wrapper-box legend{
     display: block;
 }
 .font-mid{
-    font-size: 16px
+    font-size: 14px!important;
 }
 .mg-left-30{
     margin-left: 30px;
@@ -623,10 +631,11 @@ fieldset.wrapper-box legend{
 }
 .info-ac {
     padding: 20px 10px;
+    margin-bottom: 11px;
 }
 .section-wrap-yellow{
     background: #fff34d;
-    padding: 5px 2% 5px 10%;
+    padding: 5px 2% 5px 0%;
 }
 .section-wrap-yellow label {
     display: inline-block !important;
@@ -639,11 +648,11 @@ fieldset.wrapper-box legend{
     padding: 10px;
 }
 .info-payer p{
-    font-size: 16px;
+    font-size: 14px;
     margin-bottom: 0;
 }
 #giro-block{
-    padding-right: 5%!important;
+    padding-right: 13px!important;
 }
 #giro-block .border{
     padding: 5px;
@@ -655,6 +664,7 @@ fieldset.wrapper-box legend{
 }
 .footer-wrap{
     border-bottom: 5px solid #fff34d;
+    margin-top: 10px;
 }
 .box1{
     border-right: 1px solid #ccc;
@@ -662,6 +672,18 @@ fieldset.wrapper-box legend{
 .box2{
     border-right: 1px solid #fff34d;
 }
+.signature-block {
+    margin-bottom: 10px;
+}
+.pad-right-0{padding-right: 0!important;}
+.align-center{
+    text-align: center;
+}
+.no-print{
+    padding: 20px 0;
+}
+
+
 /*print*/
 
 

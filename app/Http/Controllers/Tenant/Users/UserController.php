@@ -133,13 +133,13 @@ class UserController extends BaseController {
 
     public function updateUser(Request $request)
     {
-        $user = User::where('guid', $request['guid'])->first();
+        $user = User::where('guid', $this->request['guid'])->first();
         $this->rules['email'] = 'required|email|unique:fb_users,email,'.$user->id; //ignore a id
-        $validator = \Validator::make($request->all(), $this->rules);
+        $validator = \Validator::make($this->request->all(), $this->rules);
 
         if ($validator->fails())
             return \Response::json(array('fail' => true, 'errors' => $validator->getMessageBag()->toArray()));
-        $result = $this->user->updateUser($request);
+        $result = $this->user->updateUser($this->request);
         $redirect_url = \URL::route('tenant.users');
         return \Response::json(array('success' => true, 'data' => $result['data'], 'template'=>$result['template'], 'redirect_url' => $redirect_url ));
     }
