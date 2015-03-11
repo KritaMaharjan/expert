@@ -1,4 +1,4 @@
-{!! Form::open(array('route' => 'tenant.setup.update', 'method'=>'POST', 'class'=>'form-horizontal')) !!}
+{!! Form::open(array('url' => tenant()->url('setting/system'), 'method'=>'POST', 'class'=>'form-horizontal')) !!}
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	<input type="hidden" name="group" value="business">
 		<div class="form-group no-mg">

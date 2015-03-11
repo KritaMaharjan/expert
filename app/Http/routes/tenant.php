@@ -28,12 +28,12 @@
     }
 
 
-    Route::group($group_superadmin, function ($account) {
+    Route::group($group_superadmin, function () {
         get('block/account', 'Tenant\AuthController@blockAccount');
     });
 
 
-    Route::group($group_guest, function ($account) {
+    Route::group($group_guest, function () {
         get('login', ['as' => 'tenant.login', 'uses' => 'Tenant\AuthController@getLogin']);
         post('login', 'Tenant\AuthController@postLogin');
         post('register', ['as' => 'tenant.register', 'uses' => 'Tenant\AuthController@postRegister']);
@@ -45,7 +45,7 @@
     });
 
 
-    Route::group($group_auth, function ($account) {
+    Route::group($group_auth, function () {
     	//registered by : Krita
         get('/', ['as' => 'tenant.index', 'uses' => 'Tenant\DashboardController@index']);
         get('/logout', ['as' => 'tenant.logout', 'uses' => 'Tenant\AuthController@logout']);
@@ -92,8 +92,8 @@
         post('inventory/product/data',['as'=>'tenant.inventory.product.data', 'uses'=>'Tenant\Inventory\ProductController@dataJson']);
         post('inventory/product',['as'=>'tenant.inventory.product.post', 'uses'=>'Tenant\Inventory\ProductController@create']);
         get('inventory/product/{id}',['as'=>'tenant.inventory.product.show', 'uses'=>'Tenant\Inventory\ProductController@show']);
-        post('inventory/product/{id}/edit',['as'=>'tenant.inventory.product.update', 'uses'=>'Tenant\Inventory\ProductController@update']);
         get('inventory/product/{id}/edit',['as'=>'tenant.inventory.product.edit', 'uses'=>'Tenant\Inventory\ProductController@edit']);
+        post('inventory/product/{id}/edit',['as'=>'tenant.inventory.product.update', 'uses'=>'Tenant\Inventory\ProductController@update']);
         get('inventory/product/{id}/delete',['as'=>'tenant.inventory.product.delete', 'uses'=>'Tenant\Inventory\ProductController@delete']);
 
 
@@ -119,7 +119,5 @@
         post('customer/data',['as'=>'tenant.customer.data', 'uses'=>'Tenant\Customer\CustomerController@dataJson']);
         post('customer/upload',['as'=>'tenant.customer.upload', 'uses'=>'Tenant\Customer\CustomerController@upload']);
         post('customer/changeStatus',['as'=>'tenant.customer.changeStatus', 'uses'=>'Tenant\Customer\CustomerController@changeStatus']);
-
-        // Krita
         post('test/upload', ['as' => 'test.upload', 'uses' => 'Tenant\Customer\CustomerController@testUpload']);
     });

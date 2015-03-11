@@ -29,7 +29,7 @@ $(function () {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": appUrl + 'customer/data',
+            "url": appUrl + '/customer/data',
             "type": "POST"
         },
         "columnDefs": [{
@@ -44,7 +44,12 @@ $(function () {
             {"data": "name"},
              {"data": "email"},
             {"data": "created_at"}
-        ]
+        ],
+        "fnRowCallback": function( nRow, aData, iDisplayIndex ) {
+            
+            $(nRow).attr('id','customer-'+aData.id);
+            return nRow;
+        },
 
     });
 
@@ -94,6 +99,8 @@ $(function () {
 
     });
 
+
+
     $(document).on('submit', '#customer-form', function (e) {
         e.preventDefault();
         var form = $(this);
@@ -125,19 +132,17 @@ $(function () {
         })
             .done(function (response) {
                 if (response.success == true || response.status == 1) {
-                    alert('as');
+                   
                     $('#fb-modal').modal('hide');
                     var tbody = $('.box-body table tbody');
                     if (requestType == 'Add') {
-                          console.log(response.redirect_url);
+                         
                         window.location.replace(response.redirect_url);
                     }
                     else {
-                        alert('edit');
-                        $('.mainContainer .box-solid').before(notify('success', 'Customer update Successfully'));
-                    var action_html = "<td>"+showActionbtn(response.data)+"</td>";
-                    $('#table-user > tbody').prepend(response.template + action_html);
-                    $('.modal').modal('hide');
+                      
+                     $('.mainContainer .box-solid').before(notify('success', 'Customer updated Successfully'));
+                        tbody.find('#customer-' + response.data.id).html(getTemplate(response, true));
 
                     }
                     setTimeout(function () {
@@ -189,22 +194,21 @@ function notify(type, text) {
 
 function getTemplate(response, type) {
 
-
+ 
     var html = '<td>' + response.data.id + '</td>' +
-        '<td>' + response.data.name + '</td>' +
         '<td>' +
-        '<a href="#" data-toggle="modal" data-url="' + response.data.show_url + '" data-target="#fb-modal">' +
+        '<a href="#" data-toggle="modal" data-url="' + response.show_url + '" data-target="#fb-modal">' +
         response.data.name +
         '</a>' +
         '</td>' +
         '<td>' + response.data.email + '</td>' +
         '<td>' + response.data.created_at + '</td>' +
        
-        '<td><div class="box-tools pull-right">' +
-        '<a href="#" title="Edit" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' + response.data.edit_url + '" data-target="#fb-modal">' +
+        '<td><div class="box-tools" style="float:left;">' +
+        '<a href="#" title="Edit" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' + response.edit_url + '" data-target="#fb-modal">' +
         '<i class="fa fa-edit"></i>' +
         '</a>' +
-        '<button class="btn btn-box-tool" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>' +
+         '<button class="btn btn-box-tool btn-delete-customer" data-toggle="tooltip" data-id="' + response.data.id + '" data-original-title="Remove"><i class="fa fa-times"></i></button>' +
         '</div>' +
         '</td>';
 

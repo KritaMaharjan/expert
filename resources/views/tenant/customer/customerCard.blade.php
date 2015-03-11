@@ -24,8 +24,9 @@ Customers
                 <div class="box-header">
                   <h3 class="box-title">Customer Card</h3>
                   <div class="icon-block">
-                    <a href="javascript:;" data-toggle="modal" data-url="{{tenant()->url('customer/edit/'.$customer['id'])}}" data-target="#fb-modal" title="Edit"><i class="fa fa-edit"></i></a>
-                    <a href="{{ tenant_route('customer.delete', $customer->id) }}" onclick="return confirm('Do you really want to delete customer?')" title="Delete"><i class="fa fa-trash-o"></i></a>
+                    <a href="javascript:;" title="Edit" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="{{tenant()->url('customer/'.$customer['id'].'/edit')}}" data-target="#fb-modal"><i class="fa fa-edit"></i></a>
+                   
+                    <a href="javascript:;" class="btn-delete-customer_each" title="Delete"><i class="fa fa-trash-o"></i></a>
                   </div>
                 </div><!-- /.box-header -->
                 <div class="box-body">
@@ -273,6 +274,50 @@ Customers
             });
 
         });
+
+
+        $(document).on('click', '.btn-delete-customer_each', function (e) {
+        e.preventDefault();
+        var $this = $(this);
+
+        var cus_id = "{{$customer['id']}}";
+        var token = "{{ csrf_token()}}";
+        var doing = false;
+
+        if (!confirm('Are you sure, you want delete? This action will delete data permanently and can\'t be undo')) {
+            return false;
+        }
+
+        if (cus_id != '' && doing == false) {
+            doing = true;
+           
+
+            $.ajax({
+                url: appUrl + '/customer/' + cus_id + '/delete',
+                type: 'GET',
+                dataType: 'json',
+            })
+                .done(function (response) {
+                if(response.status == '0')
+                {
+                   alert('something went wrong');
+                }
+
+                if(response.status == '1'){
+                    window.location.href=appUrl+'/customer';
+                } //success
+                response.success
+                })
+                .fail(function () {
+                    alert('something went wrong');
+                    
+                })
+                .always(function () {
+                    doing = false;
+                });
+        }
+
+    });
 
           </script>
 @stop

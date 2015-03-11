@@ -51,7 +51,6 @@ class BaseController extends Controller {
     function success(array $data = array())
     {
         $response = ['status' => 1, 'data' => $data];
-
         return \Response::json($response);
     }
 

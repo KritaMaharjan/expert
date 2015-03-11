@@ -105,12 +105,14 @@ class Customer extends Model {
         return $customer_add;
     }
 
-     public function updateCustomer($details='',$dob,$fileName)
+     public function updateCustomer($id,$details,$dob,$fileName)
     {
+         
+        $customer = Customer::where('id', $id)->first();
         $customer->type = $details['type'];
         $customer->name = $details['name'];
         $customer->email = $details['email'];
-        $customer->user_id = $this->current_user->id;
+        $customer->user_id = current_user()->id;
         $customer->dob = $dob;
         $customer->company_number = $details['company_number'];
         $customer->street_name = $details['street_name'];
@@ -123,11 +125,12 @@ class Customer extends Model {
         $customer->status = $details['status'];
         $customer->save();
 
-       
-
+ 
         $updated_customer['data'] = $this->toFomatedData($customer);
         $updated_customer['template'] = $this->getTemplate($customer);
-
+        $updated_customer['show_url'] = tenant()->url('customer/CustomerCard/'.$id);
+        $updated_customer['edit_url'] = tenant()->url('customer/' . $id . '/edit');
+     
         return $updated_customer;
     }
 
@@ -157,4 +160,6 @@ class Customer extends Model {
        return $data;
     }
 
+
+   
 }

@@ -25,7 +25,8 @@ Profile Settings
 							<label>Upload Photo</label>
 							<div class="clear"></div>
 							<div class="col-md-3 uplod">
-						      <img src="{{ asset('img/upload-pic.png')}}" class="uploaded-img">
+
+						      <img src="{{ (isset($user->photo) && file_exists(asset('assets/upload/'.$user->photo)))? asset('assets/upload/'.$user->photo) : asset('assets/images/no_image.jpg') }}" class="uploaded-img">
 						  	  </div>
 						     <div class="col-md-6 mrg-mng">
 						       <input type="file" name="photo">						       

@@ -15,7 +15,7 @@
 				<hr>
 
 				<div class="signup-form">
-					{!! Form::open(array('route' => 'tenant.setup.save.business', 'method'=>'POST', 'class'=>'form-horizontal')) !!}
+					{!! Form::open(array('url' => tenant()->url('setup/business'), 'method'=>'POST', 'class'=>'form-horizontal')) !!}
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					    <div class="form-group">
 					      <label class="control-label col-sm-5">Entity Type</label>

@@ -50,7 +50,7 @@ $(function () {
             parentTr.hide('slow');
 
             $.ajax({
-                url: appUrl + '/inventory/' + id + '/delete',
+                url: appUrl + 'inventory/' + id + '/delete',
                 type: 'GET',
                 dataType: 'json',
             })
@@ -58,7 +58,7 @@ $(function () {
                     console.log(response);
                     if (response.status === 1) {
                         $('.mainContainer .box-solid').before(notify('success', response.data.message));
-                         window.location.href=appUrl+'/customer';
+                         window.location.href=appUrl+'inventory';
                     } else {
                         $('.mainContainer .box-solid').before(notify('error', response.data.message));
                         parentTr.show();
@@ -146,7 +146,7 @@ function notify(type, text) {
 
 function showActionbtn(row) {
     return '<div class="box-tools">' +
-    '<a href="#" title="Edit" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' + appUrl + '/inventory/' + row.id + '/edit" data-target="#fb-modal">' +
+    '<a href="#" title="Edit" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' + appUrl + 'inventory/' + row.id + '/edit" data-target="#fb-modal">' +
     '<i class="fa fa-edit"></i>' +
     '</a>' +
     '<button class="btn btn-box-tool btn-delete-inventory" data-toggle="tooltip" data-id="' + row.id + '" data-original-title="Remove"><i class="fa fa-times"></i></button>' +

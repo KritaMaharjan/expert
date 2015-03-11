@@ -56,8 +56,9 @@ class UserController extends BaseController {
     }
 
     
-    public function blockUser($guid='')
+    public function blockUser()
     {
+    	$guid = $this->request->route('guid');
         $user = User::where('guid', $guid)->first();
 
         if(!empty($user))
@@ -71,8 +72,9 @@ class UserController extends BaseController {
         return $this->fail(['message' => 'Something went wrong. Please try again later']);
     }
 
-    public function unblockUser($guid='')
+    public function unblockUser()
     {
+    	$guid = $this->request->route('guid');
         $user = User::where('guid', $guid)->first();
         if(!empty($user))
         {
@@ -89,8 +91,9 @@ class UserController extends BaseController {
         return $this->fail(['message' => 'Something went wrong. Please try again later']);
     }
 
-    public function deleteUser($guid='')
+    public function deleteUser()
     {
+    	$guid = $this->request->route('guid');
         $user = User::where('guid', $guid)->first();
 
         if(!empty($user))
@@ -112,15 +115,17 @@ class UserController extends BaseController {
         return $user;
     }
 
-    public function getUpdate($guid='')
+    public function getUpdate()
     {
+    	$guid = $this->request->route('guid');
         $user = $this->user->getUserDetails($guid);
         $mode = 'edit';
         return view('tenant.users.edit', compact('user', 'mode'));
     }
 
-    public function profile($guid='')
+    public function profile()
     {
+    	$guid = $this->request->route('guid');
         $user = User::where('guid', $guid)->first();
         $profile = Profile::where('user_id', $user->id)->first();
         return view('tenant.users.profile', compact('user', 'profile'))->withPageTitle('User Details');

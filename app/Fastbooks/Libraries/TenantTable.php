@@ -32,10 +32,12 @@ class TenantTable {
                 $table->string('password', 70); // password of a user
                 $table->tinyInteger('role')->unsigned()->default(0); // role of a user by default invalid
                 $table->tinyInteger('status')->unsigned()->default(0); // status of a user by default pending activation
+                $table->string('activation_key', 50); //activation key for confirmation
                 $table->text('permissions')->nullable(); // serialized data of permissions
-                $table->datetime('last_login_at')->nullable(); // last login Date time
+                $table->datetime('last_login')->nullable(); // last login Date time
                 $table->datetime('last_login_ip', 20)->nullable(); // last login IP
                 $table->string('suspended_reason'); // suspended reason set by admin
+                $table->string('remember_token', 100); // suspended reason set by admin
                 $table->boolean('first_time')->default(1); // 1 for first time login
                 $table->rememberToken();
 
@@ -115,6 +117,7 @@ class TenantTable {
                 $table->increments('id'); // autoincrement value of a customer
                 $table->string('guid', 32); // unique auto generated ID of a customer
                 $table->integer('user_id')->unsign()->index(); //user id, who created the customer
+                $table->string('email', 100)->unique(); // email ID of a user
                 $table->integer('type')->unsign()->index(); //'1 - human - company' ,
                 $table->string('name', 45); //'name of a customer (human or company)'
                 $table->date('dob'); //'dob of human'
@@ -170,7 +173,7 @@ class TenantTable {
                 $table->float('vat'); // Vat percentage applied for the product
                 $table->decimal('selling_price', 8, 2); //price of an product
                 $table->decimal('purchase_cost', 8, 2); //price of an product
-                $table->datetime('added_at'); // Add time or purchased date of an product
+                $table->datetime('purchase_date'); // Add time or purchased date of an product
 
                 // created_at DATETIME
                 $table->timestamps();

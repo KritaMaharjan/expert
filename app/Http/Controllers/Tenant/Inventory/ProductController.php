@@ -72,8 +72,9 @@ class ProductController extends BaseController {
      * Display product detail
      * @return string
      */
-    function show($id)
+    function show()
     {
+        $id = $this->request->route('id');
         $product = $this->product->find($id);
         if ($product == null) {
             show_404();
@@ -87,8 +88,10 @@ class ProductController extends BaseController {
      * display edit form
      * @return string
      */
-    function edit($id)
+    function edit()
     {
+        $id = $this->request->route('id');
+
         $product = $this->product->find($id);
         if ($product == null) {
             show_404();
@@ -100,8 +103,10 @@ class ProductController extends BaseController {
     /**  update product detail
      * @return string
      */
-    function update($id)
+    function update()
     {
+        $id = $this->request->route('id');
+
         $product = $this->product->find($id);
 
         if (empty($product))
@@ -132,8 +137,10 @@ class ProductController extends BaseController {
     }
 
 
-    function delete($id)
+    function delete()
     {
+        $id = $this->request->route('id');
+
         $product = $this->product->find($id);
         if (!empty($product)) {
             if ($product->delete()) {

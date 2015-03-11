@@ -6,7 +6,7 @@ Inventory
 
 @section('breadcrumb')
     @parent
-    <li><a data-push="true" href="route('tenant.inventory.index')"><i class="fa fa-cog"></i> Inventory</a></li>
+    <li><a data-push="true" href="{{tenant_route('tenant.inventory.index')}}"><i class="fa fa-cog"></i> Inventory</a></li>
     <li><i class="fa fa-cog"></i> Inventory</li>
 @stop
 

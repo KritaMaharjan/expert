@@ -87,10 +87,10 @@ class SystemController extends BaseController {
 
           $validator = Validator::make($request->all(),
                                                 array(
-                                                    'swift_num' => 'between:2,15',
-                                                    'iban_num' => 'between:2,15',
-                                                    'telephone' => 'between:2,15',
-                                                    'fax' => 'between:5,15',
+                                                    'swift_num' => 'numeric',
+                                                    'iban_num' => 'numeric',
+                                                    'telephone' => 'numeric',
+                                                    'fax' => 'numeric',
                                                     'website' => 'between:5,45',
                                                     'service_email' => 'email|between:2,50',
                                                     'logo' => 'image'

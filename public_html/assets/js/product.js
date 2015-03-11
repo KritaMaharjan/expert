@@ -125,7 +125,7 @@ $(document).on('click', '.btn-delete-product', function (e) {
         parentTr.hide('slow');
 
         $.ajax({
-            url: appUrl + '/inventory/product/' + id + '/delete',
+            url: appUrl + 'inventory/product/' + id + '/delete',
             type: 'GET',
             dataType: 'json',
         })

@@ -27,7 +27,7 @@
 
 				<div class="signup-form">
 
-					{!! Form::open(array('route' => 'tenant.setup.save.fix', 'method'=>'POST', 'files'=>true, 'class'=>'form-horizontal')) !!}
+					{!! Form::open(array('url' => tenant()->url('setup/fix'), 'method'=>'POST', 'files'=>true, 'class'=>'form-horizontal')) !!}
 				        
 				        <div class="form-group">
 					      <label class="control-label col-sm-5" name="swift_num" value="{{ old('swift_num') }}">Swift Number</label>

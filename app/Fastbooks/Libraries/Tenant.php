@@ -371,10 +371,9 @@ class Tenant {
         }
 
         if ($url) {
-            if (!empty($param)) {
-                $param = array_push($param, ['account' => $domain]);
+            if (!isset($param['account'])) {
+                $param['account'] = $domain;
             }
-            $param = ['account' => $param];
 
             return route($route, $param);
         }
@@ -400,7 +399,7 @@ class Tenant {
     {
         $domain = $this->getActualDomain();
         if (env('APP_ENV') == 'local') {
-            return url($domain . '/' . trim($url, '/'));
+            return url($domain . '/' . trim($url, '/')).'/';
         }
 
         return 'http://' . $domain . '.mashbooks.no/' . trim($url, '/');

@@ -14,6 +14,7 @@ class InventoryController extends BaseController {
     public function __construct(Inventory $inventory, Product $product, Request $request)
     {
         \FB::can('Inventory');
+        
         parent::__construct();
         $this->product = $product;
         $this->inventory = $inventory;
@@ -72,8 +73,10 @@ class InventoryController extends BaseController {
      * Display inventory detail
      * @return string
      */
-    function show($id)
+    function show()
     {
+        $id = $this->request->route('id');
+
         $inventory = $this->inventory->find($id);
         if ($inventory == null) {
             show_404();
@@ -89,6 +92,9 @@ class InventoryController extends BaseController {
      */
     function edit($id)
     {
+
+       $id = $this->request->route('id');
+
         $inventory = $this->inventory->find($id);
         if ($inventory == null) {
             show_404();
@@ -101,8 +107,10 @@ class InventoryController extends BaseController {
     /**  update inventory detail
      * @return string
      */
-    function update($id)
+    function update()
     {
+        $id = $this->request->route('id');
+
         $inventory = $this->inventory->find($id);
 
         if (empty($inventory))
@@ -131,8 +139,10 @@ class InventoryController extends BaseController {
     }
 
 
-    function delete($id)
+    function delete()
     {
+        $id = $this->request->route('id');
+
         $inventory = $this->inventory->find($id);
         if (!empty($inventory)) {
             if ($inventory->delete()) {

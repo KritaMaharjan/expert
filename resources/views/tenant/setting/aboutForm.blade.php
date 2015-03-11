@@ -1,4 +1,4 @@
-{!! Form::open(array('route' => 'tenant.setup.save.about', 'method'=>'POST', 'class'=>'form-horizontal')) !!}
+{!! Form::open(array('url' => tenant()->url('setup/about'), 'method'=>'POST', 'class'=>'form-horizontal')) !!}
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 
     <div class="form-group no-mg">
