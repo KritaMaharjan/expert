@@ -51,6 +51,7 @@ class Customer extends Model {
             $value->name = "<a href=".\URL::route('tenant.customer.CustomerCard', $value->id).">".$value->name."</a>";
            $value->email = $value->email;
             $value->created = $value->created_at->format('d-M-Y');
+              $value->DT_RowId = "row-".$value->id;
         }    
 
          $customer['data'] = $data->toArray();
@@ -98,6 +99,20 @@ class Customer extends Model {
 
 
         ]);
+    }
+
+     public function getTemplate($details='')
+    {
+        $details->name =  "<a href=".\URL::route('tenant.customer.CustomerCard', $details->id).">".$details->name."</a>";
+       
+        $details->created = $details->created_at->format('d-M-Y');
+
+
+        $template = "<td>".$details->fullname."</td>
+                     <td>".$details->created."</td>
+                     <td>".$details->email."</td>
+                     <td>".$details->status."</td>";
+        return $template;
     }
 
 }

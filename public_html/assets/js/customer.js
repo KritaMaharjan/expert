@@ -121,8 +121,11 @@ $(function () {
                     }
                     else {
                         alert('dfdf');
-                        $('.mainContainer .box-solid').before(notify('success', 'Customer updated Successfully'));
-                        tbody.find('tr.customer-' + response.data.id).html(getTemplate(response, true));
+                        $('.mainContainer .box-solid').before(notify('success', 'Customer added Successfully'));
+                    var action_html = "<td>"+showActionbtn(response.data)+"</td>";
+                    $('#table-user > tbody').prepend(response.template + action_html);
+                    $('.modal').modal('hide');
+
                     }
                     setTimeout(function () {
                         $('.callout').remove()
@@ -150,6 +153,35 @@ $(function () {
                 form.find('.customer-submit').val(requestType);
             });
     })
+
+    $(document).on('submit', '#test-form', function (e) {
+        e.preventDefault();
+        var form = $(this);
+        var formAction = form.attr('action');
+        var formData = form.serialize();
+
+        $.ajax({
+            url: formAction,
+            type: 'POST',
+            dataType: 'json',
+            data: formData
+        })
+            .done(function (response) {
+                if (response.status === 'success' || response.status == 1) {
+                    alert(response.status);
+                }
+                else {
+                    alert('fail');
+                }
+            })
+            .fail(function () {
+                alert('something went wrong');
+            })
+            .always(function () {
+                form.find('.customer-submit').removeAttr('disabled');
+                form.find('.customer-submit').val(requestType);
+            });
+    })
 })
 
 
@@ -157,9 +189,9 @@ function notify(type, text) {
     return '<div class="callout callout-' + type + '"><p>' + text + '</p></div>';
 }
 
-function showActionbtn(row) {
+ function showActionbtn(row) {
     return '<div class="box-tools">' +
-    '<a href="#" title="Edit" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' + appUrl + '/customer/' + row.id + '/edit" data-target="#fb-modal">' +
+    '<a href="#" title="Edit" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' + appUrl+'/customer/'+row.id +'/edit' +'" data-target="#fb-modal">' +
     '<i class="fa fa-edit"></i>' +
     '</a>' +
     '<button class="btn btn-box-tool btn-delete-customer" data-toggle="tooltip" data-id="' + row.id + '" data-original-title="Remove"><i class="fa fa-times"></i></button>' +

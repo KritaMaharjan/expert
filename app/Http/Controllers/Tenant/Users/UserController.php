@@ -55,52 +55,6 @@ class UserController extends BaseController {
         return \Response::json(array('success' => true, 'data' => $result['data'], 'template'=>$result['template'], 'redirect_url' => $redirect_url ));
     }
 
-    public function saveUserDetails($details)
-    {
-        if(isset($details['permissions'])){
-            $per = serialize($details['permissions']);
-        } else {
-            $per = '';
-        }
-        $user = User::create([
-                    'fullname' => $details['fullname'],
-                    'password' => \Hash::make($details['password']),
-                    'role' => 2, //sub-user
-                    'first_time' => 1,
-                    'email' => $details['email'],
-                    'status' => 0, //pending
-                    'activation_key' => \FB::uniqueKey(15, 'fb_users', 'activation_key'),
-                    'permissions' => $per
-            ]);
-
-        $user_id = $user->id;
-
-        $fileName = NULL;
-        if (FacadeRequest::hasFile('photo'))
-        {
-            $file = FacadeRequest::file('photo');
-            $fileName = \FB::uploadFile($file);
-        }
-
-        $email_setting_details = $details->only('incoming_server', 'outgoing_server', 'email_username', 'email_password');
-        $personal_email_setting = json_encode($email_setting_details);
-
-        $profile = Profile::create([
-                    'user_id' => $user_id,
-                    'phone' => $details['phone'],
-                    'address' => $details['address'],
-                    'postcode' => $details['postcode'],
-                    'town' => $details['town'],
-                    'comment' => $details['comment'],
-                    'tax_card' => $details['tax_card'],
-                    'photo' => $fileName,
-                    'social_security_number' => $details['social_security_number'],
-                    'personal_email_setting' => $personal_email_setting
-            ]);
-
-        $this->sendConfirmationMail($user->activation_key, $details['name'], $details['email']);
-    }
-
     /**
      * Send activation code in user's email
      * @param string $activation_key
@@ -124,6 +78,7 @@ class UserController extends BaseController {
         {
             $user->status = 3;
             $user->save();
+            $user->raw_status = $user->status;
             $data = $this->user->toFomatedData($user);
             return \Response::json(array('success' => true, 'data' => $data, 'message' => 'User Blocked Successfully!' ));
         }
@@ -140,7 +95,8 @@ class UserController extends BaseController {
             else
                 $user->status = 0;
             $user->save();
-            
+
+            $user->raw_status = $user->status;
             $data = $this->user->toFomatedData($user);
             return \Response::json(array('success' => true, 'data' => $data, 'message' => 'User Unblocked Successfully!' ));
         }

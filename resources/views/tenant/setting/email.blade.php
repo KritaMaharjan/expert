@@ -22,57 +22,6 @@ System Settings
 					<div class="form-group no-mg">
 		      			<label class="control-label">SMTP Server <span>(Incoming)</span></label>
 						<div class="@if($errors->has('incoming_server')) {{'has-error'}} @endif">
-				        {!!Form::text('incoming_server',$personal['incoming_server'],array('class' => 'form-control'))!!}  
-				      	@if($errors->has('incoming_server'))
-				       		{!! $errors->first('incoming_server', '<label class="control-label" for="inputError">:message</label>') !!}
-				      	@endif
-				      </div>
-					</div>
-					<div class="form-group no-mg">
-		      			<label class="control-label">SMTP Server <span>(Outgoing)</span></label>
-						<div class="@if($errors->has('outgoing_server')) {{'has-error'}} @endif">
-				        {!!Form::text('outgoing_server',$personal['outgoing_server'],array('class' => 'form-control'))!!}  
-				      	@if($errors->has('outgoing_server'))
-				       		{!! $errors->first('outgoing_server', '<label class="control-label" for="inputError">:message</label>') !!}
-				      	@endif
-				      </div>
-					</div>
-					<div class="form-group no-mg">
-		      			<label class="control-label">Username</label>
-						<div class="@if($errors->has('username')) {{'has-error'}} @endif">
-				        {!!Form::text('username',$personal['username'],array('class' => 'form-control'))!!}  
-				      	@if($errors->has('username'))
-				       		{!! $errors->first('username', '<label class="control-label" for="inputError">:message</label>') !!}
-				      	@endif
-				      </div>
-					</div>
-					<div class="form-group no-mg">
-		      			<label class="control-label">Password</label>
-						<div class="@if($errors->has('password')) {{'has-error'}} @endif">
-				        <input type="password" name="password"  class="form-control" value="{{ $personal['password'] }}">  
-				      	@if($errors->has('password'))
-				       		{!! $errors->first('password', '<label class="control-label" for="inputError">:message</label>') !!}
-				      	@endif
-				      </div>
-					</div>
-					<div class="form-group clearfix">        
-				      <div class="col-sm-offset-2 col-sm-10">
-				        <button link="{{route('tenant.setting.email')}}"  class="btn btn-success pull-right save">Save</button>
-				      </div>
-				    </div>
-				</form>
-			</div>
-
-		</div>
-		<div id="email-settings" class="col-md-6">
-			<div class="inner-set-block pad">
-				<h4>Admin email</h4>
-				<form method="post" name="support_email_setting">
-						<input type="hidden" name="_token" value="{{ csrf_token() }}">
-  <input type="hidden" name="group" value="support_email_setting">	        
-					<div class="form-group no-mg">
-		      			<label class="control-label">SMTP Server <span>(Incoming)</span></label>
-						<div class="@if($errors->has('incoming_server')) {{'has-error'}} @endif">
 				        {!!Form::text('incoming_server',$support['incoming_server'],array('class' => 'form-control'))!!}  
 				      	@if($errors->has('incoming_server'))
 				       		{!! $errors->first('incoming_server', '<label class="control-label" for="inputError">:message</label>') !!}
@@ -100,7 +49,58 @@ System Settings
 					<div class="form-group no-mg">
 		      			<label class="control-label">Password</label>
 						<div class="@if($errors->has('password')) {{'has-error'}} @endif">
-				        <input type="password" name="password"  class="form-control" value="{{ $support['password'] }}">   
+				        <input type="password" name="password"  class="form-control" value="{{ $support['password'] }}">  
+				      	@if($errors->has('password'))
+				       		{!! $errors->first('password', '<label class="control-label" for="inputError">:message</label>') !!}
+				      	@endif
+				      </div>
+					</div>
+					<div class="form-group clearfix">        
+				      <div class="col-sm-offset-2 col-sm-10">
+				        <button link="{{route('tenant.setting.email')}}"  class="btn btn-success pull-right save">Save</button>
+				      </div>
+				    </div>
+				</form>
+			</div>
+
+		</div>
+		<div id="email-settings" class="col-md-6">
+			<div class="inner-set-block pad">
+				<h4>Personal (Admin) email</h4>
+				<form method="post" name="support_email_setting">
+						<input type="hidden" name="_token" value="{{ csrf_token() }}">
+  <input type="hidden" name="group" value="support_email_setting">	        
+					<div class="form-group no-mg">
+		      			<label class="control-label">SMTP Server <span>(Incoming)</span></label>
+						<div class="@if($errors->has('incoming_server')) {{'has-error'}} @endif">
+				        {!!Form::text('incoming_server',$personal['incoming_server'],array('class' => 'form-control'))!!}  
+				      	@if($errors->has('incoming_server'))
+				       		{!! $errors->first('incoming_server', '<label class="control-label" for="inputError">:message</label>') !!}
+				      	@endif
+				      </div>
+					</div>
+					<div class="form-group no-mg">
+		      			<label class="control-label">SMTP Server <span>(Outgoing)</span></label>
+						<div class="@if($errors->has('outgoing_server')) {{'has-error'}} @endif">
+				        {!!Form::text('outgoing_server',$personal['outgoing_server'],array('class' => 'form-control'))!!}  
+				      	@if($errors->has('outgoing_server'))
+				       		{!! $errors->first('outgoing_server', '<label class="control-label" for="inputError">:message</label>') !!}
+				      	@endif
+				      </div>
+					</div>
+					<div class="form-group no-mg">
+		      			<label class="control-label">Username</label>
+						<div class="@if($errors->has('username')) {{'has-error'}} @endif">
+				        {!!Form::text('username',$personal['username'],array('class' => 'form-control'))!!}  
+				      	@if($errors->has('username'))
+				       		{!! $errors->first('username', '<label class="control-label" for="inputError">:message</label>') !!}
+				      	@endif
+				      </div>
+					</div>
+					<div class="form-group no-mg">
+		      			<label class="control-label">Password</label>
+						<div class="@if($errors->has('password')) {{'has-error'}} @endif">
+				        <input type="password" name="password"  class="form-control" value="{{ $personal['password'] }}">   
 				      	@if($errors->has('password'))
 				       		{!! $errors->first('password', '<label class="control-label" for="inputError">:message</label>') !!}
 				      	@endif

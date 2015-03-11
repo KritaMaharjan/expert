@@ -31,6 +31,7 @@ class Inventory extends Model {
     {
         $product_id = $request->input('product_id');
         $product = Product::find($product_id);
+
         $inventory = Inventory::create([
             'product_id'     => $product->id,
             'quantity'       => $request->input('quantity'),
@@ -40,7 +41,7 @@ class Inventory extends Model {
             'vat'            => $product->vat,
             'user_id'        => current_user()->id
         ]);
-
+      
         return $inventory->toData();
     }
 

@@ -9,9 +9,8 @@ $(function () {
             "url": appUrl + '/inventory/product/data',
             "type": "POST"
         },
-        "fnCreatedRow": function( nRow, aData, iDataIndex ) {
-            $(nRow).attr('id', aData[0]);
-        },
+        
+
         "columnDefs": [{
             "orderable": false,
             "targets": 6,
@@ -35,7 +34,13 @@ $(function () {
             {"data": "purchase_cost"},
             {"data": "vat"}
 
-        ]
+        ],
+
+        "fnRowCallback": function( nRow, aData, iDisplayIndex ) {
+            
+            $(nRow).attr('id','product-'+aData.id);
+            return nRow;
+        },
 
     });
 
@@ -61,7 +66,7 @@ $(function () {
             data: formData
         })
             .done(function (response) {
-                if (response.status === 1) {
+                if (response.status === 1 ) {
                     $('#fb-modal').modal('hide');
                     var tbody = $('.box-body table tbody');
                     console.log(requestType);
@@ -70,24 +75,25 @@ $(function () {
                         tbody.prepend(getTemplate(response, false));
                     }
                     else {
+                        console.log(getTemplate(response, true));
                         $('.mainContainer .box-solid').before(notify('success', 'Product updated Successfully'));
-                        tbody.find('tr.product-' + response.data.id).html(getTemplate(response, true));
+                        tbody.find('#product-' + response.data.id).html(getTemplate(response, true));
                     }
                     setTimeout(function () {
                         $('.callout').remove()
                     }, 2500);
                 }
                 else {
-                    if ("errors" in response.data) {
-                        $.each(response.data.errors, function (id, error) {
+                    
+                        $.each(response.errors, function (id, error) {
                             $('.modal-body #' + id).parent().addClass('has-error')
                             $('.modal-body #' + id).after('<label class="error error-' + id + '">' + error[0] + '<label>');
                         })
-                    }
+                    
 
-                    if ("error" in response.data) {
+                   /* if ("error" in response.data) {
                         form.prepend(notify('danger', response.data.error));
-                    }
+                    }*/
 
                 }
             })
@@ -99,6 +105,7 @@ $(function () {
                 form.find('.product-submit').val(requestType);
             });
     })
+   return false;
 })
 
 
@@ -152,7 +159,7 @@ function notify(type, text) {
 
 function showActionbtn(row) {
     return '<div class="box-tools">' +
-    '<a href="#" title="Edit" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' + row.edit_url+ '/" data-target="#fb-modal">' +
+    '<a href="#" title="Edit" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' + row.edit_url+'" data-target="#fb-modal">' +
     '<i class="fa fa-edit"></i>' +
     '</a>' +
     '<button class="btn btn-box-tool btn-delete-product" data-toggle="tooltip" data-id="' + row.id + '" data-original-title="Remove"><i class="fa fa-times"></i></button>' +
@@ -162,19 +169,15 @@ function showActionbtn(row) {
 
 
 function getTemplate(response, type) {
-
+ 
     var html = '<td>' + response.data.id + '</td>' +
         '<td>' + response.data.number + '</td>' +
-        '<td>' +
-        '<a href="#" data-toggle="modal" data-url="' + response.data.show_url + '" data-target="#fb-modal">' +
-        response.data.name +
-        '</a>' +
-        '</td>' +
-        '<td>' + response.data.quantity + '</td>' +
+        '<td>' + '<a href="#" data-toggle="modal" data-url="' + response.data.show_url + '" data-target="#fb-modal">' +
+        response.data.name + '</a>' + '</td>' +
         '<td>' + response.data.purchase_cost + '</td>' +
         '<td>' + response.data.selling_price + '</td>' +
-        '<td>' +showActionbtn(response.data)
-        '</td>';
+        '<td>' + response.data.vat + '</td>' +
+        '<td>' +showActionbtn(response.data)+'</td>';
 
     if (type == false)
         return '<tr class="product-' + response.data.id + '">' + html + '</tr>';

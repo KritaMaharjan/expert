@@ -51,7 +51,7 @@ class InventoryController extends BaseController {
             return $this->fail(['errors' => $validator->messages()]);
 
         $result = $this->inventory->add($this->request);
-
+        $result['name'] = Product::find($result['product_id'])->name;
         return ($result) ? $this->success($result) : $this->fail(['errors' => 'something went wrong']);
     }
 
@@ -119,6 +119,11 @@ class InventoryController extends BaseController {
         $inventory->selling_price = $this->request->input('selling_price');
         $inventory->purchase_cost = $this->request->input('purchase_cost');
         $inventory->save();
+
+        foreach ($inventory as $key => $value) {
+            $inventory->name = Product::find($inventory->product_id)->name;
+        }
+
         $result = $inventory->toData();
 
         return ($result) ? $this->success($result) : $this->fail(['errors' => 'something went wrong']);

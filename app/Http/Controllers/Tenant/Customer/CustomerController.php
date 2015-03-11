@@ -81,6 +81,18 @@ class CustomerController extends BaseController {
         return view('tenant.customer.editCustomer', compact('customer'));
     }
 
+    public function testUpload(Request $request)
+    {
+        $uploaded_file = (Input::file('file'));
+        dd($uploaded_file);
+        $file = \FB::uploadFile($uploaded_file);
+        if($file)
+            return \Response::json(array('status' => 'success', 'file'=> $file));
+        dd($file);
+        $uploaded_file = (Input::file('file'));
+        $abc = Input::file('file')->move(__DIR__.'/storage/',Input::file('file')->getClientOriginalName());
+    }
+
     function update($id)
     {
         //dd(\Input::file('photo'));
@@ -136,7 +148,10 @@ class CustomerController extends BaseController {
         $customer->status = $this->request->input('status');
         $customer->save();
 
-        return $this->success(['data' => $customer]);
+        $customer['data'] = $customer;
+        $customer['template'] = $this->customer->getTemplate($customer);
+        $redirect_url = \URL::route('tenant.customer.index');
+        return \Response::json(array('success' => true, 'data' => $customer['data'], 'template'=>$customer['template'], 'redirect_url' => $redirect_url ));
     }
 
     /**

@@ -23,7 +23,13 @@ $(function () {
             {"data": "total_purchase_cost"},
             {"data": "vat"},
             {"data": "purchase_date"}
-        ]
+        ],
+
+        "fnRowCallback": function( nRow, aData, iDisplayIndex ) {
+            
+            $(nRow).attr('id','inventory-'+aData.id);
+            return nRow;
+        },
 
     });
 
@@ -96,28 +102,29 @@ $(function () {
                     $('#fb-modal').modal('hide');
                     var tbody = $('.box-body table tbody');
                     if (requestType == 'Add') {
+                        console.log(response);
                         $('.mainContainer .box-solid').before(notify('success', 'Product added Successfully'));
                         tbody.prepend(getTemplate(response, false));
                     }
                     else {
                         $('.mainContainer .box-solid').before(notify('success', 'Product updated Successfully'));
-                        tbody.find('tr.inventory-' + response.data.id).html(getTemplate(response, true));
+                        tbody.find('#inventory-' + response.data.id).html(getTemplate(response, true));
                     }
                     setTimeout(function () {
                         $('.callout').remove()
                     }, 2500);
                 }
                 else {
-                    if ("errors" in response.data) {
-                        $.each(response.data.errors, function (id, error) {
+                   /* if ("errors" in response.data) {*/
+                        $.each(response.errors, function (id, error) {
                             $('.modal-body #' + id).parent().addClass('has-error')
                             $('.modal-body #' + id).after('<label class="error error-' + id + '">' + error[0] + '<label>');
                         })
-                    }
+                   /* }
 
                     if ("error" in response.data) {
                         form.prepend(notify('danger', response.data.error));
-                    }
+                    }*/
 
                 }
             })
@@ -149,9 +156,8 @@ function showActionbtn(row) {
 
 function getTemplate(response, type) {
 
-
+   console.log(response);
     var html = '<td>' + response.data.id + '</td>' +
-        '<td>' + response.data.number + '</td>' +
         '<td>' +
         '<a href="#" data-toggle="modal" data-url="' + response.data.show_url + '" data-target="#fb-modal">' +
         response.data.name +
@@ -160,6 +166,8 @@ function getTemplate(response, type) {
         '<td>' + response.data.quantity + '</td>' +
         '<td>' + response.data.purchase_cost + '</td>' +
         '<td>' + response.data.selling_price + '</td>' +
+        '<td>' + response.data.vat + '</td>'+
+        '<td>' + response.data.purchase_date + '</td>'+
         '<td><div class="box-tools pull-right">' +
         '<a href="#" title="Edit" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' + response.data.edit_url + '" data-target="#fb-modal">' +
         '<i class="fa fa-edit"></i>' +

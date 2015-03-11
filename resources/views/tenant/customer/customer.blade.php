@@ -26,6 +26,13 @@ Customers
                  <i class="fa fa-plus"></i> Add new Customer
             </a>
          </p>
+
+         <p class="align-right btn-inside">
+            <a class="btn btn-primary" data-toggle="modal" data-url="#test-modal-data" data-target="#fb-modal">
+                 <i class="fa fa-plus"></i> Test Upload
+            </a>
+         </p>
+
 		    <div class="box-body">
 		      <table id="table-customer" class="table table-hover">
                <thead>
@@ -42,13 +49,33 @@ Customers
 		  </div><!-- /.box -->
 	  	</div>
 
-          <div id="customer-modal-data" class="hide">
+        <div id="customer-modal-data" class="hide">
         <div class="box box-solid">
             <div class="box-header">
                 <h3 class="box-title">Add New Customer</h3>
             </div>
             @include('tenant.customer.createCustomer')
                    </div><!-- /.box-body -->
+               
+        </div>
+        <div id="test-modal-data" class="hide">
+        <div class="box box-solid">
+            <div class="box-header">
+                <h3 class="box-title">Add New Customer</h3>
+            </div>
+            {!! Form::open(array('route' => 'test.upload','files'=>true, 'id'=>'test-form')) !!}
+  
+            {!! Form::label('file','File',array('id'=>'','class'=>'')) !!}
+            {!! Form::file('file','',array('id'=>'','class'=>'')) !!}
+            <br/>
+            <!-- submit buttons -->
+            {!! Form::submit('Save') !!}
+            
+            <!-- reset buttons -->
+            {!! Form::reset('Reset') !!}
+            
+            {!! Form::close() !!}
+        </div><!-- /.box-body -->
                
         </div>
     </div>

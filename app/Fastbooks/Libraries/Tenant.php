@@ -367,11 +367,9 @@ class Tenant {
     function url($url = '')
     {
         $domain = $this->getActualDomain();
-
         if (env('APP_ENV') == 'local') {
-            return redirect($domain . '/' . trim($url, '/'));
+            return url($domain . '/' . trim($url, '/'));
         }
-
         return 'http://' . $domain . '.mashbooks.no/' . trim($url, '/');
 
     }
