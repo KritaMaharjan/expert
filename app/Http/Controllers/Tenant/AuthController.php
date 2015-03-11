@@ -35,7 +35,7 @@ class AuthController extends BaseController {
     {
         $validator = Validator::make($request->all(), array('email' => 'required', 'password' => 'required'));
         if ($validator->fails())
-            return redirect()->route('tenant.login')->withErrors($validator)->withInput();
+            return tenant()->route('tenant.login')->withErrors($validator)->withInput();
 
         $credentials = $request->only('email', 'password');
 
@@ -45,7 +45,7 @@ class AuthController extends BaseController {
             return $TenantUser->redirectIfValid($this->auth->user());
         }
 
-        return redirect()->route('tenant.login')->with('message', 'These credentials do not match our records.')->withInput($request->only('email', 'remember'));
+        return tenant()->route('tenant.login')->with('message', 'These credentials do not match our records.')->withInput($request->only('email', 'remember'));
     }
 
 
@@ -60,7 +60,7 @@ class AuthController extends BaseController {
     {
         $this->auth->logout();
 
-        return redirect()->route('tenant.login');
+        return tenant()->route('tenant.login');
     }
 
     function blockAccount()
@@ -127,7 +127,7 @@ class AuthController extends BaseController {
 
         $user->save();
 
-        return redirect()->route('tenant.login')->with('message', 'Password has been changed.');
+        return tenant()->route('tenant.login')->with('message', 'Password has been changed.');
 
 
     }

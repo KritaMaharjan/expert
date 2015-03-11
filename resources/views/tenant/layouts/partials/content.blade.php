@@ -2,7 +2,7 @@
        <h1> @yield('heading')</h1>
         <ol class="breadcrumb">
               @section('breadcrumb')
-                  <li><a href="{{ route('tenant.index')}}" data-push="true"><i class="fa fa-dashboard"></i> Dashboard</a></li>
+                  <li><a href="{{ tenant_route('tenant.index')}}" data-push="true"><i class="fa fa-dashboard"></i> Dashboard</a></li>
               @show
         </ol>
     </section>

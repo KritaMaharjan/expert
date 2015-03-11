@@ -19,7 +19,7 @@ class Profile extends Model  {
      * @var array
      */
 
-    protected $fillable = ['user_id', 'personal_email_setting', 'support_email_setting', 'social_security_number', 'phone', 'address', 'postcode', 'town', 'comment', 'tax_card', 'vacation_fund_percentage'];
+    protected $fillable = ['user_id', 'personal_email_setting', 'support_email_setting', 'social_security_number', 'phone', 'address', 'postcode', 'town', 'comment', 'tax_card', 'vacation_fund_percentage', 'photo'];
 
     /**
      * The attributes excluded from the model's JSON form.

@@ -1,5 +1,5 @@
 <header class="main-header">
-    <a href="{{route('tenant.index')}}" data-push="true" class="logo"><strong>Fast</strong>Books</a>
+    <a href="{{tenant_route('tenant.index')}}" data-push="true" class="logo"><strong>Fast</strong>Books</a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top" role="navigation">
       <!-- Sidebar toggle button-->
@@ -63,10 +63,10 @@
               </li>
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="{{route('tenant.profile')}}" data-push="true" class="btn btn-default btn-flat">Profile</a>
+                  <a href="{{tenant_route('tenant.profile')}}" data-push="true" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <a href="{{route('tenant.logout')}}" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="{{tenant_route('tenant.logout')}}" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
             </ul>
@@ -78,11 +78,11 @@
               </a>
               <ul class="dropdown-menu fix-width">
                 <li class="footer">
-                     <a href="{{route('tenant.profile')}}" data-push="true" >Profile</a>
+                     <a href="{{tenant_route('tenant.profile')}}" data-push="true" >Profile</a>
                 </li>
                 <li class="footer">
 
-                    <a href="{{route('tenant.logout')}}" >Sign out</a>
+                    <a href="{{tenant_route('tenant.logout')}}" >Sign out</a>
                 </li>
               </ul>
             </li>

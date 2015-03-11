@@ -21,9 +21,16 @@ function tenant($domain = null)
     return $tenant;
 }
 
-
-
 function current_user()
 {
     return \Auth::user();
+}
+
+function tenant_route($route, $param = array())
+{
+    if(env('APP_ENV')=='local')
+    {
+        return route($route, $param);
+    }
+    return tenant()->route($route, $param, true);
 }

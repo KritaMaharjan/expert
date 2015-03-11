@@ -56,7 +56,7 @@ class SettingController extends BaseController {
                                         );
 
         if ($validator->fails()) {
-           return  redirect()->route('system.setting.email')->withErrors($validator)->withInput();
+           return  tenant()->route('system.setting.email')->withErrors($validator)->withInput();
 
         } 
         

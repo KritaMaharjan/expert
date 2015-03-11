@@ -6,7 +6,7 @@
 
 
             <li class="treeview">
-              <a href="#" title="Settings">
+              <a href="#" title="My Desk">
                 <i class="fa fa-dashboard"></i> <span>My Desk</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
@@ -17,7 +17,7 @@
 
             @if(FB::can_view('Customer'))
             <li>
-              <a href="{{route('tenant.customer.index')}}" title="Customers">
+              <a href="{{tenant_route('tenant.customer.index')}}" title="Customers">
                 <i class="fa fa-users"></i> <span>Customers</span>
               </a>
             </li>
@@ -57,8 +57,8 @@
                 <i class="fa fa-list-alt"></i> <span>Inventory</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
                  <ul class="treeview-menu">
-                  <li><a data-push="true" href="{{route('tenant.inventory.index')}}" title="Manage Inventory"><i class="fa fa-circle-o"></i>Inventory</a></li>
-                  <li><a data-push="true" href="{{route('tenant.inventory.product.index')}}" title="Add Product"><i class="fa fa-circle-o"></i>Product</a></li>
+                  <li><a data-push="true" href="{{tenant_route('tenant.inventory.index')}}" title="Manage Inventory"><i class="fa fa-circle-o"></i>Inventory</a></li>
+                  <li><a data-push="true" href="{{tenant_route('tenant.inventory.product.index')}}" title="Add Product"><i class="fa fa-circle-o"></i>Product</a></li>
                 </ul>
             </li> 
             @endif
@@ -77,20 +77,20 @@
                 <i class="fa fa-dashboard"></i> <span>Users</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="{{route('tenant.users')}}" data-push="true" title="Emails"><i class="fa fa-circle-o"></i> Manage Users</a></li>
+                <li><a href="{{tenant_route('tenant.users')}}" data-push="true" title="Emails"><i class="fa fa-circle-o"></i> Manage Users</a></li>
               </ul>
             </li>
             @endif
 
             @if(FB::can_view('Settings'))
             <li class="treeview">
-              <a href="#" title="Users">
+              <a href="#" title="Settings">
                 <i class="fa fa-cog"></i> <span>Settings</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="{{route('tenant.setting.system')}}" data-push="true" title="Emails"><i class="fa fa-circle-o"></i> System</a></li>
-                <li><a href="{{route('tenant.setting.user')}}" data-push="true" title="Templates"><i class="fa fa-circle-o"></i> Profile</a></li>
-                <li><a href="{{route('tenant.setting.email')}}" data-push="true" title="Templates"><i class="fa fa-circle-o"></i> Email</a></li>
+                <li><a href="{{tenant_route('tenant.setting.system')}}" data-push="true" title="System"><i class="fa fa-circle-o"></i> System</a></li>
+                <li><a href="{{tenant_route('tenant.setting.user')}}" data-push="true" title="Profile"><i class="fa fa-circle-o"></i> Profile</a></li>
+                <li><a href="{{tenant_route('tenant.setting.email')}}" data-push="true" title="Email"><i class="fa fa-circle-o"></i> Email</a></li>
               </ul>
             </li> 
             @endif           

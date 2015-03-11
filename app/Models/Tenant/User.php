@@ -58,16 +58,16 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     {
         if ($user->status == 0) {
             \Auth::logout();
-            return redirect()->route('tenant.login')->withInput()->with('message', lang('Your account has not been activated.'));
+            return tenant()->route('tenant.login')->withInput()->with('message', lang('Your account has not been activated.'));
         } elseif ($user->status == 2) {
             \Auth::logout();
-            return redirect()->route('tenant.login')->withInput()->with('message', lang('Your account has been suspended.'));
+            return tenant()->route('tenant.login')->withInput()->with('message', lang('Your account has been suspended.'));
         } elseif ($user->status == 3) {
             \Auth::logout();
-            return redirect()->route('tenant.login')->withInput()->with('message', lang('Your account has been permanently blocked.'));
+            return tenant()->route('tenant.login')->withInput()->with('message', lang('Your account has been permanently blocked.'));
         }
 
-        return redirect()->route('tenant.index');
+        return tenant()->route('tenant.index');
     }
 
     function role()
@@ -166,6 +166,23 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $added_user;
     }
 
+    /**
+     * Send activation code in user's email
+     * @param string $activation_key
+     * @param string $username
+     * @param string $email
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function sendConfirmationMail($activation_key = '', $username = '', $email = '')
+    {
+        //$link = \URL::route('subuser.register.confirm', $activation_key); //change this
+        $link = tenant_route('subuser.register.confirm', array('confirmationCode' => $activation_key )); //change this
+        \FB::sendEmail($email, $username, 'confirmation_email', ['{{NAME}}' => $username, '{{ACTIVATION_URL}}' => $link." "]);
+        $message = 'User created successfully.';
+        \Flash::success($message);
+    }
+
+
 
     public function updateUser($details='')
     {
@@ -215,7 +232,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function getTemplate($details='')
     {
-        $details->fullname = "<a href=".\URL::route('subuser.profile', $details->guid).">".$details->fullname."</a>";
+        $details->fullname = "<a href=".tenant_route('subuser.profile', array('guid' => $details->guid )).">".$details->fullname."</a>";
         if($details->status == 1)
             $details->status = '<span class="label label-success">Active</span>';
         elseif($details->status == 2)

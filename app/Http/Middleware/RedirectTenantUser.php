@@ -38,7 +38,7 @@ class RedirectTenantUser {
 	public function handle($request, Closure $next)
 	{
 
-        $this->validateTenant();
+       $this->validateTenant();
 
         if ($this->auth->guest())
         {
@@ -48,7 +48,7 @@ class RedirectTenantUser {
             }
             else
             {
-                return redirect()->route('tenant.login');
+                return tenant()->route('tenant.login');
             }
         }
 

@@ -206,6 +206,7 @@ class Tenant {
     function setDomain($domain = '')
     {
         $this->domain = $domain;
+        session()->put('domain', $this->domain);
     }
 
     /**
@@ -350,6 +351,36 @@ class Tenant {
             Auth::login($user);
 
         $this->rememberAppUrl();
+    }
+
+
+    function route($route = '', $param = array(), $url = false)
+    {
+        if (!is_array($param)) {
+            die('Parameters should be in array');
+        }
+
+        $domain = $this->getActualDomain();
+
+        if (env('APP_ENV') == 'local') {
+            if ($url) {
+                return route($route, $param);
+            }
+
+            return redirect()->route($route, $param);
+        }
+
+        if ($url) {
+            if (!empty($param)) {
+                $param = array_push($param, ['account' => $domain]);
+            }
+            $param = ['account' => $param];
+
+            return route($route, $param);
+        }
+
+        return redirect()->route($route, $domain);
+
     }
 
 

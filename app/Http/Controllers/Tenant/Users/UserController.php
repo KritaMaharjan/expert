@@ -18,7 +18,7 @@ class UserController extends BaseController {
                 'address' => 'required|between:2,50',
                 'postcode' => 'required|size:5',
                 'town' => 'between:2,50',
-                'photo' => 'image',
+                //'photo' => 'image',
                 'incoming_server' => 'min:8|required_with:outgoing_server,email_username,email_password',
                 'outgoing_server' => 'min:8|required_with:incoming_server,email_username,email_password',
                 'email_username' => 'min:5|required_with:incoming_server,outgoing_server,email_password',
@@ -55,21 +55,7 @@ class UserController extends BaseController {
         return \Response::json(array('success' => true, 'data' => $result['data'], 'template'=>$result['template'], 'redirect_url' => $redirect_url ));
     }
 
-    /**
-     * Send activation code in user's email
-     * @param string $activation_key
-     * @param string $username
-     * @param string $email
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    private function sendConfirmationMail($activation_key = '', $username = '', $email = '')
-    {
-        $link = \URL::route('subuser.register.confirm', $activation_key); //change this
-        \FB::sendEmail($email, $username, 'confirmation_email', ['{{NAME}}' => $username, '{{ACTIVATION_URL}}' => $link." "]);
-        $message = 'User created successfully.';
-        \Flash::success($message);
-    }
-
+    
     public function blockUser($guid='')
     {
         $user = User::where('guid', $guid)->first();

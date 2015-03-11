@@ -20,24 +20,24 @@ Change Password
     <input type="hidden" name="group" class="form-control" value="email">
 
         <div class="box-body">
-            <div class="form-group">
+            <div class="form-group has-feedback @if($errors->has('password')) {{'has-error'}} @endif" >
                 <label for="exampleInputEmail1">Old password</label>
                 <input type="password" name="password" class="form-control" value="">
                  @if($errors->has('password'))
-                    {!! $errors->first('password', '<label for="inputError" class="control-label has-error"><i class="fa fa-times-circle-o"></i> :message</label>') !!}
+                     {!! $errors->first('password', '<label class="control-label" for="inputError">:message</label>') !!}
                 @endif
                
             </div>
-             <div class="form-group">
+             <div class="form-group ">
                 <label for="exampleInputEmail1">New password</label>
                 <input type="password" name="new_password" class="form-control" value="">
                 
             </div>
-             <div class="form-group">
+             <div class="form-group has-feedback @if($errors->has('new_password_confirmation')) {{'has-error'}} @endif">
                 <label for="exampleInputEmail1">Confirm password</label>
                 <input type="password" name="new_password_confirmation" class="form-control" value="">
                  @if($errors->has('new_password_confirmation'))
-                    {!! $errors->first('new_password_confirmation', '<label for="inputError" class="control-label has-error"><i class="fa fa-times-circle-o"></i> :message</label>') !!}
+                   {!! $errors->first('new_password_confirmation', '<label class="control-label" for="inputError">:message</label>') !!}
                 @endif
                
             </div>

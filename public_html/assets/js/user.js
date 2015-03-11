@@ -1,8 +1,14 @@
 $(function () {
 
-    var productDatatable = $("#table-user").dataTable({
+    var userDatatable = $("#table-user").dataTable({
         "dom": '<"top"f>rt<"bottom"lip><"clear">',
         "order": [[ 0, "desc" ]],
+
+        //custom processing message
+        "oLanguage": {
+           "sProcessing": "<i class = 'fa fa-spinner'></i>  Processing..."
+        },
+
         "processing": true,
         "serverSide": true,
         "ajax": {
@@ -22,8 +28,7 @@ $(function () {
             {"data": "email"},
             {"data": "status"}
 
-        ],
-        
+        ]     
 
     });
 
@@ -41,7 +46,9 @@ $(function () {
         e.preventDefault();
         var form = $(this);
         var formAction = form.attr('action');
-        var formData = form.serialize();
+        
+        var formData = new FormData(form[0]);
+        formData.append('photo', $('#subuser-form input[type=file]')[0].files[0]);
 
         $('.modal-body .error').remove();
         form.find('.subuser-submit').val('loading...');
@@ -49,13 +56,17 @@ $(function () {
 
         form.find('.has-error').removeClass('has-error');
         form.find('label.error').remove();
-        form.find('.callout').remove();
+        $('.mainContainer').find('.callout').remove();
 
         $.ajax({
             url: formAction,
             type: 'POST',
             dataType: 'json',
-            data: formData
+            data: formData,
+
+            //required for ajax file upload
+            processData: false,
+            contentType: false,
         })
             .done(function (response) {
                 if(response.fail)
@@ -68,9 +79,9 @@ $(function () {
                 }
 
                 if(response.success) {
-                    $('.mainContainer .box-solid').before(notify('success', 'Product added Successfully'));
+                    $('.mainContainer .box-solid').before(notify('success', 'User added Successfully'));
                     var action_html = "<td>"+showActionbtn(response.data)+"</td>";
-                    $('#table-user > tbody').prepend(response.template + action_html);
+                    $('#table-user > tbody').prepend("<tr>"+response.template + action_html+"</tr>");
                     $('.modal').modal('hide');
 
                     //window.location.replace(response.redirect_url);
@@ -91,7 +102,10 @@ $(function () {
         e.preventDefault();
         var form = $(this);
         var formAction = form.attr('action');
-        var formData = form.serialize();
+        //var formData = form.serialize();
+
+        var formData = new FormData(form[0]);
+        formData.append('photo', $('#subuser-form input[type=file]')[0].files[0]);
 
         $('.modal-body .error').remove();
         form.find('.subuser-submit').val('loading...');
@@ -104,7 +118,11 @@ $(function () {
             url: formAction,
             type: 'POST',
             dataType: 'json',
-            data: formData
+            data: formData,
+
+            //required for ajax file upload
+            processData: false,
+            contentType: false,
         })
             .done(function (response) {
                 if(response.fail)
@@ -117,7 +135,7 @@ $(function () {
                 }
 
                 if(response.success) {
-                    $('.mainContainer .box-solid').before(notify('success', 'Product updated Successfully'));
+                    $('.mainContainer .box-solid').before(notify('success', 'User updated Successfully'));
                     var action_html = "<td>"+showActionbtn(response.data)+"</td>";
                     $('#table-user').find('tr#row-' + response.data.guid).html(response.template + action_html);
                     $('.modal').modal('hide');

@@ -1,6 +1,6 @@
 
-/*@import "//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic";
-*/html, body {
+@import "//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic";
+html, body {
     min-height: 100%;
 }
 .layout-boxed html, .layout-boxed body {
@@ -441,8 +441,9 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 .dropdown-menu > li > a:hover {
     background-color: #d2d6de;
-    color: #fff;
+    color: #444;
 }
+.dropdown-menu > li > a{padding: 5px 20px;}
 .dropdown-menu > .divider {
     background-color: #eee;
 }
@@ -2988,7 +2989,7 @@ table.text-center, table.text-center td, table.text-center th {
     font-size: 40px;
     position: absolute;
     right: 15px;
-    z-index: 9;    
+    z-index: 9;
 }
 .box-footer button {
     margin-right: 5px;

@@ -73,7 +73,7 @@ class Customer extends Model {
         return $this->toArray();
     }
 
-    public function createCustomer($request)
+    public function createCustomer($request,$user_id,$fileName)
     {
          if ($request['type'] == 2)
             $dob = '';
@@ -85,7 +85,7 @@ class Customer extends Model {
             'type'           => $request['type'],
             'name'           => $request['name'],
             'email'           => $request['email'],
-            'user_id'        => $this->current_user->id,
+            'user_id'        => $user_id,
             'dob'            => $dob,
             'company_number' => $request['company_number'],
             'street_name'    => $request['street_name'],
@@ -105,50 +105,30 @@ class Customer extends Model {
         return $customer_add;
     }
 
-     public function updateCustomer($details='')
+     public function updateCustomer($details='',$dob,$fileName)
     {
-        $guid = $details['guid'];
-        if(isset($details['permissions'])){
-            $per = serialize($details['permissions']);
-        } else {
-            $per = '';
-        }
-        $user = TenantUser::where('guid', $guid)->first();
-        $user->fullname = $details['fullname'];
-        $user->role = 2;
-        $user->email = $details['email'];
-        $user->permissions = $per;
-        $user->save();
+        $customer->type = $details['type'];
+        $customer->name = $details['name'];
+        $customer->email = $details['email'];
+        $customer->user_id = $this->current_user->id;
+        $customer->dob = $dob;
+        $customer->company_number = $details['company_number'];
+        $customer->street_name = $details['street_name'];
+        $customer->street_number = $details['street_number'];
+        $customer->telephone = $details['telephone'];
+        $customer->mobile = $details['mobile'];
+        $customer->postcode = $details['postcode'];
+        $customer->town = $details['town'];
+        $customer->image = $fileName;
+        $customer->status = $details['status'];
+        $customer->save();
 
-        $user_id = $user->id;
+       
 
-        $fileName = NULL;
-        if (FacadeRequest::hasFile('photo'))
-        {
-            $file = FacadeRequest::file('photo');
-            $fileName = \FB::uploadFile($file);
-        }
+        $updated_customer['data'] = $this->toFomatedData($customer);
+        $updated_customer['template'] = $this->getTemplate($customer);
 
-        $email_setting_details = $details->only('incoming_server', 'outgoing_server', 'email_username', 'email_password');
-        $personal_email_setting = json_encode($email_setting_details);
-
-        $profile = Profile::where('user_id', $user_id)->first();
-        $profile->user_id = $user_id;
-        $profile->phone = $details['phone'];
-        $profile->address = $details['address'];
-        $profile->postcode = $details['postcode'];
-        $profile->town = $details['town'];
-        $profile->comment = $details['comment'];
-        if($fileName != NULL) $profile->photo = $fileName;
-        $profile->tax_card = $details['tax_card'];
-        $profile->social_security_number = $details['social_security_number'];
-        $profile->personal_email_setting = $personal_email_setting;
-        $profile->save();
-
-        $updated_user['data'] = $this->toFomatedData($user);
-        $updated_user['template'] = $this->getTemplate($user);
-
-        return $updated_user;
+        return $updated_customer;
     }
 
      public function getTemplate($details='')

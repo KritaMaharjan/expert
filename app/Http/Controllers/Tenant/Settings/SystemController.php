@@ -50,10 +50,10 @@ class SystemController extends BaseController {
                                         );
 
         if ($validator->fails())
-            return  redirect()->route('tenant.setting.system')->withErrors($validator)->withInput();
+            return  tenant()->route('tenant.setting.system')->withErrors($validator)->withInput();
         
             $this->savebusiness($request);  
-            return redirect()->route('tenant.setting.system')->with('message', 'Setting Updated successfully');
+            return tenant()->route('tenant.setting.system')->with('message', 'Setting Updated successfully');
         }
         else
         {

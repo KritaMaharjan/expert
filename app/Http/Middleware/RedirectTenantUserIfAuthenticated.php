@@ -40,7 +40,7 @@ class RedirectTenantUserIfAuthenticated {
 
         if ($this->auth->check())
         {
-            return redirect()->route('tenant.index');
+            return tenant()->route('tenant.index');
         }
         //redirect to setup page if tenant has not completed setup
 

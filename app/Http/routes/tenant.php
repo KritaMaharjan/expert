@@ -28,12 +28,12 @@
     }
 
 
-    Route::group($group_superadmin, function () {
+    Route::group($group_superadmin, function ($account) {
         get('block/account', 'Tenant\AuthController@blockAccount');
     });
 
 
-    Route::group($group_guest, function () {
+    Route::group($group_guest, function ($account) {
         get('login', ['as' => 'tenant.login', 'uses' => 'Tenant\AuthController@getLogin']);
         post('login', 'Tenant\AuthController@postLogin');
         post('register', ['as' => 'tenant.register', 'uses' => 'Tenant\AuthController@postRegister']);
@@ -45,7 +45,7 @@
     });
 
 
-    Route::group($group_auth, function () {
+    Route::group($group_auth, function ($account) {
     	//registered by : Krita
         get('/', ['as' => 'tenant.index', 'uses' => 'Tenant\DashboardController@index']);
         get('/logout', ['as' => 'tenant.logout', 'uses' => 'Tenant\AuthController@logout']);

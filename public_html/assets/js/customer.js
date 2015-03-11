@@ -1,9 +1,5 @@
 $(function () {
 
-
-
-    
-
     $('.business_div').hide();
    var modal = $('.modal-body');
     
@@ -24,6 +20,12 @@ $(function () {
 
     var customerDatatable = $("#table-customer").dataTable({
         "dom": '<"top"f>rt<"bottom"lip><"clear">',
+        
+        //custom processing message
+        "oLanguage": {
+           "sProcessing": "<i class = 'fa fa-spinner'></i>  Processing..."
+        },
+
         "processing": true,
         "serverSide": true,
         "ajax": {
@@ -96,32 +98,43 @@ $(function () {
         e.preventDefault();
         var form = $(this);
         var formAction = form.attr('action');
-        var formData = form.serialize();
+        //var formData = form.serialize();
+
+        var formData = new FormData(form[0]);
+        formData.append('photo', $('#customer-form input[type=file]')[0].files[0]);
+
         var requestType = form.find('.customer-submit').val();
 
         form.find('.customer-submit').val('loading...');
-        form.find('.customer-submit').attr('disabled', 'disabled');
+        form.find('.customer-submit').attr('disabled', true);
 
         form.find('.has-error').removeClass('has-error');
         form.find('label.error').remove();
         form.find('.callout').remove();
 
+
         $.ajax({
             url: formAction,
             type: 'POST',
             dataType: 'json',
-            data: formData
+            data: formData,
+
+            //required for ajax file upload
+            processData: false,
+            contentType: false,
         })
             .done(function (response) {
-                if (response.status === 'success' || response.status == 1) {
+                if (response.success == true || response.status == 1) {
+                    alert('as');
                     $('#fb-modal').modal('hide');
                     var tbody = $('.box-body table tbody');
                     if (requestType == 'Add') {
+                          console.log(response.redirect_url);
                         window.location.replace(response.redirect_url);
                     }
                     else {
-                        alert('dfdf');
-                        $('.mainContainer .box-solid').before(notify('success', 'Customer added Successfully'));
+                        alert('edit');
+                        $('.mainContainer .box-solid').before(notify('success', 'Customer update Successfully'));
                     var action_html = "<td>"+showActionbtn(response.data)+"</td>";
                     $('#table-user > tbody').prepend(response.template + action_html);
                     $('.modal').modal('hide');
@@ -135,7 +148,9 @@ $(function () {
                     if(response.status == 'fail')
                 {
                     $.each(response.errors,function(i,v){
-                             form.closest('form').find('input[name='+i+']').after('<label class="error ">'+v+'</label>');
+                             // form.closest('form').find('input[name='+i+']').after('<label class="error ">'+v+'</label>');
+                              $('.modal-body #' + i).parent().addClass('has-error')
+                            $('.modal-body #' + i).after('<label class="error error-' + i + '">' +v+ '<label>');
                         });
                 }
 
@@ -154,37 +169,6 @@ $(function () {
             });
     })
 
-    $(document).on('submit', '#test-form', function (e) {
-        e.preventDefault();
-        var form = $(this);
-        var now_form = $(this)[0]; 
-        var formData = new FormData($('form')[0]);
-        //var formData = new FormData($(this));
-        var formAction = form.attr('action');
-        //var formData = form.serialize();
-
-        $.ajax({
-            url: formAction,
-            type: 'POST',
-            dataType: 'json',
-            data: formData
-        })
-            .done(function (response) {
-                if (response.status === 'success' || response.status == 1) {
-                    alert(response.status);
-                }
-                else {
-                    alert('fail');
-                }
-            })
-            .fail(function () {
-                alert('something went wrong');
-            })
-            .always(function () {
-                form.find('.customer-submit').removeAttr('disabled');
-                form.find('.customer-submit').val(requestType);
-            });
-    })
 })
 
 

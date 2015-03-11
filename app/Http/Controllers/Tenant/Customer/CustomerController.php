@@ -42,11 +42,19 @@ class CustomerController extends BaseController {
      */
     public function create(Request $request)
     {
-        //dd(\Input::file('photo'));
+         $fileName = '';
+        
+        if ($this->request->hasFile('photo')) {
+            $file = $this->request->file('photo');
+            $fileName = \FB::uploadFile($file);
+           
+        }
+
+
         $validator = \Validator::make($request->all(),
             array(
                 'name'          => 'required|between:2,30',
-                'email'          => 'required',
+                'email'          => 'required|unique:fb_customers',
                 'dob'           => '',
                 'street_name'   => 'required',
                 'street_number' => 'required',
@@ -54,19 +62,16 @@ class CustomerController extends BaseController {
                 'mobile'        => 'between:10,15',
                 'postcode'      => 'required|size:5',
                 'town'          => 'between:2,50',
-                'photo'         => 'image'
+              //  'photo'         => 'image'
             )
         );
 
         if ($validator->fails())
             return \Response::json(array('status' => 'fail', 'errors' => $validator->getMessageBag()->toArray()));
 
-
-        $this->saveCustomer($request->except('_token'));
-
-        $redirect_url = \URL::route('tenant.customer.index');
-
-        return \Response::json(array('status' => 'success', 'redirect_url' => $redirect_url));
+       $result = $this->customer->createCustomer($request,$this->current_user->id,$fileName);
+        $redirect_url = tenant_route('tenant.customer.index');
+        return \Response::json(array('success' => true, 'data' => $result['data'], 'template'=>$result['template'], 'redirect_url' => $redirect_url ));
 
 
     }
@@ -83,29 +88,26 @@ class CustomerController extends BaseController {
 
     public function testUpload(Request $request)
     {
-        dd($_POST);
         $uploaded_file = (Input::file('file'));
         $file = \FB::uploadFile($uploaded_file);
         if($file)
             return \Response::json(array('status' => 'success', 'file'=> $file));
-        dd($file);
-        $uploaded_file = (Input::file('file'));
-        $abc = Input::file('file')->move(__DIR__.'/storage/',Input::file('file')->getClientOriginalName());
     }
 
     function update($id)
     {
-        //dd(\Input::file('photo'));
+       
         $customer = $this->customer->find($id);
 
         if (empty($customer))
             return $this->fail(['error' => 'Invalid Customer ID']);
 
-        $fileName = '';
+         $fileName = ' ';
+        
         if ($this->request->hasFile('photo')) {
             $file = $this->request->file('photo');
             $fileName = \FB::uploadFile($file);
-            //dd('jsdh'.$fileName);
+           
         }
 
 
@@ -125,32 +127,15 @@ class CustomerController extends BaseController {
                 'mobile'        => 'between:10,15',
                 'postcode'      => 'required|size:5',
                 'town'          => 'between:2,50',
-                'photo'         => 'image'
+                //'photo'         => 'image'
             )
         );
 
         if ($validator->fails())
             return \Response::json(array('status' => 'fail', 'errors' => $validator->getMessageBag()->toArray()));
 
-        $customer->type = $this->request->input('type');
-        $customer->name = $this->request->input('name');
-        $customer->email = $this->request->input('email');
-        $customer->user_id = $this->current_user->id;
-        $customer->dob = $dob;
-        $customer->company_number = $this->request->input('company_number');
-        $customer->street_name = $this->request->input('street_name');
-        $customer->street_number = $this->request->input('street_number');
-        $customer->telephone = $this->request->input('telephone');
-        $customer->mobile = $this->request->input('mobile');
-        $customer->postcode = $this->request->input('postcode');
-        $customer->town = $this->request->input('town');
-        $customer->image = $fileName;
-        $customer->status = $this->request->input('status');
-        $customer->save();
-
-        $customer['data'] = $customer;
-        $customer['template'] = $this->customer->getTemplate($customer);
-        $redirect_url = \URL::route('tenant.customer.index');
+        $customer = $this->customer->updateCustomer($this->request ,$dob,$this->current_user->id,$fileName);
+        $redirect_url = tenant_route('tenant.customer.index');
         return \Response::json(array('success' => true, 'data' => $customer['data'], 'template'=>$customer['template'], 'redirect_url' => $redirect_url ));
     }
 
@@ -159,17 +144,7 @@ class CustomerController extends BaseController {
      *
      * @return Response
      */
-    public function saveCustomer($request)
-    {
-
-        $fileName = '';
-        // if (\FacadeRequest::hasFile('photo')) {
-        //     $file = \FacadeRequest::file('photo');
-        //     $fileName = \FB::uploadFile($file);
-        // }
-        $this->customer->createCustomer($request);
-    }
-
+  
     public function dataJson()
     {
         if ($this->request->ajax()) {
@@ -209,7 +184,7 @@ class CustomerController extends BaseController {
         $file = Input::file('file');
         
         $input = array('image' => $file);
-       dd(Input::ALL());
+      
         $rules = array(
             'image' => 'image'
         );

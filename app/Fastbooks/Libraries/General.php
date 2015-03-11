@@ -198,8 +198,7 @@ class General {
     function can($access = '')
     {
         $user = Auth::user();
-        $permissions = unserialize($user->permissions);
-
+        $permissions = @unserialize($user->permissions);
         if ($user->role == 1 || in_array($access, $permissions)) {
             return true;
         } else {
@@ -245,14 +244,13 @@ class General {
                 dd($e->getMessage());
             }
             // sending back with message
-            //flash()->success('The file has been successfully uploaded.');
             return $fileName;
         }
-        else {
+        /*else {
             // sending back with error message.
-            Session::flash('error', 'Uploaded file is not valid.');
+            \Session::flash('error', 'Uploaded file is not valid.');
             return redirect()->back();
-        }
+        }*/
         
     }
 

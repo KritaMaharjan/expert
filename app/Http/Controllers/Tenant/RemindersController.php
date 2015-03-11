@@ -37,9 +37,9 @@ class RemindersController  extends BaseController {
 
     if(!empty($user)){
        $this->sendResetEmail($user);
-       return redirect()->route('tenant.login')->with('message_success', 'Reset Email sent to your email successfully'); 
+       return tenant()->route('tenant.login')->with('message_success', 'Reset Email sent to your email successfully'); 
     }else
-      return redirect()->route('tenant.forgetPassword')->with('message', 'These credentials do not match our records.'); 
+      return tenant()->route('tenant.forgetPassword')->with('message', 'These credentials do not match our records.'); 
     
   }
 
@@ -93,10 +93,10 @@ class RemindersController  extends BaseController {
 
             \DB::table('fb_password_resets')->where('email', '=', Input::only('email'))->delete();
           
-          return redirect()->route('tenant.login')->with('message_success', 'Password Reset successfully.'); 
+          return tenant()->route('tenant.login')->with('message_success', 'Password Reset successfully.'); 
 
           }else{
-            return redirect()->route('tenant.login')->with('message', 'Invalid url'); 
+            return tenant()->route('tenant.login')->with('message', 'Invalid url'); 
           }
  
 

@@ -14,13 +14,13 @@ Manage Client
 @section('content')
 <div class="box box-solid">
     <div class="box-body">
-        <div class="box">
-                                <div class="box-header">
+        <div class="box box-solid">
+                               <!--  <div class="box-header">
                                     <h3 class="box-title"></h3>
                                     <div class="box-tools">
                                         
                                     </div>
-                                </div><!-- /.box-header -->
+                                </div>/.box-header -->
                                 <div class="box-body table-responsive no-padding">
                                     <table id="table-client" class="table table-hover">
                                         <thead>

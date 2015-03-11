@@ -21,7 +21,7 @@ a{
 
     .two-inputs input{
     	display: inline-block;
-    	width: 49%!important;
+    	width: 49.7%!important;
     }
 
     .two-inputs label{
@@ -221,6 +221,10 @@ a{
     margin-right: 0!important;
 
 }
+.no-mg-btm{margin-bottom: 0!important;}
+.mg-top-10{margin-top: 10px!important;}
+.no-bg{background: transparent;}
+
 small.subject {
     color: #999;
     display: block;
@@ -233,6 +237,9 @@ small.subject {
 }
 .pad-top-0{ padding-top: 0;}
 .pad-0-40{padding: 0 40px 0 10px;}
+.pad-btm-0{padding-bottom: 0}
+.pad-top-10{padding-top: 10px!important;}
+.pad-top-only{padding: 10px 0 0 0!important;}
 .bg-white {
     background: none repeat scroll 0 0 #fff;
     padding: 0;
@@ -249,6 +256,7 @@ small.subject {
     }
     .block-header p{
         margin-bottom: 0!important;
+        width: 90%;
 
     }
     .color-blue{
@@ -525,21 +533,141 @@ fieldset.wrapper-box{
 fieldset.wrapper-box legend{
     width: auto!important;
     margin-bottom: 0;
+    border-bottom: none;
 }
 
 .dataTables_processing {
-    background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);
-    color: #fff;
+    color: #666;
     display: block;
     left: 0;
-    padding: 20px;
     position: absolute;
     text-align: center;
-    text-shadow: 0 0 2px #000;
     top: 50%;
     width: 100%;
 }
 
 .datepicker{
     z-index: 9999!important;
+}
+.btn-primary:hover, .btn-primary:focus, .btn-primary.focus, .btn-primary:active, .btn-primary.active, .open > .dropdown-toggle.btn-primary{
+    background: #008d4c!important;
+    border: 1px solid #008d4c!important;
+}
+
+.footer-email{
+    padding: 0 10px;
+}
+.alert-lightgreen{background: #ececec}
+.alert-lightgreen::-moz-placeholder {
+    color: #aaa;
+}
+.alert-lightgreen::placeholder {
+    color: #aaa;
+}
+
+.link-reply{
+    position: absolute;right: 10px;top: 10px;text-indent: -9999em;
+}
+
+
+
+
+/*print*/
+#print .header-wrap{
+    background: #fff34d;
+    padding: 10px 20px;
+}
+
+#print h1 {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 10px;
+}
+#print h2 {
+    font-size: 18px;
+    font-weight: 600;
+}
+#print h3 {
+    font-size: 14px;
+    font-weight: 600;
+}
+#print label {
+    display: block;
+    font-weight: 600;
+}
+#print input {
+    height: 30px;
+    width: 100%!important;
+}
+#print input.small-input {
+    width: 30px !important;
+    text-align: center;
+}
+#print .full-width{
+    width: 100%;
+}
+.block{
+    display: block;
+}
+.font-mid{
+    font-size: 16px
+}
+.mg-left-30{
+    margin-left: 30px;
+}
+.mg-top-20{
+    margin-top: 20px;
+}
+.section-wrap {
+    padding: 10px 20px;
+}
+.info-ac {
+    padding: 20px 10px;
+}
+.section-wrap-yellow{
+    background: #fff34d;
+    padding: 5px 2% 5px 10%;
+}
+.section-wrap-yellow label {
+    display: inline-block !important;
+}
+.input-boxes {
+    display: inline-block;
+}
+.border{
+    border: 1px solid #dbdbdb;
+    padding: 10px;
+}
+.info-payer p{
+    font-size: 16px;
+    margin-bottom: 0;
+}
+#giro-block{
+    padding-right: 5%!important;
+}
+#giro-block .border{
+    padding: 5px;
+}
+.signaturebox{
+    width: 100%;
+    display: block;
+    height: 70px;
+}
+.footer-wrap{
+    border-bottom: 5px solid #fff34d;
+}
+.box1{
+    border-right: 1px solid #ccc;
+}
+.box2{
+    border-right: 1px solid #fff34d;
+}
+/*print*/
+
+
+
+.image-uplod{
+    display: block;
+    max-width: 100px;
+    height: 100px;
 }
