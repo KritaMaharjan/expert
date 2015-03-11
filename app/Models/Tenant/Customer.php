@@ -105,6 +105,52 @@ class Customer extends Model {
         return $customer_add;
     }
 
+     public function updateCustomer($details='')
+    {
+        $guid = $details['guid'];
+        if(isset($details['permissions'])){
+            $per = serialize($details['permissions']);
+        } else {
+            $per = '';
+        }
+        $user = TenantUser::where('guid', $guid)->first();
+        $user->fullname = $details['fullname'];
+        $user->role = 2;
+        $user->email = $details['email'];
+        $user->permissions = $per;
+        $user->save();
+
+        $user_id = $user->id;
+
+        $fileName = NULL;
+        if (FacadeRequest::hasFile('photo'))
+        {
+            $file = FacadeRequest::file('photo');
+            $fileName = \FB::uploadFile($file);
+        }
+
+        $email_setting_details = $details->only('incoming_server', 'outgoing_server', 'email_username', 'email_password');
+        $personal_email_setting = json_encode($email_setting_details);
+
+        $profile = Profile::where('user_id', $user_id)->first();
+        $profile->user_id = $user_id;
+        $profile->phone = $details['phone'];
+        $profile->address = $details['address'];
+        $profile->postcode = $details['postcode'];
+        $profile->town = $details['town'];
+        $profile->comment = $details['comment'];
+        if($fileName != NULL) $profile->photo = $fileName;
+        $profile->tax_card = $details['tax_card'];
+        $profile->social_security_number = $details['social_security_number'];
+        $profile->personal_email_setting = $personal_email_setting;
+        $profile->save();
+
+        $updated_user['data'] = $this->toFomatedData($user);
+        $updated_user['template'] = $this->getTemplate($user);
+
+        return $updated_user;
+    }
+
      public function getTemplate($details='')
     {
         $details->name =  "<a href=".\URL::route('tenant.customer.CustomerCard', $details->id).">".$details->name."</a>";

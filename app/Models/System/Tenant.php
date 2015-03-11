@@ -25,6 +25,8 @@ class Tenant extends Model {
     protected $fillable = ['username', 'company', 'guid', 'email', 'password', 'status', 'activation_key', 'domain'];
 
 
+    protected $connection = 'master';
+
     /**
      * The attributes excluded from the model's JSON form.
      *
