@@ -177,6 +177,9 @@ class Tenant {
                 $this->doAutologin();
 
                 session()->forget('register_tenant');
+                $user = $this->getTenantinfo();
+                $user->is_new = 0;
+                $user->save();
 
             } else {
                 $this->connectTenantDB();
@@ -229,9 +232,9 @@ class Tenant {
     function getTenantinfo()
     {
 
-        $users = SystemTenant::where('domain', $this->domain)->first();
+        $user = SystemTenant::where('domain', $this->domain)->first();
 
-        return $users;
+        return $user;
     }
 
     /**
@@ -256,10 +259,8 @@ class Tenant {
         if (isset($current_params['account']) AND $current_params['account'] != '') {
             return $current_params['account'];
         }
-        {
-            return "";
-        }
 
+        return null;
     }
 
     /**
@@ -268,8 +269,8 @@ class Tenant {
      */
     function isFirstTime()
     {
-        $data = session('register_tenant');
-        if (isset($data['first_time']) AND $data['first_time'] == true) {
+        $user = $this->getTenantinfo();
+        if (isset($user->is_new) AND $user->is_new == 1) {
             return true;
         } else {
             return false;
@@ -370,6 +371,7 @@ class Tenant {
         if (env('APP_ENV') == 'local') {
             return url($domain . '/' . trim($url, '/'));
         }
+
         return 'http://' . $domain . '.mashbooks.no/' . trim($url, '/');
 
     }

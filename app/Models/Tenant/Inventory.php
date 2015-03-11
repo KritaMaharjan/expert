@@ -36,17 +36,20 @@ class Inventory extends Model {
             'product_id'     => $product->id,
             'quantity'       => $request->input('quantity'),
             'purchase_date'  => $request->input('purchase_date'),
-            'sellling_price' => $product->selling_price,
+            'selling_price'  => $product->selling_price,
             'purchase_cost'  => $product->purchase_cost,
             'vat'            => $product->vat,
             'user_id'        => current_user()->id
         ]);
-      
+
+        
         return $inventory->toData();
     }
 
     function totalSellingPrice()
     {
+
+        
         return $this->convertToCurrency($this->selling_price * $this->quantity);
     }
 
@@ -75,8 +78,8 @@ class Inventory extends Model {
     {
         $this->show_url = tenant()->url('inventory/' . $this->id);
         $this->edit_url = tenant()->url('inventory/' . $this->id . '/edit');
-       // $this->purchase_cost = $this->totalSellingPrice();
-       // $this->selling_price = $this->totalPurchaseCost();
+        $this->selling_price = $this->totalSellingPrice();
+        $this->purchase_cost = $this->totalPurchaseCost();
         $this->vat = $this->vat();
 
         return $this->toArray();

@@ -83,8 +83,8 @@ class CustomerController extends BaseController {
 
     public function testUpload(Request $request)
     {
+        dd($_POST);
         $uploaded_file = (Input::file('file'));
-        dd($uploaded_file);
         $file = \FB::uploadFile($uploaded_file);
         if($file)
             return \Response::json(array('status' => 'success', 'file'=> $file));
