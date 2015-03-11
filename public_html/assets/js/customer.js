@@ -157,7 +157,9 @@ $(function () {
     $(document).on('submit', '#test-form', function (e) {
         e.preventDefault();
         var form = $(this);
-        var formData = new FormData($(this));
+        var now_form = $(this)[0]; 
+        var formData = new FormData(now_form);
+        //var formData = new FormData($(this));
         var formAction = form.attr('action');
         //var formData = form.serialize();
 

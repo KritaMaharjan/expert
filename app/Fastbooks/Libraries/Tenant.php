@@ -142,23 +142,23 @@ class Tenant {
      */
     function dataInsert()
     {
+        $tenantInfoInSystem = $this->getTenantinfo();
         $user = $this->tenatUser->findOrNew(1);
-        $sessionUser = session('register_tenant');
-        $user->email = $sessionUser['email'];
+        $user->email = $tenantInfoInSystem->email;
         $user->role = 1; // Admin Role
-        $user->guid = $sessionUser['guid'];
+        $user->guid = $tenantInfoInSystem->guid;
         $user->status = 1; // Activated
         $user->first_time = 1; // yes first time
         $user->save();
 
-        $setting = TenantSettings::firstOrNew(['name' => 'company']);
-
-        $setting->value = serialize(array('company_name' => $sessionUser['company']));
+        // update company name in setting table
+        $setting = $this->tenantSettings->firstOrNew(['name' => 'company']);
+        $setting->value = serialize(array('company_name' => $tenantInfoInSystem->company));
         $setting->save();
 
-
+        // update domain in setting table
         $setting = $this->tenantSettings->firstOrNew(array('name' => 'domain'));
-        $setting->value = $sessionUser['domain'];
+        $setting->value = $tenantInfoInSystem->domain;
         $setting->save();
     }
 

@@ -51,7 +51,7 @@ class InventoryController extends BaseController {
             return $this->fail(['errors' => $validator->messages()]);
 
         $result = $this->inventory->add($this->request);
-        dd($result);
+        
         $result['name'] = Product::find($result['product_id'])->name;
         return ($result) ? $this->success($result) : $this->fail(['errors' => 'something went wrong']);
     }

@@ -99,6 +99,10 @@ class Customer extends Model {
 
 
         ]);
+          $customer_add['data'] = $this->toFomatedData($customer);
+        $customer_add['template'] = $this->getTemplate($customer);
+
+        return $customer_add;
     }
 
      public function getTemplate($details='')
@@ -113,6 +117,16 @@ class Customer extends Model {
                      <td>".$details->email."</td>
                      <td>".$details->status."</td>";
         return $template;
+    }
+
+     function toFomatedData($data)
+    {
+        foreach($data as $k => &$items)
+        {
+            $this->toArray();
+        }
+
+       return $data;
     }
 
 }
