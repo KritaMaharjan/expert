@@ -170,13 +170,33 @@ class CustomerController extends BaseController {
         $customer = $this->customer->find($id);
         if (!empty($customer)) {
             if ($customer->delete()) {
-                return $this->success(['message' => 'Customer deleted Successfully']);
+                return \Response::json(array('status' => 1,'message' => 'Customer deleted Successfully'));
+                
             }
         }
 
-        return $this->fail(['message' => 'Something went wrong. Please try again later']);
+       return \Response::json(array('status' => false,'message' => 'somethin went wrong'));
 
     }
+    
+    public function changeStatus() {
+        $customer_id = Input::get('cus_id');
+        $status = Input::get('status');
+
+        $customer = $this->customer->find($customer_id);
+        if(!empty($customer))
+        {
+            $customer->status =  $status;
+            $customer->save();
+
+           
+            
+           return \Response::json(array('status' => TRUE));
+        }
+        return $this->fail(['message' => 'Something went wrong. Please try again later']);
+        
+    }
+
 
 
     public function upload() {

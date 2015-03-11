@@ -14,7 +14,7 @@ Change Password
         <div class="box-body">
             
 
-    <form role="form" method="post" action="{{route('tenant.auth.changePassword')}}" >
+    <form role="form" method="post" action="{{tenant_route('tenant.auth.changePassword')}}" >
     <input type="hidden" name="_token" value="{{csrf_token()}}">
 
     <input type="hidden" name="group" class="form-control" value="email">

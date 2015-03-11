@@ -55,9 +55,10 @@ $(function () {
                 dataType: 'json',
             })
                 .done(function (response) {
+                    console.log(response);
                     if (response.status === 1) {
                         $('.mainContainer .box-solid').before(notify('success', response.data.message));
-                        parentTr.remove();
+                         window.location.href=appUrl+'/customer';
                     } else {
                         $('.mainContainer .box-solid').before(notify('error', response.data.message));
                         parentTr.show();

@@ -118,6 +118,7 @@
         post('customer/{id}/edit',['as'=>'tenant.customer.edit', 'uses'=>'Tenant\Customer\CustomerController@update']);
         post('customer/data',['as'=>'tenant.customer.data', 'uses'=>'Tenant\Customer\CustomerController@dataJson']);
         post('customer/upload',['as'=>'tenant.customer.upload', 'uses'=>'Tenant\Customer\CustomerController@upload']);
+        post('customer/changeStatus',['as'=>'tenant.customer.changeStatus', 'uses'=>'Tenant\Customer\CustomerController@changeStatus']);
 
         // Krita
         post('test/upload', ['as' => 'test.upload', 'uses' => 'Tenant\Customer\CustomerController@testUpload']);

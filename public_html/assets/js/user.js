@@ -12,7 +12,7 @@ $(function () {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": appUrl + '/user/data',
+            "url": appUrl + 'user/data',
             "type": "POST" 
         },
         "columnDefs": [{

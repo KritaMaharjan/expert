@@ -6,7 +6,7 @@ $(function () {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": appUrl + '/inventory/product/data',
+            "url": appUrl + 'inventory/product/data',
             "type": "POST"
         },
         

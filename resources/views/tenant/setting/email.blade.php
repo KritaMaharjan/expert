@@ -57,7 +57,7 @@ System Settings
 					</div>
 					<div class="form-group clearfix">        
 				      <div class="col-sm-offset-2 col-sm-10">
-				        <button link="{{route('tenant.setting.email')}}"  class="btn btn-success pull-right save">Save</button>
+				        <button link="{{tenant_route('tenant.setting.email')}}"  class="btn btn-success pull-right save">Save</button>
 				      </div>
 				    </div>
 				</form>
@@ -108,7 +108,7 @@ System Settings
 					</div>
 					<div class="form-group clearfix">        
 				      <div class="col-sm-offset-2 col-sm-10">
-				        <button link="{{route('tenant.setting.email')}}" class="btn btn-success pull-right save">Save</button>
+				        <button link="{{tenant_route('tenant.setting.email')}}" class="btn btn-success pull-right save">Save</button>
 				      </div>
 				    </div>
 				</form>

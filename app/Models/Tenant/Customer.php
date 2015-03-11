@@ -48,7 +48,7 @@ class Customer extends Model {
          $data = $query->get();
 
         foreach ($data as $key => &$value) {
-            $value->name = "<a href=".\URL::route('tenant.customer.CustomerCard', $value->id).">".$value->name."</a>";
+            $value->name = "<a href=".tenant_route('tenant.customer.CustomerCard', $value->id).">".$value->name."</a>";
            $value->email = $value->email;
             $value->created = $value->created_at->format('d-M-Y');
               $value->DT_RowId = "row-".$value->id;
@@ -131,9 +131,11 @@ class Customer extends Model {
         return $updated_customer;
     }
 
+    
+
      public function getTemplate($details='')
     {
-        $details->name =  "<a href=".\URL::route('tenant.customer.CustomerCard', $details->id).">".$details->name."</a>";
+        $details->name =  "<a href=".tenant_route('tenant.customer.CustomerCard', $details->id).">".$details->name."</a>";
        
         $details->created = $details->created_at->format('d-M-Y');
 

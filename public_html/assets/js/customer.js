@@ -71,15 +71,15 @@ $(function () {
                 dataType: 'json',
             })
                 .done(function (response) {
-                    if(response.status == 'fail')
+                    if(response.status == '0')
                 {
                     $.each(response.errors,function(i,v){
                              $this.closest('form').find('input[name='+i+']').after('<label class="error ">'+v+'</label>');
                         });
                 }
 
-                if(response.status == 'success'){
-                    window.location.replace(response.redirect_url);
+                if(response.status == '1'){
+                     window.location.href=appUrl+'/customer';
                 } //success
                 response.success
                 })

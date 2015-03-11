@@ -54,7 +54,7 @@
 
 
 
-        <a href="{{route('tenant.forgetPassword')}}"><small>I forgot my password</small></a><br>
+        <a href="{{tenant_route('tenant.forgetPassword')}}"><small>I forgot my password</small></a><br>
         <a href="{{url('/')}}" class="text-center"><small>Register a new account</small></a>
 
       </div><!-- /.login-box-body -->

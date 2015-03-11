@@ -45,7 +45,7 @@ class AuthController extends BaseController {
             return $TenantUser->redirectIfValid($this->auth->user());
         }
 
-        return tenant()->route('tenant.login')->with('message', 'These credentials do not match our records.')->withInput($request->only('email', 'remember'));
+        return tenant()->route('tenant.login')->with('message', 'These credentials does not match our records.')->withInput($request->only('email', 'remember'));
     }
 
 

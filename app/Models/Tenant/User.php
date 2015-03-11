@@ -87,7 +87,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             ->join('fb_profile', 'fb_users.id', '=', 'fb_profile.user_id')
             ->where('fb_users.guid', $guid)
             ->first();
-        $details->permissions = unserialize($details->permissions);
+            
+        $details->permissions = ($details->permissions!='') ? @unserialize($details->permissions) : '';
 
         if($details->personal_email_setting != NULL)
         {
@@ -302,7 +303,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         foreach ($data as $key => &$value) {
             $value->raw_status = $value->status;
-            $value->fullname = "<a href=".\URL::route('subuser.profile', $value->guid).">".$value->fullname."</a>";
+            $value->fullname = "<a href=".tenant_route('subuser.profile', array('guid', $value->guid)).">".$value->fullname."</a>";
             if($value->status == 1)
                 $value->status = '<span class="label label-success">Active</span>';
             elseif($value->status == 2)

@@ -25,7 +25,7 @@ Customers
                   <h3 class="box-title">Customer Card</h3>
                   <div class="icon-block">
                     <a href="javascript:;" data-toggle="modal" data-url="{{tenant()->url('customer/edit/'.$customer['id'])}}" data-target="#fb-modal" title="Edit"><i class="fa fa-edit"></i></a>
-                    <a href="{{ URL::route('customer.delete', $customer->id) }}" onclick="return confirm('Do you really want to delete customer?')" title="Delete"><i class="fa fa-trash-o"></i></a>
+                    <a href="{{ tenant_route('customer.delete', $customer->id) }}" onclick="return confirm('Do you really want to delete customer?')" title="Delete"><i class="fa fa-trash-o"></i></a>
                   </div>
                 </div><!-- /.box-header -->
                 <div class="box-body">
@@ -44,10 +44,10 @@ Customers
 
                     <div class="form-group radio-box">
                       <label>
-                        <input type="radio" name="r1" class="minimal minimal_status" <?php if($customer->status == 1) echo 'checked=checked '; ?> /> Active
+                        <input type="radio" name="r1" value="1" class="minimal minimal_status" <?php if($customer->status == 1) echo 'checked=checked '; ?> /> Active
                       </label>
                       <label>
-                        <input type="radio" name="r1" class="minimal minimal_status" <?php if($customer->status == 0) echo 'checked=checked '; ?> /> Inactive
+                        <input type="radio" name="r1"  value="0" class="minimal minimal_status" <?php if($customer->status == 0) echo 'checked=checked '; ?> /> Inactive
                       </label>
                       
                     </div>
@@ -241,11 +241,36 @@ Customers
           
           $( ".minimal_status" ).click(function() {
             
-            if($('.minimal_status').is(':checked')){
-              $('.minimal_status').attr('disabled', 'disabled');
-              $(this).removeAttr('disabled');
+            var cus_id = "{{$customer['id']}}";
+            var token = "{{ csrf_token()}}";
+            var url_to = appUrl+'/customer/changeStatus';
+            var status = $(this).val();
+            $('.callout ').remove();
+            $.ajax({
+            url: url_to,
+            type: 'POST',
+            dataType: 'json',
+            data: {'status':status,'cus_id':cus_id,'_token':token},
 
-            }
+          })
+            .done(function (response) {
+                if (response.status == true) {
+                    $('.radio-box').after(notify('success', 'Status Changed Successfully'));
+                     setTimeout(function () {
+                        $('.callout').remove()
+                    }, 2500);
+                    
+                }
+                else {
+                  alert('something went worng');
+                    }
+            })
+            .fail(function () {
+                alert('something went wrong');
+            })
+            .always(function () {
+                
+            });
 
         });
 

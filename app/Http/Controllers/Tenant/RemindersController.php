@@ -46,9 +46,10 @@ class RemindersController  extends BaseController {
   function sendResetEmail($user){
     $confirmation_code = str_random(30);
     DB::table('fb_password_resets')->insert(array('email' => $user->email, 'token' => $confirmation_code,'created_at' => date('Y-m-d h:i:s')));
-    $link = \URL::to('manish/reset-password').'/'.$confirmation_code." ";
+    $link = tenant_route('tenant.resetPassword').'/'.$confirmation_code." ";
+    $no_link = tenant_route('/');
 
-    $mail = \FB::sendEmail($user->email, $user->fullname, 'forgot_password', ['{{RESET_URL}}' => $link, '{{ USERNAME }}' => $user->fullname, '{{ NAME }}' => $user->fullname]);
+    $mail = \FB::sendEmail($user->email, $user->fullname, 'forgot_password', ['{{RESET_URL}}' => $link, '{{DONT_RESET_URL}}' => $no_link ,'{{ USERNAME }}' => $user->fullname, '{{ NAME }}' => $user->fullname]);
 
     }
 

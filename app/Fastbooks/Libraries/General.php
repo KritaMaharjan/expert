@@ -213,8 +213,7 @@ class General {
     function can_view($access = '')
     {
         $user = Auth::user();
-        $permissions = unserialize($user->permissions);
-
+        $permissions = ($user->permissions!='') ? @unserialize($user->permissions) : '';
         if ($user->role == 1 || in_array($access, $permissions)) {
             return true;
         } else {

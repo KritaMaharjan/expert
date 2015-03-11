@@ -17,7 +17,7 @@ Profile Settings
 		<div id="email-settings" class="col-md-12">
 			<div class="inner-set-block box-body">
 				<!-- <h4>User Setting</h4> -->
-				<form name="user_setting" enctype='multipart/form-data' method="post" route="{{route('tenant.setting.user')}}">
+				<form name="user_setting" enctype='multipart/form-data' method="post" route="{{tenant_route('tenant.setting.user')}}">
 					<input type="hidden" name="_token" value="{{ csrf_token() }}">
   <input type="hidden" name="group" value="userSetting">	   
 					<div class="row">
