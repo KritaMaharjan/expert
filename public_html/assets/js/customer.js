@@ -29,7 +29,7 @@ $(function () {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": appUrl + '/customer/data',
+            "url": appUrl + 'customer/data',
             "type": "POST"
         },
         "columnDefs": [{
@@ -79,7 +79,7 @@ $(function () {
                 }
 
                 if(response.status == '1'){
-                     window.location.href=appUrl+'/customer';
+                    window.location.href=appUrl+'/customer';
                 } //success
                 response.success
                 })

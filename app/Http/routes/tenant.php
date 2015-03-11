@@ -113,7 +113,7 @@
 		get('customer',['as'=>'tenant.customer.index', 'uses' => 'Tenant\Customer\CustomerController@index']);
 		post('customer',['as'=>'tenant.customer.create', 'uses' => 'Tenant\Customer\CustomerController@create']);
         get('customer/CustomerCard/{id}',['as'=>'tenant.customer.CustomerCard', 'uses' => 'Tenant\Customer\CustomerController@customerCard']);
-        get('customer/delete/{id}', ['as' => 'customer.delete', 'uses' => 'Tenant\Customer\CustomerController@deleteCustomer']);
+        get('customer/{id}/delete', ['as' => 'customer.delete', 'uses' => 'Tenant\Customer\CustomerController@deleteCustomer']);
         get('customer/{id}/edit',['as'=>'tenant.customer.edit', 'uses'=>'Tenant\Customer\CustomerController@edit']);
         post('customer/{id}/edit',['as'=>'tenant.customer.edit', 'uses'=>'Tenant\Customer\CustomerController@update']);
         post('customer/data',['as'=>'tenant.customer.data', 'uses'=>'Tenant\Customer\CustomerController@dataJson']);

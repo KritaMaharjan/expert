@@ -170,12 +170,11 @@ class CustomerController extends BaseController {
         $customer = $this->customer->find($id);
         if (!empty($customer)) {
             if ($customer->delete()) {
-                return \Response::json(array('status' => 1,'message' => 'Customer deleted Successfully'));
-                
+                return $this->success(['message' => 'Customer deleted Successfully']);
             }
         }
 
-       return \Response::json(array('status' => false,'message' => 'somethin went wrong'));
+        return $this->fail(['message' => 'Something went wrong. Please try again later']);
 
     }
     

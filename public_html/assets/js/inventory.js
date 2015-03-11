@@ -5,7 +5,7 @@ $(function () {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": appUrl + '/inventory/data',
+            "url": appUrl + 'inventory/data',
             "type": "POST"
         },
         "columnDefs": [{
