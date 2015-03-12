@@ -95,8 +95,8 @@
           <li><label>{!! Form::checkbox('permissions[]', 'Customer', NULL) !!} Customer </label></li>
           <li><label>{!! Form::checkbox('permissions[]', 'Invoice', NULL) !!} Invoice </label></li>
           <li><label>{!! Form::checkbox('permissions[]', 'Collections', NULL) !!} Collections </label></li>
-          <li><label>{!! Form::checkbox('permissions[]', 'Accounting', NULL) !!} Accounting </label></li>
-          <li><label>{!! Form::checkbox('permissions[]', 'Inventory', NULL) !!} Inventory </label></li>
+          <li><label>{!! Form::checkbox('permissions[]', 'Accounting', 1, array('disabled' => 'disabled')) !!} Accounting </label></li>
+          <li><label>{!! Form::checkbox('permissions[]', 'Inventory', 1, array('disabled' => 'disabled')) !!} Inventory </label></li>
           <li><label>{!! Form::checkbox('permissions[]', 'Statistics', NULL) !!} Statistics </label></li>
         </ul>
       </div>
