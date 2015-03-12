@@ -60,6 +60,7 @@ class AuthController extends BaseController {
     {
         $this->auth->logout();
 
+
         return tenant()->route('tenant.login');
     }
 
