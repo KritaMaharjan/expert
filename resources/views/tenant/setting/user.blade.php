@@ -25,8 +25,13 @@ Profile Settings
 							<label>Upload Photo</label>
 							<div class="clear"></div>
 							<div class="col-md-3 uplod">
-
-						      <img src="{{ (isset($user->photo) && file_exists(asset('assets/upload/'.$user->photo)))? asset('assets/upload/'.$user->photo) : asset('assets/images/no_image.jpg') }}" class="uploaded-img">
+								
+						  @if(file_exists(base_path('public_html/assets/uploads/'.$setting['photo'])))
+							   <img src="{{ asset('assets/uploads/'.$setting['photo'])}}" class="uploaded-img">
+						  @else
+							     <img src="{{ asset('assets/images/no_image.jpg') }}" class="uploaded-img">
+						
+						 @endif
 						  	  </div>
 						     <div class="col-md-6 mrg-mng">
 						       <input type="file" name="photo">						       
@@ -47,10 +52,10 @@ Profile Settings
 					
 						<div class="form-group col-md-6">
 			      			<label class="control-label">Social security number</label>
-							<div class="@if($errors->has('security_number')) {{'has-error'}} @endif">
-					        {!!Form::text('security_number',$setting['security_number'],array('class' => 'form-control'))!!}  
-					      	@if($errors->has('security_number'))
-					       		{!! $errors->first('security_number', '<label class="control-label" for="inputError">:message</label>') !!}
+							<div class="@if($errors->has('social_security_number')) {{'has-error'}} @endif">
+					        {!!Form::text('social_security_number',$setting['social_security_number'],array('class' => 'form-control'))!!}  
+					      	@if($errors->has('social_security_number'))
+					       		{!! $errors->first('social_security_number', '<label class="control-label" for="inputError">:message</label>') !!}
 					      	@endif
 					      </div>
 						</div>
@@ -89,11 +94,20 @@ Profile Settings
 						</div>
 						
 					<div class="form-group col-md-6">
-		      			<label class="control-label">Postcode and town</label>
+		      			<label class="control-label">Postcode</label>
 						<div class="@if($errors->has('postcode')) {{'has-error'}} @endif">
 				        {!!Form::text('postcode',$setting['postcode'],array('class' => 'form-control'))!!}  
+				        
 				      	@if($errors->has('postcode'))
 				       		{!! $errors->first('postcode', '<label class="control-label" for="inputError">:message</label>') !!}
+				      	@endif
+				       </div>
+
+				      	<label class="control-label">Town</label>
+						<div class="@if($errors->has('town')) {{'has-error'}} @endif">
+						{!!Form::text('town',$setting['town'] ,array('class' => 'form-control', 'id' => 'city'))!!}
+				      	@if($errors->has('town'))
+				       		{!! $errors->first('town', '<label class="control-label" for="inputError">:message</label>') !!}
 				      	@endif
 				      </div>
 					</div>
@@ -112,10 +126,10 @@ Profile Settings
 					
 						<div class="form-group col-md-6">
 			      			<label class="control-label"><span>Tax Card</span></label>
-							<div class="@if($errors->has('tax')) {{'has-error'}} @endif">
-					        {!!Form::text('tax',$setting['tax'],array('class' => 'form-control'))!!}  
-					      	@if($errors->has('tax'))
-					       		{!! $errors->first('tax', '<label class="control-label" for="inputError">:message</label>') !!}
+							<div class="@if($errors->has('tax_card')) {{'has-error'}} @endif">
+					        {!!Form::text('tax_card',$setting['tax_card'],array('class' => 'form-control'))!!}  
+					      	@if($errors->has('tax_card'))
+					       		{!! $errors->first('tax_card', '<label class="control-label" for="inputError">:message</label>') !!}
 					      	@endif
 					      </div>
 						</div>					
