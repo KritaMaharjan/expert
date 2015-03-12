@@ -18,7 +18,6 @@ Profile
             <div class="box-header align-right">
                 <h3 class="box-title"></h3>
                 <a href="{{tenant_route('tenant.auth.changePassword')}}" class="mg-right-5">Change password</a>|
-                <a href="{{tenant_route('tenant.auth.changePassword')}}">Settings</a> |
                 <a href="{{tenant_route('tenant.edit.profile')}}"  title="Profile"> Edit profile</a>
                 <div class="box-tools">
 
@@ -32,23 +31,51 @@ Profile
                             <td><strong>Name</strong></td>
                             <td>{{$user->fullname}}</td>                                
                         </tr>
-                        <tr>
+                      <!--   <tr>
                             <td><strong>Domain</strong></td>
                             <td>{{$user->domain}}</td>
                             
-                        </tr>
+                        </tr> -->
                          <tr>
                             <td><strong>Email</strong></td>
                             <td>{{$user->email}}</td>
                             
                         </tr>
-                         <tr>
+                        <!--  <tr>
                             <td><strong>Company name</strong></td>
                             <td>{{$user->company}}</td>
                             
+                        </tr> -->
+
+                        <tr>
+                            <td><strong>Address</strong></td>
+                            <td>{{$user->address}}</td>
+                            
                         </tr>
+
+                        <tr>
+                            <td><strong>Phone</strong></td>
+                            <td>{{$user->phone}}</td>
+                            
+                        </tr>
+                        <tr>
+                            <td><strong>Post Code </strong></td>
+                            <td>{{$user->postcode}}</td>
+                            
+                        </tr>
+
+                        <tr>
+                            <td><strong>Town </strong></td>
+                            <td>{{$user->town}}</td>
+                            
+                        </tr>
+
                         
-                         
+                         <tr>
+                            <td><strong>Tax Card </strong></td>
+                            <td>{{$user->tax_card}}</td>
+                            
+                        </tr> 
                         <tr>
                             <td><strong>Registration Date</strong></td>
                             <td>{{$user->created_at}}</td>

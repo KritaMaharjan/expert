@@ -239,14 +239,15 @@ Customers
           </div>
 
           <script type="text/javascript">
-          
+        console.log(appUrl+'customer/changeStatus');
           $( ".minimal_status" ).click(function() {
             
             var cus_id = "{{$customer['id']}}";
             var token = "{{ csrf_token()}}";
-            var url_to = appUrl+'/customer/changeStatus';
+            var url_to = appUrl+'customer/changeStatus';
             var status = $(this).val();
-            $('.callout ').remove();
+            $('.minimal_status').attr('disabled',true);
+            $('.callout').remove();
             $.ajax({
             url: url_to,
             type: 'POST',
@@ -257,6 +258,7 @@ Customers
             .done(function (response) {
                 if (response.status == true) {
                     $('.radio-box').after(notify('success', 'Status Changed Successfully'));
+                    $('.minimal_status').attr('disabled',false);
                      setTimeout(function () {
                         $('.callout').remove()
                     }, 2500);
@@ -264,10 +266,12 @@ Customers
                 }
                 else {
                   alert('something went worng');
+                   $('.minimal_status').attr('disabled',false);
                     }
             })
             .fail(function () {
                 alert('something went wrong');
+                 $('.minimal_status').attr('disabled',false);
             })
             .always(function () {
                 
@@ -293,7 +297,7 @@ Customers
            
 
             $.ajax({
-                url: appUrl + '/customer/' + cus_id + '/delete',
+                url: appUrl + 'customer/' + cus_id + '/delete',
                 type: 'GET',
                 dataType: 'json',
             })
@@ -304,7 +308,7 @@ Customers
                 }
 
                 if(response.status == '1'){
-                    window.location.href=appUrl+'/customer';
+                    window.location.href=appUrl+'customer';
                 } //success
                 response.success
                 })

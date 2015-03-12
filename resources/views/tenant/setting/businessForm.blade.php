@@ -4,7 +4,7 @@
 		<div class="form-group no-mg">
 	      <label class="control-label">Company Name</label>
 	      <div class="@if($errors->has('company_name')) {{'has-error'}} @endif">
-	      	{!!Form::text('company_name', $company['company_name'],array('class' => 'form-control'))!!}  
+	      	{!!Form::text('company_name', Input::old($company['company_name']),array('class' => 'form-control'))!!}  
 	        @if($errors->has('company_name'))
 	       		{!! $errors->first('company_name', '<label class="control-label" for="inputError">:message</label>') !!}
 	      	@endif
@@ -13,7 +13,7 @@
 	    <div class="form-group no-mg">
 	      <label class="control-label">Company Number</label>
 	      <div class="@if($errors->has('company_number')) {{'has-error'}} @endif">
-	        {!!Form::text('company_number',$company['company_number'],array('class' => 'form-control'))!!}  
+	        {!!Form::text('company_number',Input::old($company['company_number']),array('class' => 'form-control'))!!}  
 	      	@if($errors->has('company_number'))
 	       		{!! $errors->first('company_number', '<label class="control-label" for="inputError">:message</label>') !!}
 	      	@endif
