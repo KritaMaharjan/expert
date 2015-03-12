@@ -16,9 +16,13 @@ User Details
     <div class="box-body table-responsive">
       <table class="table">
           <tbody>
+            <tr>
+                <td class="no-border"><strong>Photo</strong></td>
+                <td class="no-border"><img src="{{ ($profile->photo)? asset('assets/uploads/'.$profile->photo) : asset('assets/images/no_image.jpg') }}" class="image-upload" /></td>
+            </tr>
               <tr>
-                  <td class="no-border"><strong>Name</strong></td>
-                  <td class="no-border">{{ $user->fullname }}</td>                                
+                  <td><strong>Name</strong></td>
+                  <td>{{ $user->fullname }}</td>
               </tr>
               <tr>
                   <td><strong>Email</strong></td>
@@ -60,6 +64,12 @@ User Details
                   <td>{{ $profile->address }}</td>
                   
               </tr>
+
+              <tr>
+                    <td><strong>Social Security Number</strong></td>
+                    <td>{{ $profile->social_security_number or 'Not saved'}}</td>
+
+                </tr>
               
                <tr>
                   <td><strong>Postcode</strong></td>
