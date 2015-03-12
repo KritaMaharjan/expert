@@ -72,7 +72,7 @@ System Settings
 				<h4>Personal (Admin) email</h4>
 				<form method="post" name="support_email_setting">
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
-  <input type="hidden" name="group" value="support_email_setting">	        
+  						<input type="hidden" name="group" value="support_email_setting">	        
 					<div class="form-group no-mg">
 		      			<label class="control-label">SMTP Server <span>(Incoming)</span></label>
 						<div class="@if($errors->has('incoming_server')) {{'has-error'}} @endif">

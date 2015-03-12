@@ -31,12 +31,16 @@ Profile
                         <tr>
                             <td><strong>Profile image</strong></td>
                             <td>
+                              @if(isset($user->photo) && $user->photo !='')
                                @if(file_exists(base_path('public_html/assets/uploads/'.$user->photo)))
                                <img src="{{ asset('assets/uploads/'.$user->photo)}}" class="uploaded-img">
                               @else
-                                     <img src="{{ asset('assets/images/no_image.jpg') }}" class="uploaded-img">
+                                <img src="{{ asset('assets/images/no_image.jpg') }}" class="uploaded-img">
                             
-                             @endif                            
+                             @endif     
+                             @else 
+                               <img src="{{ asset('assets/images/no_image.jpg') }}" class="uploaded-img">
+                             @endif                       
                         </tr>
                         <tr>
                             <td><strong>Name</strong></td>
