@@ -60,11 +60,11 @@ class ProductController extends BaseController {
         $validator = Validator::make($this->request->all(), $this->rules);
 
         if ($validator->fails())
-          return \Response::json(array('status' => false, 'errors' => $validator->getMessageBag()));
+            return $this->fail(['errors' => $validator->getMessageBag()]);
 
         $result = $this->product->add($this->request);
-        return \Response::json(array('status' => 1, 'data' => $result));
-        //return ($result) ? $this->success($result) : $this->fail(['errors' => 'something went wrong']);
+
+        return ($result) ? $this->success($result) : $this->fail(['errors' => 'something went wrong']);
     }
 
 
@@ -150,7 +150,6 @@ class ProductController extends BaseController {
 
         return $this->fail(['message' => 'Something went wrong. Please try again later']);
     }
-
 
 
 }

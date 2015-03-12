@@ -2,14 +2,14 @@ $(function () {
 
     var productDatatable = $("#table-product").dataTable({
         "dom": '<"top"f>rt<"bottom"lip><"clear">',
-        "order": [[ 0, "desc" ]],
+        "order": [[0, "desc"]],
         "processing": true,
         "serverSide": true,
         "ajax": {
             "url": appUrl + 'inventory/product/data',
             "type": "POST"
         },
-        
+
 
         "columnDefs": [{
             "orderable": false,
@@ -21,8 +21,8 @@ $(function () {
             {
                 "targets": 2,
                 "render": function (data, type, row) {
-                    return   '<a href="#" data-toggle="modal" data-url="' + row.show_url + '" data-target="#fb-modal">' +
-                    data +'</a>';
+                    return '<a href="#" data-toggle="modal" data-url="' + row.show_url + '" data-target="#fb-modal">' +
+                    data + '</a>';
                 }
             }
         ],
@@ -30,15 +30,15 @@ $(function () {
             {"data": "id"},
             {"data": "number"},
             {"data": "name"},
-            {"data": "selling_price"},
             {"data": "purchase_cost"},
+            {"data": "selling_price"},
             {"data": "vat"}
 
         ],
 
-        "fnRowCallback": function( nRow, aData, iDisplayIndex ) {
-            
-            $(nRow).attr('id','product-'+aData.id);
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+
+            $(nRow).attr('id', 'product-' + aData.id);
             return nRow;
         },
 
@@ -66,34 +66,34 @@ $(function () {
             data: formData
         })
             .done(function (response) {
-                if (response.status === 1 ) {
+                if (response.status === 1) {
                     $('#fb-modal').modal('hide');
                     var tbody = $('.box-body table tbody');
-                    console.log(requestType);
                     if (requestType == 'Add') {
                         $('.mainContainer .box-solid').before(notify('success', 'Product added Successfully'));
-                        tbody.prepend(getTemplate(response, false));
+                        tbody.prepend(getTemplate(response.data, false));
                     }
                     else {
-                        console.log(getTemplate(response, true));
                         $('.mainContainer .box-solid').before(notify('success', 'Product updated Successfully'));
-                        tbody.find('#product-' + response.data.id).html(getTemplate(response, true));
+                        tbody.find('#product-' + response.data.id).html(getTemplate(response.data, true));
                     }
                     setTimeout(function () {
                         $('.callout').remove()
                     }, 2500);
                 }
                 else {
-                    
-                        $.each(response.errors, function (id, error) {
+
+                    if ("errors" in response.data) {
+
+                        $.each(response.data.errors, function (id, error) {
                             $('.modal-body #' + id).parent().addClass('has-error')
                             $('.modal-body #' + id).after('<label class="error error-' + id + '">' + error[0] + '<label>');
                         })
-                    
+                    }
 
-                   /* if ("error" in response.data) {
+                    if ("error" in response.data) {
                         form.prepend(notify('danger', response.data.error));
-                    }*/
+                    }
 
                 }
             })
@@ -105,7 +105,7 @@ $(function () {
                 form.find('.product-submit').val(requestType);
             });
     })
-   return false;
+    return false;
 })
 
 
@@ -159,7 +159,7 @@ function notify(type, text) {
 
 function showActionbtn(row) {
     return '<div class="box-tools">' +
-    '<a href="#" title="Edit" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' + row.edit_url+'" data-target="#fb-modal">' +
+    '<a href="#" title="Edit" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' + row.edit_url + '" data-target="#fb-modal">' +
     '<i class="fa fa-edit"></i>' +
     '</a>' +
     '<button class="btn btn-box-tool btn-delete-product" data-toggle="tooltip" data-id="' + row.id + '" data-original-title="Remove"><i class="fa fa-times"></i></button>' +
@@ -168,19 +168,19 @@ function showActionbtn(row) {
 }
 
 
-function getTemplate(response, type) {
- 
-    var html = '<td>' + response.data.id + '</td>' +
-        '<td>' + response.data.number + '</td>' +
-        '<td>' + '<a href="#" data-toggle="modal" data-url="' + response.data.show_url + '" data-target="#fb-modal">' +
-        response.data.name + '</a>' + '</td>' +
-        '<td>' + response.data.purchase_cost + '</td>' +
-        '<td>' + response.data.selling_price + '</td>' +
-        '<td>' + response.data.vat + '</td>' +
-        '<td>' +showActionbtn(response.data)+'</td>';
+function getTemplate(data, type) {
+
+    var html = '<td>' + data.id + '</td>' +
+        '<td>' + data.number + '</td>' +
+        '<td>' + '<a href="#" data-toggle="modal" data-url="' + data.show_url + '" data-target="#fb-modal">' +
+        data.name + '</a>' + '</td>' +
+        '<td>' + data.purchase_cost + '</td>' +
+        '<td>' + data.selling_price + '</td>' +
+        '<td>' + data.vat + '</td>' +
+        '<td>' + showActionbtn(data) + '</td>';
 
     if (type == false)
-        return '<tr class="product-' + response.data.id + '">' + html + '</tr>';
+        return '<tr class="product-' + data.id + '">' + html + '</tr>';
     else
         return html;
 }

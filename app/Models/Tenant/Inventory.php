@@ -33,23 +33,23 @@ class Inventory extends Model {
         $product = Product::find($product_id);
 
         $inventory = Inventory::create([
-            'product_id'     => $product->id,
-            'quantity'       => $request->input('quantity'),
-            'purchase_date'  => $request->input('purchase_date'),
-            'selling_price'  => $product->selling_price,
-            'purchase_cost'  => $product->purchase_cost,
-            'vat'            => $product->vat,
-            'user_id'        => current_user()->id
+            'product_id'    => $product->id,
+            'quantity'      => $request->input('quantity'),
+            'purchase_date' => $request->input('purchase_date'),
+            'selling_price' => $product->selling_price,
+            'purchase_cost' => $product->purchase_cost,
+            'vat'           => $product->vat,
+            'user_id'       => current_user()->id
         ]);
 
-        
+
         return $inventory->toData();
     }
 
     function totalSellingPrice()
     {
 
-        
+
         return $this->convertToCurrency($this->selling_price * $this->quantity);
     }
 
@@ -94,7 +94,6 @@ class Inventory extends Model {
     {
 
 
-
         $take = ($request->input('length') > 0) ? $request->input('length') : 15;
         $start = ($request->input('start') > 0) ? $request->input('start') : 0;
 
@@ -121,7 +120,7 @@ class Inventory extends Model {
 
         $query->skip($start)->take($take);
 
-        $products['data'] = $query->get()->toArray();
+        $products['data'] = $this->toFomatedData($query->get());
 
         $json = new \stdClass();
         $json->draw = ($request->input('draw') > 0) ? $request->input('draw') : 1;
@@ -130,6 +129,15 @@ class Inventory extends Model {
         $json->data = $products['data'];
 
         return $json;
+    }
+
+    function toFomatedData($data)
+    {
+        foreach ($data as $k => &$items) {
+            $items->toData();
+        }
+
+        return $data;
     }
 
 }
