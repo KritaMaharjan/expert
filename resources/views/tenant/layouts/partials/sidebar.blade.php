@@ -77,7 +77,7 @@
                 <i class="fa fa-dashboard"></i> <span>Users</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="{{tenant_route('tenant.users')}}" data-push="true" title="Emails"><i class="fa fa-circle-o"></i> Manage Users</a></li>
+                <li><a href="{{tenant_route('tenant.users')}}" data-push="true" title="Manage Users"><i class="fa fa-circle-o"></i> Manage Users</a></li>
               </ul>
             </li>
             @endif
