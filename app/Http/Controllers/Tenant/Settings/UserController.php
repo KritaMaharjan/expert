@@ -3,6 +3,8 @@ namespace App\Http\Controllers\Tenant\Settings;
 
 use App\Http\Controllers\Tenant\BaseController;
 use App\Models\Tenant\Setting;
+use App\Models\Tenant\User;
+use App\Models\Tenant\Profile;
 use Illuminate\Support\Facades\Request as FacadeRequest;
 use Illuminate\Support\Facades\Validator;
 use Request as Requested;
@@ -40,8 +42,7 @@ class UserController extends BaseController {
                                             'phone' => 'required|numeric',
                                             'address' => 'required',
                                             'comment' => 'required',
-                                            
-                                            
+                                            'town' =>'required'
                                             )
                                         );
 
@@ -58,17 +59,21 @@ class UserController extends BaseController {
                     $fileName = \FB::uploadFile($file);
                 }
 
-                $all =  array('name' => $request['name'], 
-                    'security_number'=> $request['security_number'], 
-                    'email'=> $request['email'], 
-                    'postcode'=> $request['postcode'], 
-                    'phone'=> $request['phone'], 
-                    'address'=> $request['address'], 
-                    'comment'=> $request['comment'], 
-                    'image'=> $fileName,
-                    'tax' => $request['tax']
+                $all_user =  array('name' => $request['name'], 
+                                    'email'=> $request['email'], 
+                                 );
 
-                    );
+                $all_profile = array(
+                                    'security_number'=> $request['security_number'], 
+                                    'postcode'=> $request['postcode'], 
+                                    'phone'=> $request['phone'], 
+                                    'address'=> $request['address'], 
+                                    'comment'=> $request['comment'], 
+                                    'image'=> $fileName,
+                                    'tax' => $request['tax'],
+                                    'town' => $request['town']
+                                );
+
             if ($group != '') {
                 $this->setting->addOrUpdate([$group => $all], $group);
             } else {
