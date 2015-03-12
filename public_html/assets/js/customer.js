@@ -49,7 +49,7 @@ $(function () {
             
             $(nRow).attr('id','customer-'+aData.id);
             return nRow;
-        },
+        }
 
     });
 
@@ -73,7 +73,7 @@ $(function () {
             $.ajax({
                 url: appUrl + 'customer/' + id + '/delete',
                 type: 'GET',
-                dataType: 'json',
+                dataType: 'json'
             })
                 .done(function (response) {
                     if(response.status == '0')
@@ -84,7 +84,7 @@ $(function () {
                 }
 
                 if(response.status == '1'){
-                    window.location.href=appUrl+'/customer';
+                    window.location.href=appUrl+'customer';
                 } //success
                 response.success
                 })
@@ -128,7 +128,7 @@ $(function () {
 
             //required for ajax file upload
             processData: false,
-            contentType: false,
+            contentType: false
         })
             .done(function (response) {
                 if (response.success == true || response.status == 1) {
