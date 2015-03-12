@@ -6,7 +6,7 @@ Profile
 
 @section('breadcrumb')
     @parent
-    <li><i class="fa fa-cog"></i> Profile</li>
+    <li><i class="fa fa-cog"></i><a href="{{tenant_route('tenant.profile')}}">Profile</a></li>
     <li>{{$user->username}}</li>
 @stop
 
@@ -27,9 +27,20 @@ Profile
             <div class="box-body table-responsive no-padding">
                 <table class="table">
                     <tbody>
+
+                        <tr>
+                            <td><strong>Profile image</strong></td>
+                            <td>
+                               @if(file_exists(base_path('public_html/assets/uploads/'.$user->photo)))
+                               <img src="{{ asset('assets/uploads/'.$user->photo)}}" class="uploaded-img">
+                              @else
+                                     <img src="{{ asset('assets/images/no_image.jpg') }}" class="uploaded-img">
+                            
+                             @endif                            
+                        </tr>
                         <tr>
                             <td><strong>Name</strong></td>
-                            <td>{{$user->fullname}}</td>                                
+                            <td>{{$user->fullname or ''}}</td>                                
                         </tr>
                       <!--   <tr>
                             <td><strong>Domain</strong></td>
@@ -38,7 +49,7 @@ Profile
                         </tr> -->
                          <tr>
                             <td><strong>Email</strong></td>
-                            <td>{{$user->email}}</td>
+                            <td>{{$user->email or '' }}</td>
                             
                         </tr>
                         <!--  <tr>
@@ -49,36 +60,43 @@ Profile
 
                         <tr>
                             <td><strong>Address</strong></td>
-                            <td>{{$user->address}}</td>
+                            <td>{{$user->address or '' }}</td>
+                            
+                        </tr>
+
+
+                        <tr>
+                            <td><strong>Social Security Number</strong></td>
+                            <td>{{$user->social_security_number or '' }}</td>
                             
                         </tr>
 
                         <tr>
                             <td><strong>Phone</strong></td>
-                            <td>{{$user->phone}}</td>
+                            <td>{{$user->phone or ''}}</td>
                             
                         </tr>
                         <tr>
                             <td><strong>Post Code </strong></td>
-                            <td>{{$user->postcode}}</td>
+                            <td>{{$user->postcode or ''}}</td>
                             
                         </tr>
 
                         <tr>
                             <td><strong>Town </strong></td>
-                            <td>{{$user->town}}</td>
+                            <td>{{$user->town or ''}}</td>
                             
                         </tr>
 
                         
                          <tr>
                             <td><strong>Tax Card </strong></td>
-                            <td>{{$user->tax_card}}</td>
+                            <td>{{$user->tax_card or ''}}</td>
                             
                         </tr> 
                         <tr>
                             <td><strong>Registration Date</strong></td>
-                            <td>{{$user->created_at}}</td>
+                            <td>{{$user->created_at or ''}}</td>
                             
                         </tr>
                     </tbody>

@@ -81,8 +81,8 @@ $(document).ready(function () {
     $( '.savefix' ).on( 'click', function() {
         $this = $(this);
         var datatosave = $('.fixitform').serialize();
-        var url = $this.attr('link');
-
+        var url = appUrl+'setting/system/fixupdate';/*$this.attr('link');
+*/
         $.ajax({
             url: url,
             dataType: 'json',

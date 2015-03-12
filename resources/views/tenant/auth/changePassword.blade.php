@@ -6,6 +6,7 @@ Change Password
 
 @section('breadcrumb')
 @parent
+ <li><i class="fa fa-cog"></i><a href="{{tenant_route('tenant.profile')}}">Profile</a></li>
 <li><i class="fa fa-users"></i> Change password</li>
 @stop
 

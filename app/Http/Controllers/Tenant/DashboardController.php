@@ -47,6 +47,7 @@ class DashboardController extends BaseController {
         $user->address =$profile->address;
         $user->town =$profile->town;
         $user->tax_card =$profile->tax_card;
+        $user->photo =$profile->photo;
         $user->social_security_number =$profile->social_security_number;
         $user->domain= 'pradip';
         $user->company_name ='company_name';
