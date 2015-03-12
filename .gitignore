@@ -1,5 +1,6 @@
 /vendor
 /node_modules
 .env
- 
+
+.idea
 /public_html/assets/uploads
