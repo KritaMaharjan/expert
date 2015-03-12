@@ -44,9 +44,7 @@ class Profile extends Model  {
 
    public function getPersonalSetting($user_id='')
    {
-
-       $profile = Profile::find($user_id);
-
+       $profile = Profile::firstOrCreate(['user_id'=>$user_id]);
         $data = @unserialize($profile->personal_email_setting);
         if ($data !== false) {
             return $data;

@@ -17,7 +17,7 @@
                       <input type="hidden" name="type" id="type" value="1">
                     <div class="col-md-12 pad-0">
                       <div class="input-group">
-                            <input type="checkbox" name="business" id="business"> Business
+                            <input type="checkbox" name="business" id="business"> <strong>Business</strong>
                       </div><!-- /input-group -->
                     </div>
                       <div class="form-group dob_div">
