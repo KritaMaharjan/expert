@@ -113,7 +113,8 @@ class Tenant {
 
                 $this->doAutologin();
 
-                session()->forget('register_tenant');
+                $this->resetSetup();
+
             } else {
                 $this->connectTenantDB();
                 try {
@@ -267,8 +268,9 @@ class Tenant {
     /**
      * Check for first time loginto tenant app
      * @return bool
+     * @todo session is not working between sudomain and domain so we are not using this function
      */
-    function isFirstTime()
+    function _isFirstTime()
     {
         $data = session()->get('register_tenant');
         if (!is_null($data)) {
@@ -278,13 +280,35 @@ class Tenant {
         return false;
     }
 
+
+    function isFirstTime()
+    {
+        $setupKey = $this->request->input('setup');
+        // verify key to setup an account
+        if (strlen($setupKey) > 10) {
+            $tenant = SystemTenant::where('setup_key', $setupKey)->where('domain', $this->domain)->count();
+            if ($tenant > 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function resetSetup()
+    {
+        $tenantInfoInSystem = $this->getTenantinfo();
+        $tenantInfoInSystem->setup_key = null;
+        $tenantInfoInSystem->save();
+        session()->forget('register_tenant');
+    }
+
     /**
      * remember tenant app url
      */
     function rememberAppUrl()
     {
         // i an using php native cookie function to set cookie i tried laravel functions but not working at this time
-        setcookie("APPURL", $this->domain, time() + (86400 * 2.5), '/');
+        setcookie("APPURL", $this->domain, time() + (86400 * 2.5), '');
     }
 
     /**
@@ -389,22 +413,15 @@ class Tenant {
 
     function url($url = '')
     {
-        $url = trim($url, '/');
-
-        return sprintf('http://%s/%s', $this->getCurrentDomainUrl(), $url);
-    }
-
-    function getCurrentDomainUrl()
-    {
         $subdomain = $this->getActualDomain();
         if (env('APP_ENV') == 'local') {
             return url($subdomain . '/' . trim($url, '/')) . '/';
         }
 
         $domain = env('APP_DOMAIN');
+        $url = trim($url, '/');
 
-        return sprintf('%s.%s', $subdomain, $domain);
-
+        return sprintf('http://%s.%s/%s', $subdomain, $domain, $url);
     }
 
     function getActualDomain()
