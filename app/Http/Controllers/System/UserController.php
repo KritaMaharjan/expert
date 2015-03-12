@@ -6,20 +6,23 @@
  */
 
 namespace App\Http\Controllers\System;
+
 use App\Models\System\User;
 use Response;
 use Auth;
 
 
-
 class UserController extends BaseController {
+
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
     function index()
     {
-        return 'user';
     }
-
-   
 
 
 } 

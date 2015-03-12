@@ -10,6 +10,7 @@ use App\Models\Tenant\User;
 use App\Models\Tenant\Setting as TenantSettings;
 use App\Fastbooks\Libraries\TenantTable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
 
 /**
@@ -97,6 +98,33 @@ class Tenant {
 
 
     /**
+     * Validate Subdomain and authenticate tenant if first time then auto login
+     */
+    function authenticateTenant()
+    {
+        if ($this->isValidSubDomain()):
+
+            if ($this->isFirstTime()) {
+                // register tenant database
+                $this->setupTenantDatabase();
+
+                $this->doAutologin();
+
+                session()->forget('register_tenant');
+            } else {
+                $this->connectTenantDB();
+                try {
+                    DB::getDatabaseName();
+                } catch (Exception $e) {
+                    die('Could not connect to database');
+                }
+            }
+        endif;
+    }
+
+
+
+    /**
      * Create database and tables for a tenant when first time landed on APP
      */
     function setupTenantDatabase()
@@ -106,6 +134,7 @@ class Tenant {
 
         //Connect to Tenant DB
         $this->connectTenantDB();
+
 
         //create Tenant Tables
         $this->createTenantTables();
@@ -161,37 +190,6 @@ class Tenant {
         $setting->value = $tenantInfoInSystem->domain;
         $setting->save();
     }
-
-
-    /**
-     * Validate Subdomain and authenticate tenant if first time then auto login
-     */
-    function authenticateTenant()
-    {
-        if ($this->isValidSubDomain()):
-
-            if ($this->isFirstTime()) {
-                // register tenant database
-                $this->setupTenantDatabase();
-
-                $this->doAutologin();
-
-                session()->forget('register_tenant');
-                $user = $this->getTenantinfo();
-                $user->is_new = 0;
-                $user->save();
-
-            } else {
-                $this->connectTenantDB();
-                try {
-                    DB::getDatabaseName();
-                } catch (Exception $e) {
-                    die('Could not connect to database');
-                }
-            }
-        endif;
-    }
-
 
     /**
      * Get name of a tenant
@@ -385,24 +383,21 @@ class Tenant {
 
     function redirect($url = '')
     {
-        $domain = $this->getActualDomain();
-
-        if (env('APP_ENV') == 'local') {
-            return redirect($domain . '/' . trim($url, '/'));
-        }
-
-        return redirect('http://' . $domain . '.mashbooks.no/' . trim($url, '/'));
+        return redirect($this->url($url));
     }
 
 
     function url($url = '')
     {
-        $domain = $this->getActualDomain();
+        $subdomain = $this->getActualDomain();
         if (env('APP_ENV') == 'local') {
-            return url($domain . '/' . trim($url, '/')).'/';
+            return url($subdomain . '/' . trim($url, '/')) . '/';
         }
 
-        return 'http://' . $domain . '.mashbooks.no/' . trim($url, '/');
+        $domain = env('APP_DOMAIN');
+        $url = trim($url, '/');
+
+        return sprintf('http://%s.%s/%s', $subdomain, $domain, $url);;
 
     }
 

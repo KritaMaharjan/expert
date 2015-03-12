@@ -37,8 +37,9 @@ class TenantTable {
                 $table->datetime('last_login')->nullable(); // last login Date time
                 $table->datetime('last_login_ip', 20)->nullable(); // last login IP
                 $table->string('suspended_reason'); // suspended reason set by admin
-                $table->string('remember_token', 100); // suspended reason set by admin
                 $table->boolean('first_time')->default(1); // 1 for first time login
+
+               // remembers token column
                 $table->rememberToken();
 
                 // created_at, updated_at DATETIME

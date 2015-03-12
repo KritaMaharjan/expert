@@ -8,7 +8,7 @@
 |
 */
 
-Route::group(['prefix' => 'system', 'middleware' => 'guest.system'], function () {
+Route::group(['prefix' => 'system', 'middleware' => ['preventSystem','guest.system']], function () {
     get('login', ['as' => 'system.login', 'uses' => 'System\AuthController@getLogin']);
     post('login', 'System\AuthController@postLogin');
     get('forgot-password', ['as' => 'system.reminders.getRemind', 'uses' => 'System\RemindersController@getForgotPassword']);
@@ -18,7 +18,7 @@ Route::group(['prefix' => 'system', 'middleware' => 'guest.system'], function ()
 });
 
 
-Route::group(['prefix' => 'system', 'middleware' => ['auth.system']], function () {
+Route::group(['prefix' => 'system', 'middleware' => ['preventSystem','auth.system']], function () {
     get('/', ['as' => 'system.index', 'uses' => 'System\DashboardController@index']);
     get('logout', ['as' => 'system.logout', 'uses' => 'System\AuthController@logout']);
     get('setting/email', ['as' => 'system.setting.email', 'uses' => 'System\SettingController@email']);

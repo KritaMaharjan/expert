@@ -21,13 +21,20 @@ class BaseController extends Controller {
 
     function __construct()
     {
+        if($this->isSubDomain())
+        {
+            show_404();
+        }
+
         // share current route in all views
         View::share('current_route', Route::current()->getPath());
-         //$new_tenant = Tenant::where('is_new',0)->count();
-         // $new_tenant_details = Tenant::where('is_new',0)->get();
+    }
 
-      //  View::share('new_tenant',$new_tenant);
-        //  View::share('new_tenant_details',$new_tenant_details);
+
+
+    function isSubDomain()
+    {
+
     }
 
    

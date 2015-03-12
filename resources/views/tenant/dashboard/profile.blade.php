@@ -15,9 +15,10 @@ Profile
         <div class="box-body">
 
           
-            <div class="box-header">
+            <div class="box-header align-right">
                 <h3 class="box-title"></h3>
-                <a href="{{tenant_route('tenant.auth.changePassword')}}">Change password</a>
+                <a href="{{tenant_route('tenant.auth.changePassword')}}" class="mg-right-5">Change password</a>
+                <a href="{{tenant_route('tenant.auth.changePassword')}}">Settings</a>
                 <div class="box-tools">
                     
                 </div>
