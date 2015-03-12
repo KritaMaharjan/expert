@@ -170,12 +170,12 @@ class TenantTable {
             Schema::create(self::TBL_PREFIX . 'inventory', function (Blueprint $table) {
                 $table->increments('id'); // autoincrement value of an product
                 $table->integer('product_id')->index(); //product id
-                $table->integer('user_id')->unique();  // name of an product
+                $table->integer('user_id')->index();  // name of an product
                 $table->integer('quantity'); // quantity of an product
                 $table->float('vat'); // Vat percentage applied for the product
                 $table->decimal('selling_price', 11, 2); //price of an product
                 $table->decimal('purchase_cost', 11, 2); //price of an product
-                $table->datetime('purchase_date'); // Add time or purchased date of an product
+                $table->date('purchase_date'); // Add time or purchased date of an product
 
                 // created_at DATETIME
                 $table->timestamps();

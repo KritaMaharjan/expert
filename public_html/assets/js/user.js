@@ -39,7 +39,7 @@ $(function () {
             var status_action = '<button data-original-title="Block" id="abc" data-toggle="tooltip" class="btn btn-block-user btn-box-tool" link="'+appUrl+'block/user/'+row.guid+'" ><i class="fa fa-minus-circle"></i></button>';
         else
             var status_action = '<button data-original-title="Unblock" data-toggle="tooltip" class="btn btn-block-user btn-box-tool" link="'+appUrl+'unblock/user/'+row.guid+'" ><i class="fa fa-minus-circle color-red"></i></button>';
-        return '<div class="box-tools pull-right"> <span data-toggle="modal" data-target="#fb-modal" data-url="'+appUrl+'update/user/'+row.guid+'"> <a data-original-title="Update" data-toggle="tooltip" class="btn btn-box-tool"><i class="fa fa-edit"></i></a> </span> <button data-original-title="Remove" data-toggle="tooltip" class="btn btn-delete-user btn-box-tool" link="'+appUrl+'delete/user/'+row.guid+'" ><i class="fa fa-times"></i></button>'+status_action+'</div>';
+        return '<div class="box-tools"> <span data-toggle="modal" data-target="#fb-modal" data-url="'+appUrl+'update/user/'+row.guid+'"> <a data-original-title="Update" data-toggle="tooltip" class="btn btn-box-tool"><i class="fa fa-edit"></i></a> </span> <button data-original-title="Remove" data-toggle="tooltip" class="btn btn-delete-user btn-box-tool" link="'+appUrl+'delete/user/'+row.guid+'" ><i class="fa fa-times"></i></button>'+status_action+'</div>';
     }
 
     $(document).on('submit', '#subuser-form', function (e) {

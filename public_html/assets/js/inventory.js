@@ -2,6 +2,7 @@ $(function () {
 
     var inventoryDatatable = $("#table-inventory").dataTable({
         "dom": '<"top"f>rt<"bottom"lip><"clear">',
+        "order": [[6, "desc"]],
         "processing": true,
         "serverSide": true,
         "ajax": {
@@ -19,8 +20,8 @@ $(function () {
             {"data": "id"},
             {"data": "name"},
             {"data": "quantity"},
-            {"data": "total_selling_price"},
-            {"data": "total_purchase_cost"},
+            {"data": "selling_price"},
+            {"data": "purchase_cost"},
             {"data": "vat"},
             {"data": "purchase_date"}
         ],
@@ -113,13 +114,13 @@ $(function () {
                     }
                     setTimeout(function () {
                         $('.callout').remove()
-                    }, 2500);
+                    }, 4000);
                 }
                 else {
                     if ("errors" in response.data) {
                         $.each(response.data.errors, function (id, error) {
                             $('.modal-body #' + id).parent().addClass('has-error')
-                            $('.modal-body #' + id).after('<label class="error error-' + id + '">' + error[0] + '<label>');
+                            $('.modal-body #' + id).parent().append('<label class="error error-' + id + '">' + error[0] + '<label>');
                         })
                     }
 
@@ -164,7 +165,7 @@ function getTemplate(response, type) {
         '<td>' + response.data.selling_price + '</td>' +
         '<td>' + response.data.vat + '</td>'+
         '<td>' + response.data.purchase_date + '</td>'+
-        '<td><div class="box-tools pull-right">' +
+        '<td><div class="box-tools">' +
         '<a href="#" title="Edit" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' + response.data.edit_url + '" data-target="#fb-modal">' +
         '<i class="fa fa-edit"></i>' +
         '</a>' +

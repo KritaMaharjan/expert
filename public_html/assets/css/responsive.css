@@ -55,6 +55,8 @@
     .custom-table-responsive{
         overflow-x: auto;
     }
+    .grid-wrap{overflow: auto;}
+
 
 }
 @media screen and (max-width:610px){

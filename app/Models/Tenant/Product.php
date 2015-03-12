@@ -124,12 +124,11 @@ class Product extends Model {
 
     function toFomatedData($data)
     {
-        foreach($data as $k => &$items)
-        {
+        foreach ($data as $k => &$items) {
             $items->toData();
         }
 
-       return $data;
+        return $data;
     }
 
 

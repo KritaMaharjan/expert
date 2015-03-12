@@ -60,7 +60,7 @@ class InventoryController extends BaseController {
     public function dataJson()
     {
         if ($this->request->ajax()) {
-            $select = \DB::raw('id, (select name from fb_products where id = product_id) as name, quantity, selling_price as total_selling_price, purchase_cost as total_purchase_cost, vat, purchase_date');
+            $select = \DB::raw('id, (select name from fb_products where id = product_id) as name, quantity, selling_price, purchase_cost, vat, purchase_date');
             $json = $this->inventory->dataTablePagination($this->request, $select);
             echo json_encode($json, JSON_PRETTY_PRINT);
         } else {
