@@ -18,6 +18,7 @@ class BaseController extends Controller {
 
     function __construct()
     {
+
         $this->current_user();
         // share current route in all views
         View::share('current_user', $this->current_user);

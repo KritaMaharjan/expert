@@ -69,6 +69,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return tenant()->route('tenant.login')->withInput()->with('message', lang('Your account has been permanently blocked.'));
         }
 
+        //$user = TenantUser::where('id', $user->id)->first();
+        $user->last_login = \Carbon::now();
+        $user->save();
         return tenant()->route('tenant.index');
     }
 
@@ -235,7 +238,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
     public function getTemplate($details='')
     {
-        $details->fullname = "<a href=".tenant_route('subuser.profile', array('guid' => $details->guid )).">".$details->fullname."</a>";
+        $details->fullname = "<a href='".tenant()->url('user')."/".$details->guid."'>".$details->fullname."</a>";
         if($details->status == 1)
             $details->status = '<span class="label label-success">Active</span>';
         elseif($details->status == 2)
@@ -304,8 +307,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $data = $query->get();
 
         foreach ($data as $key => &$value) {
+            $value->fullname = "<a href='".tenant()->url('user')."/".$value->guid."'>".$value->fullname."</a>";
             $value->raw_status = $value->status;
-            $value->fullname = "<a href=".tenant_route('subuser.profile', array('guid', $value->guid)).">".$value->fullname."</a>";
             if($value->status == 1)
                 $value->status = '<span class="label label-success">Active</span>';
             elseif($value->status == 2)

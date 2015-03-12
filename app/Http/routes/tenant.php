@@ -80,7 +80,7 @@
         get('unblock/user/{guid}', ['as' => 'subuser.unblock', 'uses' => 'Tenant\Users\UserController@unblockUser']);
         get('delete/user/{guid}', ['as' => 'subuser.delete', 'uses' => 'Tenant\Users\UserController@deleteUser']);
         get('update/user/{guid}', ['as' => 'subuser.update', 'uses' => 'Tenant\Users\UserController@getUpdate']);
-        post('users/update', ['as' => 'tenant.user.update', 'uses' => 'Tenant\Users\UserController@updateUser']);
+        post('user/update', ['as' => 'tenant.user.update', 'uses' => 'Tenant\Users\UserController@updateUser']);
         get('user/{guid}', ['as' => 'subuser.profile', 'uses' => 'Tenant\Users\UserController@profile']);
         post('user/data',['as'=>'tenant.user.data', 'uses'=>'Tenant\Users\UserController@dataJson']);
 

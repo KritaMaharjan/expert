@@ -16,9 +16,13 @@ User Details
     <div class="box-body table-responsive">
       <table class="table">
           <tbody>
+            <tr>
+                <td class="no-border"><strong>Photo</strong></td>
+                <td class="no-border"><img src="{{ ($profile->photo)? asset('assets/uploads/'.$profile->photo) : asset('assets/images/no_image.jpg') }}" class="uploaded-img" /></td>
+            </tr>
               <tr>
-                  <td class="no-border"><strong>Name</strong></td>
-                  <td class="no-border">{{ $user->fullname }}</td>                                
+                  <td><strong>Name</strong></td>
+                  <td>{{ $user->fullname }}</td>
               </tr>
               <tr>
                   <td><strong>Email</strong></td>
@@ -41,13 +45,13 @@ User Details
               </tr>
                <tr>
                   <td><strong>Last Login</strong></td>
-                  <td>{{ $user->last_login or 'Not Defined'}}</td>
+                  <td>{{{ ($user->last_login)? date("d-M-Y h:i:s A",strtotime($user->last_login)) : 'N/A' }}}</td>
                   
               </tr>
               
                <tr>
-                  <td><strong>Created Date<strong></td>
-                  <td>{{ date("d-M-Y",strtotime($user->created_at)) }}</td>
+                  <td><strong>Created Date</strong></td>
+                  <td>{{ date("d-M-Y h:i:s A",strtotime($user->created_at)) }}</td>
                   
               </tr>
               <tr>
@@ -60,6 +64,12 @@ User Details
                   <td>{{ $profile->address }}</td>
                   
               </tr>
+
+              <tr>
+                    <td><strong>Social Security Number</strong></td>
+                    <td>{{ $profile->social_security_number or 'Not saved'}}</td>
+
+                </tr>
               
                <tr>
                   <td><strong>Postcode</strong></td>

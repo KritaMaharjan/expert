@@ -94,6 +94,9 @@ class Tenant {
 
         // make tenant as default connection
         App::make('config')->set('database.default', $this->connection);
+
+        //  Config::set('session.domain', $this->domain.'.'.Config::get('session.domain'));
+
     }
 
 
@@ -282,8 +285,6 @@ class Tenant {
     {
         // i an using php native cookie function to set cookie i tried laravel functions but not working at this time
         setcookie("APPURL", $this->domain, time() + (86400 * 2.5), '/');
-        //setcookie("APPURL", $this->domain, time() + (86400 * 365 * 5), '/');
-        session()->put('APPURL', $this->domain);
     }
 
     /**
@@ -301,7 +302,7 @@ class Tenant {
      */
     function getCurrentTenantSession()
     {
-        $tenantDomain = session('APPURL');
+        $tenantDomain = session('domain');
         if ($tenantDomain != '') {
             $tenant = SystemTenant::where('domain', $tenantDomain)->first();
             if (isset($tenant->domain) AND $tenant->domain != '') {
@@ -388,15 +389,21 @@ class Tenant {
 
     function url($url = '')
     {
+        $url = trim($url, '/');
+
+        return sprintf('http://%s/%s', $this->getCurrentDomainUrl(), $url);
+    }
+
+    function getCurrentDomainUrl()
+    {
         $subdomain = $this->getActualDomain();
         if (env('APP_ENV') == 'local') {
             return url($subdomain . '/' . trim($url, '/')) . '/';
         }
 
         $domain = env('APP_DOMAIN');
-        $url = trim($url, '/');
 
-        return sprintf('http://%s.%s/%s', $subdomain, $domain, $url);;
+        return sprintf('%s.%s', $subdomain, $domain);
 
     }
 
