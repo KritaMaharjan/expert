@@ -51,15 +51,13 @@ class AuthController extends BaseController {
 
     private function rememberTenant()
     {
-        session()->put('APPURL', $this->auth->user()->domain);
-        setcookie("APPURL", $this->auth->user()->domain, time() + (86400 * 365 * 5), '/');
+        setcookie("APPURL", session('domain'), time() + (86400 * 365 * 5), '/');
     }
 
 
     public function logout()
     {
         $this->auth->logout();
-
 
         return tenant()->route('tenant.login');
     }
