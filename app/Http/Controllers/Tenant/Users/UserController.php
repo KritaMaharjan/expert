@@ -18,7 +18,7 @@ class UserController extends BaseController {
                 'address' => 'required|between:2,50',
                 'postcode' => 'required|size:5',
                 'town' => 'between:2,50',
-                //'photo' => 'image',
+                'photo' => 'image',
                 'incoming_server' => 'min:8|required_with:outgoing_server,email_username,email_password',
                 'outgoing_server' => 'min:8|required_with:incoming_server,email_username,email_password',
                 'email_username' => 'min:5|required_with:incoming_server,outgoing_server,email_password',
