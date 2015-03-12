@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Tenant;
 
 use App\Models\Tenant\User;
+use App\Models\Tenant\Profile;
 use Auth;
 
 class DashboardController extends BaseController {
@@ -39,6 +40,7 @@ class DashboardController extends BaseController {
     function profile()
     {
         $user = User::find($this->current_user->id);
+        $profile = Profile::find($this->current_user->id);
         return view('tenant.dashboard.profile', compact('user'));
     }
 }

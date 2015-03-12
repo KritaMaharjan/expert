@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Request as FacadeRequest;
 use Illuminate\Support\Facades\Validator;
 use Request as Requested;
 use Illuminate\Http\Request;
+use DB;
 
 class UserController extends BaseController {
 
@@ -26,7 +27,13 @@ class UserController extends BaseController {
     public function index($value='')
     {
         
-        $setting = $this->setting->getSetting();
+       $setting =(array) DB::table('fb_users as u')
+                        ->leftjoin('fb_profile as p', 'u.id', '=', 'p.user_id')
+                        ->select('u.id', 'u.fullname As name', 'u.email', 'p.*')
+                        ->where('u.id',current_user()->id)
+                        ->first();
+      
+       
     	$data = array('page_title' => 'User Controller','setting'=>$setting);
     	return view('tenant.setting.user')->with($data);
     }
@@ -38,10 +45,11 @@ class UserController extends BaseController {
                                             'name' => 'required',
                                             'email' => 'required',
                                             'postcode' => 'required',
-                                            'security_number' => 'required|numeric',
+                                            'social_security_number' => 'required|numeric',
                                             'phone' => 'required|numeric',
                                             'address' => 'required',
                                             'comment' => 'required',
+                                            'tax_card' =>'required',
                                             'town' =>'required'
                                             )
                                         );
@@ -59,28 +67,25 @@ class UserController extends BaseController {
                     $fileName = \FB::uploadFile($file);
                 }
 
-                $all_user =  array('name' => $request['name'], 
-                                    'email'=> $request['email'], 
-                                 );
+            
 
-                $all_profile = array(
-                                    'security_number'=> $request['security_number'], 
-                                    'postcode'=> $request['postcode'], 
-                                    'phone'=> $request['phone'], 
-                                    'address'=> $request['address'], 
-                                    'comment'=> $request['comment'], 
-                                    'image'=> $fileName,
-                                    'tax' => $request['tax'],
-                                    'town' => $request['town']
-                                );
+              $user = User::find(current_user()->id);
+              $user->fullname=$request['name'];
+              $user->email=$request['email'];
+              $user->save();
 
-            if ($group != '') {
-                $this->setting->addOrUpdate([$group => $all], $group);
-            } else {
-                $this->setting->addOrUpdate($all);
-            }
+             $profile =Profile::find(current_user()->id);
+             $profile->social_security_number=$request['social_security_number'];
+             $profile->postcode=$request['postcode'];
+             $profile->phone=$request['phone'];
+             $profile->address=$request['address'];
+             $profile->comment=$request['comment'];
+             $profile->photo=$fileName;
+             $profile->tax_card=$request['tax_card'];
+             $profile->town=$request['town'];
+             $profile->save();
 
-              return tenant()->route('tenant.edit.profile')->with('message', 'Setting Updated successfully');
+            return tenant()->route('tenant.edit.profile')->with('message', 'Setting Updated successfully');
 
             
     }
