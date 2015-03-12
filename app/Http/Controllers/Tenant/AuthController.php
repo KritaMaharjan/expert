@@ -175,24 +175,5 @@ class AuthController extends BaseController {
         $subuser->activation_key = null;
         $subuser->save();
         $this->saveRegistrationSession($subuser);
-
-        return $subuser;
     }
-
-    /**
-     * @param $subuser
-     */
-    private function saveRegistrationSession($subuser)
-    {
-        $registration_details = array(
-            'company'    => $subuser->company,
-            'guid'       => $subuser->guid,
-            'domain'     => $subuser->domain,
-            'email'      => $subuser->email,
-            'first_time' => true
-        );
-
-        Session::put('register_tenant', $registration_details);
-    }
-
 }

@@ -48,11 +48,7 @@ Profile
                             
                         </tr>
                         
-                         <tr>
-                            <td><strong>Status</strong></td>
-                            <td>@if($user->status == 1) Active @elseif($user->status == 0) Inactive @endif</td>
-                            
-                        </tr>
+                         
                         <tr>
                             <td><strong>Registration Date</strong></td>
                             <td>{{$user->created_at}}</td>

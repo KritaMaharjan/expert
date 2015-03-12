@@ -91,10 +91,10 @@ class TenantTable {
                 $table->integer('user_id')->unsign()->index(); // user id from user table
                 $table->text('personal_email_setting'); // serialized value of personal email setting
                 $table->text('support_email_setting'); // serialized value of support email setting
-                $table->integer('social_security_number'); // social security number of a user
+                $table->integer('social_security_number')->nullable(); // social security number of a user
                 $table->bigInteger('phone'); // phone number of a user
                 $table->string('address', 100); // address of a user
-                $table->string('photo', 50); // profile image of a user
+                $table->string('photo', 50)->nullable(); // profile image of a user
                 $table->string('postcode', 10); // postcode of a user
                 $table->string('town', 45); // town of a user
                 $table->string('tax_card', 15); // tax card of a user
