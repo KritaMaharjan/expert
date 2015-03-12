@@ -16,13 +16,14 @@ Profile
 
           
             <div class="box-header align-right">
-                            <h3 class="box-title"></h3>
-                            <a href="{{tenant_route('tenant.auth.changePassword')}}" class="mg-right-5">Change password</a>
-                            <a href="{{tenant_route('tenant.auth.changePassword')}}">Settings</a>
-                            <div class="box-tools">
+                <h3 class="box-title"></h3>
+                <a href="{{tenant_route('tenant.auth.changePassword')}}" class="mg-right-5">Change password</a>
+                <a href="{{tenant_route('tenant.auth.changePassword')}}">Settings</a>
+                <div class="box-tools">
 
-                            </div>
-                        </div><!-- /.box-header -->
+                </div>
+            </div><!-- /.box-header -->
+
             <div class="box-body table-responsive no-padding">
                 <table class="table">
                     <tbody>
@@ -47,7 +48,7 @@ Profile
                         </tr>
                         
                          <tr>
-                            <td><strong>Status<strong></td>
+                            <td><strong>Status</strong></td>
                             <td>@if($user->status == 1) Active @elseif($user->status == 0) Inactive @endif</td>
                             
                         </tr>

@@ -35,8 +35,9 @@ class Kernel extends HttpKernel {
         'auth.tenant'  => 'App\Http\Middleware\RedirectTenantUser',
         'guest.tenant' => 'App\Http\Middleware\RedirectTenantUserIfAuthenticated',
         'setup.tenant' => 'App\Http\Middleware\SetupChecker',
-        'roles' => 'App\Http\Middleware\CheckRole',
-        'permissions' => 'App\Http\Middleware\Permissions'
+        'preventSystem' => 'App\Http\Middleware\PreventSystemAccess',
+
     ];
 
 }
+

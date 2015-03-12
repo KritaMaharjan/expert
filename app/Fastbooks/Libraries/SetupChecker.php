@@ -65,7 +65,7 @@ class SetupChecker {
 
     function redirectRoute()
     {
-        return redirect()->route($this->route);
+        return tenant()->route($this->route);
     }
 
 } 

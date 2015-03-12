@@ -33,7 +33,7 @@ Product
                       <th>Purchase Cost</th>
                       <th>Sales Price</th>
                       <th>Vat</th>
-                      <th></th>
+                      <th>Action</th>
                     </tr>
                 </thead>
               </table>

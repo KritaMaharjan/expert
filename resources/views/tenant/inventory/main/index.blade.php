@@ -30,7 +30,7 @@ Inventory
                       <th>Total Sales price</th>
                       <th>Vat</th>
                       <th>Purchase Date</th>
-                      <th></th>
+                      <th>Action</th>
                     </tr>
                 </thead>
                 <tbody></tbody>

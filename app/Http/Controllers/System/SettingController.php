@@ -12,6 +12,7 @@ class SettingController extends BaseController {
 
     function __construct(Setting $setting)
     {
+        parent::__construct();
         $this->setting = $setting;
     }
 
@@ -48,10 +49,7 @@ class SettingController extends BaseController {
                                             'name' => 'required',
                                             'email' => 'required|email',
                                             'password' => 'required',
-
                                             'notify' => 'required|email',
-                                           
-                                
                                             )
                                         );
 
@@ -69,22 +67,27 @@ class SettingController extends BaseController {
         return redirect()->back()->with('message', 'Setting Updated successfully');
     }
 
-    function TemplateUpdate(Request $request)
+    function updateTemplate(Request $request)
     {
         $all = $request->except('_token', 'group');
         $group = $request->input('group');
         $validator = Validator::make($request->all(),
             array(
-                'name' => 'required',
-                'email' => 'required|email',
-                'password' => 'required',
-                'notify' => 'required|email',
+                'confirmation_email_subject' => 'required|max:100',
+                'confirmation_email' => 'required',
+                'domain_setup_subject' => 'required|max:100',
+                'domain_setup' => 'required',
+                'request_url_subject' => 'required|max:100',
+                'request_url' => 'required',
+                'forgot_password_subject' => 'required|max:100',
+                'forgot_password' => 'required',
+                'password_confirm_subject' => 'required|max:100',
+                'password_confirm' => 'required'
             )
         );
 
         if ($validator->fails()) {
-            return  tenant()->route('system.setting.email')->withErrors($validator)->withInput();
-
+            return  redirect()->route('system.setting.template')->withErrors($validator)->withInput();
         }
 
         if ($group != '') {
@@ -93,7 +96,7 @@ class SettingController extends BaseController {
             $this->setting->addOrUpdate($all);
         }
 
-        return redirect()->back()->with('message', 'Setting Updated successfully');
+        return redirect()->back()->with('message', 'Template Updated successfully');
     }
 
 }
