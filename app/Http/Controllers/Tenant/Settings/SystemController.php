@@ -63,8 +63,6 @@ class SystemController extends BaseController {
 
     public function savebusiness($request='')
     {
-       
-
         $all = $request->except('_token', 'group','company_name','company_number');
         $group = 'business';
         $company = $request->only('company_name','company_number');
@@ -77,14 +75,10 @@ class SystemController extends BaseController {
             $this->setting->addOrUpdate($all);
             $this->setting->addOrUpdate($company);
         }
-
-        
     }
 
     public function savefix(Request $request)
     {
-        
-
           $validator = Validator::make($request->all(),
                                                 array(
                                                     'swift_num' => 'numeric',

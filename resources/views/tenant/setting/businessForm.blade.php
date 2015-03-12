@@ -1,10 +1,13 @@
+
+
 {!! Form::open(array('url' => tenant()->url('setting/system'), 'method'=>'POST', 'class'=>'form-horizontal')) !!}
 	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	<input type="hidden" name="group" value="business">
 		<div class="form-group no-mg">
 	      <label class="control-label">Company Name</label>
 	      <div class="@if($errors->has('company_name')) {{'has-error'}} @endif">
-	      	{!!Form::text('company_name', $company['company_name'] or '' ,array('class' => 'form-control'))!!}  
+	      <input class="form-control" name="company_name" value="<?php echo isset($company['company_name'])? $company['company_name'] : '';?>" >
+	      	{{--{!!Form::text('company_name', $company['company_name'] or '' ,array('class' => 'form-control'))!!}--}}
 	        @if($errors->has('company_name'))
 	       		{!! $errors->first('company_name', '<label class="control-label" for="inputError">:message</label>') !!}
 	      	@endif
@@ -13,7 +16,7 @@
 	    <div class="form-group no-mg">
 	      <label class="control-label">Company Number</label>
 	      <div class="@if($errors->has('company_number')) {{'has-error'}} @endif">
-	      	<input class="form-control" name="company_number" value="<?php isset($company['company_name'])?$company['company_name']:'';?>" >
+	      	<input class="form-control" name="company_number" value="<?php echo isset($company['company_number'])? $company['company_number'] : '';?>" >
 	        <!-- {!!Form::text('company_number',$company['company_name'] or '',array('class' => 'form-control'))!!}   -->
 	      	@if($errors->has('company_number'))
 	       		{!! $errors->first('company_number', '<label class="control-label" for="inputError">:message</label>') !!}

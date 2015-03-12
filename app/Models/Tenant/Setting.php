@@ -78,9 +78,6 @@ class Setting extends Model {
                 } else {
                     $setting->value = $value;
                 }
-
-               
-               
                 $setting->save();
             }
         endif;
