@@ -123,7 +123,6 @@ class Tenant {
     }
 
 
-
     /**
      * Create database and tables for a tenant when first time landed on APP
      */
@@ -268,12 +267,12 @@ class Tenant {
      */
     function isFirstTime()
     {
-        $user = $this->getTenantinfo();
-        if (isset($user->is_new) AND $user->is_new == 1) {
-            return true;
-        } else {
-            return false;
+        $data = session()->get('register_tenant');
+        if (!is_null($data)) {
+            return $data['first_time'];
         }
+
+        return false;
     }
 
     /**
