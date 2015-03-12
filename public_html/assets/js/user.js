@@ -56,7 +56,7 @@ $(function () {
 
         form.find('.has-error').removeClass('has-error');
         form.find('label.error').remove();
-        $('.mainContainer').find('.callout').remove();
+        $('.callout').remove();
 
         $.ajax({
             url: formAction,
@@ -66,7 +66,7 @@ $(function () {
 
             //required for ajax file upload
             processData: false,
-            contentType: false,
+            contentType: false
         })
             .done(function (response) {
                 if(response.fail)
@@ -113,6 +113,7 @@ $(function () {
 
         form.find('.has-error').removeClass('has-error');
         form.find('label.error').remove();
+        $('.callout').remove();
 
         $.ajax({
             url: formAction,
@@ -122,7 +123,7 @@ $(function () {
 
             //required for ajax file upload
             processData: false,
-            contentType: false,
+            contentType: false
         })
             .done(function (response) {
                 if(response.fail)
@@ -171,7 +172,7 @@ $(function () {
             $.ajax({
                 url: delete_url,
                 type: 'GET',
-                dataType: 'json',
+                dataType: 'json'
             })
                 .done(function (response) {
                     if (response.status === 1) {
@@ -212,7 +213,7 @@ $(function () {
             $.ajax({
                 url: delete_url,
                 type: 'GET',
-                dataType: 'json',
+                dataType: 'json'
             })
                 .done(function (response) {
                     if (response.success === true) {
