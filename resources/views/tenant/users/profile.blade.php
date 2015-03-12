@@ -41,13 +41,13 @@ User Details
               </tr>
                <tr>
                   <td><strong>Last Login</strong></td>
-                  <td>{{ $user->last_login or 'Not Defined'}}</td>
+                  <td>{{{ ($user->last_login)? date("d-M-Y h:i:s A",strtotime($user->last_login)) : 'N/A' }}}</td>
                   
               </tr>
               
                <tr>
-                  <td><strong>Created Date<strong></td>
-                  <td>{{ date("d-M-Y",strtotime($user->created_at)) }}</td>
+                  <td><strong>Created Date</strong></td>
+                  <td>{{ date("d-M-Y h:i:s A",strtotime($user->created_at)) }}</td>
                   
               </tr>
               <tr>
