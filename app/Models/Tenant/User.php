@@ -164,7 +164,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                     'personal_email_setting' => $personal_email_setting
             ]);
 
-        $this->sendConfirmationMail($user->activation_key, $details['name'], $details['email']);
+        $this->sendConfirmationMail($user->activation_key, $details['fullname'], $details['email']);
 
         $added_user['data'] = $this->toFomatedData($user);
         $added_user['template'] = $this->getTemplate($user);

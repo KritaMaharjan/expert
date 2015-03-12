@@ -22,9 +22,11 @@ class AuthController extends BaseController {
         if (!$tenant)
             return view('errors.404');
 
-        $this->activateTenant($tenant);
+        $tenant = $this->activateTenant($tenant);
 
-        return tenant($tenant->domain)->redirect();
+        $url = '/?setup=' . $tenant->setup_key;
+
+        return tenant($tenant->domain)->redirect($url);
     }
 
     /**
@@ -48,11 +50,13 @@ class AuthController extends BaseController {
      */
     private function activateTenant($tenant = '')
     {
+        $tenant->setup_key = \FB::uniqueKey(15, 'tenants', 'setup_key');
         $tenant->status = 1;
         $tenant->activation_key = null;
         $tenant->save();
-
         $this->saveRegistrationSession($tenant);
+
+        return $tenant;
     }
 
     /**
@@ -64,7 +68,7 @@ class AuthController extends BaseController {
         if (!$activation_key || $activation_key == '')
             return false;
 
-        $tenant = Client::where('activation_key','=',$activation_key)->first();
+        $tenant = Client::where('activation_key', '=', $activation_key)->first();
 
         if (!$tenant)
             return false;

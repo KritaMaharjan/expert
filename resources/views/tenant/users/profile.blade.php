@@ -18,7 +18,7 @@ User Details
           <tbody>
             <tr>
                 <td class="no-border"><strong>Photo</strong></td>
-                <td class="no-border"><img src="{{ ($profile->photo)? asset('assets/uploads/'.$profile->photo) : asset('assets/images/no_image.jpg') }}" class="uploaded-img" /></td>
+                <td class="no-border"><img src="{{ ($profile->photo && file_exists(base_path('public_html/assets/uploads/'.$profile->photo)))? asset('assets/uploads/'.$profile->photo) : asset('assets/images/no_image.jpg') }}" class="uploaded-img" /></td>
             </tr>
               <tr>
                   <td><strong>Name</strong></td>

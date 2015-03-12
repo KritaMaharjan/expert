@@ -36,7 +36,7 @@ class TenantTable {
                 $table->text('permissions')->nullable(); // serialized data of permissions
                 $table->datetime('last_login')->nullable(); // last login Date time
                 $table->datetime('last_login_ip', 20)->nullable(); // last login IP
-                $table->string('suspended_reason'); // suspended reason set by admin
+                $table->string('suspended_reason')->nullable(); // suspended reason set by admin
                 $table->boolean('first_time')->default(1); // 1 for first time login
 
                // remembers token column
@@ -88,18 +88,18 @@ class TenantTable {
         if (!Schema::hasTable(self::TBL_PREFIX . 'profile')) {
             Schema::create(self::TBL_PREFIX . 'profile', function (Blueprint $table) {
                 // $table->increments('id'); // autoincrement value of a profile
-                $table->integer('user_id')->unsign()->index(); // user id from user table
-                $table->text('personal_email_setting'); // serialized value of personal email setting
-                $table->text('support_email_setting'); // serialized value of support email setting
-                $table->integer('social_security_number'); // social security number of a user
-                $table->bigInteger('phone'); // phone number of a user
-                $table->string('address', 100); // address of a user
-                $table->string('photo', 50); // profile image of a user
-                $table->string('postcode', 10); // postcode of a user
-                $table->string('town', 45); // town of a user
-                $table->string('tax_card', 15); // tax card of a user
-                $table->float('vacation_fund_percentage'); // vacation fund percentage of a user
-                $table->text('comment'); // comment by admin
+                $table->integer('user_id')->unsign()->unique(); // user id from user table
+                $table->text('personal_email_setting')->nullable(); // serialized value of personal email setting
+                $table->text('support_email_setting')->nullable(); // serialized value of support email setting
+                $table->integer('social_security_number')->nullable(); // social security number of a user
+                $table->bigInteger('phone')->nullable(); // phone number of a user
+                $table->string('address', 100)->nullable(); // address of a user
+                $table->string('photo', 50)->nullable(); // profile image of a user
+                $table->string('postcode', 10)->nullable(); // postcode of a user
+                $table->string('town', 45)->nullable(); // town of a user
+                $table->string('tax_card', 15)->nullable(); // tax card of a user
+                $table->float('vacation_fund_percentage')->nullable(); // vacation fund percentage of a user
+                $table->text('comment')->nullable(); // comment by admin
 
                 // updated_at DATETIME
                 $table->timestamps('updated_at');
@@ -121,15 +121,16 @@ class TenantTable {
                 $table->string('email', 100)->unique(); // email ID of a user
                 $table->integer('type')->unsign()->index(); //'1 - human - company' ,
                 $table->string('name', 45); //'name of a customer (human or company)'
-                $table->date('dob'); //'dob of human'
+                $table->string('company_number', 30)->nullable(); //'company registration no of a company'
+                $table->date('dob')->nullable(); //'dob of human'
                 $table->string('street_name', 70); //'street address of a customer'
                 $table->string('street_number', 15); //'street number of a customer'
                 $table->string('postcode', 10); //'postcode of a customer'
                 $table->string('town', 55); //'town of a customer'
-                $table->integer('telephone');//'telephone number of a customer'
-                $table->bigInteger('mobile');//'mobile number of a customer'
-                $table->string('image', 50); //'image or logo of a customer'
-                $table->string('file', 50); //'file of a customer'
+                $table->integer('telephone')->nullable();//'telephone number of a customer'
+                $table->bigInteger('mobile')->nullable();//'mobile number of a customer'
+                $table->string('image', 50)->nullable(); //'image or logo of a customer'
+                $table->string('file', 50)->nullable(); //'file of a customer'
                 $table->tinyInteger('status'); //'1 - active\n0 - inactive'
 
                 // created_at, updated_at DATETIME
@@ -151,8 +152,8 @@ class TenantTable {
                 $table->string('number', 25)->unique();  // product
                 $table->string('name', 100)->unique();  // name of an product
                 $table->float('vat'); // Vat percentage applied for the product
-                $table->decimal('selling_price', 8, 2); //price of an product
-                $table->decimal('purchase_cost', 8, 2); //price of an product
+                $table->decimal('selling_price', 11, 2); //price of an product
+                $table->decimal('purchase_cost', 11, 2); //price of an product
 
                 // created_at DATETIME
                 $table->timestamps();
@@ -172,8 +173,8 @@ class TenantTable {
                 $table->integer('user_id')->unique();  // name of an product
                 $table->integer('quantity'); // quantity of an product
                 $table->float('vat'); // Vat percentage applied for the product
-                $table->decimal('selling_price', 8, 2); //price of an product
-                $table->decimal('purchase_cost', 8, 2); //price of an product
+                $table->decimal('selling_price', 11, 2); //price of an product
+                $table->decimal('purchase_cost', 11, 2); //price of an product
                 $table->datetime('purchase_date'); // Add time or purchased date of an product
 
                 // created_at DATETIME

@@ -11,6 +11,15 @@
                         <input type="email" placeholder="Email" name="email" value="" id="email" class="form-control">
                         
                       </div>
+                      <div class="form-group business_div">
+                            <input type="text" placeholder="Company Number" name="company_number" value="{{old('company_number')}}" class="form-control">
+                      </div>
+                      <input type="hidden" name="type" id="type" value="1">
+                    <div class="col-md-12 pad-0">
+                      <div class="input-group">
+                            <input type="checkbox" name="business" id="business"> Business
+                      </div><!-- /input-group -->
+                    </div>
                       <div class="form-group dob_div">
                         <label for="">Date of birth</label>
                        <select name="day" class="form-control" id="day">
@@ -37,15 +46,6 @@
                       </select> 
                        
                       </div>
-                      <div class="form-group business_div">
-                            <input type="text" placeholder="Company Number" name="company_number" value="{{old('company_number')}}" class="form-control">
-                      </div>
-                      <input type="hidden" name="type" id="type" value="1">
-                    <div class="col-md-12 pad-0">
-                      <div class="input-group">
-                            <input type="checkbox" name="business" id="business"> Business
-                      </div><!-- /input-group -->
-                    </div>
                       <div class="form-group">
                         <label for="">Street name</label>
                         <input type="text" placeholder="Street Name"  id="street_name" name="street_name"  value="{{old('street_name')}}" class="form-control">
