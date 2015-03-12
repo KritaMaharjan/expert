@@ -22,7 +22,8 @@ System Settings
 					<div class="form-group no-mg">
 		      			<label class="control-label">SMTP Server <span>(Incoming)</span></label>
 						<div class="@if($errors->has('incoming_server')) {{'has-error'}} @endif">
-				        {!!Form::text('incoming_server',$support['incoming_server'],array('class' => 'form-control'))!!}  
+						<input class="form-control" name="incoming_server" value="<?php isset($support['incoming_server'])?$support['incoming_server']:'';?>" >
+				       
 				      	@if($errors->has('incoming_server'))
 				       		{!! $errors->first('incoming_server', '<label class="control-label" for="inputError">:message</label>') !!}
 				      	@endif
@@ -31,7 +32,8 @@ System Settings
 					<div class="form-group no-mg">
 		      			<label class="control-label">SMTP Server <span>(Outgoing)</span></label>
 						<div class="@if($errors->has('outgoing_server')) {{'has-error'}} @endif">
-				        {!!Form::text('outgoing_server',$support['outgoing_server'],array('class' => 'form-control'))!!}  
+
+				        <input class="form-control" name="outgoing_server" value="<?php isset($support['outgoing_server'])?$support['outgoing_server']:'';?>" >
 				      	@if($errors->has('outgoing_server'))
 				       		{!! $errors->first('outgoing_server', '<label class="control-label" for="inputError">:message</label>') !!}
 				      	@endif
@@ -40,7 +42,8 @@ System Settings
 					<div class="form-group no-mg">
 		      			<label class="control-label">Username</label>
 						<div class="@if($errors->has('username')) {{'has-error'}} @endif">
-				        {!!Form::text('username',$support['username'],array('class' => 'form-control'))!!}  
+				       
+				         <input class="form-control" name="username" value="<?php isset($support['username'])?$support['username']:'';?>" >  
 				      	@if($errors->has('username'))
 				       		{!! $errors->first('username', '<label class="control-label" for="inputError">:message</label>') !!}
 				      	@endif
@@ -49,7 +52,7 @@ System Settings
 					<div class="form-group no-mg">
 		      			<label class="control-label">Password</label>
 						<div class="@if($errors->has('password')) {{'has-error'}} @endif">
-				        <input type="password" name="password"  class="form-control" value="{{ $support['password'] }}">  
+				        <input type="password" name="password"  class="form-control" value="<?php isset($support['password'])?$support['password']:'';?>">  
 				      	@if($errors->has('password'))
 				       		{!! $errors->first('password', '<label class="control-label" for="inputError">:message</label>') !!}
 				      	@endif
@@ -73,7 +76,8 @@ System Settings
 					<div class="form-group no-mg">
 		      			<label class="control-label">SMTP Server <span>(Incoming)</span></label>
 						<div class="@if($errors->has('incoming_server')) {{'has-error'}} @endif">
-				        {!!Form::text('incoming_server',$personal['incoming_server'],array('class' => 'form-control'))!!}  
+						<input class="form-control" name="incoming_server" value="<?php isset($personal['incoming_server'])?$personal['incoming_server']:'';?>" >  
+				       
 				      	@if($errors->has('incoming_server'))
 				       		{!! $errors->first('incoming_server', '<label class="control-label" for="inputError">:message</label>') !!}
 				      	@endif
@@ -82,7 +86,8 @@ System Settings
 					<div class="form-group no-mg">
 		      			<label class="control-label">SMTP Server <span>(Outgoing)</span></label>
 						<div class="@if($errors->has('outgoing_server')) {{'has-error'}} @endif">
-				        {!!Form::text('outgoing_server',$personal['outgoing_server'],array('class' => 'form-control'))!!}  
+							<input class="form-control" name="outgoing_server" value="<?php isset($personal['outgoing_server'])?$personal['outgoing_server']:'';?>" >  
+
 				      	@if($errors->has('outgoing_server'))
 				       		{!! $errors->first('outgoing_server', '<label class="control-label" for="inputError">:message</label>') !!}
 				      	@endif
@@ -91,7 +96,9 @@ System Settings
 					<div class="form-group no-mg">
 		      			<label class="control-label">Username</label>
 						<div class="@if($errors->has('username')) {{'has-error'}} @endif">
-				        {!!Form::text('username',$personal['username'],array('class' => 'form-control'))!!}  
+						<input class="form-control" name="username" value="<?php isset($personal['username'])?$personal['username']:'';?>" >  
+				     
+				         
 				      	@if($errors->has('username'))
 				       		{!! $errors->first('username', '<label class="control-label" for="inputError">:message</label>') !!}
 				      	@endif
@@ -100,7 +107,7 @@ System Settings
 					<div class="form-group no-mg">
 		      			<label class="control-label">Password</label>
 						<div class="@if($errors->has('password')) {{'has-error'}} @endif">
-				        <input type="password" name="password"  class="form-control" value="{{ $personal['password'] }}">   
+				        <input type="password" name="password"  class="form-control" value="<?php isset($personal['password'])?$personal['password']:'';?>">   
 				      	@if($errors->has('password'))
 				       		{!! $errors->first('password', '<label class="control-label" for="inputError">:message</label>') !!}
 				      	@endif
