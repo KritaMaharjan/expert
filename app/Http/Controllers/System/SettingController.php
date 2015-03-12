@@ -69,4 +69,31 @@ class SettingController extends BaseController {
         return redirect()->back()->with('message', 'Setting Updated successfully');
     }
 
+    function TemplateUpdate(Request $request)
+    {
+        $all = $request->except('_token', 'group');
+        $group = $request->input('group');
+        $validator = Validator::make($request->all(),
+            array(
+                'name' => 'required',
+                'email' => 'required|email',
+                'password' => 'required',
+                'notify' => 'required|email',
+            )
+        );
+
+        if ($validator->fails()) {
+            return  tenant()->route('system.setting.email')->withErrors($validator)->withInput();
+
+        }
+
+        if ($group != '') {
+            $this->setting->addOrUpdate([$group => $all], $group);
+        } else {
+            $this->setting->addOrUpdate($all);
+        }
+
+        return redirect()->back()->with('message', 'Setting Updated successfully');
+    }
+
 }
