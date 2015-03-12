@@ -17,11 +17,13 @@ use Auth;
 class AuthController extends BaseController {
 
     protected $auth;
+    protected $request;
 
-    function __construct(Guard $auth)
+    function __construct(Guard $auth, Request $request)
     {
         parent::__construct();
         $this->auth = $auth;
+        $this->request = $request;
     }
 
 
@@ -135,10 +137,10 @@ class AuthController extends BaseController {
      * @param string $activation_key
      * @return \Illuminate\View\View
      */
-    public function confirm($activation_key = '')
+    public function confirm($confirmationCode = '')
     {
-
-        $subuser = $this->checkActivation($activation_key);
+        $confirmationCode = $this->request->route('confirmationCode');
+        $subuser = $this->checkActivation($confirmationCode);
 
         if (!$subuser)
             return view('errors.404');
@@ -174,6 +176,5 @@ class AuthController extends BaseController {
         $subuser->status = 1;
         $subuser->activation_key = null;
         $subuser->save();
-        $this->saveRegistrationSession($subuser);
     }
 }

@@ -79,7 +79,7 @@ class ClientController extends BaseController {
         if(!empty($clients)) {
           foreach($clients as $key=>$client){
             $new_key = $client->name;
-            $tenant->$new_key=unserialize($client->value);
+            $tenant->$new_key=@unserialize($client->value);
           
          }
         }
