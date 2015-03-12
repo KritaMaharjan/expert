@@ -69,6 +69,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             return tenant()->route('tenant.login')->withInput()->with('message', lang('Your account has been permanently blocked.'));
         }
 
+        //$user = TenantUser::where('id', $user->id)->first();
+        $user->last_login = \Carbon::now();
+        $user->save();
         return tenant()->route('tenant.index');
     }
 
