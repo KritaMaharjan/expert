@@ -55,23 +55,6 @@ class Setting extends Model {
         endif;
     }
 
-    function addOrUpdateTemplate(array $data = array())
-    {
-        if (!empty($data)):
-            foreach ($data as $key => $value) {
-                $setting = Setting::firstOrNew(['name' => $key]);
-                if (is_array($value) || is_object($value)) {
-                    $setting->value = serialize($value);
-                } else {
-                    $setting->value = $value;
-                }
-                $setting->autoload = $group;
-                $setting->save();
-            }
-        endif;
-    }
-
-
     function getValueAttribute($value)
     {
         $data = @unserialize($value);

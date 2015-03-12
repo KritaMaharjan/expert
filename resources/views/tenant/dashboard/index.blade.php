@@ -11,7 +11,7 @@ Dashboard
         </div>
     <div>
 
-@if($first_time == TRUE)
+@if($current_user->first_time === 1)
 	@include('tenant.dashboard.onboarding')
 @endif
 

@@ -21,7 +21,7 @@
 		    <div class="form-group">
 		      <label class="control-label col-sm-5">Company Name</label>
 		      <div class="col-sm-7 @if($errors->has('company_name')) {{'has-error'}} @endif">
-		        <input type="text" class="form-control" placeholder="" name="company_name" value="{{ old('company_name') }}">
+		        <input type="text" class="form-control" placeholder="" name="company_name" value="{{ $company_name or old('company_name') }}">
 		        @if($errors->has('company_name'))
 	           		{!! $errors->first('company_name', '<label class="control-label" for="inputError">:message</label>') !!}
 	          	@endif

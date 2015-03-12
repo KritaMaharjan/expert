@@ -20,10 +20,10 @@ Template Settings
         	<form role="form" method="post" action="{{url('system/setting/template')}}" >
         	    @if($errors->has())
         	       <p class="alert alert-error">
-                   @foreach ($errors->all() as $error)
-                      <div>{{ $error }}</div>
-                   @endforeach
-                  </p>
+                       @foreach ($errors->all() as $error)
+                          <div>{{ $error }}</div>
+                       @endforeach
+                   </p>
                 @endif
 
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
