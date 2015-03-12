@@ -165,6 +165,7 @@ a{
 
             .btn-table-bottom{
                 display: block;
+                padding: 10px 0;
             }
                 .add-btn{
                     padding: 4px;
@@ -173,7 +174,7 @@ a{
 
     .invoice-col .form-group label{
         display: block;
-        width: 30%;
+        width: 40%;
         float: left;
     }
     .invoice-col .form-group input.form-control{
@@ -194,7 +195,7 @@ a{
         }   
 
         .right-from .form-group label {
-            width: 56%!important;
+            width: 56%;
             text-align: right;            
         }
         .right-from .form-control {
@@ -697,4 +698,8 @@ fieldset.wrapper-box legend{
     display: block;
     max-width: 100px;
     height: 100px;
+}
+.invoice .select2{
+    margin-left: 10px;
+    width: 40% !important;
 }

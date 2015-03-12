@@ -76,6 +76,10 @@
 h3.subtitle {text-transform: lowercase;
     line-height: 22px;}
 
+.white-section .alert .close{
+	right: 0;
+}    
+
 @media screen and (max-width: 767px){
 	.slider-info.custom-content{
 		padding: 10px!important;

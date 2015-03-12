@@ -11,7 +11,11 @@
         width: 40%!important;
     }
 }
-
+@media screen and (max-width:991px){
+    .mailbox .mg-top-10 {
+        margin-top: 50px !important;
+    }
+}
 @media screen and (max-width:980px){
 
 }
@@ -34,6 +38,13 @@
         margin-left: 5px;
         display: inline-block;
     }
+    .mailbox .mg-top-10 {
+        margin-top: 10px !important;
+    }
+    .invoice-col .form-group label{
+        width: 50%!important;
+
+    }
 }
 @media screen and (max-width:767px){
 
@@ -46,7 +57,10 @@
     }
 
 }
+@media screen and (max-width:610px){
 
+
+}
 @media screen and (max-width:610px){
     .input-custom{
         margin-left: 10%!important;
@@ -62,6 +76,9 @@
     .input-custom{
         margin-left: 6%!important;
     }
+    .right-from .form-group label {
+        width: 50%!important;
+    }
 }
 
 @media screen and (max-width:540px){
@@ -76,6 +93,24 @@
 
     .modal-right .modal-dialog,.modal-right .modal-content{
         width: 100%!important;
+    }
+    .invoice-col .form-group label {
+        display: block;
+        float: none;
+        width: 100% !important;
+    }
+    .invoice-col .form-group input.form-control {
+        display: block;
+        float: left;
+        margin-left: 0px!important;
+        width: 100%!important;
+    }
+    .invoice .select2.select2-container {
+        margin-left: 0px!important;
+        width: 100% !important;
+    }
+    .right-from .form-group label{
+        text-align: left!important;
     }
 
 }
