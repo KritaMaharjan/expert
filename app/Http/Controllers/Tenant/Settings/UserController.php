@@ -46,7 +46,7 @@ class UserController extends BaseController {
                                         );
 
         if ($validator->fails())
-            return  tenant()->route('tenant.setting.user')->withErrors($validator)->withInput();
+            return  tenant()->route('tenant.edit.profile')->withErrors($validator)->withInput();
 
          //$all = $request->except('_token', 'group','photo');
             $group = $request->input('group');
@@ -75,7 +75,7 @@ class UserController extends BaseController {
                 $this->setting->addOrUpdate($all);
             }
 
-              return tenant()->route('tenant.setting.user')->with('message', 'Setting Updated successfully');
+              return tenant()->route('tenant.edit.profile')->with('message', 'Setting Updated successfully');
 
             
     }

@@ -29,7 +29,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @var array
      */
-    protected $fillable = ['username', 'fullname', 'email', 'password', 'status', 'activation_key', 'domain', 'role', 'permissions'];
+    protected $fillable = ['email', 'fullname', 'email', 'password', 'status', 'activation_key', 'domain', 'role', 'permissions'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -46,9 +46,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $this->hasOne('App\Models\Tenant\Profile');
     }
 
-    function saveUser($username = '', $details = array())
+    function saveUser($email = '', $details = array())
     {
-        $setup = User::firstOrCreate(['username' => $username]);
+        $setup = User::firstOrCreate(['email' => $email]);
         $setup->fullname = $details['fullname'];
         $setup->password = bcrypt($details['password']);
         $setup->save();

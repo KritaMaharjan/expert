@@ -67,12 +67,12 @@ class SetupController extends BaseController {
 
         $this->saveAboutDetails($request->except('_token'));
         //$this->setting->addOrUpdate($request->except('_token'));
-        return redirect()->route('tenant.setup.business');
+        return tenant()->route('tenant.setup.business');
 	}
 
 	public function saveAboutDetails($details='')
-	{
-		$this->user->saveUser($this->current_user->username, array('fullname' => $details['name'], 'password' => $details['password'] ));
+	{ 
+		$this->user->saveUser($this->current_user->email, array('fullname' => $details['name'], 'password' => $details['password'] ));
 
         $company_details = serialize([
         						'company_name'=>$details['company_name'],
@@ -102,7 +102,7 @@ class SetupController extends BaseController {
         	return redirect()->back()->withErrors($validator)->withInput();
 
         $this->saveBusinessDetails($request->except('_token'));
-        return redirect()->route('tenant.setup.fix');
+        return tenant()->route('tenant.setup.fix');
 	}
 
 	public function saveBusinessDetails($details='')
@@ -148,7 +148,7 @@ class SetupController extends BaseController {
         }
 
         $this->saveFixDetails($request->except('_token'), $fileName);
-        return redirect()->route('tenant.login');
+        return tenant()->route('tenant.login');
 	}
 
 	public function saveFixDetails($details='', $fileName)

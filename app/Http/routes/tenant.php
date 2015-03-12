@@ -62,8 +62,8 @@
         post('setting/system/fixupdate', ['as' => 'tenant.setup.fixUpdate', 'uses' => 'Tenant\Settings\SystemController@saveFix']);
         get('setting/email', ['as' => 'tenant.setting.email', 'uses' => 'Tenant\Settings\EmailController@index']);
       	post('setting/email', ['as' => 'tenant.setting.email', 'uses' => 'Tenant\Settings\EmailController@update']);
-        get('setting/user', ['as' => 'tenant.setting.user', 'uses' => 'Tenant\Settings\UserController@index']);
-        post('setting/user', ['as' => 'tenant.setting.user', 'uses' => 'Tenant\Settings\UserController@update']);
+        get('edit/profile', ['as' => 'tenant.edit.profile', 'uses' => 'Tenant\Settings\UserController@index']);
+        post('edit/profile', ['as' => 'tenant.edit.profile', 'uses' => 'Tenant\Settings\UserController@update']);
         get('setting/template', ['as' => 'tenant.setting.template', 'uses' => 'Tenant\SettingController@template']);
         post('setting/update', ['as' => 'tenant.setting.update', 'uses' => 'Tenant\SettingController@update']);
         get('profile', ['as' => 'tenant.profile', 'uses' => 'Tenant\DashboardController@profile']);
