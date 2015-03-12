@@ -1,7 +1,7 @@
 <div class="box-body">
     <div class="form-group">
       @if(isset($mode) && $mode == 'edit')
-        <img src="{{ ($user->photo)? asset('assets/uploads/'.$user->photo) : asset('assets/images/no_image.jpg') }}" class="image-uplod" />
+        <img src="{{ ($user->photo  && file_exists(base_path('public_html/assets/uploads/'.$user->photo)))? asset('assets/uploads/'.$user->photo) : asset('assets/images/no_image.jpg') }}" class="image-uplod" />
       @endif
       <label>Upload Photo</label>
       <div class="@if($errors->has('photo')) {{'has-error'}} @endif">
