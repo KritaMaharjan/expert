@@ -51,7 +51,7 @@ Profile
                             
                         </tr>
                         <tr>
-                            <td><strong>Signup Date and Time</strong></td>
+                            <td><strong>Registration Date</strong></td>
                             <td>{{$user->created_at}}</td>
                             
                         </tr>
