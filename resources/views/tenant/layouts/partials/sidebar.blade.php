@@ -89,7 +89,6 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="{{tenant_route('tenant.setting.system')}}" data-push="true" title="System"><i class="fa fa-circle-o"></i> System</a></li>
-                <li><a href="{{tenant_route('tenant.setting.user')}}" data-push="true" title="Profile"><i class="fa fa-circle-o"></i> Profile</a></li>
                 <li><a href="{{tenant_route('tenant.setting.email')}}" data-push="true" title="Email"><i class="fa fa-circle-o"></i> Email</a></li>
               </ul>
             </li> 

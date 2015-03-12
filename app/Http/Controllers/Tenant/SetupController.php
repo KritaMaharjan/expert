@@ -73,7 +73,9 @@ class SetupController extends BaseController {
 	}
 
 	public function saveAboutDetails($details='')
-	{
+
+	{ 
+
 		$this->user->saveUser($this->current_user->email, array('fullname' => $details['name'], 'password' => $details['password'] ));
 
         $company_details = serialize([
