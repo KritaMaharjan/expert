@@ -14,7 +14,7 @@ User Details
 
   <div class="box box-solid">
     <div class="box-body table-responsive">
-      <table class="table table-hover">
+      <table class="table">
           <tbody>
               <tr>
                   <td class="no-border"><strong>Name</strong></td>

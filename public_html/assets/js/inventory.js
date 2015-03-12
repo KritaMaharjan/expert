@@ -159,11 +159,7 @@ function getTemplate(response, type) {
 
    console.log(response);
     var html = '<td>' + response.data.id + '</td>' +
-        '<td>' +
-        '<a href="#" data-toggle="modal" data-url="' + response.data.show_url + '" data-target="#fb-modal">' +
-        response.data.name +
-        '</a>' +
-        '</td>' +
+        '<td>' +  response.data.name + '</td>' +
         '<td>' + response.data.quantity + '</td>' +
         '<td>' + response.data.purchase_cost + '</td>' +
         '<td>' + response.data.selling_price + '</td>' +

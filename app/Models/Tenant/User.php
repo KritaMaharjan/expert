@@ -283,7 +283,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $orderdir = $order[0]['dir'];
 
         $users = array();
-        $query = $this->select($select);
+        $query = $this->select($select)->where('id', '!=', current_user()->id);
 
         if ($orderColumn != '' AND $orderdir != '') {
             if($orderColumn != 'created')
