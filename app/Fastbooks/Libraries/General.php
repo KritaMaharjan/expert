@@ -199,7 +199,7 @@ class General {
     {
         $user = Auth::user();
         $permissions = @unserialize($user->permissions);
-        if ($user->role == 1 || in_array($access, $permissions)) {
+        if ($user->role == 1 || (!empty($permissions) && in_array($access, $permissions))) {
             return true;
         } else {
             App()->abort('404');

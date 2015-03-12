@@ -52,6 +52,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $setup->fullname = $details['fullname'];
         $setup->password = bcrypt($details['password']);
         $setup->save();
+
+        Profile::firstOrCreate(['user_id' => $setup->id]);
     }
 
     function redirectIfValid($user)

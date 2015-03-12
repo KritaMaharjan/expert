@@ -23,6 +23,7 @@ Route::group(['prefix' => 'system', 'middleware' => ['preventSystem','auth.syste
     get('logout', ['as' => 'system.logout', 'uses' => 'System\AuthController@logout']);
     get('setting/email', ['as' => 'system.setting.email', 'uses' => 'System\SettingController@email']);
     get('setting/template', ['as' => 'system.setting.template', 'uses' => 'System\SettingController@template']);
+    post('setting/template', ['as' => 'system.template.save', 'uses' => 'System\SettingController@updateTemplate']);
     post('setting/update', ['as' => 'system.setting.update', 'uses' => 'System\SettingController@update']);
     get('client', ['as' => 'system.user', 'uses' => 'System\ClientController@index']);
     get('client/{id}', ['as' => 'system.user.show', 'uses' => 'System\ClientController@show']);

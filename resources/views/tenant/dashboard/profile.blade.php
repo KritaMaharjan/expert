@@ -21,9 +21,10 @@ Profile
                 <a href="{{tenant_route('tenant.auth.changePassword')}}">Settings</a> |
                 <a href="{{tenant_route('tenant.edit.profile')}}"  title="Profile"> Edit profile</a>
                 <div class="box-tools">
-                    
+
                 </div>
             </div><!-- /.box-header -->
+
             <div class="box-body table-responsive no-padding">
                 <table class="table">
                     <tbody>
@@ -48,7 +49,7 @@ Profile
                         </tr>
                         
                          <tr>
-                            <td><strong>Status<strong></td>
+                            <td><strong>Status</strong></td>
                             <td>@if($user->status == 1) Active @elseif($user->status == 0) Inactive @endif</td>
                             
                         </tr>

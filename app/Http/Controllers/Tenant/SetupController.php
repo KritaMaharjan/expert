@@ -29,15 +29,17 @@ class SetupController extends BaseController {
 	{
 		$setup = $this->setupChecker->isFirstCompleted();
 		if($setup)
-			return redirect()->route('tenant.setup.business');
-		return view('tenant.auth.setup.about');
+			return tenant()->route('tenant.setup.business');
+        $company = $this->setting->getCompany();
+        $company_name= $company['company_name'];
+		return view('tenant.auth.setup.about', compact('company_name'));
 	}
 
 	public function getBusiness()
 	{
 		$setup = $this->setupChecker->isSecondCompleted();
 		if($setup)
-			return redirect()->route('tenant.setup.fix');
+			return tenant()->route('tenant.setup.fix');
 		$countries = Config::get('tenant.countries');
 		return view('tenant.auth.setup.business')->with('countries', $countries);
 	}
@@ -71,7 +73,9 @@ class SetupController extends BaseController {
 	}
 
 	public function saveAboutDetails($details='')
+
 	{ 
+
 		$this->user->saveUser($this->current_user->email, array('fullname' => $details['name'], 'password' => $details['password'] ));
 
         $company_details = serialize([
