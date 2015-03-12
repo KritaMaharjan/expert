@@ -18,7 +18,6 @@ class BaseController extends Controller {
 
     function __construct()
     {
-        print_r(session()->all());
 
         $this->current_user();
         // share current route in all views

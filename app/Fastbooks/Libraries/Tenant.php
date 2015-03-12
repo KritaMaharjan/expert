@@ -95,7 +95,7 @@ class Tenant {
         // make tenant as default connection
         App::make('config')->set('database.default', $this->connection);
 
-     //  Config::set('session.domain', $this->domain.'.'.Config::get('session.domain'));
+        //  Config::set('session.domain', $this->domain.'.'.Config::get('session.domain'));
 
     }
 
@@ -389,15 +389,21 @@ class Tenant {
 
     function url($url = '')
     {
+        $url = trim($url, '/');
+
+        return sprintf('http://%s/%s', $this->getCurrentDomainUrl(), $url);
+    }
+
+    function getCurrentDomainUrl()
+    {
         $subdomain = $this->getActualDomain();
         if (env('APP_ENV') == 'local') {
             return url($subdomain . '/' . trim($url, '/')) . '/';
         }
 
         $domain = env('APP_DOMAIN');
-        $url = trim($url, '/');
 
-        return sprintf('http://%s.%s/%s', $subdomain, $domain, $url);;
+        return sprintf('%s.%s', $subdomain, $domain);
 
     }
 
