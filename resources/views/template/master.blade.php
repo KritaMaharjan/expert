@@ -20,16 +20,16 @@
 <table width="95%" border="0" cellpadding="0" cellspacing="0" align="center">
 	<tr>
 		<td>
-			<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" style="margin-top: 50px; margin-bottom: 100px;">
+			<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" style="box-shadow: 0px 4px 5px #EBEBEB; margin-top: 50px; margin-bottom: 100px;">
 				<tr>
 					<td width="100%">
 						
 						<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center">
 							<tr>
-								<td width="100%" bgcolor="#ffffff" style="border: 1px solid #e7eeee; border-radius: 5px;">
+								<td width="100%" bgcolor="#ffffff" style="border-bottom: 1px solid #F3F3F3;s">
                                
 
-								<table width="100%" border="0" height="100px" cellpadding="10" cellspacing="0" align="center" bgcolor="#33a0d5" style="color:#fff; border-bottom: 1px solid #e7eeee; background:#33a0d5">
+								<table width="100%" border="0" height="100px" cellpadding="10" cellspacing="0" align="center" bgcolor="#33a0d5" style="color:#fff; background:#33a0d5">
 								<tr>
 								<td width="100%" bgcolor="#33a0d5">
 								 <h1 style="font-size:38px;color:#ffffff;text-transform:uppercase;text-align:center;margin:0;line-height: 1;">
@@ -44,7 +44,7 @@
 
 								<table width="100%" border="0" cellpadding="30" cellspacing="0" align="center">
 								<tr>
-									<td width="100%" bgcolor="#ffffff">
+									<td width="100%" bgcolor="#FDFDFD">
 
 									{!! $content !!}
 

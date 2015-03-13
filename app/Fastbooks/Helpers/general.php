@@ -13,8 +13,7 @@ function tenant($domain = null)
 {
     $tenant = app('App\Fastbooks\Libraries\Tenant');
 
-    if ( ! is_null($domain))
-    {
+    if (!is_null($domain)) {
         $tenant->setDomain($domain);
     }
 
@@ -28,9 +27,18 @@ function current_user()
 
 function tenant_route($route, $param = array())
 {
-    if(env('APP_ENV')=='local')
-    {
+    if (env('APP_ENV') == 'local') {
         return route($route, $param);
     }
+
     return tenant()->route($route, $param, true);
+}
+
+function page_title()
+{
+    $path = Request::path();
+    $title = explode('/', $path);
+    $title = array_reverse($title);
+
+    return ucwords(join(' / ', $title)) . ' - ' . env('APP_TITLE');
 }

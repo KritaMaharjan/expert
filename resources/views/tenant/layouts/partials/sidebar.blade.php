@@ -1,10 +1,6 @@
   <aside class="main-sidebar">
         <section class="sidebar">          
-
-
           <ul class="sidebar-menu">
-
-
             <li class="treeview">
               <a href="#" title="My Desk">
                 <i class="fa fa-dashboard"></i> <span>My Desk</span> <i class="fa fa-angle-left pull-right"></i>
@@ -14,9 +10,8 @@
                 <li><a href="#" title="To-do lists"><i class="fa fa-circle-o"></i> To-do lists</a></li>
               </ul>
             </li>
-
             @if(FB::can_view('Customer'))
-            <li>
+            <li class="<?php echo (strpos($current_path, 'customer') !==false)? 'active' : '';?>">
               <a href="{{tenant_route('tenant.customer.index')}}" title="Customers">
                 <i class="fa fa-users"></i> <span>Customers</span>
               </a>
@@ -35,25 +30,25 @@
             </li> 
             @endif 
 
-            @if(FB::can_view('Collections'))       
+         {{--   @if(FB::can_view('Collections'))
             <li>
               <a href="#" title="Collections">
                 <i class="fa fa-files-o"></i> <span>Collections</span>
               </a>
             </li>
-            @endif
+            @endif--}}
 
-            @if(FB::can_view('Accounting')) 
+      {{--      @if(FB::can_view('Accounting'))
             <li>
               <a href="#" title="Accounting">
                 <i class="fa fa-book"></i> <span>Accounting</span>
               </a>
             </li>
-            @endif 
+            @endif --}}
 
             @if(FB::can_view('Inventory'))
-            <li>
-              <a href="#" title="Inventory" class="treeview">
+            <li class="<?php echo (strpos($current_path, 'inventory') !==false)? 'active' : '';?>">
+              <a href="#" title="Inventory" class="treeview ">
                 <i class="fa fa-list-alt"></i> <span>Inventory</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
                  <ul class="treeview-menu">
@@ -63,27 +58,24 @@
             </li> 
             @endif
 
-            @if(FB::can_view('Statistics'))
+          {{--  @if(FB::can_view('Statistics'))
             <li>
               <a href="#" title="Statistics">
                 <i class="fa fa-bar-chart-o"></i> <span>Statistics</span>
               </a>
             </li> 
-            @endif
+            @endif--}}
 
             @if(FB::can_view('Users'))
-            <li class="treeview">
-              <a href="#" title="Users">
-                <i class="fa fa-dashboard"></i> <span>Users</span> <i class="fa fa-angle-left pull-right"></i>
+            <li class="<?php echo ($current_path =='users')? 'active' : '';?>">
+              <a href="{{tenant_route('tenant.users')}}" title="Users">
+                <i class="fa fa-dashboard"></i> <span>Users</span>
               </a>
-              <ul class="treeview-menu">
-                <li><a href="{{tenant_route('tenant.users')}}" data-push="true" title="Manage Users"><i class="fa fa-circle-o"></i> Manage Users</a></li>
-              </ul>
             </li>
             @endif
 
             @if(FB::can_view('Settings'))
-            <li class="treeview">
+            <li class="treeview <?php echo (strpos($current_path, 'setting') !==false)? 'active' : '';?>">
               <a href="#" title="Settings">
                 <i class="fa fa-cog"></i> <span>Settings</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
@@ -97,5 +89,4 @@
         </section>
         <!-- /.sidebar -->
       </aside>
-
 <div id="app-content" class="content-wrapper">
