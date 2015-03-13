@@ -58,8 +58,11 @@ class CustomerController extends BaseController {
                 'dob'           => '',
                 'street_name'   => 'required',
                 'street_number' => 'required',
+
                 'telephone'     => 'trim',
                 'mobile'        => 'trim',
+
+
                 'postcode'      => 'required|size:4',
                 'town'          => 'between:2,50',
               //  'photo'         => 'image'
