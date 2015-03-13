@@ -6,6 +6,7 @@
  */
 
 namespace App\Http\Controllers\System;
+
 use anlutro\cURL\Laravel\cURL;
 use App\Models\System\Tenant;
 use App\Models\System\User;
@@ -21,28 +22,29 @@ use Illuminate\Http\Request;
 class ClientController extends BaseController {
 
 
-  protected $client;
-  protected $request;
+    protected $client;
+    protected $request;
 
 
-  public function __construct(Tenant $client,Request $request){
-     parent::__construct();
-     $this->client = $client;
-     $this->request = $request;
+    public function __construct(Tenant $client, Request $request)
+    {
+        parent::__construct();
+        $this->client = $client;
+        $this->request = $request;
 
-  }
+    }
 
     function index()
     {
-      
-      
-      return view('system.user.index',compact('tenants'));
+
+
+        return view('system.user.index', compact('tenants'));
     }
 
-  public function dataJson()
+    public function dataJson()
     {
         if ($this->request->ajax()) {
-            $select = ['id', 'domain', 'email','status','guid'];
+            $select = ['id', 'domain', 'email', 'status', 'guid'];
 
             $json = $this->client->dataTablePagination($this->request, $select);
             echo json_encode($json, JSON_PRETTY_PRINT);
@@ -54,54 +56,43 @@ class ClientController extends BaseController {
 
     function show($id)
     {
-    	$tenant_basic = Tenant::find($id);
+        $tenant = new stdclass;
+        $tenant->basic = Tenant::find($id);
+        $dbname = env('ROOT_DB_PREFIX') . $tenant->basic->domain;
+        $table_profile = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'profile';
+        $tenant->profile = DB::table($table_profile . ' as profile')
+            ->select('profile.*')
+            ->where('user_id', 1)// Admin profile / later weill join table get profile by guid
+            ->first();
+        $table_settings = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'settings';
+        $company = DB::table($table_settings . ' as setting')
+            ->select('setting.value','setting.name')
+            ->where('setting.name', 'company')
+            ->orWhere('setting.name', 'business')
+            ->get();
 
-      $prefix = 'fbooks_';
-      $dbname =  $prefix.$tenant_basic->domain;//$prefix.'manish_co';
-      $table  = $dbname.'.fb_settings';
-      $if_db_exists =  true;
-      $tenant = new stdclass;
-      $tenant->basic=$tenant_basic;
-      if($if_db_exists)
-      {
-         $clients = DB::table($table.' as profile')
-                  ->select('profile.*')
-                  ->get();
 
-
-        $basics = DB::table($dbname.'.fb_users as basic_info')
-                  ->select('created_at')
-                  ->where('email',$tenant_basic->email)
-                  ->first();
-
-          
-       $tenant->created_date = $basics->created_at;
-        if(!empty($clients)) {
-          foreach($clients as $key=>$client){
-            $new_key = $client->name;
-            $tenant->$new_key=@unserialize($client->value);
-          
+        foreach ($company as $key => $com) {
+             $k = $com->name;
+            $tenant->$k = @unserialize($com->value);
          }
-        }
-      }
-     
-    
-      
-        return view('system.user.show',compact('tenant'));
+
+        return view('system.user.show', compact('tenant'));
     }
 
-    function profile(){
-    	$user= Auth::user();
-      return view('system.user.profile',compact('user'));
+    function profile()
+    {
+        $user = Auth::user();
+
+        return view('system.user.profile', compact('user'));
 
     }
 
-   function block()
-   {
-     
+    function block()
+    {
 
 
-     if (\Input::get('code') == '') {
+        if (\Input::get('code') == '') {
             return \Response::json(['status' => 'false', 'message' => 'Error Message']);
         }
 
@@ -125,11 +116,9 @@ class ClientController extends BaseController {
 
             }
 
-      }
+        }
 
-   }
-
-
+    }
 
 
-} 
+}

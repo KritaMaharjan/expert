@@ -29,10 +29,6 @@ class Profile extends Model  {
   
      protected $primaryKey = "user_id";
 
-    function user()
-    {
-      return $this->belongsTo('App\Models\Tenant\User');
-    }
 
     public function updateprofile($user_id,$details,$flieds)
    {

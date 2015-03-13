@@ -4,7 +4,9 @@ a{
     text-decoration:none!important;
     outline: none!important;
 }
-
+.color-grey{
+    color: #888;
+}
 .btn-top-ryt {
     position: absolute;
     text-align: right;
@@ -226,6 +228,7 @@ a{
 .mg-top-10{margin-top: 10px!important;}
 .mg-right-5{margin-right: 10px;}
 .no-bg{background: transparent;}
+.mg-lr-5{margin-left:5px;margin-right: 5px; }
 
 small.subject {
     color: #999;
@@ -722,3 +725,15 @@ div.dataTables_length select {
 }
 
 .position-r input{border: 1px solid #dbdbdb;}
+
+
+.fix-height {
+    height: 435px;
+}
+
+/*calendar*/
+div.zabuto_calendar .table th, div.zabuto_calendar .table td {
+    padding: 0 4px!important;
+    text-align: center;
+}
+/*calendar*/

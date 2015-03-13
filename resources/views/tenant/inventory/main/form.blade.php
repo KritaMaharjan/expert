@@ -2,6 +2,7 @@
     <div class="form-group">
         {!! Form::label('product_id', 'Product') !!}
         {!! Form::select('product_id',$product_list, null,['class'=>'form-control select-single']) !!}
+        Add Product
     </div>
 
 

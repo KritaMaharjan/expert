@@ -72,9 +72,15 @@ Client
                                             <td>@if($tenant->basic->status == 1) Active @elseif($tenant->basic->status == 0) Inactive @endif</td>
                                             
                                         </tr>
+
+                                          <tr>
+                                                <td>URL</td>
+                                                <td><a target="_blank" href="http://{{$tenant->basic->domain}}.{{env('APP_DOMAIN')}}">{{$tenant->basic->domain}}.{{env('APP_DOMAIN')}}</a></td>
+
+                                            </tr>
                                         <tr>
-                                            <td>Signup Date and Time</td>
-                                            <td>{{$tenant->created_date or '$tenant->basic->created_at'}}</td>
+                                            <td>Signup Date</td>
+                                            <td>{{$tenant->basic->created_at or ''}}</td>
                                             
                                         </tr>
 

@@ -24,6 +24,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     protected $table = 'fb_users';
     protected $primaryKey = 'id';
 
+    protected $connection = "tenant";
+
     /**
      * The attributes that are mass assignable.
      *
