@@ -14,7 +14,9 @@ class UserController extends BaseController {
     protected $rules = array(
                 'fullname' => 'required|between:2,30',
                 'email' => 'required|email',
-                'phone' => '',
+
+                'phone' => 'numeric',
+
                 'address' => 'required|between:2,50',
                 'postcode' => 'required|size:4',
                 'town' => 'between:2,50',

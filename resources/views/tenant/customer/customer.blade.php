@@ -14,7 +14,6 @@ Customers
 {{--<link href="{{assets('assets/plugins/iCheck/all.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{assets('assets/plugins/iCheck/minimal/blue.css')}}" rel="stylesheet" type="text/css" />--}}
 
-	
 
 
   <div class="row">
@@ -24,9 +23,10 @@ Customers
           <p class="align-right btn-inside">
             <a class="btn btn-primary" data-toggle="modal" data-url="#customer-modal-data" data-target="#fb-modal">
                  <i class="fa fa-plus"></i> Add new Customer
+                 
             </a>
          </p>
-
+         
 		    <div class="box-body">
 		      <table id="table-customer" class="table table-hover">
                <thead>
@@ -56,11 +56,77 @@ Customers
 	  	
     </div>
 
+    <script type="text/javascript">
+
+  $(function() {
+     
+ var cache = {};
+        $("#postcode").autocomplete({
+            minLength: 0,
+            source: function(request, response) {
+                var term = request.term;
+                var token = '{{csrf_token()}}';
+                if (term in cache) {
+                    response(cache[ term ]);
+                    return;
+                }
+
+                $.ajax({
+                    url: appUrl+"postal/suggestions",
+                    type: "post",
+                    dataType: "json",
+                    data: {'data': term,'_token':token},
+                    success: function(data) {
+                      console.log(data);
+                        cache[ term ] = data;
+                        items1 = $.map(data, function(item) {
+
+                            return   {label: item.label,
+                                value: item.label,
+                                id: item.id}
+
+
+                        });
+                        response(items1);
+                    }
+                });
+            },
+            search: function(event, ui) {
+               
+            },
+            response: function(event, ui) {
+               
+            },
+            create: function(event, ui) {
+            },
+            open: function(event, ui) {
+               
+            },
+            focus: function(event, ui) {
+
+            },
+            _resizeMenu: function() {
+                this.menu.element.outerWidth(200);
+            },
+            select: function(event, ui) {
+
+                 var label = ui.item.label;
+    var value = ui.item.value;
+    console.log('label');
+     console.log('value');
+
+                
+
+            }
+        });
+
+});
+    </script>
+
     {{--Load JS--}}
     {{FB::registerModal()}}
    
     {{FB::js('assets/js/customer.js')}}
-   
-
+        {{FB::js('assets/js/postal.js')}}
 	@stop
 

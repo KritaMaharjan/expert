@@ -18,7 +18,7 @@
 <script src="{{ asset('assets/js/mustache.js')}}" type="text/javascript"></script>
 <script src="{{ asset('assets/js/jquery.dataTables.min.js')}}" type="text/javascript"></script>
 <script src="{{ asset('assets/plugins/plupload/js/plupload.full.min.js')}}" type="text/javascript"></script>
-
+{{-- <script src="{{ asset('assets/plugins/jQueryUI/jquery-ui-1.10.3.min.js')}}" type="text/javascript"></script> --}}
 
 
 <!--[if lt IE 9]>

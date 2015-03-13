@@ -18,6 +18,10 @@ $(function () {
             
 });
 
+     
+     
+
+
     var customerDatatable = $("#table-customer").dataTable({
         "dom": '<"top"f>rt<"bottom"lip><"clear">',
         
