@@ -26,6 +26,7 @@ class UserController extends BaseController {
                 'outgoing_server' => 'min:8|required_with:incoming_server,email_username,email_password',
                 'email_username' => 'min:5|required_with:incoming_server,outgoing_server,email_password',
                 'email_password' => 'min:5|required_with:incoming_server,outgoing_server,email_username',
+                
             );
 
 	public function __construct(User $user, Request $request)
