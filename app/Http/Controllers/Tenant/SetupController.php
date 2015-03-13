@@ -132,7 +132,7 @@ class SetupController extends BaseController {
 		    array(
 		    	'swift_num' => 'between:2,15',
 		    	'iban_num' => 'between:2,15',
-		    	'telephone' => 'between:2,15',
+		    	'telephone' => 'numeric',
 		    	'fax' => 'between:5,15',
 		    	'website' => 'between:5,45',
 		    	'service_email' => 'email|between:2,50',
@@ -181,8 +181,8 @@ class SetupController extends BaseController {
 
     public function getPostalCode()
     {
-    	$postal_code = \Input::get('term');
-    	$postal_towns = PostalTown::where('postal_code', 'like', '%'.$postal_code.'%')->get();
+    	$postal_code = \Input::get('postcode');
+    	$postal_towns = PostalTown::where('postcode', 'like', '%'.$postal_code.'%')->get();
     	if (!empty($postal_towns)) {
             foreach ($postal_towns as $res) {
                 $postal_arr[] = $res->postal_code;

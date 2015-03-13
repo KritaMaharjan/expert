@@ -1,11 +1,12 @@
 $(document).ready(function() {
 
-    $("#postal_code").autocomplete({
+
+    $("#postcode").autocomplete({
             source: app_url+"postal/suggestions",
             selectFirst: true
       });
 
-    $('#postal_code').on('input', function() {
+    $('#postcode').on('input', function() {
         var postal_code = $( '#postal_code' ).val();
         var _token = $( this ).find( 'input[name=_token]' ).val();
         if(postal_code)

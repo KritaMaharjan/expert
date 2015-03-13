@@ -58,8 +58,8 @@ class CustomerController extends BaseController {
                 'dob'           => '',
                 'street_name'   => 'required',
                 'street_number' => 'required',
-                // 'telephone'     => 'between:10,15',
-                // 'mobile'        => 'between:10,15',
+                'telephone'     => 'numeric',
+                'mobile'        => 'numeric',
                 'postcode'      => 'required|size:4',
                 'town'          => 'between:2,50',
               //  'photo'         => 'image'
@@ -117,8 +117,8 @@ class CustomerController extends BaseController {
                 'dob'           => '',
                 'street_name'   => 'required',
                 'street_number' => 'required',
-                // 'telephone'     => 'between:10,15',
-                // 'mobile'        => 'between:10,15',
+                'telephone'     => 'numeric',
+                'mobile'        => 'numeric',
                 'postcode'      => 'required|size:4',
                 'town'          => 'between:2,50',
                 //'photo'         => 'image'
