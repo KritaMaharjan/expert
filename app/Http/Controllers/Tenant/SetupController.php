@@ -96,7 +96,7 @@ class SetupController extends BaseController {
 		    	'vat_reporting_rule' => 'required',
 		    	'account_no' => 'required|between:2,15',
 		    	'address' => 'required|between:2,50',
-		    	'postal_code' => 'required|size:5',
+		    	'postal_code' => 'required|size:4',
 		    	'town' => 'between:2,50',
 		    	'country' => 'required|between:2,50'
 	    	)
@@ -132,7 +132,9 @@ class SetupController extends BaseController {
 		    array(
 		    	'swift_num' => 'between:2,15',
 		    	'iban_num' => 'between:2,15',
+
 		    	'telephone' => 'numeric',
+
 		    	'fax' => 'between:5,15',
 		    	'website' => 'between:5,45',
 		    	'service_email' => 'email|between:2,50',
