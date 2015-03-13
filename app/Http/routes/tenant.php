@@ -12,19 +12,19 @@
     {
         $group_superadmin =['domain' => '{account}.mashbooks.no','namespace'=>'Controllers'];
         $group_guest = ['domain' => '{account}.mashbooks.no', 'namespace'=>'Controllers', 'middleware' => 'guest.tenant'];
-        $group_auth = ['domain' => '{account}.mashbooks.no','namespace'=>'Controllers', 'middleware' => 'auth.tenant'];
+        $group_auth = ['domain' => '{account}.mashbooks.no','middleware' => 'auth.tenant'];
     }
     elseif(env('APP_ENV') == 'dev')
     {
         $group_superadmin =['domain' => '{account}.mashbooks.app', 'namespace'=>'Controllers'];
         $group_guest = ['domain' => '{account}.mashbooks.app', 'namespace'=>'Controllers', 'middleware' => 'guest.tenant'];
-        $group_auth = ['domain' => '{account}.mashbooks.app',  'namespace'=>'Controllers', 'middleware' => 'auth.tenant'];
+        $group_auth = ['domain' => '{account}.mashbooks.app',  'middleware' => 'auth.tenant'];
     }
     else{
         $domain = env('MY_TENANT','manish_co');
         $group_superadmin =['prefix' => $domain];
         $group_guest = ['prefix' => $domain, 'namespace'=>'Controllers', 'middleware' => 'guest.tenant'];
-        $group_auth =['prefix' => $domain, 'namespace'=>'Controllers', 'middleware' => ['auth.tenant']];
+        $group_auth =['prefix' => $domain, 'middleware' => ['auth.tenant']];
     }
 
 
@@ -46,6 +46,26 @@
 
 
     Route::group($group_auth, function () {
+
+
+
+        Route::group(['namespace'=>'Tenant'], function(){
+
+            get('email','Email\Controllers\EmailController@index');
+
+        });
+
+
+
+
+
+
+        /*
+         * Todo : don't register new routes under this group
+         * Todo we need to change below routes to modular
+         */
+       Route::group( ['namespace'=>'Controllers'],function(){
+
     	//registered by : Krita
         get('/', ['as' => 'tenant.index', 'uses' => 'Tenant\DashboardController@index']);
         get('/logout', ['as' => 'tenant.logout', 'uses' => 'Tenant\AuthController@logout']);
@@ -97,7 +117,7 @@
         get('inventory/product/{id}/delete',['as'=>'tenant.inventory.product.delete', 'uses'=>'Tenant\Inventory\ProductController@delete']);
 
 
-        // ineventory routes
+        // inventory routes
         get('inventory',['as'=>'tenant.inventory.index', 'uses' => 'Tenant\Inventory\InventoryController@index']);
         post('inventory/data',['as'=>'tenant.inventory.data', 'uses'=>'Tenant\Inventory\InventoryController@dataJson']);
         post('inventory',['as'=>'tenant.inventory.post', 'uses'=>'Tenant\Inventory\InventoryController@create']);
@@ -105,7 +125,6 @@
         post('inventory/{id}/edit',['as'=>'tenant.inventory.update', 'uses'=>'Tenant\Inventory\InventoryController@update']);
         get('inventory/{id}/edit',['as'=>'tenant.inventory.edit', 'uses'=>'Tenant\Inventory\InventoryController@edit']);
         get('inventory/{id}/delete',['as'=>'tenant.inventory.delete', 'uses'=>'Tenant\Inventory\InventoryController@delete']);
-
 
 
         //registered by : Pooja
@@ -120,4 +139,7 @@
         post('customer/upload',['as'=>'tenant.customer.upload', 'uses'=>'Tenant\Customer\CustomerController@upload']);
         post('customer/changeStatus',['as'=>'tenant.customer.changeStatus', 'uses'=>'Tenant\Customer\CustomerController@changeStatus']);
         post('test/upload', ['as' => 'test.upload', 'uses' => 'Tenant\Customer\CustomerController@testUpload']);
+
+       });
+
     });
