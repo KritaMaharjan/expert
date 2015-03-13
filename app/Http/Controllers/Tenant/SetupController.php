@@ -97,13 +97,19 @@ class SetupController extends BaseController {
 		    	'account_no' => 'required|between:2,15',
 		    	'address' => 'required|between:2,50',
 		    	'postal_code' => 'required|size:4',
-		    	'town' => 'between:2,50',
+		    	'town' => 'alpha|between:2,50',
 		    	'country' => 'required|between:2,50'
 	    	)
 		);
 
         if ($validator->fails())
         	return redirect()->back()->withErrors($validator)->withInput();
+
+        // $customer = Customer::firstOrNew([
+        //     'postcode' => 
+
+
+        // ]);
 
         $this->saveBusinessDetails($request->except('_token'));
         return tenant()->route('tenant.setup.fix');
