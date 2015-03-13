@@ -126,7 +126,7 @@ class CustomerController extends BaseController {
                 'telephone'     => 'numeric',
                 'mobile'        => 'numeric',
 
-                'postcode'      => 'required|numeric|size:4',
+                'postcode'      => 'required|size:4',
                 'town'          => 'between:2,50',
                 //'photo'         => 'image'
             )
