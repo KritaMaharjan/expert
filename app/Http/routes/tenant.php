@@ -10,21 +10,21 @@
 
     if(env('APP_ENV') == 'live')
     {
-        $group_superadmin =['domain' => '{account}.mashbooks.no'];
-        $group_guest = ['domain' => '{account}.mashbooks.no', 'middleware' => 'guest.tenant'];
-        $group_auth = ['domain' => '{account}.mashbooks.no', 'middleware' => 'auth.tenant'];
+        $group_superadmin =['domain' => '{account}.mashbooks.no','namespace'=>'Controllers'];
+        $group_guest = ['domain' => '{account}.mashbooks.no', 'namespace'=>'Controllers', 'middleware' => 'guest.tenant'];
+        $group_auth = ['domain' => '{account}.mashbooks.no','namespace'=>'Controllers', 'middleware' => 'auth.tenant'];
     }
     elseif(env('APP_ENV') == 'dev')
     {
-        $group_superadmin =['domain' => '{account}.mashbooks.app'];
-        $group_guest = ['domain' => '{account}.mashbooks.app', 'middleware' => 'guest.tenant'];
-        $group_auth = ['domain' => '{account}.mashbooks.app', 'middleware' => 'auth.tenant'];
+        $group_superadmin =['domain' => '{account}.mashbooks.app', 'namespace'=>'Controllers'];
+        $group_guest = ['domain' => '{account}.mashbooks.app', 'namespace'=>'Controllers', 'middleware' => 'guest.tenant'];
+        $group_auth = ['domain' => '{account}.mashbooks.app',  'namespace'=>'Controllers', 'middleware' => 'auth.tenant'];
     }
     else{
         $domain = env('MY_TENANT','manish_co');
         $group_superadmin =['prefix' => $domain];
-        $group_guest = ['prefix' => $domain, 'middleware' => 'guest.tenant'];
-        $group_auth =['prefix' => $domain, 'middleware' => ['auth.tenant']];
+        $group_guest = ['prefix' => $domain, 'namespace'=>'Controllers', 'middleware' => 'guest.tenant'];
+        $group_auth =['prefix' => $domain, 'namespace'=>'Controllers', 'middleware' => ['auth.tenant']];
     }
 
 

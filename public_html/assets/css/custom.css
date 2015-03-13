@@ -714,3 +714,11 @@ div.dataTables_length select {
 .uploaded-img2{
     max-width: 100px;
 }
+.mg-adj{
+    margin-right: 16%;
+}
+.mg-adj a{
+    white-space: nowrap;
+}
+
+.position-r input{border: 1px solid #dbdbdb;}

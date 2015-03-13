@@ -2901,6 +2901,7 @@ table.text-center, table.text-center td, table.text-center th {
 }
 .no-border {
     border: 0 none !important;
+    outline: none!important;
 }
 .no-padding {
     padding: 0 !important;

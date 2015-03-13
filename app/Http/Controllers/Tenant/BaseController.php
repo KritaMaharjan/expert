@@ -5,12 +5,12 @@ namespace App\Http\Controllers\Tenant;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use App\Models\Tenant\Setting;
 
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class BaseController
