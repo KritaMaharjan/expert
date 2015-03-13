@@ -58,16 +58,12 @@ class CustomerController extends BaseController {
                 'dob'           => '',
                 'street_name'   => 'required',
                 'street_number' => 'required',
-<<<<<<< HEAD
                 'telephone'     => 'numeric',
                 'mobile'        => 'numeric',
-=======
-
-                'telephone'     => 'trim',
-                'mobile'        => 'trim',
 
 
->>>>>>> 88aa280d4e7e6d53fc78145ac2202da6adc95eab
+
+
                 'postcode'      => 'required|size:4',
                 'town'          => 'between:2,50',
               //  'photo'         => 'image'
@@ -125,13 +121,10 @@ class CustomerController extends BaseController {
                 'dob'           => '',
                 'street_name'   => 'required',
                 'street_number' => 'required',
-<<<<<<< HEAD
+
                 'telephone'     => 'numeric',
                 'mobile'        => 'numeric',
-=======
-                'telephone'     => '',
-                'mobile'        => '',
->>>>>>> 88aa280d4e7e6d53fc78145ac2202da6adc95eab
+
                 'postcode'      => 'required|size:4',
                 'town'          => 'between:2,50',
                 //'photo'         => 'image'
@@ -209,7 +202,7 @@ class CustomerController extends BaseController {
             
            return \Response::json(array('status' => TRUE));
         }
-        return $this->fail(['message' => 'Something went wrong. Please try again later']);
+        return $this->fail(['message' => 'Something went  wrong. Please try again later']);
         
     }
 
