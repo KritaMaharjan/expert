@@ -585,7 +585,6 @@ fieldset.wrapper-box legend{
 /*print*/
 #print {
     margin: 20px auto;
-    width: 700px;
 }
 #print .header-wrap{
     background: #fff34d;
@@ -695,6 +694,13 @@ fieldset.wrapper-box legend{
 
 
 /*print*/
+
+@media print{
+    #print{
+        width: 700px;
+    }
+}
+
 
 table thead tr {
     background: none repeat scroll 0 0 #fafafa;

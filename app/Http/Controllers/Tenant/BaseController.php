@@ -123,6 +123,11 @@ class BaseController extends Controller {
     function initLang()
     {
         $lang = Input::get('lang');
+
+        if (is_null($lang)) {
+            $lang = $this->getLang();
+        }
+
         if ($this->isValidLang($lang)) {
             $this->setLang($lang);
         }

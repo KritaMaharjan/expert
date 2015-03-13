@@ -58,24 +58,28 @@ class ClientController extends BaseController {
     {
         $tenant = new stdclass;
         $tenant->basic = Tenant::find($id);
-        $dbname = env('ROOT_DB_PREFIX') . $tenant->basic->domain;
-        $table_profile = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'profile';
-        $tenant->profile = DB::table($table_profile . ' as profile')
-            ->select('profile.*')
-            ->where('user_id', 1)// Admin profile / later weill join table get profile by guid
-            ->first();
-        $table_settings = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'settings';
-        $company = DB::table($table_settings . ' as setting')
-            ->select('setting.value','setting.name')
-            ->where('setting.name', 'company')
-            ->orWhere('setting.name', 'business')
-            ->get();
+        if($tenant->activation_key=='')
+        {
+            $dbname = env('ROOT_DB_PREFIX') . $tenant->basic->domain;
+            $table_profile = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'profile';
+            $tenant->profile = DB::table($table_profile . ' as profile')
+                ->select('profile.*')
+                ->where('user_id', 1)// Admin profile / later weill join table get profile by guid
+                ->first();
+            $table_settings = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'settings';
+            $company = DB::table($table_settings . ' as setting')
+                ->select('setting.value','setting.name')
+                ->where('setting.name', 'company')
+                ->orWhere('setting.name', 'business')
+                ->get();
 
 
-        foreach ($company as $key => $com) {
-             $k = $com->name;
-            $tenant->$k = @unserialize($com->value);
-         }
+            foreach ($company as $key => $com) {
+                $k = $com->name;
+                $tenant->$k = @unserialize($com->value);
+            }
+
+        }
 
         return view('system.user.show', compact('tenant'));
     }

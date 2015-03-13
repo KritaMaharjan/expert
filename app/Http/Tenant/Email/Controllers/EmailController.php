@@ -9,7 +9,7 @@ class EmailController extends BaseController {
 
     function index()
     {
-        return "sdf";
+        return view('tenant.email.index');
     }
 
 
