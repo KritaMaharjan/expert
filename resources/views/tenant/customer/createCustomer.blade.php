@@ -99,5 +99,5 @@
                     </div>
                    
            {!! Form::close() !!}
-    {{FB::js('assets/js/postal.js')}}
+
     
