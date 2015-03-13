@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
@@ -11,21 +12,46 @@ use App\Models\Tenant\Setting;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
+/**
+ * Class BaseController
+ * @property mixed current_lang
+ * @package App\Http\Controllers\Tenant
+ */
 class BaseController extends Controller {
 
 
+    /**
+     * Store Current logged in user info
+     * @var
+     */
     protected $current_user;
 
+    /**
+     * Store Current app language
+     * @var
+     */
+    protected $current_lang;
+
+    /**
+     * initialized everything for Tenant Controllers
+     */
     function __construct()
     {
+        //init Language
+        $this->initLang();
+
         // initialise current user
         $this->current_user();
+
         // share current route in all views
         $this->viewShare();
-
     }
 
 
+    /**
+     * Current logged in user info
+     * @return null
+     */
     function current_user()
     {
         if (Auth::check()) {
@@ -35,19 +61,27 @@ class BaseController extends Controller {
         }
     }
 
+    /**
+     * Share variables to Views
+     */
     function viewShare()
     {
         View::share('current_user', $this->current_user);
         View::share('current_route', Route::current()->getPath());
         View::share('current_path', Request::path());
         View::share('domain', session()->get('domain'));
+        View::share('current_lang', $this->current_lang);
 
-       /* View::composer('tenant.layouts.partials.header', function ($view) {
-            $view->with('company_logo', $this->getCompanyLogo());
-        });*/
+        /* View::composer('tenant.layouts.partials.header', function ($view) {
+             $view->with('company_logo', $this->getCompanyLogo());
+         });*/
     }
 
 
+    /**
+     * Get Company logo
+     * @return string
+     */
     function getCompanyLogo()
     {
         $company_details = Setting::where('name', 'fix')->first();
@@ -58,19 +92,74 @@ class BaseController extends Controller {
             return asset('assets/images/logo.png');
     }
 
+    /**
+     * return success json data to view
+     * @param array $data
+     * @return mixed
+     */
     function success(array $data = array())
     {
         $response = ['status' => 1, 'data' => $data];
 
-        return \Response::json($response);
+        return Response::json($response);
     }
 
 
+    /**
+     * return failed json data to view
+     * @param array $data
+     * @return mixed
+     */
     function fail(array $data = array())
     {
         $response = ['status' => 0, 'data' => $data];
 
-        return \Response::json($response);
+        return Response::json($response);
+    }
+
+    /**
+     * Initialized Language for the app
+     */
+    function initLang()
+    {
+        $lang = Input::get('lang');
+        if ($this->isValidLang($lang)) {
+            $this->setLang($lang);
+        }
+
+        $this->current_lang = $this->getLang();
+    }
+
+    /**
+     * set app default language
+     * @param string $lang
+     */
+    function setLang($lang = 'en')
+    {
+        \App::setLocale($lang);
+        \Session::put('app_lang', $lang);
+    }
+
+    /**
+     * set get app language
+     * @return mixed
+     */
+    function getLang()
+    {
+        $lang = session()->get('app_lang');
+
+        return $lang ? $lang : 'en';
+    }
+
+
+    function isValidLang($lang = '')
+    {
+        $available_lang = ['en', 'no'];
+        if (in_array($lang, $available_lang)) {
+            return true;
+        }
+
+        return false;
     }
 
 

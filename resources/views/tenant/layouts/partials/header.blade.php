@@ -13,13 +13,12 @@
         <ul class="nav navbar-nav">
         <li class="dropdown flag">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-flag-norway"></i>
+              <i class="fa fa-flag-{{$current_lang}}"></i>
+
             </a>
             <ul class="dropdown-menu pad-0">
-              <li><a href="<?php echo Request::url().'/?lang=no';?>" class="flag_norway"><i class="fa fa-flag-norway"></i>Norway</a></li>
-              <li><a href="<?php echo Request::url().'/?lang=en';?>" class="flag_english"><i class="fa fa-flag-usa"></i>English</a></li>
-              
-              
+              <li><a href="<?php echo Request::url().'/?lang=no';?>" class="flag_norway"><i class="fa fa-flag-no"></i>Norway</a></li>
+              <li><a href="<?php echo Request::url().'/?lang=en';?>" class="flag_english"><i class="fa fa-flag-en"></i>English</a></li>
             </ul>
           </li>
           <li class="dropdown messages-menu">

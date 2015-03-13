@@ -68,8 +68,8 @@
 
             @if(FB::can_view('Users'))
             <li class="<?php echo ($current_path =='users')? 'active' : '';?>">
-              <a href="{{tenant_route('tenant.users')}}" title="Users">
-                <i class="fa fa-dashboard"></i> <span>Users</span>
+              <a href="{{tenant_route('tenant.users')}}" title="@lang('menu.user')">
+                <i class="fa fa-dashboard"></i> <span>@lang('menu.users')</span>
               </a>
             </li>
             @endif

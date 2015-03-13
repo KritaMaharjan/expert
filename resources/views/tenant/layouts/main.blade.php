@@ -8,7 +8,10 @@
     @show
 @endif
 
+
 @include('tenant.layouts.partials.content')
+
+
 
 @if (!Request::ajax())
     @section('footer')

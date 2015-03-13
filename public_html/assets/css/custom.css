@@ -453,13 +453,13 @@ small.subject {
     padding: 0!important;
 }
 
-.fa-flag-norway{
+.fa-flag-no{
     background: url("../images/no.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
     height: 15px;
     vertical-align: middle;
     width: 20px;
 }
-.fa-flag-usa{
+.fa-flag-en{
     background: url("../images/us.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
     height: 13px;
     vertical-align: middle;
@@ -477,7 +477,7 @@ small.subject {
 /*added css*/
 .form-list{list-style: none; overflow: hidden; padding-left: 0px;}
 .form-list > li {float: left; padding: 1%; width: 32%;}
-.uploaded-img {max-width: 200px;}
+.uploaded-img {max-width: 200px;margin-bottom: 10px;}
 .mrg-mng {margin-top: 50px;}
 .uplod{padding-left: 0px;}
 
@@ -698,6 +698,9 @@ table thead tr {
 }
 .dataTables_wrapper {
     margin-top: 10px;
+}
+div.dataTables_length select {
+    border: 1px solid #dbdbdb;
 }
 .image-uplod{
     display: block;

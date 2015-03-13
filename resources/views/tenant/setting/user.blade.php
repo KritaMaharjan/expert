@@ -32,10 +32,10 @@ Profile Settings
 							     <img src="{{ asset('assets/images/no_image.jpg') }}" class="uploaded-img">
 						
 						 @endif
-						  	  </div>
-						     <div class="col-md-6 mrg-mng">
 						       <input type="file" name="photo">						       
-						      </div>						      
+
+						  	  </div>
+						     						      
 						</div>
 					</div>
 					<div class="row">
@@ -94,21 +94,25 @@ Profile Settings
 						</div>
 						
 					<div class="form-group col-md-6">
-		      			<label class="control-label">Postcode</label>
-						<div class="@if($errors->has('postcode')) {{'has-error'}} @endif">
-				        {!!Form::text('postcode',$setting['postcode'],array('class' => 'form-control'))!!}  
-				        
-				      	@if($errors->has('postcode'))
-				       		{!! $errors->first('postcode', '<label class="control-label" for="inputError">:message</label>') !!}
-				      	@endif
+						<div class="half-width">
+			      			<label class="control-label">Postcode</label>
+							<div class="@if($errors->has('postcode')) {{'has-error'}} @endif">
+					        {!!Form::text('postcode',$setting['postcode'],array('class' => 'form-control'))!!}  
+					        
+					      	@if($errors->has('postcode'))
+					       		{!! $errors->first('postcode', '<label class="control-label" for="inputError">:message</label>') !!}
+					      	@endif
+					       </div>
 				       </div>
 
+				       <div class="half-width">
 				      	<label class="control-label">Town</label>
 						<div class="@if($errors->has('town')) {{'has-error'}} @endif">
-						{!!Form::text('town',$setting['town'] ,array('class' => 'form-control', 'id' => 'city'))!!}
-				      	@if($errors->has('town'))
-				       		{!! $errors->first('town', '<label class="control-label" for="inputError">:message</label>') !!}
-				      	@endif
+							{!!Form::text('town',$setting['town'] ,array('class' => 'form-control', 'id' => 'city'))!!}
+					      	@if($errors->has('town'))
+					       		{!! $errors->first('town', '<label class="control-label" for="inputError">:message</label>') !!}
+					      	@endif
+				      	</div>
 				      </div>
 					</div>
 					</div>

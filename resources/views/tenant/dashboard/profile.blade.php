@@ -17,7 +17,7 @@ Profile
           
             <div class="box-header align-right">
                 <h3 class="box-title"></h3>
-                <a href="{{tenant_route('tenant.auth.changePassword')}}" class="mg-right-5 btn btn-default btn-small">Change password</a>|
+                <a href="{{tenant_route('tenant.auth.changePassword')}}" class="mg-right-5 btn btn-default btn-small">Change password</a>
                 <a href="{{tenant_route('tenant.edit.profile')}}"  title="Profile" class="btn btn-default btn-small"> Edit profile</a>
                 <div class="box-tools">
 
@@ -25,7 +25,7 @@ Profile
             </div><!-- /.box-header -->
 
             <div class="box-body table-responsive no-padding">
-                <table class="table">
+                <table class="table table-striped">
                     <tbody>
 
                         <tr>
