@@ -17,8 +17,8 @@ Profile
           
             <div class="box-header align-right">
                 <h3 class="box-title"></h3>
-                <a href="{{tenant_route('tenant.auth.changePassword')}}" class="mg-right-5">Change password</a>|
-                <a href="{{tenant_route('tenant.edit.profile')}}"  title="Profile"> Edit profile</a>
+                <a href="{{tenant_route('tenant.auth.changePassword')}}" class="mg-right-5 btn btn-default btn-small">Change password</a>|
+                <a href="{{tenant_route('tenant.edit.profile')}}"  title="Profile" class="btn btn-default btn-small"> Edit profile</a>
                 <div class="box-tools">
 
                 </div>
@@ -33,13 +33,13 @@ Profile
                             <td>
                               @if(isset($user->photo) && $user->photo !='')
                                @if(file_exists(base_path('public_html/assets/uploads/'.$user->photo)))
-                               <img src="{{ asset('assets/uploads/'.$user->photo)}}" class="uploaded-img">
+                               <img src="{{ asset('assets/uploads/'.$user->photo)}}" class="uploaded-img2">
                               @else
-                                <img src="{{ asset('assets/images/no_image.jpg') }}" class="uploaded-img">
+                                <img src="{{ asset('assets/images/no_image.jpg') }}" class="uploaded-img2">
                             
                              @endif     
                              @else 
-                               <img src="{{ asset('assets/images/no_image.jpg') }}" class="uploaded-img">
+                               <img src="{{ asset('assets/images/no_image.jpg') }}" class="uploaded-img2">
                              @endif                       
                         </tr>
                         <tr>

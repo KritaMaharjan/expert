@@ -333,6 +333,7 @@ small.subject {
     }
     .top .dataTables_filter label > input{
         margin-left: 5px;
+        border: 1px solid #dbdbdb;
     }
 
     .top .form-control.input-sm {
@@ -692,8 +693,12 @@ fieldset.wrapper-box legend{
 
 /*print*/
 
-
-
+table thead tr {
+    background: none repeat scroll 0 0 #fafafa;
+}
+.dataTables_wrapper {
+    margin-top: 10px;
+}
 .image-uplod{
     display: block;
     max-width: 100px;
@@ -702,4 +707,7 @@ fieldset.wrapper-box legend{
 .invoice .select2{
     margin-left: 10px;
     width: 40% !important;
+}
+.uploaded-img2{
+    max-width: 100px;
 }

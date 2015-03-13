@@ -16,8 +16,8 @@
               <i class="fa fa-flag-norway"></i>
             </a>
             <ul class="dropdown-menu pad-0">
-              <li><a href="#" class="flag_norway"><i class="fa fa-flag-norway"></i>Norway</a></li>
-              <li><a href="#" class="flag_english"><i class="fa fa-flag-usa"></i>English</a></li>
+              <li><a href="<?php echo Request::url().'/?lang=no';?>" class="flag_norway"><i class="fa fa-flag-norway"></i>Norway</a></li>
+              <li><a href="<?php echo Request::url().'/?lang=en';?>" class="flag_english"><i class="fa fa-flag-usa"></i>English</a></li>
               
               
             </ul>
@@ -49,32 +49,9 @@
             </ul>
           </li>
 
-          <!-- <li class="dropdown user user-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <span class="hidden-xs">{{ $current_user->fullname }}</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="user-header">
-                <img src="{{ $company_logo }}" class="img-circle" alt="User Image" />
-                <p>
-                 {{ $current_user->fullname }}
-                  <small>{{ $current_user->company }}</small>
-                </p>
-              </li>
-              <li class="user-footer">
-                <div class="pull-left">
-                  <a href="{{tenant_route('tenant.profile')}}" data-push="true" class="btn btn-default btn-flat">Profile</a>
-                </div>
-                <div class="pull-right">
-                  <a href="{{tenant_route('tenant.logout')}}" class="btn btn-default btn-flat">Sign out</a>
-                </div>
-              </li>
-            </ul>
-          </li> -->
-
           <li class="dropdown user user-menu">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                <span class="hidden-xs">{{ $current_user->fullname }}</span>
+                <span class="">{{ $current_user->fullname }}</span>
               </a>
               <ul class="dropdown-menu fix-width">
                 <li class="footer">

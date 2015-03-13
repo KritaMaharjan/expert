@@ -18,14 +18,11 @@ class BaseController extends Controller {
 
     function __construct()
     {
-
+        // initialise current user
         $this->current_user();
         // share current route in all views
-        View::share('current_user', $this->current_user);
-        View::share('current_route', Route::current()->getPath());
-        View::share('current_path', Request::path());
-        View::share('company_logo', $this->getCompanyLogo());
-        View::share('domain', session()->get('domain'));
+        $this->viewShare();
+
     }
 
 
@@ -36,6 +33,18 @@ class BaseController extends Controller {
         } else {
             return $this->current_user = null;
         }
+    }
+
+    function viewShare()
+    {
+        View::share('current_user', $this->current_user);
+        View::share('current_route', Route::current()->getPath());
+        View::share('current_path', Request::path());
+        View::share('domain', session()->get('domain'));
+
+       /* View::composer('tenant.layouts.partials.header', function ($view) {
+            $view->with('company_logo', $this->getCompanyLogo());
+        });*/
     }
 
 
@@ -52,6 +61,7 @@ class BaseController extends Controller {
     function success(array $data = array())
     {
         $response = ['status' => 1, 'data' => $data];
+
         return \Response::json($response);
     }
 

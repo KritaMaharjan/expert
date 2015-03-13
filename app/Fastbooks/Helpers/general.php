@@ -39,6 +39,10 @@ function page_title()
     $path = Request::path();
     $title = explode('/', $path);
     $title = array_reverse($title);
+    $title = array_filter($title);
+    if (count($title) > 0)
+        return ucwords(join(' / ', $title)) . ' - ' . env('APP_TITLE');
+    else
+        return env('APP_TITLE');
 
-    return ucwords(join(' / ', $title)) . ' - ' . env('APP_TITLE');
 }
