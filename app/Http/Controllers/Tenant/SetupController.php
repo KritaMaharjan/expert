@@ -99,6 +99,7 @@ class SetupController extends BaseController {
 		    	'postal_code' => 'required|size:4',
 		    	'town' => 'alpha|between:2,50',
 		    	'country' => 'required|between:2,50'
+		    	
 	    	)
 		);
 
