@@ -60,65 +60,65 @@ Customers
 
   $(function() {
      
- var cache = {};
-        $("#postcode").autocomplete({
-            minLength: 0,
-            source: function(request, response) {
-                var term = request.term;
-                var token = '{{csrf_token()}}';
-                if (term in cache) {
-                    response(cache[ term ]);
-                    return;
-                }
+ // var cache = {};
+ //        $("#postcode").autocomplete({
+ //            minLength: 0,
+ //            source: function(request, response) {
+ //                var term = request.term;
+ //                var token = '{{csrf_token()}}';
+ //                if (term in cache) {
+ //                    response(cache[ term ]);
+ //                    return;
+ //                }
 
-                $.ajax({
-                    url: appUrl+"postal/suggestions",
-                    type: "post",
-                    dataType: "json",
-                    data: {'data': term,'_token':token},
-                    success: function(data) {
-                      console.log(data);
-                        cache[ term ] = data;
-                        items1 = $.map(data, function(item) {
+ //                $.ajax({
+ //                    url: appUrl+"postal/suggestions",
+ //                    type: "post",
+ //                    dataType: "json",
+ //                    data: {'data': term,'_token':token},
+ //                    success: function(data) {
+ //                      console.log(data);
+ //                        cache[ term ] = data;
+ //                        items1 = $.map(data, function(item) {
 
-                            return   {label: item.label,
-                                value: item.label,
-                                id: item.id}
+ //                            return   {label: item.label,
+ //                                value: item.label,
+ //                                id: item.id}
 
 
-                        });
-                        response(items1);
-                    }
-                });
-            },
-            search: function(event, ui) {
+ //                        });
+ //                        response(items1);
+ //                    }
+ //                });
+ //            },
+ //            search: function(event, ui) {
                
-            },
-            response: function(event, ui) {
+ //            },
+ //            response: function(event, ui) {
                
-            },
-            create: function(event, ui) {
-            },
-            open: function(event, ui) {
+ //            },
+ //            create: function(event, ui) {
+ //            },
+ //            open: function(event, ui) {
                
-            },
-            focus: function(event, ui) {
+ //            },
+ //            focus: function(event, ui) {
 
-            },
-            _resizeMenu: function() {
-                this.menu.element.outerWidth(200);
-            },
-            select: function(event, ui) {
+ //            },
+ //            _resizeMenu: function() {
+ //                this.menu.element.outerWidth(200);
+ //            },
+ //            select: function(event, ui) {
 
-                 var label = ui.item.label;
-    var value = ui.item.value;
-    console.log('label');
-     console.log('value');
+ //                 var label = ui.item.label;
+ //    var value = ui.item.value;
+ //    console.log('label');
+ //     console.log('value');
 
                 
 
-            }
-        });
+ //            }
+ //        });
 
 });
     </script>
@@ -127,6 +127,6 @@ Customers
     {{FB::registerModal()}}
    
     {{FB::js('assets/js/customer.js')}}
-        {{FB::js('assets/js/postal.js')}}
+       
 	@stop
 

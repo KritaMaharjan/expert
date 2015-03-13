@@ -208,6 +208,17 @@ Customers
                       </h3>
                       <p><small class="color-blue">Sent: </small> Mon 3/2/2015 3:52 AM</p>
                       <p><small class="color-blue">To: </small> John@abc.com</p>
+                      <div class="link-reply">
+                        <button data-toggle="dropdown" class="btn btn-default btn-sm btn-flat dropdown-toggle" type="button">
+                          Action <span class="caret"></span>
+                        </button>
+                        <ul role="menu" class="dropdown-menu">
+                          <li><a href="#"><small class="color-grey"><i class="fa fa-reply"></i></small> Reply</a></li>
+                          <li><a href="#"><small class="color-grey"><i class="fa fa-mail-forward"></i></small> Forward</a></li>
+                          <li><a href="#"><small class="color-grey"><i class="fa fa-close"></i></small> Delete</a></li>
+                          
+                        </ul>
+                      </div>
                       <hr>
                     </div><!-- /.box-header -->
                     <div class="box-body">
@@ -234,6 +245,74 @@ Customers
           </div>
       </div>
     </div>
+
+
+     <!-- COMPOSE MESSAGE MODAL -->
+    <div class="modal modal-right fade" id="compose-modal" data-backdrop="static" data-keyboard="false" tabindex="-1"  role="dialog" aria-hidden="ture">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title"><i class="fa fa-envelope-o"></i> Compose New Message</h4>
+          </div>
+          <form action="#" method="post">
+            <div class="modal-body">
+              <div class="form-group disply-inline">
+                <div class="input-group">
+                  <span class="input-group-addon">TO:</span>
+                  <input name="email_to" type="email" class="form-control" placeholder="Email TO">
+                </div>
+              </div>
+              <div class="form-group disply-inline">
+                <div class="input-group">
+                  <span class="input-group-addon">CC:</span>
+                  <input name="email_to" type="email" class="form-control" placeholder="Email CC">
+                </div>
+              </div>
+              <div class="form-group clearfix">
+                <div class="input-group">
+                  <span class="input-group-addon">BCC:</span>
+                  <input name="email_to" type="email" class="form-control" placeholder="Email BCC">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <span class="input-group-addon">Subject:</span>
+                  <input name="" type="text" class="form-control" placeholder="">
+                </div>
+              </div>
+              <div class="form-group">
+                <textarea name="message" id="email_message" class="form-control" placeholder="Message" style="height: 120px;"></textarea>
+              </div>
+              <div class="form-group">
+                <div class="btn btn-success btn-file">
+                  <i class="fa fa-paperclip"></i> Attachment
+                  <input type="file" name="attachment"/>
+                </div>
+                <p class="help-block">Max. 32MB</p>
+              </div>
+              
+
+            </div>
+            <div class="modal-footer clearfix text-align-left">
+
+              <button type="button" class="btn btn-danger pull-left sm-mg-btn" data-dismiss="modal"><i class="fa fa-times"></i> Discard</button>
+              <div class="input-group input-custom">
+                  <span class="input-group-addon">Action:</span>
+                  <select class="form-control">
+                    <option>Mark open</option>
+                    <option>Mark closed</option>
+                    <option>Mark pending</option>
+                    <option>Select from list of coworkers</option>
+                    <option>Add to-do list</option>
+                  </select>
+                  </div>
+              <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-envelope"></i> Send Message</button>
+            </div>
+          </form>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
  
 
           </div>
