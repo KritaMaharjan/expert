@@ -202,7 +202,7 @@ class CustomerController extends BaseController {
             
            return \Response::json(array('status' => TRUE));
         }
-        return $this->fail(['message' => 'Something went wrong. Please try again later']);
+        return $this->fail(['message' => 'Something went  wrong. Please try again later']);
         
     }
 
