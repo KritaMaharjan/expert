@@ -105,6 +105,12 @@ class SetupController extends BaseController {
         if ($validator->fails())
         	return redirect()->back()->withErrors($validator)->withInput();
 
+        // $customer = Customer::firstOrNew([
+        //     'postcode' => 
+
+
+        // ]);
+
         $this->saveBusinessDetails($request->except('_token'));
         return tenant()->route('tenant.setup.fix');
 	}
