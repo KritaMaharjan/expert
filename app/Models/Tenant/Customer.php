@@ -89,7 +89,6 @@ class Customer extends Model {
             'email'          => $request['email'],
             'user_id'        => $user_id,
             'dob'            => $dob,
-            'company_number' => $request['company_number'],
             'street_name'    => $request['street_name'],
             'street_number'  => $request['street_number'],
             'telephone'      => $request['telephone'],
@@ -116,7 +115,6 @@ class Customer extends Model {
         $customer->email = $details['email'];
         $customer->user_id = current_user()->id;
         $customer->dob = $dob;
-        $customer->company_number = $details['company_number'];
         $customer->street_name = $details['street_name'];
         $customer->street_number = $details['street_number'];
         $customer->telephone = $details['telephone'];
