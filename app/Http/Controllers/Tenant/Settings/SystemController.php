@@ -43,7 +43,7 @@ class SystemController extends BaseController {
                                             'account_no' => 'between:2,15',
                                             'address' => 'between:2,50',
                                             'postal_code' => 'size:4',
-                                            'town' => 'between:2,50',
+                                            'town' => 'alpha|between:2,50',
                                             'country' => 'between:2,50',
                                             
                                             )

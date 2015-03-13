@@ -65,7 +65,7 @@ class CustomerController extends BaseController {
 
 
                 'postcode'      => 'required|size:4',
-                'town'          => 'between:2,50',
+                'town'          => 'alpha|between:2,50',
               //  'photo'         => 'image'
             )
         );
