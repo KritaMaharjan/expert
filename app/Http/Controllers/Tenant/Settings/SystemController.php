@@ -42,7 +42,7 @@ class SystemController extends BaseController {
                                             'vat_reporting_rule' => '',
                                             'account_no' => 'between:2,15',
                                             'address' => 'between:2,50',
-                                            'postal_code' => 'size:4',
+                                            'postal_code' => 'numeric|size:4',
                                             'town' => 'alpha|between:2,50',
                                             'country' => 'between:2,50',
                                             

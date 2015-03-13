@@ -18,7 +18,7 @@ class UserController extends BaseController {
                 'phone' => 'numeric',
 
                 'address' => 'required|between:2,50',
-                'postcode' => 'required|size:4',
+                'postcode' => 'required|numeric|size:4',
                 'town' => 'alpha|between:2,50',
                 'social_security_number' => 'required|size:5',
                 //'photo' => 'image',

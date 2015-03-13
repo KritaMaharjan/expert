@@ -64,9 +64,9 @@ class CustomerController extends BaseController {
 
 
 
-                'postcode'      => 'required|size:4',
+                'postcode'      => 'required|numeric|size:4',
                 'town'          => 'alpha|between:2,50',
-                
+
               //  'photo'         => 'image'
             )
         );
@@ -126,7 +126,7 @@ class CustomerController extends BaseController {
                 'telephone'     => 'numeric',
                 'mobile'        => 'numeric',
 
-                'postcode'      => 'required|size:4',
+                'postcode'      => 'required|numeric|size:4',
                 'town'          => 'between:2,50',
                 //'photo'         => 'image'
             )
