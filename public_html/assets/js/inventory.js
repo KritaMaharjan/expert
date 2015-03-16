@@ -26,9 +26,9 @@ $(function () {
             {"data": "purchase_date"}
         ],
 
-        "fnRowCallback": function( nRow, aData, iDisplayIndex ) {
-            
-            $(nRow).attr('id','inventory-'+aData.id);
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+
+            $(nRow).attr('id', 'inventory-' + aData.id);
             return nRow;
         },
 
@@ -56,10 +56,9 @@ $(function () {
                 dataType: 'json',
             })
                 .done(function (response) {
-                    console.log(response);
                     if (response.status === 1) {
                         $('.mainContainer .box-solid').before(notify('success', response.data.message));
-                         window.location.href=appUrl+'inventory';
+                        parentTr.remove();
                     } else {
                         $('.mainContainer .box-solid').before(notify('error', response.data.message));
                         parentTr.show();
@@ -156,15 +155,13 @@ function showActionbtn(row) {
 
 
 function getTemplate(response, type) {
-
-   console.log(response);
     var html = '<td>' + response.data.id + '</td>' +
-        '<td>' +  response.data.name + '</td>' +
+        '<td>' + response.data.name + '</td>' +
         '<td>' + response.data.quantity + '</td>' +
         '<td>' + response.data.purchase_cost + '</td>' +
         '<td>' + response.data.selling_price + '</td>' +
-        '<td>' + response.data.vat + '</td>'+
-        '<td>' + response.data.purchase_date + '</td>'+
+        '<td>' + response.data.vat + '</td>' +
+        '<td>' + response.data.purchase_date + '</td>' +
         '<td><div class="box-tools">' +
         '<a href="#" title="Edit" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' + response.data.edit_url + '" data-target="#fb-modal">' +
         '<i class="fa fa-edit"></i>' +
@@ -178,3 +175,9 @@ function getTemplate(response, type) {
     else
         return html;
 }
+
+
+
+
+
+

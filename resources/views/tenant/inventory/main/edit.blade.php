@@ -4,7 +4,7 @@
     </div>
        {!!Form::model($inventory,['id'=>'inventory-form'])!!}
         @include('tenant.inventory.main.form')
-        <div class="box-body">
+        <div class="box-body edit-mode">
             <div class="form-group">
             {!! Form::label('vat', 'Vat(%)') !!}
             {!! Form::text('vat',null,['class'=>'form-control']) !!}
@@ -26,5 +26,28 @@
         </div>
        {!!Form::close()!!}
 </div>
+
+<script>
+$(".select-single").on("change", function(e){
+
+    var product =  $(this).val();
+
+    $.ajax({
+        url: appUrl + 'inventory/product/'+product,
+        type: 'GET',
+        dataType: 'json'
+    })
+    .done(function(response) {
+       $('.edit-mode').find('#vat').val(response.data.vat)
+       $('.edit-mode').find('#selling_price').val(response.data.selling_price)
+       $('.edit-mode').find('#purchase_cost').val(response.data.purchase_cost)
+    })
+    .fail(function() {
+        console.log("error");
+    })
+  });
+
+
+</script>
 
 

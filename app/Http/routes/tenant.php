@@ -47,16 +47,39 @@ Route::group($group_auth, function () {
     /*
      * New Modular Routing
      */
+    Route::group(['prefix' => 'desk', 'namespace' => 'Tenant\Email\Controllers'], function () {
 
-    Route::group(['prefix' => 'desk', 'namespace' => 'Tenant'], function () {
-
-        get('email', ['as' => 'desk.email', 'uses' => 'Email\Controllers\EmailController@index']);
+        get('email', ['as' => 'desk.email', 'uses' => 'EmailController@index']);
 
     });
 
     Route::group(['prefix' => 'invoice', 'namespace' => 'Tenant'], function () {
         get('bill', 'Email\Controllers\BillController@index');
         get('offer', 'Email\Controllers\OfferController@index');
+    });
+
+
+    Route::group(['namespace' => 'Tenant\Inventory\Controllers'], function () {
+
+        // product routes
+        get('inventory/product', ['as' => 'tenant.inventory.product.index', 'uses' => 'ProductController@index']);
+        post('inventory/product', ['as' => 'tenant.inventory.product.post', 'uses' => 'ProductController@create']);
+        post('inventory/product/data', ['as' => 'tenant.inventory.product.data', 'uses' => 'ProductController@dataJson']);
+        get('inventory/product/{id}', ['as' => 'tenant.inventory.product.show', 'uses' => 'ProductController@show']);
+        get('inventory/product/{id}/edit', ['as' => 'tenant.inventory.product.edit', 'uses' => 'ProductController@edit']);
+        post('inventory/product/{id}/edit', ['as' => 'tenant.inventory.product.update', 'uses' => 'ProductController@update']);
+        get('inventory/product/{id}/delete', ['as' => 'tenant.inventory.product.delete', 'uses' => 'ProductController@delete']);
+
+        // inventory routes
+        get('inventory', ['as' => 'tenant.inventory.index', 'uses' => 'InventoryController@index']);
+        post('inventory', ['as' => 'tenant.inventory.post', 'uses' => 'InventoryController@create']);
+        post('inventory/data', ['as' => 'tenant.inventory.data', 'uses' => 'InventoryController@dataJson']);
+        get('inventory/{id}', ['as' => 'tenant.inventory.show', 'uses' => 'InventoryController@show']);
+        post('inventory/{id}/edit', ['as' => 'tenant.inventory.update', 'uses' => 'InventoryController@update']);
+        get('inventory/{id}/edit', ['as' => 'tenant.inventory.edit', 'uses' => 'InventoryController@edit']);
+        get('inventory/{id}/delete', ['as' => 'tenant.inventory.delete', 'uses' => 'InventoryController@delete']);
+
+
 
     });
 
@@ -106,26 +129,6 @@ Route::group($group_auth, function () {
         post('user/data', ['as' => 'tenant.user.data', 'uses' => 'Tenant\Users\UserController@dataJson']);
 
         //registered by : Manish
-
-
-        // product routes
-        get('inventory/product', ['as' => 'tenant.inventory.product.index', 'uses' => 'Tenant\Inventory\ProductController@index']);
-        post('inventory/product/data', ['as' => 'tenant.inventory.product.data', 'uses' => 'Tenant\Inventory\ProductController@dataJson']);
-        post('inventory/product', ['as' => 'tenant.inventory.product.post', 'uses' => 'Tenant\Inventory\ProductController@create']);
-        get('inventory/product/{id}', ['as' => 'tenant.inventory.product.show', 'uses' => 'Tenant\Inventory\ProductController@show']);
-        get('inventory/product/{id}/edit', ['as' => 'tenant.inventory.product.edit', 'uses' => 'Tenant\Inventory\ProductController@edit']);
-        post('inventory/product/{id}/edit', ['as' => 'tenant.inventory.product.update', 'uses' => 'Tenant\Inventory\ProductController@update']);
-        get('inventory/product/{id}/delete', ['as' => 'tenant.inventory.product.delete', 'uses' => 'Tenant\Inventory\ProductController@delete']);
-
-
-        // inventory routes
-        get('inventory', ['as' => 'tenant.inventory.index', 'uses' => 'Tenant\Inventory\InventoryController@index']);
-        post('inventory/data', ['as' => 'tenant.inventory.data', 'uses' => 'Tenant\Inventory\InventoryController@dataJson']);
-        post('inventory', ['as' => 'tenant.inventory.post', 'uses' => 'Tenant\Inventory\InventoryController@create']);
-        get('inventory/{id}', ['as' => 'tenant.inventory.show', 'uses' => 'Tenant\Inventory\InventoryController@show']);
-        post('inventory/{id}/edit', ['as' => 'tenant.inventory.update', 'uses' => 'Tenant\Inventory\InventoryController@update']);
-        get('inventory/{id}/edit', ['as' => 'tenant.inventory.edit', 'uses' => 'Tenant\Inventory\InventoryController@edit']);
-        get('inventory/{id}/delete', ['as' => 'tenant.inventory.delete', 'uses' => 'Tenant\Inventory\InventoryController@delete']);
 
 
         //registered by : Pooja

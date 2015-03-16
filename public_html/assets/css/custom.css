@@ -158,6 +158,7 @@ a{
             .invoice input {
                 width: 100%;
                 height: 26px;
+                padding: 0 3px;
 
             }
             .invoice select{
