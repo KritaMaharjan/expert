@@ -50,6 +50,7 @@ Route::group($group_auth, function () {
     Route::group(['prefix' => 'desk', 'namespace' => 'Tenant\Email\Controllers'], function () {
 
         get('email', ['as' => 'desk.email', 'uses' => 'EmailController@index']);
+        post('email/upload/data', ['as' => 'desk.email.upload', 'uses' => 'EmailController@upload']);
 
     });
 
