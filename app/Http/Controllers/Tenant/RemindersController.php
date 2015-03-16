@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Tenant;
 
-use App\Models\Tenant\Tenant;
+use App\Models\Tenant\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Auth;
@@ -26,7 +26,7 @@ class RemindersController extends BaseController {
      * @param Tenant $tenant
      * @return Response
      */
-    public function postForgotPassword(Request $request, Tenant $tenant)
+    public function postForgotPassword(Request $request, User $tenant)
     {
 
         $user = $tenant->where('email', $request->input('email'))->first();
