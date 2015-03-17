@@ -20,6 +20,15 @@ function tenant($domain = null)
     return $tenant;
 }
 
+
+function plupload()
+{
+    $plupload = app('App\Fastbooks\Plupload\Plupload');
+
+    return $plupload;
+}
+
+
 function current_user()
 {
     return \Auth::user();
