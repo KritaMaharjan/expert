@@ -85,6 +85,23 @@ Route::group($group_auth, function () {
 
     });
 
+    /** Registered by Krita **/
+    Route::group(['namespace' => 'Tenant\Invoice\Controllers'], function () {
+
+        // bill routes
+        get('invoice/bill', ['as' => 'tenant.invoice.bill.index', 'uses' => 'BillController@index']);
+        get('invoice/bill/add', ['as' => 'tenant.invoice.bill.add', 'uses' => 'BillController@add']);
+        post('invoice/bill', ['as' => 'tenant.invoice.bill.post', 'uses' => 'BillController@create']);
+        post('invoice/bill/data', ['as' => 'tenant.invoice.bill.data', 'uses' => 'BillController@dataJson']);
+        get('invoice/bill/{id}', ['as' => 'tenant.invoice.bill.show', 'uses' => 'BillController@show']);
+        get('invoice/bill/{id}/edit', ['as' => 'tenant.invoice.bill.edit', 'uses' => 'BillController@edit']);
+        post('invoice/bill/{id}/edit', ['as' => 'tenant.invoice.bill.update', 'uses' => 'BillController@update']);
+        get('invoice/bill/{id}/delete', ['as' => 'tenant.invoice.bill.delete', 'uses' => 'BillController@delete']);
+
+        // invoice routes
+        get('invoice', ['as' => 'tenant.invoice.index', 'uses' => 'InvoiceController@index']);
+    });
+
 
     /*
      * Todo : don't register new routes under this group
