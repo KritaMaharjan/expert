@@ -1,5 +1,4 @@
-
- {!!Form::open(['id'=>'customer-form', 'enctype'=>'multipart/form-data','files'=>true])!!}
+{!!Form::open(['id'=>'customer-form', 'enctype'=>'multipart/form-data','files'=>true])!!}
                     <div class="box-body">
                       <div class="form-group">
                         <label for="">Name</label>
@@ -58,8 +57,8 @@
                       </div>
                       <div class="form-group two-inputs">
                         <label for="">Postal code/Town</label>
-                        <input type="text" placeholder="Postal code" id="postcode postal_code" name="postcode"  value="{{old('postcode')}}" class="form-control">
-                        <input type="text" placeholder="Town"  id="town city" name="town"  value="{{old('town')}}" class="form-control">
+                        <input type="text" placeholder="Postal code" id="postcode" name="postcode"  value="{{old('postcode')}}" class="form-control postcode">
+                        <input type="text" placeholder="Town"  id="town" name="town"  value="{{old('town')}}" class="form-control">
                     
                       </div>
                       <div class="form-group">
@@ -100,5 +99,64 @@
                    
            {!! Form::close() !!}
 
-    
+    <script type="text/javascript">
+//         $("#postcode").autocomplete({
+//             minLength: 0,
+//             source: function(request, response) {
+//                 var term = request.term;
+//                 var token = $('#_token').val();
+//                 if (term in cache) {
+//                     response(cache[ term ]);
+//                     return;
+//                 }
+
+//                 $.ajax({
+//                     url: appUrl+"postal/suggestions",
+//                     type: "get",
+//                     dataType: "json",
+//                     data: {'data': term,'_token':token},
+//                     success: function(data) {
+//                       console.log(data);
+//                         cache[ term ] = data;
+//                         items1 = $.map(data, function(item) {
+
+//                             return   {label: item.postcode +' , ' +item.legal_town ,
+//                                 value: item.postcode,
+//                                 town :item.legal_town ,
+//                                 id: item.id}
+
+
+//                         });
+//                         response(items1);
+//                     }
+//                 });
+//             },
+//             search: function(event, ui) {
+               
+//             },
+//             response: function(event, ui) {
+               
+//             },
+//             create: function(event, ui) {
+//             },
+//             open: function(event, ui) {
+               
+//             },
+//             focus: function(event, ui) {
+
+//             },
+//             _resizeMenu: function() {
+//                 this.menu.element.outerWidth(200);
+//             },
+//             select: function(event, ui) {
+// console.log(ui);
+//                  var label = ui.item.town;
+              
+//     $('#town').val(label);
  
+
+                
+
+//             }
+//         });
+    </script>
