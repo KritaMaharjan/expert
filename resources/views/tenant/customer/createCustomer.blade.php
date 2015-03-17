@@ -58,8 +58,8 @@
                       </div>
                       <div class="form-group two-inputs">
                         <label for="">Postal code/Town</label>
-                        <input type="text" placeholder="Postal code" id="postcode" name="postcode"  value="{{old('postcode')}}" class="form-control">
-                        <input type="text" placeholder="Town"  id="town" name="town"  value="{{old('town')}}" class="form-control">
+                        <input type="text" placeholder="Postal code" id="postcode postal_code" name="postcode"  value="{{old('postcode')}}" class="form-control">
+                        <input type="text" placeholder="Town"  id="town city" name="town"  value="{{old('town')}}" class="form-control">
                     
                       </div>
                       <div class="form-group">
@@ -101,3 +101,4 @@
            {!! Form::close() !!}
 
     
+ 

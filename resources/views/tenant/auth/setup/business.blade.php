@@ -103,6 +103,78 @@
 
 			</section>
 		</div>
+
+
+		<script>
+$(function() {
+
+
+
+ var cache = {};
+        $("#postal_code").autocomplete({
+            minLength: 0,
+            source: function(request, response) {
+                var term = request.term;
+                var token = '{{csrf_token()}}';
+                if (term in cache) {
+                    response(cache[ term ]);
+                    return;
+                }
+
+                $.ajax({
+                    url: appUrl+"postal/suggestions",
+                    type: "get",
+                    dataType: "json",
+                    data: {'data': term,'_token':token},
+                    success: function(data) {
+                      console.log(data);
+                        cache[ term ] = data;
+                        items1 = $.map(data, function(item) {
+
+                            return   {label: item.postcode +' , ' +item.legal_town ,
+                                value: item.postcode,
+                                town :item.legal_town ,
+                                id: item.id}
+
+
+                        });
+                        response(items1);
+                    }
+                });
+            },
+             appendTo: '#customer-modal-data',
+            search: function(event, ui) {
+               
+            },
+            response: function(event, ui) {
+               
+            },
+            create: function(event, ui) {
+            },
+            open: function(event, ui) {
+               
+            },
+            focus: function(event, ui) {
+
+            },
+            _resizeMenu: function() {
+                this.menu.element.outerWidth(200);
+            },
+            select: function(event, ui) {
+                console.log(ui);
+                 var label = ui.item.town;
+              
+                $('#city').val(label);
+ 
+
+                
+
+            }
+        });
+
+});
+</script>
+
 <?php //FB::js("jquery-ui.js"); ?>
 <?php //FB::js("postal.js"); ?>
 <?php //FB::js("autocomplete.js"); ?>

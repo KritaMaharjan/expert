@@ -1,6 +1,6 @@
     </div>
     <footer class="main-footer">
-          <strong>Copyright &copy; {{date('Y')}} <a href="{{url()}}" title="Fastbooks">Fastbooks</a>.</strong> All rights reserved.
+          <strong>Copyright &copy; {{date('Y')}} <a href="{{tenant_route('tenant.index')}}" title="Fastbooks">Fastbooks</a>.</strong> All rights reserved.
     </footer>
     </div>
 
