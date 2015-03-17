@@ -190,14 +190,11 @@ class SetupController extends BaseController {
 
     public function getPostalCode()
     {
+
     	$postal_code = \Input::get('postcode');
-    	$postal_towns = PostalTown::where('postcode', 'like', '%'.$postal_code.'%')->get();
-    	if (!empty($postal_towns)) {
-            foreach ($postal_towns as $res) {
-                $postal_arr[] = $res->postal_code;
-            }
-        }
-        return \Response::json($postal_arr);
+    	$details = \DB::table('fastbooks.fb_postal_towns')->where('postcode', 'LIKE', '%'.$postal_code.'%')->get();
+    	
+        return \Response::json($details);
     }
 
 }

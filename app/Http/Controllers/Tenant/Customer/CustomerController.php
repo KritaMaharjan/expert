@@ -42,13 +42,7 @@ class CustomerController extends BaseController {
      */
     public function create()
     {
-         $fileName = '';
         
-        if ($this->request->hasFile('photo')) {
-            $file = $this->request->file('photo');
-            $fileName = \FB::uploadFile($file);
-           
-        }
 
 
         $validator = \Validator::make($this->request->all(),
@@ -64,7 +58,7 @@ class CustomerController extends BaseController {
 
 
 
-                'postcode'      => 'required|numeric|size:4',
+                'postcode'      => 'required|size:4',
                 'town'          => 'alpha|between:2,50',
 
               //  'photo'         => 'image'
@@ -74,6 +68,14 @@ class CustomerController extends BaseController {
         if ($validator->fails())
             return \Response::json(array('status' => 'fail', 'errors' => $validator->getMessageBag()->toArray()));
 
+        
+         $fileName = '';
+        
+        if ($this->request->hasFile('photo')) {
+            $file = $this->request->file('photo');
+            $fileName = \FB::uploadFile($file);
+           
+        }
        $result = $this->customer->createCustomer($this->request,$this->current_user->id,$fileName);
         $redirect_url = tenant_route('tenant.customer.index');
         return \Response::json(array('success' => true, 'data' => $result['data'], 'template'=>$result['template'], 'redirect_url' => $redirect_url ));

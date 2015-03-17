@@ -14,7 +14,8 @@ Customers
 {{--<link href="{{assets('assets/plugins/iCheck/all.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{assets('assets/plugins/iCheck/minimal/blue.css')}}" rel="stylesheet" type="text/css" />--}}
 
-
+ <input name="postcode" id="postcode" value=""/>
+            <input name="town" id="town" value=""/>
 
   <div class="row">
 		<div class="col-md-12 mainContainer">
@@ -25,6 +26,7 @@ Customers
                  <i class="fa fa-plus"></i> Add new Customer
                  
             </a>
+           
          </p>
          
 		    <div class="box-body">
@@ -56,72 +58,75 @@ Customers
 	  	
     </div>
 
-    <script type="text/javascript">
-
-  $(function() {
-     
- // var cache = {};
- //        $("#postcode").autocomplete({
- //            minLength: 0,
- //            source: function(request, response) {
- //                var term = request.term;
- //                var token = '{{csrf_token()}}';
- //                if (term in cache) {
- //                    response(cache[ term ]);
- //                    return;
- //                }
-
- //                $.ajax({
- //                    url: appUrl+"postal/suggestions",
- //                    type: "post",
- //                    dataType: "json",
- //                    data: {'data': term,'_token':token},
- //                    success: function(data) {
- //                      console.log(data);
- //                        cache[ term ] = data;
- //                        items1 = $.map(data, function(item) {
-
- //                            return   {label: item.label,
- //                                value: item.label,
- //                                id: item.id}
+ <script>
+$(function() {
 
 
- //                        });
- //                        response(items1);
- //                    }
- //                });
- //            },
- //            search: function(event, ui) {
+
+ var cache = {};
+        $("#postcode").autocomplete({
+            minLength: 0,
+            source: function(request, response) {
+                var term = request.term;
+                var token = '{{csrf_token()}}';
+                if (term in cache) {
+                    response(cache[ term ]);
+                    return;
+                }
+
+                $.ajax({
+                    url: appUrl+"postal/suggestions",
+                    type: "get",
+                    dataType: "json",
+                    data: {'data': term,'_token':token},
+                    success: function(data) {
+                      console.log(data);
+                        cache[ term ] = data;
+                        items1 = $.map(data, function(item) {
+
+                            return   {label: item.postcode +' , ' +item.legal_town ,
+                                value: item.postcode,
+                                town :item.legal_town ,
+                                id: item.id}
+
+
+                        });
+                        response(items1);
+                    }
+                });
+            },
+             appendTo: '#customer-modal-data',
+            search: function(event, ui) {
                
- //            },
- //            response: function(event, ui) {
+            },
+            response: function(event, ui) {
                
- //            },
- //            create: function(event, ui) {
- //            },
- //            open: function(event, ui) {
+            },
+            create: function(event, ui) {
+            },
+            open: function(event, ui) {
                
- //            },
- //            focus: function(event, ui) {
+            },
+            focus: function(event, ui) {
 
- //            },
- //            _resizeMenu: function() {
- //                this.menu.element.outerWidth(200);
- //            },
- //            select: function(event, ui) {
-
- //                 var label = ui.item.label;
- //    var value = ui.item.value;
- //    console.log('label');
- //     console.log('value');
+            },
+            _resizeMenu: function() {
+                this.menu.element.outerWidth(200);
+            },
+            select: function(event, ui) {
+                console.log(ui);
+                 var label = ui.item.town;
+              
+                $('#town').val(label);
+ 
 
                 
 
- //            }
- //        });
+            }
+        });
 
 });
-    </script>
+</script>
 
     {{--Load JS--}}
     {{FB::registerModal()}}
