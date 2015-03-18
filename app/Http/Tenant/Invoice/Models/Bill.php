@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Tenant\Customer;
 
 class Bill extends Model {
 
@@ -10,14 +11,14 @@ class Bill extends Model {
      *
      * @var string
      */
-    protected $table = 'fb_products';
+    protected $table = 'fb_bill';
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = [];
+    protected $fillable = ['bill_number', 'customer_id', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'status', 'account_number', 'due_date'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -111,7 +112,26 @@ class Bill extends Model {
 
         $query->skip($start)->take($take);
 
-        $products['data'] = $this->toFomatedData($query->get());
+        $data = $query->get();
+
+        foreach ($data as $key => &$value) {
+            $customer = Customer::find($value->customer_id);
+            if($customer)
+                $value->customer = $customer->name;
+            else $value->customer = 'Undefined';
+            $value->raw_status = $value->status;
+            if($value->status == 1)
+                $value->status = '<span class="label label-success">Paid</span>';
+            elseif($value->status == 2)
+                $value->status = '<span class="label label-warning">Collection</span>';
+            else
+                $value->status = '<span class="label label-danger">Unpaid</span>';
+
+            $value->invoice_date = $value->created_at->format('d-M-Y  h:i:s A');
+            $value->DT_RowId = "row-".$value->guid;
+        }
+
+        $products['data'] = $data->toArray();
 
         $json = new \stdClass();
         $json->draw = ($request->input('draw') > 0) ? $request->input('draw') : 1;
@@ -120,15 +140,6 @@ class Bill extends Model {
         $json->data = $products['data'];
 
         return $json;
-    }
-
-    function toFomatedData($data)
-    {
-        foreach ($data as $k => &$items) {
-            $items->toData();
-        }
-
-        return $data;
     }
 
 

@@ -49,9 +49,11 @@ Route::group($group_auth, function () {
      */
     Route::group(['prefix' => 'desk', 'namespace' => 'Tenant\Email\Controllers'], function () {
 
+      
         get('email', ['as' => 'desk.email', 'uses' => 'EmailController@index']);
         post('email/upload/data', ['as' => 'desk.email.upload', 'uses' => 'EmailController@attach']);
         post('email/send', ['as' => 'desk.email.send', 'uses' => 'EmailController@send']);
+        get('email/customers', ['as' => 'tenant.email.customers', 'uses' => 'EmailController@getCustomer']);
 
     });
 
@@ -80,9 +82,6 @@ Route::group($group_auth, function () {
         post('inventory/{id}/edit', ['as' => 'tenant.inventory.update', 'uses' => 'InventoryController@update']);
         get('inventory/{id}/edit', ['as' => 'tenant.inventory.edit', 'uses' => 'InventoryController@edit']);
         get('inventory/{id}/delete', ['as' => 'tenant.inventory.delete', 'uses' => 'InventoryController@delete']);
-
-
-
     });
 
     /** Registered by Krita **/
@@ -101,6 +100,7 @@ Route::group($group_auth, function () {
         // invoice routes
         get('invoice', ['as' => 'tenant.invoice.index', 'uses' => 'InvoiceController@index']);
     });
+
 
 
     /*

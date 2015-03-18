@@ -14,7 +14,9 @@
                     <div class="form-group disply-inline">
                         <div class="input-group">
                             <span class="input-group-addon">TO:</span>
-                            {!! Form::text('email_to', null, ['class'=>'form-control', 'placeholder'=>'Email To']) !!}
+                            <select class="js-example-basic-multiple" multiple="multiple">
+                            </select>
+                          {{--   {!! Form::text('email_to', null, ['class'=>'form-control', 'placeholder'=>'Email To']) !!} --}}
                         </div>
                     </div>
                     <div class="form-group disply-inline">
@@ -82,6 +84,31 @@
 <script>
 
 $(function(){
+
+    $(".js-example-basic-multiple").select2({
+        ajax: {
+            url: appUrl+"desk/email/customers",
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                // console.log(params);
+                return {
+                    q: params.term, // search term
+                    page: params.page
+            };
+        },
+        processResults: function (data, page) {
+            // parse the results into the format expected by Select2.
+            // since we are using custom formatting functions we do not need to
+            // alter the remote JSON data
+        return {
+            results: data.items
+            };
+        },
+        cache: true
+    },
+
+});
 
     $(document).on('submit', '#compose-form', function(e){
         e.preventDefault();

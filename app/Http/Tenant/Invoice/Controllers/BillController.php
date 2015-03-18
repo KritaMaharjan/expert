@@ -48,7 +48,7 @@ class BillController extends BaseController {
     public function dataJson()
     {
         if ($this->request->ajax()) {
-            $select = ['id', 'name', 'number', 'selling_price', 'purchase_cost', 'vat'];
+            $select = ['id', 'bill_number', 'customer_id', 'total', 'due_date', 'created_at', 'status'];
             $json = $this->product->dataTablePagination($this->request, $select);
             echo json_encode($json, JSON_PRETTY_PRINT);
         } else {

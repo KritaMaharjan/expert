@@ -250,7 +250,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         else
             $details->status = '<span class="label label-warning">Pending</span>';
 
-        $details->created = $details->created_at->format('d-M-Y');
+        $details->created = $details->created_at->format('d-M-Y h:i:s A');
 
 
         $template = "<td>".$details->fullname."</td>
@@ -320,7 +320,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             else
                 $value->status = '<span class="label label-warning">Pending</span>';
 
-            $value->created = $value->created_at->format('d-M-Y');
+            $value->created = $value->created_at->format('d-M-Y  h:i:s A');
             $value->DT_RowId = "row-".$value->guid;
         }    
 
