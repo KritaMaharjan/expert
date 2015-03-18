@@ -5,16 +5,26 @@ namespace APP\Http\Tenant\Email\Controllers;
 use App\Http\Controllers\Tenant\BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Tenant\Email\Models\Email;
 
 class EmailController extends BaseController {
 
     protected $request;
+     protected $email;
 
-    function __construct(Request $request)
+
+    function __construct(Request $request,Email $email)
     {
         parent::__construct();
         $this->request = $request;
+        $this->email = $email;
     }
+
+     protected $rules = [
+        'subject'    => 'required',
+        'email_to'      => 'required',
+        'message' => 'required'
+    ];
 
     function index()
     {
@@ -63,7 +73,13 @@ class EmailController extends BaseController {
 
 
     function send(){
-        
+         $validator = Validator::make($this->request->all(), $this->rules);
+
+        if ($validator->fails())
+            return $this->fail(['errors' => $validator->messages()]);
+
+        $result = $this->email->add($this->request);
+
     }
 
     // function validate($rules)
