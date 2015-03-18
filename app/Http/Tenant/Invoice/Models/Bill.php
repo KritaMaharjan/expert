@@ -101,11 +101,14 @@ class Bill extends Model {
         $query = $this->select($select);
 
         if ($orderColumn != '' AND $orderdir != '') {
-            $query = $query->orderBy($orderColumn, $orderdir);
+            if($orderColumn != 'invoice_date')
+                $query = $query->orderBy($orderColumn, $orderdir);
+            else
+                $query = $query->orderBy('created_at', $orderdir);
         }
 
         if ($search != '') {
-            $query = $query->where('name', 'LIKE', "%$search%");
+            $query = $query->where('bill_number', 'LIKE', "%$search%");
         }
         $products['total'] = $query->count();
 
@@ -115,6 +118,7 @@ class Bill extends Model {
         $data = $query->get();
 
         foreach ($data as $key => &$value) {
+            $value->bill_number = '<a class="link" href="#">'.$value->bill_number.'</a>';
             $customer = Customer::find($value->customer_id);
             if($customer)
                 $value->customer = $customer->name;
