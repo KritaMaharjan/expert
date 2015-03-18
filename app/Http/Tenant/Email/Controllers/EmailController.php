@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class EmailController extends BaseController {
 
+    protected $request;
+
+    function __construct(Request $request)
+    {
+        $this->request = $request;
+    }
 
     function index()
     {
@@ -14,13 +20,13 @@ class EmailController extends BaseController {
     }
 
 
-    function upload(Request $request)
+    function attach()
     {
-        if ($request->hasFile('file') AND $request->file('file')->isValid()) {
-            $extension = $request->file('file')->getClientOriginalExtension();
+        if ($this->request->hasFile('file') AND $this->request->file('file')->isValid()) {
+            $extension = $this->request->file('file')->getClientOriginalExtension();
             $destinationPath = './assets/uploads/';
             $fileName = uniqid() . '_' . time() . '.' . $extension;
-            $data = $request->file('file')->move($destinationPath, $fileName);
+            $data = $this->request->file('file')->move($destinationPath, $fileName);
             $return = ['pathName' => asset(trim($data->getPathname(), '.')), 'fileName' => $data->getFilename()];
 
             return $this->success($return);
@@ -29,6 +35,25 @@ class EmailController extends BaseController {
         }
 
         return $this->fail(['error' => 'Invalid access']);
+    }
+
+
+    function send()
+    {
+        $validator = $this->validateComposer();
+        if ($validator->fails()) {
+            return $this->fail(['errors' => $validator->messages()]);
+        }
+
+        return $this->success($this->request->all());
+    }
+
+    function validate($rules)
+    {
+        $rules = [];
+        $validator = Validator::make($this->request->all(), $rules);
+
+        return $validator;
     }
 
 
