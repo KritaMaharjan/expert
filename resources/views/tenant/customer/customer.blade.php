@@ -11,11 +11,13 @@ Customers
 
 
 @section('content')
+<style>
+ul.ui-autocomplete.ui-menu {
+  z-index: 1000 !important;
+}
+</style>
 {{--<link href="{{assets('assets/plugins/iCheck/all.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{assets('assets/plugins/iCheck/minimal/blue.css')}}" rel="stylesheet" type="text/css" />--}}
-
- <input name="postcode" id="postcode" value=""/>
-            <input name="town" id="town" value=""/>
 
   <div class="row">
 		<div class="col-md-12 mainContainer">
@@ -57,73 +59,32 @@ Customers
     </div>
 	  	
     </div>
+ <script type="text/javascript">
+var cache = {};
 
- <script>
-$(function() {
+$(".postcode").select2({
+   ajax: {
+url:  appUrl+"postal/suggestions",
+dataType: 'json',
+delay: 250,
+data: function (params) {
+  console.log(params);
+return {
+q: params.term, // search term
+page: params.page
+};
+},
+processResults: function (data, page) {
+// parse the results into the format expected by Select2.
+// since we are using custom formatting functions we do not need to
+// alter the remote JSON data
+return {
+results: data.items
+};
+},
+cache: true
+},
 
-
-
- var cache = {};
-        $("#postcode").autocomplete({
-            minLength: 0,
-            source: function(request, response) {
-                var term = request.term;
-                var token = '{{csrf_token()}}';
-                if (term in cache) {
-                    response(cache[ term ]);
-                    return;
-                }
-
-                $.ajax({
-                    url: appUrl+"postal/suggestions",
-                    type: "get",
-                    dataType: "json",
-                    data: {'data': term,'_token':token},
-                    success: function(data) {
-                      console.log(data);
-                        cache[ term ] = data;
-                        items1 = $.map(data, function(item) {
-
-                            return   {label: item.postcode +' , ' +item.legal_town ,
-                                value: item.postcode,
-                                town :item.legal_town ,
-                                id: item.id}
-
-
-                        });
-                        response(items1);
-                    }
-                });
-            },
-             appendTo: '#customer-modal-data',
-            search: function(event, ui) {
-               
-            },
-            response: function(event, ui) {
-               
-            },
-            create: function(event, ui) {
-            },
-            open: function(event, ui) {
-               
-            },
-            focus: function(event, ui) {
-
-            },
-            _resizeMenu: function() {
-                this.menu.element.outerWidth(200);
-            },
-            select: function(event, ui) {
-                console.log(ui);
-                 var label = ui.item.town;
-              
-                $('#town').val(label);
- 
-
-                
-
-            }
-        });
 
 });
 </script>
@@ -134,4 +95,4 @@ $(function() {
     {{FB::js('assets/js/customer.js')}}
        
 	@stop
-
+  

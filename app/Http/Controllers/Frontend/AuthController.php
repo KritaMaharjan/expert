@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Fastbooks\Libraries\Tenant as LibTenant;
 
 /**
- * Class AuthController
+ *  Class AuthController
  * @package App\Http\Controllers\Frontend
  */
 class AuthController extends BaseController {

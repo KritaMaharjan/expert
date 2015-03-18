@@ -31,7 +31,7 @@ class EmailController extends BaseController {
 
     function update(Request $request){
     	$all = $request->except('_token');
-         $validator = Validator::make($request->all(),
+         $validator = \Validator::make($request->all(),
                                         array(
                                             'incoming_server' => 'required',
                                             'outgoing_server' => 'required',

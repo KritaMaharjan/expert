@@ -1,11 +1,12 @@
 $(document).ready(function() {
 
 var cache = {};
-        $("#postal_code").autocomplete({
+        $("#postalcode").autocomplete({
+
             minLength: 0,
             source: function(request, response) {
                 var term = request.term;
-                var token = '{{csrf_token()}}';
+                var token = $('#_token').val();
                 if (term in cache) {
                     response(cache[ term ]);
                     return;

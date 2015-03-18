@@ -1,5 +1,4 @@
-
- {!!Form::open(['id'=>'customer-form', 'enctype'=>'multipart/form-data','files'=>true])!!}
+{!!Form::open(['id'=>'customer-form', 'enctype'=>'multipart/form-data','files'=>true])!!}
                     <div class="box-body">
                       <div class="form-group">
                         <label for="">Name</label>
@@ -58,8 +57,13 @@
                       </div>
                       <div class="form-group two-inputs">
                         <label for="">Postal code/Town</label>
-                        <input type="text" placeholder="Postal code" id="postcode postal_code" name="postcode"  value="{{old('postcode')}}" class="form-control">
-                        <input type="text" placeholder="Town"  id="town city" name="town"  value="{{old('town')}}" class="form-control">
+
+
+                        <select class="form-control js-example-basic-multiple"  placeholder="Postal code" id="postcode" name="postcode"  value="{{old('postcode')}}">
+                          <option value="3620194" selected="selected">Select</option>
+                        </select>
+                        <input type="text" placeholder="Town"  id="city" name="town"  value="{{old('town')}}" class="form-control">
+
                     
                       </div>
                       <div class="form-group">
@@ -100,5 +104,3 @@
                    
            {!! Form::close() !!}
 
-    
- 

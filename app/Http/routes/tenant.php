@@ -49,9 +49,11 @@ Route::group($group_auth, function () {
      */
     Route::group(['prefix' => 'desk', 'namespace' => 'Tenant\Email\Controllers'], function () {
 
+      
         get('email', ['as' => 'desk.email', 'uses' => 'EmailController@index']);
         post('email/upload/data', ['as' => 'desk.email.upload', 'uses' => 'EmailController@attach']);
         post('email/send', ['as' => 'desk.email.send', 'uses' => 'EmailController@send']);
+        get('email/customers', ['as' => 'tenant.email.customers', 'uses' => 'EmailController@getCustomer']);
 
     });
 
@@ -98,6 +100,7 @@ Route::group($group_auth, function () {
         // invoice routes
         get('invoice', ['as' => 'tenant.invoice.index', 'uses' => 'InvoiceController@index']);
     });
+
 
 
     /*
