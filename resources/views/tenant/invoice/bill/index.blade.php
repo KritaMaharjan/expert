@@ -22,14 +22,14 @@ Bill
                  </a>
              </p>
             <div class="box-body table-responsive">
-              <table id="table-bill" class="table table-hover">
+              <table id="table-bill" class="table table-hover table-bill">
                 <thead>
                     <tr>
-                      <th>Bill Number</th>
-                      <th>Customer</th>
+                      <th>Invoice Number</th>
+                      <th>Name of recipient</th>
+                      <th>Amount</th>
                       <th>Invoice Date</th>
-                      <th>Vat</th>
-                      <th>Total</th>
+                      <th>Status</th>
                       <th>Action</th>
                     </tr>
                 </thead>
