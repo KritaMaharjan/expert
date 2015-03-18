@@ -161,6 +161,7 @@ Route::group($group_auth, function () {
         post('customer/data', ['as' => 'tenant.customer.data', 'uses' => 'Tenant\Customer\CustomerController@dataJson']);
         post('customer/upload', ['as' => 'tenant.customer.upload', 'uses' => 'Tenant\Customer\CustomerController@upload']);
         post('customer/changeStatus', ['as' => 'tenant.customer.changeStatus', 'uses' => 'Tenant\Customer\CustomerController@changeStatus']);
+        get('customer/suggestions', ['as' => 'tenant.customer.suggestions', 'uses' => 'Tenant\Customer\CustomerController@getCustomerSuggestions']);
         post('test/upload', ['as' => 'test.upload', 'uses' => 'Tenant\Customer\CustomerController@testUpload']);
 
     });

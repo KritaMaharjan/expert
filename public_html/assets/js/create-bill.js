@@ -16,6 +16,30 @@
     });
 
     $(".select-single").select2({
+        ajax: {
+            url: appUrl + 'customer/suggestions',
+            dataType: 'json',
+            cache: false,
+            data: function (params) {
+                return {
+                    postcode: params.term, // search term
+                    page: params.page
+                };
+            },
+            processResults: function (data) {
+
+                return {
+                    results: $.map(data, function (obj) {
+                        return {id: obj.text, text: obj.text};
+                    })
+                };
+            }
+        },
+        formatResult: FormatResult,
+        formatSelection: FormatSelection,
+        escapeMarkup: function (m) {
+            return m;
+        },
         theme: "classic"
     });
 
