@@ -7,7 +7,7 @@
 
 
 
-/*function _lang($lang = '')
+function _lang($lang = '')
 {
     echo Lang::get($lang);
 }
@@ -15,4 +15,4 @@
 function lang($lang = '')
 {
     return Lang::get($lang);
-}*/
+}

@@ -43,6 +43,9 @@ class BaseController extends Controller {
         // initialise current user
         $this->current_user();
 
+        //check current user's status
+        $this->authenticate_user();
+
         // share current route in all views
         $this->viewShare();
     }
@@ -58,6 +61,27 @@ class BaseController extends Controller {
             return $this->current_user = Auth::user();
         } else {
             return $this->current_user = null;
+        }
+    }
+
+    /**
+     * Current logged in user status info
+     * @return null
+     */
+    function authenticate_user()
+    {
+        if($this->current_user)
+        {
+            if ($this->current_user->status == 0) {
+                Auth::logout();
+                return tenant()->redirect('tenant.login')->withInput()->with('message', lang('Your account has not been activated.'));
+            } elseif ($this->current_user->status == 2) {
+                Auth::logout();
+                return tenant()->redirect('tenant.login')->withInput()->with('message', lang('Your account has been suspended.'));
+            } elseif ($this->current_user->status == 3) {
+                Auth::logout();
+                return tenant()->redirect('tenant.login')->withInput()->with('message', lang('Your account has been permanently blocked.'));
+            }
         }
     }
 
