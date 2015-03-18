@@ -14,7 +14,7 @@
                     <div class="form-group disply-inline">
                         <div class="input-group">
                             <span class="input-group-addon">TO:</span>
-                            <select class="js-example-basic-multiple" multiple="multiple">
+                            <select name="email_to[]" class="js-example-basic-multiple" multiple="multiple">
                             </select>
                           {{--   {!! Form::text('email_to', null, ['class'=>'form-control', 'placeholder'=>'Email To']) !!} --}}
                         </div>
@@ -22,13 +22,17 @@
                     <div class="form-group disply-inline">
                         <div class="input-group">
                             <span class="input-group-addon">CC:</span>
-                           {!! Form::text('email_cc', null, ['class'=>'form-control', 'placeholder'=>'Email CC']) !!}
+                             <select name="email_cc[]" class="js-example-basic-multiple" multiple="multiple">
+                            </select>
+                          {{--  {!! Form::text('email_cc', null, ['class'=>'form-control', 'placeholder'=>'Email CC']) !!} --}}
                         </div>
                     </div>
                     <div class="form-group clearfix">
                         <div class="input-group">
                             <span class="input-group-addon">BCC:</span>
-                           {!! Form::text('email_bcc', null, ['class'=>'form-control', 'placeholder'=>'Email BCC']) !!}
+                             <select name="email_bcc[]" class="js-example-basic-multiple" multiple="multiple">
+                            </select>
+                          {{--  {!! Form::text('email_bcc', null, ['class'=>'form-control', 'placeholder'=>'Email BCC']) !!} --}}
                         </div>
                     </div>
                     <div class="form-group">
@@ -61,12 +65,12 @@
                         </button>
                         <div class="input-group input-custom">
                             <span class="input-group-addon">Action:</span>
-                            <select class="form-control">
-                                <option>Mark open</option>
-                                <option>Mark closed</option>
-                                <option>Mark pending</option>
-                                <option>Select from list of coworkers</option>
-                                <option>Add to-do list</option>
+                            <select name="status" class="form-control">
+                                <option value="1">Mark open</option>
+                                <option value="2">Mark closed</option>
+                                <option value="3">Mark pending</option>
+                                <option value="4">Select from list of coworkers</option>
+                                <option value="5">Add to-do list</option>
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-envelope"></i> Send
@@ -86,29 +90,28 @@
 $(function(){
 
     $(".js-example-basic-multiple").select2({
-        ajax: {
-            url: appUrl+"desk/email/customers",
-            dataType: 'json',
-            delay: 250,
-            data: function (params) {
-                // console.log(params);
-                return {
-                    q: params.term, // search term
-                    page: params.page
-            };
-        },
-        processResults: function (data, page) {
-            // parse the results into the format expected by Select2.
-            // since we are using custom formatting functions we do not need to
-            // alter the remote JSON data
-        return {
-            results: data.items
-            };
-        },
-        cache: true
-    },
 
-});
+      ajax: {
+        url: appUrl+'desk/email/customers',
+        dataType: 'json',
+         data: function (params) {
+          return {
+            email_to : params.term, // search term
+            page: params.page
+          };
+        },
+        processResults: function (data) {
+            
+            return {
+                results: $.map(data, function(obj) {
+                    return { id: obj.email, text: obj.email };
+                })
+            };
+        }
+    },
+    tags: true
+    });
+
 
     $(document).on('submit', '#compose-form', function(e){
         e.preventDefault();
