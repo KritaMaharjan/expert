@@ -222,5 +222,81 @@ function getTemplate(response, type) {
         return html;
 }
 
+var formatSelection = function(bond) {
+    console.log(bond)
+    return bond.name
+  }
+
+  var formatResult = function(bond) {
+    return '<div class="select2-user-result">' + bond.name + '</div>'
+  }
+
+  var initSelection = function(elem, cb) {
+    console.log(elem)
+    return elem
+  }
+
+$.fn.select2.defaults.set("theme", "classic");
+//fix modal force focus
+   $.fn.modal.Constructor.prototype.enforceFocus = function () {
+   
+      var that = this;
+      $(document).on('focusin.modal', function (e) {
+
+         if ($(e.target).hasClass('select2-search__field')) {
+
+            return true;
+         }
+
+         if (that.$element[0] !== e.target && !that.$element.has(e.target).length) {
+            that.$element.focus();
+         }
+      });
 
 
+      
+    
+
+       $(".js-example-basic-multiple").select2({
+
+      ajax: {
+        url: appUrl+'postal/suggestions',
+        dataType: 'json',
+        cache:false,
+         data: function (params) {
+          return {
+            postcode: params.term, // search term
+            page: params.page
+          };
+        },
+        processResults: function (data) {
+            
+            return {
+                results: $.map(data, function(obj) {
+                    return { id: obj.text, text: obj.text };
+                })
+            };
+        }
+    },
+    formatResult: FormatResult,
+    formatSelection: FormatSelection,
+    escapeMarkup: function (m) { return m; }
+    })
+     
+
+}
+
+
+
+function FormatResult(item) {
+        var markup = "";
+        if (item.text !== undefined) {
+            markup += "<option value='" + item.text + "'>" + item.text + "</option>";
+        }
+        return markup;
+    }
+
+    function FormatSelection(item) {
+        console.log(item.text)
+        return item.text;
+    }

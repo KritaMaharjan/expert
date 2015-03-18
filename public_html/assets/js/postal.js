@@ -1,7 +1,8 @@
 $(document).ready(function() {
 
 var cache = {};
-        $("#postal_code").autocomplete({
+        $("#postalcode").autocomplete({
+
             minLength: 0,
             source: function(request, response) {
                 var term = request.term;
