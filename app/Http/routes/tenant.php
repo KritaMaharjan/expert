@@ -50,7 +50,8 @@ Route::group($group_auth, function () {
     Route::group(['prefix' => 'desk', 'namespace' => 'Tenant\Email\Controllers'], function () {
 
         get('email', ['as' => 'desk.email', 'uses' => 'EmailController@index']);
-        post('email/upload/data', ['as' => 'desk.email.upload', 'uses' => 'EmailController@upload']);
+        post('email/upload/data', ['as' => 'desk.email.upload', 'uses' => 'EmailController@attach']);
+        post('email/send', ['as' => 'desk.email.send', 'uses' => 'EmailController@send']);
 
     });
 
@@ -79,9 +80,23 @@ Route::group($group_auth, function () {
         post('inventory/{id}/edit', ['as' => 'tenant.inventory.update', 'uses' => 'InventoryController@update']);
         get('inventory/{id}/edit', ['as' => 'tenant.inventory.edit', 'uses' => 'InventoryController@edit']);
         get('inventory/{id}/delete', ['as' => 'tenant.inventory.delete', 'uses' => 'InventoryController@delete']);
+    });
 
+    /** Registered by Krita **/
+    Route::group(['namespace' => 'Tenant\Invoice\Controllers'], function () {
 
+        // bill routes
+        get('invoice/bill', ['as' => 'tenant.invoice.bill.index', 'uses' => 'BillController@index']);
+        get('invoice/bill/add', ['as' => 'tenant.invoice.bill.add', 'uses' => 'BillController@add']);
+        post('invoice/bill', ['as' => 'tenant.invoice.bill.post', 'uses' => 'BillController@create']);
+        post('invoice/bill/data', ['as' => 'tenant.invoice.bill.data', 'uses' => 'BillController@dataJson']);
+        get('invoice/bill/{id}', ['as' => 'tenant.invoice.bill.show', 'uses' => 'BillController@show']);
+        get('invoice/bill/{id}/edit', ['as' => 'tenant.invoice.bill.edit', 'uses' => 'BillController@edit']);
+        post('invoice/bill/{id}/edit', ['as' => 'tenant.invoice.bill.update', 'uses' => 'BillController@update']);
+        get('invoice/bill/{id}/delete', ['as' => 'tenant.invoice.bill.delete', 'uses' => 'BillController@delete']);
 
+        // invoice routes
+        get('invoice', ['as' => 'tenant.invoice.index', 'uses' => 'InvoiceController@index']);
     });
 
 

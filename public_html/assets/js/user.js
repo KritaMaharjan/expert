@@ -218,8 +218,10 @@ $(function () {
                 .done(function (response) {
                     if (response.success === true) {
                         $('.mainContainer .box-solid').before(notify('success', response.message));
-                        var action_html = showActionbtn(response.data);
-                        parentTd.html(action_html);
+                        var action_html = "<td>"+showActionbtn(response.data)+"</td>";
+                        parentTr.html(response.template + action_html);
+                        //var action_html = showActionbtn(response.data);
+                        //parentTd.html(action_html);
                         //parentTr.remove();
                     } else {
                         $('.mainContainer .box-solid').before(notify('error', response.message));

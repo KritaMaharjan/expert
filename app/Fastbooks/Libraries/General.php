@@ -213,12 +213,15 @@ class General {
     function can_view($access = '')
     {
         $user = Auth::user();
-        $permissions = ($user->permissions!='') ? @unserialize($user->permissions) : '';
-        if ($user->role == 1 || in_array($access, $permissions)) {
-            return true;
-        } else {
-            return false;
-            //App()->abort('404');
+        if($user)
+        {
+            $permissions = ($user->permissions!='') ? @unserialize($user->permissions) : '';
+            if ($user->role == 1 || in_array($access, $permissions)) {
+                return true;
+            } else {
+                return false;
+                //App()->abort('404');
+            }
         }
     }
 

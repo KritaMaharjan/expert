@@ -43,7 +43,6 @@ class AuthController extends BaseController {
 
         if ($this->auth->attempt($credentials, $request->has('remember'))) {
             $this->rememberTenant();
-
             return $TenantUser->redirectIfValid($this->auth->user());
         }
 

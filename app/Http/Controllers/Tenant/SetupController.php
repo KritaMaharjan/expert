@@ -37,9 +37,9 @@ class SetupController extends BaseController {
 
 	public function getBusiness()
 	{
-		$setup = $this->setupChecker->isSecondCompleted();
-		if($setup)
-			return tenant()->route('tenant.setup.fix');
+//		$setup = $this->setupChecker->isSecondCompleted();
+//		if($setup)
+//			return tenant()->route('tenant.setup.fix');
 		$countries = Config::get('tenant.countries');
 		return view('tenant.auth.setup.business')->with('countries', $countries);
 	}
