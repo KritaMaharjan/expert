@@ -53,6 +53,7 @@ $(function(){
                                   <div class="table-responsive fix-height">
                                     <!-- THE MESSAGES -->
                                     <table class="table table-mailbox no-mg-btm">
+                                      @if($mails)
                                       <tr class="unread">
                                         <td class="small-col"><i class="fa fa-envelope"></i></td>
                                         <td class="name">
@@ -62,60 +63,7 @@ $(function(){
                                         </td>
                                         <td class="time">12:30 PM</td>
                                       </tr>
-                                      <tr>
-                                        <td class="small-col"><i class="fa fa-location-arrow"></i></td>
-                                        <td class="name"><a href="#">Ron Johnson
-                                          <small class="subject">Welcome to...</small>
-                                          </a>
-                                        </td>
-                                        <td class="time">15-12-14</td>
-                                      </tr>
-                                      <tr>
-                                        <td class="small-col"><i class="fa fa-reply"></i></td>
-                                        <td class="name"><a href="#">John Doe</a>
-                                        <small class="subject"><strong>RE:</strong></span> Urgent! Please read</small>
-                                        </td>
-                                        <td class="time">15-12-14</td>
-                                      </tr>
-                                      <tr>
-                                        <td class="small-col"><i class="fa fa-location-arrow"></i></td>
-                                        <td class="name"><a href="#">Ron Johnson
-                                          <small class="subject">Welcome to...</small>
-                                          </a>
-                                        </td>
-                                        <td class="time">15-12-14</td>
-                                      </tr>
-                                      <tr>
-                                        <td class="small-col"><i class="fa fa-reply"></i></td>
-                                        <td class="name"><a href="#">John Doe</a>
-                                        <small class="subject"><strong>RE:</strong></span> Urgent! Please read</small>
-                                        </td>
-                                        <td class="time">15-12-14</td>
-                                      </tr>
-                                      <tr>
-                                        <td class="small-col"><i class="fa fa-location-arrow"></i></td>
-                                        <td class="name"><a href="#">Ron Johnson
-                                          <small class="subject">Welcome to...</small>
-                                          </a>
-                                        </td>
-                                        <td class="time">15-12-14</td>
-                                      </tr>
-                                      <tr>
-                                        <td class="small-col"><i class="fa fa-reply"></i></td>
-                                        <td class="name"><a href="#">John Doe</a>
-                                        <small class="subject"><strong>RE:</strong></span> Urgent! Please read</small>
-                                        </td>
-                                        <td class="time">15-12-14</td>
-                                      </tr>
-                                      <tr>
-                                        <td class="small-col"><i class="fa fa-location-arrow"></i></td>
-                                        <td class="name"><a href="#">Ron Johnson
-                                          <small class="subject">Welcome to...</small>
-                                          </a>
-                                        </td>
-                                        <td class="time">15-12-14</td>
-                                      </tr>
-                                      
+                                     @endif
                                       
                                     </table>                                    
                                   </div><!-- /.table-responsive -->

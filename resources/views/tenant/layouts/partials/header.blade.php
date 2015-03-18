@@ -13,7 +13,7 @@
         <ul class="nav navbar-nav">
         <li class="dropdown flag">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-flag-{{$current_lang}}"></i>
+             {{--  <i class="fa fa-flag-{{$current_lang}}"></i> --}}
 
             </a>
             <ul class="dropdown-menu pad-0">

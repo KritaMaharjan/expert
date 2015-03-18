@@ -14,8 +14,6 @@ Customers
 {{--<link href="{{assets('assets/plugins/iCheck/all.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{assets('assets/plugins/iCheck/minimal/blue.css')}}" rel="stylesheet" type="text/css" />--}}
 
- <input name="postcode" id="postcode" value=""/>
-            <input name="town" id="town" value=""/>
 
   <div class="row">
 		<div class="col-md-12 mainContainer">

@@ -21,7 +21,7 @@ class MydeskController extends BaseController {
 
      public  function index(){
 
-     	return view('');
+     	
      }
 
 

@@ -58,7 +58,7 @@ class ClientController extends BaseController {
     {
         $tenant = new stdclass;
         $tenant->basic = Tenant::find($id);
-        if($tenant->activation_key=='')
+        if$tenant->basic->activation_key =='')
         {
             $dbname = env('ROOT_DB_PREFIX') . $tenant->basic->domain;
             $table_profile = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'profile';
