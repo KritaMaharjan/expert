@@ -25,6 +25,7 @@ Email
 $successCallback ="
     var response = JSON.parse(object.response);
     console.log(response);
+    $('#attachment_img').val(response.filename);
 ";
 ?>
 <script type="text/javascript">

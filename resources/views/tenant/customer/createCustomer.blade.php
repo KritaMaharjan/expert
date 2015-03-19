@@ -60,7 +60,7 @@
 
 
                         <select class="form-control js-example-basic-multiple"  placeholder="Postal code" id="postcode" name="postcode"  value="{{old('postcode')}}">
-                          <option value="3620194" selected="selected">Select</option>
+                       
                         </select>
                         <input type="text" placeholder="Town"  id="city" name="town"  value="{{old('town')}}" class="form-control">
 
@@ -103,3 +103,61 @@
                     </div>
                    
            {!! Form::close() !!}
+
+<script type="text/javascript">
+  $(document).ready(function () {
+    $(".js-example-basic-multiple").select2({
+
+        ajax: {
+            url: appUrl + 'postal/suggestions',
+            dataType: 'json',
+            cache: false,
+            data: function (params) {
+                return {
+                    postcode: params.term, // search term
+                    page: params.page
+                };
+            },
+            processResults: function (data) {
+
+                return {
+                    results: $.map(data, function (obj) {
+                        return {id: obj.text, text: obj.text};
+                    })
+                };
+            }
+        },
+        formatResult: FormatResult,
+        formatSelection: FormatSelection,
+        escapeMarkup: function (m) {
+            return m;
+        }
+    });
+  
+
+    function FormatResult(item) {
+    var markup = "";
+    if (item.text !== undefined) {
+        markup += "<option value='" + item.text + "'>" + item.text + "</option>";
+    }
+    return markup;
+}
+
+function FormatSelection(item) {
+    console.log(item.text)
+    return item.text;
+}
+});
+
+//     $(".js-example-basic-multiple").change(function() {
+//     //var theID = $(test).val(); // works
+//     //var theSelection = $(test).filter(':selected').text(); // doesn't work
+//     var theID = $(".js-example-basic-multiple").select2('data').id;
+//     var theSelection = $(".js-example-basic-multiple").select2('data').text;
+//     alert(theID);
+//     // $('#selectedID').text(theID);
+//     // $('#selectedText').text(theSelection);
+// });
+
+
+</script>

@@ -43,22 +43,22 @@ class EmailController extends BaseController {
     }
 
 
-    // function attach()
-    // {
-    //     if ($this->request->hasFile('file') AND $this->request->file('file')->isValid()) {
-    //         $extension = $this->request->file('file')->getClientOriginalExtension();
-    //         $destinationPath = './assets/uploads/';
-    //         $fileName = uniqid() . '_' . time() . '.' . $extension;
-    //         $data = $this->request->file('file')->move($destinationPath, $fileName);
-    //         $return = ['pathName' => asset(trim($data->getPathname(), '.')), 'fileName' => $data->getFilename()];
+    function attach()
+    {
+        if ($this->request->hasFile('file') AND $this->request->file('file')->isValid()) {
+            $extension = $this->request->file('file')->getClientOriginalExtension();
+            $destinationPath = './assets/uploads/';
+            $fileName = uniqid() . '_' . time() . '.' . $extension;
+            $data = $this->request->file('file')->move($destinationPath, $fileName);
+            $return = ['pathName' => asset(trim($data->getPathname(), '.')), 'fileName' => $data->getFilename()];
 
-    //         return $this->success($return);
-    //     } else {
-    //         return $this->fail(['error' => 'File upload failed']);
-    //     }
+            return $this->success($return);
+        } else {
+            return $this->fail(['error' => 'File upload failed']);
+        }
 
-    //     return $this->fail(['error' => 'Invalid access']);
-    // }
+        return $this->fail(['error' => 'Invalid access']);
+    }
 
 
     // function send()
