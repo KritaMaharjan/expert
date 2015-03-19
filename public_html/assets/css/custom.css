@@ -738,6 +738,10 @@ div.dataTables_length select {
     height: 435px;
 }
 
+.payment-info label{
+    width: 100%;
+}
+
 /*calendar*/
 div.zabuto_calendar .table th, div.zabuto_calendar .table td {
     padding: 0 4px!important;

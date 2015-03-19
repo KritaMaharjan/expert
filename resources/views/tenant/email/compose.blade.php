@@ -14,7 +14,7 @@
                     <div class="form-group disply-inline">
                         <div class="input-group">
                             <span class="input-group-addon">TO:</span>
-                            <select class="js-example-basic-multiple" multiple="multiple">
+                            <select  class="select-multiple form-control" multiple="multiple">
                             </select>
                           {{--   {!! Form::text('email_to', null, ['class'=>'form-control', 'placeholder'=>'Email To']) !!} --}}
                         </div>
@@ -25,12 +25,7 @@
                            {!! Form::text('email_cc', null, ['class'=>'form-control', 'placeholder'=>'Email CC']) !!}
                         </div>
                     </div>
-                    <div class="form-group clearfix">
-                        <div class="input-group">
-                            <span class="input-group-addon">BCC:</span>
-                           {!! Form::text('email_bcc', null, ['class'=>'form-control', 'placeholder'=>'Email BCC']) !!}
-                        </div>
-                    </div>
+
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon">Subject:</span>
@@ -38,10 +33,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                    {!! Form::textarea('message', null, ['class'=>'form-control', 'placeholder'=>'message', 'style'=>'height: 120px;']) !!}
+                    {!! Form::textarea('message', null, ['class'=>'form-control', 'placeholder'=>'Message', 'style'=>'height: 120px;']) !!}
                     </div>
                     <div class="form-group">
-                    {!! Form::textarea('note', null, ['class'=>'form-control alert alert-lightgreen', 'placeholder'=>'Note', 'style'=>'height: 70px;']) !!}
+                    {!! Form::textarea('note', null, ['class'=>'form-control', 'placeholder'=>'Note', 'style'=>'height: 70px;']) !!}
                     </div>
                     <div class="form-group">
                         <div id="container">
@@ -80,35 +75,70 @@
     <!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-
+ <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+ <style>
+  .ui-autocomplete-loading {
+    background: white url("images/ui-anim_basic_16x16.gif") right center no-repeat;
+  }
+  </style>
 <script>
 
 $(function(){
 
-    $(".js-example-basic-multiple").select2({
-        ajax: {
-            url: appUrl+"desk/email/customers",
-            dataType: 'json',
-            delay: 250,
-            data: function (params) {
-                // console.log(params);
-                return {
-                    q: params.term, // search term
-                    page: params.page
-            };
-        },
-        processResults: function (data, page) {
-            // parse the results into the format expected by Select2.
-            // since we are using custom formatting functions we do not need to
-            // alter the remote JSON data
-        return {
-            results: data.items
-            };
-        },
-        cache: true
-    },
+var requestURL = appUrl  + '/customer/list'
 
-});
+
+   function split( val ) {
+        return val.split( /,\s*/ );
+      }
+      function extractLast( term ) {
+        return split( term ).pop();
+      }
+
+      $( ".select-multiple" )
+        // don't navigate away from the field on tab when selecting an item
+        .bind( "keydown", function( event ) {
+          if ( event.keyCode === $.ui.keyCode.TAB &&
+              $( this ).autocomplete( "instance" ).menu.active ) {
+            event.preventDefault();
+          }
+        })
+        .autocomplete({
+          source: function( request, response ) {
+            $.getJSON( requestURL, {
+              term: extractLast( request.term )
+            }, response );
+          },
+          search: function() {
+            // custom minLength
+            var term = extractLast( this.value );
+            if ( term.length < 2 ) {
+              return false;
+            }
+          },
+          focus: function() {
+            // prevent value inserted on focus
+            return false;
+          },
+          select: function( event, ui ) {
+            var terms = split( this.value );
+            // remove the current input
+            terms.pop();
+            // add the selected item
+            terms.push( ui.item.value );
+            // add placeholder to get the comma-and-space at the end
+            terms.push( "" );
+            this.value = terms.join( ", " );
+            return false;
+          }
+        });
+    });
+
+
+
+
 
     $(document).on('submit', '#compose-form', function(e){
         e.preventDefault();
