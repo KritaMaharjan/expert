@@ -63,7 +63,9 @@
                       </div>
                       <div class="form-group two-inputs">
                         <label for="">Postal code/Town</label>
-                        <input type="text" placeholder="Postal code" id="postcode" name="postcode"  value="{{$customer->postcode}}" class="form-control">
+                        <select class="form-control js-example-basic-multiple postcode"  placeholder="Postal code" id="postcode" name="postcode"  value="{{old('postcode')}}">
+                      
+                        </select>
                         <input type="text" placeholder="Town"  id="town" name="town"  value="{{$customer->town}}" class="form-control">
                     
                       </div>
@@ -121,4 +123,53 @@
            }
          });
 
+
            </script>
+
+           <script type="text/javascript">
+             $(document).ready(function () {
+    $(".js-example-basic-multiple").select2({
+
+        ajax: {
+            url: appUrl + 'postal/suggestions',
+            dataType: 'json',
+            cache: false,
+            data: function (params) {
+                return {
+                    postcode: params.term, // search term
+                    page: params.page
+                };
+            },
+            processResults: function (data) {
+
+                return {
+                    results: $.map(data, function (obj) {
+                        return {id: obj.text, text: obj.text};
+                    })
+                };
+            }
+        },
+        formatResult: FormatResult,
+        formatSelection: FormatSelection,
+        escapeMarkup: function (m) {
+            return m;
+        }
+    })
+
+
+
+function FormatResult(item) {
+    var markup = "";
+    if (item.text !== undefined) {
+        markup += "<option value='" + item.text + "'>" + item.text + "</option>";
+    }
+    return markup;
+}
+
+function FormatSelection(item) {
+    console.log(item.text)
+    return item.text;
+}
+});
+
+</script>

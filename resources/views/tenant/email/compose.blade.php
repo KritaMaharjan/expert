@@ -48,6 +48,7 @@
                     {!! Form::textarea('note', null, ['class'=>'form-control alert alert-lightgreen', 'placeholder'=>'Note', 'style'=>'height: 70px;']) !!}
                     </div>
                     <div class="form-group">
+                        <input name="attachment" id="attachment_img" name="attch" value=""/>
                         <div id="container">
                             <a id="attachment" href="javascript:;" class="btn btn-success btn-file">
                                 Attachment

@@ -3,13 +3,17 @@ namespace App\Http\Controllers\Tenant\Users;
 use App\Http\Controllers\Tenant\BaseController;
 use Illuminate\Support\Facades\Request as FacadeRequest;
 use App\Models\Tenant\User;
+use App\Models\Tenant\Setting;
 use App\Models\Tenant\Profile;
+use App\Models\Tenant\Vacation;
 use Illuminate\Http\Request;
 
 class UserController extends BaseController {
 
     protected $request;
     protected $user;
+    protected $setting;
+    protected $vacation;
 
     protected $rules = array(
                 'fullname' => 'required|between:2,30',
@@ -28,12 +32,14 @@ class UserController extends BaseController {
                 'email_password' => 'min:5|required_with:incoming_server,outgoing_server,email_username',
             );
 
-	public function __construct(User $user, Request $request)
+	public function __construct(User $user, Request $request,Setting $setting,Vacation $vacation)
 	{
         \FB::can('Users');
 		$this->user = $user;
+        $this->setting = $setting;
 		parent::__construct();
         $this->request = $request;
+        $this->vacation = $vacation;
 	}
 
     public function index($value='')
@@ -132,7 +138,7 @@ class UserController extends BaseController {
     {
     	$guid = $this->request->route('guid');
         $user = User::where('guid', $guid)->first();
-        $profile = Profile::where('user_id', $user->id)->first();
+        $profile = Profile::where('user_id', $user['id'])->first();
         return view('tenant.users.profile', compact('user', 'profile'))->withPageTitle('User Details');
     }
 
@@ -158,6 +164,35 @@ class UserController extends BaseController {
         } else {
             show_404();
         }
+    }
+
+    function registerVacation(){
+        $id = $this->request->route('id');
+        //dd($id);
+        $User = \DB::table('fb_users')->where('guid', $id)->first();
+        //dd($User);
+        $vacation = $this->user->getUserVacation($id);
+        $vacationDays = $this->setting->getVacation();
+        
+        return view('tenant.users.vacation', compact('vacation','vacationDays','User'));
+
+    }
+
+    function addVacation(Request $request){
+        $leave = $this->request['days'];
+         $user_id = $this->request['user_id'];
+     //dd($this->request['user_id']);
+         $result = $this->user->addVacation($leave,$user_id);
+
+         $total_leave = $this->vacation->totalVacation($this->request['user_id']);
+        // dd($total_leave);
+
+         $vacation = $this->request['vacation_days'];
+
+         $leave_left = $vacation - $total_leave;
+
+        return \Response::json(array('success' => true, 'vacation_days' => $leave_left,'vacation_used'=> $total_leave));
+
     }
     
 }

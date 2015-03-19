@@ -25,8 +25,9 @@ class SystemController extends BaseController {
     	$company = $this->setting->getCompany();
     	$business = $this->setting->getBusiness();
     	$fixit = $this->setting->getfix();
+        $vacation = $this->setting->getvacation();
     
-    	$data = array('countries' => \Config::get('tenant.countries'),'company'=>$company,'business'=>$business,'fix'=>$fixit);
+    	$data = array('countries' => \Config::get('tenant.countries'),'company'=>$company,'business'=>$business,'fix'=>$fixit,'vacation'=>$vacation);
     	return view('tenant.setting.system')->withPageTitle('System Controller')->with($data);
     }
 
@@ -80,39 +81,53 @@ class SystemController extends BaseController {
 
     public function savefix(Request $request)
     {
-          $validator = Validator::make($request->all(),
-                                                array(
-                                                    'swift_num' => 'numeric',
-                                                    'iban_num' => 'numeric',
-                                                    'telephone' => 'numeric',
-                                                    'fax' => 'numeric',
-                                                    'website' => 'between:5,45',
-                                                    'service_email' => 'email|between:2,50',
-                                                    'logo' => 'image'
+        $group = $request->input('group');
+
+        if($group == 'fix')
+        {
+            $validator = Validator::make($request->all(),
+                        array(
+                                'swift_num' => 'numeric',
+                                'iban_num' => 'numeric',
+                                'telephone' => 'numeric',
+                                'fax' => 'numeric',
+                                'website' => 'between:5,45',
+                                'service_email' => 'email|between:2,50',
+                                'logo' => 'image'
                                                     
-                                                )
-                                            );
+                            )
+                    );
+        }
+
+        if($group == 'vacation')
+        {
+            $validator = Validator::make($request->all(),
+                        array(
+                                'vacation_days' => 'numeric',
+                                'sick_days' => 'numeric',                        
+                            )
+                    );
+        }
 
       
-            if($validator->fails())
-            {
-               
-                return \Response::json(array('status' => 'false', 'errors' => $validator->getMessageBag()->toArray())); // 400 being the HTTP code for an invalid request.
-            } else {
+        if($validator->fails())
+        {
+            return \Response::json(array('status' => 'false', 'errors' => $validator->getMessageBag()->toArray())); // 400 being the HTTP code for an invalid request.
+        } 
 
 
-            $all = $request->except('_token', 'group');
-            $group = $request->input('group');
+        $all = $request->except('_token', 'group');
+        $group = $request->input('group');
 
-            if($group == 'fix')
-            {
+        if($group == 'fix')
+        {
                 $fileName = NULL;
                 if(FacadeRequest::hasFile('photo'))
                 {
                     $file = FacadeRequest::file('photo');
                     $fileName = \FB::uploadFile($file);
                 }
-            }
+        }
              
 
             if ($group != '') {
@@ -122,6 +137,6 @@ class SystemController extends BaseController {
             }
 
             return \Response::json(array('status' => 'true', 'message' => 'Setting Updated successfully'));
-        }
+       
     }
 }

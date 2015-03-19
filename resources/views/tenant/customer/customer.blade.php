@@ -59,35 +59,6 @@ ul.ui-autocomplete.ui-menu {
     </div>
 	  	
     </div>
- <script type="text/javascript">
-var cache = {};
-
-$(".postcode").select2({
-   ajax: {
-url:  appUrl+"postal/suggestions",
-dataType: 'json',
-delay: 250,
-data: function (params) {
-  console.log(params);
-return {
-q: params.term, // search term
-page: params.page
-};
-},
-processResults: function (data, page) {
-// parse the results into the format expected by Select2.
-// since we are using custom formatting functions we do not need to
-// alter the remote JSON data
-return {
-results: data.items
-};
-},
-cache: true
-},
-
-
-});
-</script>
 
     {{--Load JS--}}
     {{FB::registerModal()}}

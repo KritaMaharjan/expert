@@ -150,6 +150,9 @@ Route::group($group_auth, function () {
         post('user/update', ['as' => 'tenant.user.update', 'uses' => 'Tenant\Users\UserController@updateUser']);
         get('user/{guid}', ['as' => 'subuser.profile', 'uses' => 'Tenant\Users\UserController@profile']);
         post('user/data', ['as' => 'tenant.user.data', 'uses' => 'Tenant\Users\UserController@dataJson']);
+         get('user/registerDays/{id}', ['as' => 'user.registerDays', 'uses' => 'Tenant\Users\UserController@registerVacation']);
+          post('user/addVacation', ['as' => 'user.addVacation', 'uses' => 'Tenant\Users\UserController@addVacation']);
+
 
         //registered by : Manish
 
@@ -170,6 +173,9 @@ Route::group($group_auth, function () {
         get('customer/suggestions', ['as' => 'tenant.customer.suggestions', 'uses' => 'Tenant\Customer\CustomerController@getCustomerSuggestions']);
         get('customer/details/{customerId}', ['as' => 'tenant.customer.details', 'uses' => 'Tenant\Customer\CustomerController@getCustomerDetails']);
         post('test/upload', ['as' => 'test.upload', 'uses' => 'Tenant\Customer\CustomerController@testUpload']);
+
+
+        
 
     });
 
