@@ -231,6 +231,21 @@ class CustomerController extends BaseController
 
     public function getCustomerSuggestions()
     {
-        
+        $name = \Input::get('name');
+        //change this later
+        $details = Customer::where('name', 'LIKE', '%'.$name.'%')->get();
+        $newResult = array();
+
+        if(!empty($details)) {
+
+            foreach($details as $d) {
+                $new = array();
+                $new['id'] = $d->id;
+                $new['text'] = $d->name;
+                array_push($newResult,$new);
+            }
+        }
+
+        return $newResult;
     }
 }

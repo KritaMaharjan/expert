@@ -22,7 +22,7 @@
             cache: false,
             data: function (params) {
                 return {
-                    postcode: params.term, // search term
+                    name: params.term, // search term
                     page: params.page
                 };
             },
@@ -42,5 +42,18 @@
         },
         theme: "classic"
     });
+
+    function FormatResult(item) {
+        var markup = "";
+        if (item.text !== undefined) {
+            markup += "<option value='" + item.text + "'>" + item.text + "</option>";
+        }
+        return markup;
+    }
+
+    function FormatSelection(item) {
+        console.log(item.text)
+        return item.text;
+    }
 
 })();
