@@ -140,7 +140,6 @@ a{
         .position-r {
             position: relative;
         }
-        .action-buttons{display: none;}
         .action-buttons .delete {
             margin-left: 99%;
             position: absolute;

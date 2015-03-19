@@ -74,6 +74,10 @@ Route::group($group_auth, function () {
         post('inventory/product/{id}/edit', ['as' => 'tenant.inventory.product.update', 'uses' => 'ProductController@update']);
         get('inventory/product/{id}/delete', ['as' => 'tenant.inventory.product.delete', 'uses' => 'ProductController@delete']);
 
+        // Registered By Krita
+        get('product/suggestions', ['as' => 'tenant.product.suggestions', 'uses' => 'ProductController@getSuggestions']);
+        get('product/details/{productId}', ['as' => 'tenant.product.details', 'uses' => 'ProductController@getProductDetails']);
+
         // inventory routes
         get('inventory', ['as' => 'tenant.inventory.index', 'uses' => 'InventoryController@index']);
         post('inventory', ['as' => 'tenant.inventory.post', 'uses' => 'InventoryController@create']);
@@ -161,7 +165,10 @@ Route::group($group_auth, function () {
         post('customer/data', ['as' => 'tenant.customer.data', 'uses' => 'Tenant\Customer\CustomerController@dataJson']);
         post('customer/upload', ['as' => 'tenant.customer.upload', 'uses' => 'Tenant\Customer\CustomerController@upload']);
         post('customer/changeStatus', ['as' => 'tenant.customer.changeStatus', 'uses' => 'Tenant\Customer\CustomerController@changeStatus']);
+
+        //registered by Krita
         get('customer/suggestions', ['as' => 'tenant.customer.suggestions', 'uses' => 'Tenant\Customer\CustomerController@getCustomerSuggestions']);
+        get('customer/details/{customerId}', ['as' => 'tenant.customer.details', 'uses' => 'Tenant\Customer\CustomerController@getCustomerDetails']);
         post('test/upload', ['as' => 'test.upload', 'uses' => 'Tenant\Customer\CustomerController@testUpload']);
 
     });

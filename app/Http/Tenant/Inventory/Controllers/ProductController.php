@@ -158,14 +158,31 @@ class ProductController extends BaseController {
         return $this->fail(['message' => 'Something went wrong. Please try again later']);
     }
 
+    public function getSuggestions()
+    {
+        $name = \Input::get('name');
+        //change this later
+        $details = Product::where('name', 'LIKE', '%'.$name.'%')->get();
+        $newResult = array();
 
-    function getPrduct(){
+        if(!empty($details)) {
 
-        if ($this->request->ajax()) {
+            foreach($details as $d) {
+                $new = array();
+                $new['id'] = $d->id;
+                $new['text'] = $d->name;
+                array_push($newResult, $new);
+            }
+        }
 
-            return ((array)$product) ? $this->success((array)$product) : $this->fail(['errors' => 'something went wrong']);
+        return $newResult;
+    }
 
-        } 
+    public function getProductDetails()
+    {
+        $product_id = \Input::get('productId');
+        $product = Product::first($product_id);
+        return \Response::json(['success' => true, 'details' => $product]);
     }
 
 

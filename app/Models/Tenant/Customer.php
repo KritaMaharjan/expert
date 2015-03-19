@@ -157,9 +157,4 @@ class Customer extends Model {
 
         return $data;
     }
-
-    public function getSuggestions($term = '')
-    {
-        Model::where('column', 'LIKE', '%value%')->get();
-    }
 }

@@ -242,10 +242,17 @@ class CustomerController extends BaseController
                 $new = array();
                 $new['id'] = $d->id;
                 $new['text'] = $d->name;
-                array_push($newResult,$new);
+                array_push($newResult, $new);
             }
         }
 
         return $newResult;
+    }
+
+    public function getCustomerDetails()
+    {
+        $customer_id = \Input::get('customerId');
+        $customer = Customer::first($customer_id);
+        return \Response::json(['success' => true, 'details' => $customer]);
     }
 }

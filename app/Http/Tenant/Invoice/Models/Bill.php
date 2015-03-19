@@ -18,7 +18,7 @@ class Bill extends Model {
      *
      * @var array
      */
-    protected $fillable = ['bill_number', 'customer_id', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'status', 'account_number', 'due_date'];
+    protected $fillable = ['invoice_number', 'customer_id', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'status', 'account_number', 'due_date'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -108,7 +108,7 @@ class Bill extends Model {
         }
 
         if ($search != '') {
-            $query = $query->where('bill_number', 'LIKE', "%$search%");
+            $query = $query->where('invoice_number', 'LIKE', "%$search%");
         }
         $products['total'] = $query->count();
 
@@ -118,7 +118,7 @@ class Bill extends Model {
         $data = $query->get();
 
         foreach ($data as $key => &$value) {
-            $value->bill_number = '<a class="link" href="#">'.$value->bill_number.'</a>';
+            $value->invoice_number = '<a class="link" href="#">'.$value->invoice_number.'</a>';
             $customer = Customer::find($value->customer_id);
             if($customer)
                 $value->customer = $customer->name;
