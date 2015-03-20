@@ -10,18 +10,22 @@
         <input type="hidden" name="vacationtotal" id="vacationtotal" value="{{ $vacation_leave_left }}">
 
            <div class="box-body">
-              Vacation days left this year: <span id="vacation_days"> {{ $vacation_leave_left or '0'}} days </span> <span id="vacation_used">{{ $vacation_total or '0'}} used  </span>  
-              <br>
-              <a href="javascript:;" id="add_vacation">Add Vacation </a>
-
+            <p>
+              Vacation days left this year: <span id="vacation_days"><strong> {{ $vacation_leave_left or '0'}}</strong> days </span> <span id="vacation_used"><strong>{{ $vacation_total or '0'}}</strong> used  </span>
+            </p>
+            <p class="align-right">    
+              <a href="javascript:;" id="add_vacation" class="btn btn-primary">Add Vacation </a>
+            </p>  
 
             </div><!-- /.box-body -->
 
           <div id="add_part" style="display:none">
-            <input name="vacation" id="leave" value="" />
-
+            <div class="form-group">
+              <label for="exampleInputEmail1">Vacation leave</label>
+              <input class="form-control" name="vacation" id="leave" value="" placeholder="Vacation leave">
+            </div>
         <div class="box-footer clearfix">
-           <button type="button" class="btn sm-mg-btn" data-dismiss="modal"><i class="fa fa-times"></i> Abort</button>
+           <button type="button" class="btn sm-mg-btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Abort</button>
           {!! Form::button('Save', array('class'=>'btn btn-primary pull-right saveVacation', 'type'=>'submit')) !!}
         </div>
       </div>
@@ -43,6 +47,10 @@
        var user_id = $('#user_id').val();
        var vacation_days = $('#vacationtotal').val();
         var type = 'vacation_days';
+        if(days > vacation_days){
+          $('#leave').after('<label class="error ">Vacation cannot be more than estimated</label>');
+
+        }else{
         $.ajax({
             url: appUrl + 'user/addVacation',
             type: 'POST',
@@ -67,7 +75,7 @@
 
                  }
         })
-    
+    }
     });
    
      

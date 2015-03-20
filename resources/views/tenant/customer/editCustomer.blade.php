@@ -155,6 +155,15 @@
             return m;
         }
     })
+     $(document.body).on("change",".js-example-basic-multiple",function(){
+
+ var value = this.value;
+ var test = value.split(','); 
+
+ $('#town').val(test[1]);
+
+ 
+});
 
 
 

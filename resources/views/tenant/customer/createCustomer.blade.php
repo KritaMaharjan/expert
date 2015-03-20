@@ -106,34 +106,7 @@
            {!! Form::close() !!}
 
 <script type="text/javascript">
-<<<<<<< HEAD
-$(function(){
-   $('.select2-postcodes-container').hide();
-   $(".js-example-basic-multiple").select2({
 
-      ajax: {
-        url: appUrl+'postal/suggestions',
-        dataType: 'json',
-        cache:false,
-         data: function (params) {
-          return {
-            postcode: params.term, // search term
-            page: params.page
-          };
-        },
-        processResults: function (data) {
-            
-            return {
-                results: $.map(data, function(obj) {
-                    return { id: obj.text, text: obj.text};
-                })
-            };
-        }
-    },
-   
-    })
-})
-=======
   $(document).ready(function () {
     $(".js-example-basic-multiple").select2({
 
@@ -178,16 +151,6 @@ function FormatSelection(item) {
 }
 });
 
-//     $(".js-example-basic-multiple").change(function() {
-//     //var theID = $(test).val(); // works
-//     //var theSelection = $(test).filter(':selected').text(); // doesn't work
-//     var theID = $(".js-example-basic-multiple").select2('data').id;
-//     var theSelection = $(".js-example-basic-multiple").select2('data').text;
-//     alert(theID);
-//     // $('#selectedID').text(theID);
-//     // $('#selectedText').text(theSelection);
-// });
 
 
->>>>>>> b811d6f4be0341cdd4afce61ad8cc4cfd6149f02
 </script>

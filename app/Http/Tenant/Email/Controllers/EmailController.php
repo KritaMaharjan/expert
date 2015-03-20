@@ -3,6 +3,8 @@
 namespace APP\Http\Tenant\Email\Controllers;
 
 use App\Http\Controllers\Tenant\BaseController;
+use App\Http\Tenant\Email\Models\Attachment;
+use App\Http\Tenant\Email\Models\Receiver;
 use App\Models\Tenant\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -12,19 +14,23 @@ class EmailController extends BaseController {
 
     protected $request;
     protected $email;
+    protected $attachment;
+    protected $receiver;
 
 
-    function __construct(Request $request, Email $email)
+    function __construct(Request $request, Email $email, Attachment $attachment, Receiver $receiver)
     {
         parent::__construct();
         $this->request = $request;
         $this->email = $email;
+        $this->attachment = $attachment;
+        $this->receiver = $receiver;
+
     }
 
     function index()
     {
-        $mails = $this->email->user()->with('attachments', 'receivers')->paginate(10);
-        return view('tenant.email.index', compact('mails'));
+        return view('tenant.email.index');
     }
 
     function customerSearch(Customer $customer)
@@ -51,7 +57,6 @@ class EmailController extends BaseController {
 
         return $this->fail(['error' => 'Invalid access']);
     }
-
 
 
     function send()
@@ -81,6 +86,56 @@ class EmailController extends BaseController {
         $validator = \Validator::make($this->request->all(), $rules);
 
         return $validator;
+    }
+
+
+    function reply()
+    {
+
+    }
+
+    function forward()
+    {
+
+    }
+
+
+    function show()
+    {
+        $id = $this->request->route('id');
+        $mail = $this->email->with('attachments', 'receivers')->where('id', $id)->user()->first();
+
+        return view('tenant.email.view', compact('mail'));
+    }
+
+    function listing()
+    {
+        $type = $this->request->input('type');
+        $data['type'] = $type = ($type == 1) ? $type : 0;
+        $data['per_page'] = $per_page = 4;
+        $data['mails'] = $this->email->user()->type($type)->latest()->with('attachments', 'receivers')->paginate($per_page);
+
+        return view('tenant.email.list', $data);
+    }
+
+    function delete()
+    {
+        if ($this->request->ajax()) {
+            $id = $this->request->route('id');
+            $email = $this->email->where('id', $id)->user()->first();
+            if (!empty($email)) {
+                if ($email->delete()) {
+
+                    $this->attachment->where('email_id', $id)->delete();
+                    $this->receiver->where('email_id', $id)->delete();
+
+                    return $this->success(['message' => 'Email deleted Successfully']);
+                }
+            }
+
+            return $this->fail(['message' => 'Something went wrong. Please try again later']);
+        }
+
     }
 
 

@@ -201,6 +201,7 @@ class SetupController extends BaseController {
     		 	$new = array();
     		 	$new['id'] = $d->id;
     		 	$new['text'] = $d->postcode.','.$d->legal_town;
+    		 	//$new['text'] = $d->postcode;
     		 	$new['value'] = $d->postcode.
     		 	array_push($newResult,$new);
     		 }

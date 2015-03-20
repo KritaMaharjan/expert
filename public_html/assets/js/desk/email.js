@@ -127,3 +127,41 @@ $(function () {
 });
 
 
+// load emails
+$(function(){
+    loadEmailList(1);
+
+    function loadEmailList(type, page) {
+        if (type == '1') {
+            $('#email-list').load(appUrl + 'desk/email/list?page=2');
+        }
+        else {
+            $('#email-list').load(appUrl + 'desk/email/list?type=1&page=2');
+        }
+    }
+
+
+    $('#personal_inbox').on('click',function(){
+       
+        loadEmailList(1);
+    });
+
+
+    $('#support_inbox').on('click',function(){
+        loadEmailList(0, 1);
+    });
+
+    
+
+
+})
+
+  $(document).on('click','.unread ',function(){
+       var mail_id = $(this).attr('mail_id');
+       
+        $('#email-single').load(appUrl + 'desk/email/'+mail_id+'/show');
+
+    });
+
+
+
