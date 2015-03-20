@@ -697,6 +697,10 @@ fieldset.wrapper-box legend{
 /*print*/
 
 @media print{
+    * {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+   }
     #print{
         width: 700px;
     }

@@ -28,7 +28,7 @@ class ProductController extends BaseController {
     protected $rules = [
         'number'        => 'required|alpha_dash|max:25|unique:fb_products',
         'name'          => 'required|string|max:100|unique:fb_products',
-        'vat'           => 'required|numeric|max:99',
+        'vat'           => 'required|numeric|min:1|max:99',
         'selling_price' => 'required|numeric|min:1|max:9999999999',
         'purchase_cost' => 'required|numeric|min:1|max:999999999',
     ];
@@ -59,6 +59,7 @@ class ProductController extends BaseController {
     {
         $validator = Validator::make($this->request->all(), $this->rules);
 
+      
         if ($validator->fails())
             return $this->fail(['errors' => $validator->getMessageBag()]);
 

@@ -60,29 +60,59 @@ class General {
      * @param $to
      * @param string $to_name
      * @param string $template
+     * @param array $attachment
      * @param array $param
      * @return mixed
      */
-    public function sendEmail($to, $to_name = '', $template = '', $param = array())
-    {
+    public function sendEmail($to, $to_name = '', $template = '', $param = array(),$attachment = array())
+    { 
         $template = $this->getEmailTemplate($template, $param);
-        $data = ['to_email'   => $to,
-                 'to_name'    => ($to_name == '') ? $to : $to_name,
-                 'subject'    => $template->subject,
-                 'from_email' => $template->from_email,
-                 'from_name'  => $template->from_name];
 
-        $param = ['content'    => $template->body,
-                  'subject'    => $template->subject,
-                  'heading'    => 'FastBooks',
-                  'subheading' => 'All your business in one space',
-        ];
+        if(isset($attachment) && !is_null($attachment) && !empty($attachment)){ 
+                $data = ['to_email'   => $to,
+                         'to_name'    => ($to_name == '') ? $to : $to_name,
+                         'subject'    => (isset($template->subject))?$template->subject:'Fastbooks Email',
+                         'from_email' => $template->from_email,
+                         'from_name'  => $template->from_name,
+                         'attachment' => $attachment];
 
-        $mail_result = Mail::send($this->templatURl, $param, function ($message) use ($data) {
-            $message->to($data['to_email'], $data['to_name'])
-                ->subject($data['subject'])
-                ->from($data['from_email'], $data['from_name']);
-        });
+                $param = ['content'    => (isset($template->body))?$template->body:'Fastbooks Body',
+                          'subject'    => (isset($template->subject))?$template->subject:'Fastbooks Email',
+                          'heading'    => 'FastBooks',
+                          'subheading' => 'All your business in one space',
+                ];
+
+                $mail_result = Mail::send($this->templatURl, $param, function ($message) use ($data) {
+                    $message->to($data['to_email'], $data['to_name'])
+                        ->subject($data['subject'])
+                        ->from($data['from_email'], $data['from_name']);
+                         $size = sizeOf($data['attachment']);
+                        for($i=0; $i<$size; $i++)
+                        {
+                            $message->attach($data['attachment'][$i]);
+                        }
+
+                } , true);
+        } else {
+            $data = ['to_email'   => $to,
+                         'to_name'    => ($to_name == '') ? $to : $to_name,
+                         'subject'    => (isset($template->subject))?$template->subject:'Fastbooks Email',
+                         'from_email' => $template->from_email,
+                         'from_name'  => $template->from_name
+                    ];
+
+                $param = ['content'    => (isset($template->body))?$template->body:'Fastbooks Body',
+                          'subject'    => (isset($template->subject))?$template->subject:'Fastbooks Email',
+                          'heading'    => 'FastBooks',
+                          'subheading' => 'All your business in one space',
+                         ];
+
+                $mail_result = Mail::send($this->templatURl, $param, function ($message) use ($data) {
+                    $message->to($data['to_email'], $data['to_name'])
+                        ->subject($data['subject'])
+                        ->from($data['from_email'], $data['from_name']);
+                } , true);
+        }
 
         return $mail_result;
     }
