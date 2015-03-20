@@ -61,7 +61,7 @@
       <div class="right-from">
         <div class="form-group clearfix">
           {!! Form::label('created_at', 'Invoice date') !!}
-          {!! Form:: input('date', 'created_at', null, array('class' => 'form-control')) !!}
+          {!! Form:: input('date', 'created_at', null, array('class' => 'form-control', 'id' => 'invoice-date-picker')) !!}
         </div>
         <div class="form-group clearfix">
           {!! Form::label('invoice_number', 'Invoice number') !!}
@@ -77,7 +77,7 @@
         </div>
         <div class="form-group clearfix">
           {!! Form::label('due_date', 'Due date') !!}
-          {!! Form:: text('due_date', null, array('class' => 'form-control')) !!}
+          {!! Form:: text('due_date', null, array('class' => 'form-control', 'id' =>'due-date-picker')) !!}
         </div>
         <div class="form-group clearfix">
           {!! Form::label('account_number', 'Account no') !!}
@@ -157,19 +157,15 @@
         <table class="table">
           <tr>
             <th style="width:50%">Subtotal:</th>
-            <td></td>
+            <td id="subtotal"></td>
           </tr>
           <tr>
-            <th>Tax (%)</th>
-            <td></td>
-          </tr>
-          <tr>
-            <th>Shipping:</th>
-            <td></td>
+            <th>Tax Amount:</th>
+            <td id="tax-amount"></td>
           </tr>
           <tr>
             <th>Total:</th>
-            <td></td>
+            <td id="all-total"></td>
           </tr>
         </table>
       </div>
