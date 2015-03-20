@@ -29,13 +29,17 @@ class Vacation extends Model  {
   
      protected $primaryKey = "id";
 
-     function totalVacation($user_id)
+     function totalVacation($user_id,$type)
      {
           $details = \DB::table('fb_vacation')->where('user_id', $user_id)->get();
           $totalVacation = 0;
           if(!empty($details)){
             foreach ($details as $key => $value) {
-            $totalVacation += $value->vacation_days;
+                if($type == 'vacation_days')
+                    $totalVacation += $value->vacation_days;
+                elseif($type == 'sick_days')
+                     $totalVacation += $value->sick_days;
+
               
           }
 
