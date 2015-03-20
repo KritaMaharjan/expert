@@ -47,6 +47,10 @@
        var user_id = $('#user_id').val();
        var vacation_days = $('#vacationtotal').val();
         var type = 'vacation_days';
+        if(days > vacation_days){
+          $('#leave').after('<label class="error ">Vacation cannot be more than estimated</label>');
+
+        }else{
         $.ajax({
             url: appUrl + 'user/addVacation',
             type: 'POST',
@@ -71,7 +75,7 @@
 
                  }
         })
-    
+    }
     });
    
      

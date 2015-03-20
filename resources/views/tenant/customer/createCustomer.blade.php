@@ -63,7 +63,7 @@
                        
                         </select>
 
-                        <input type="text" placeholder="Town"  id="addcity" name="town"  value="{{old('town')}}" class="form-control">
+                        <input type="text" placeholder="Town"  id="city" name="town"  value="{{old('town')}}" class="form-control">
 
                     
                       </div>
@@ -117,7 +117,6 @@
             data: function (params) {
                 return {
                     postcode: params.term, // search term
-                    
                     page: params.page
                 };
             },
@@ -136,14 +135,6 @@
             return m;
         }
     });
-
-    $(document.body).on("change",".js-example-basic-multiple",function(){
-
- var value = this.value;
- var test = value.split(','); 
-
- $('#addcity').val(test[1]);
-});
   
 
     function FormatResult(item) {
@@ -159,16 +150,6 @@ function FormatSelection(item) {
     return item.text;
 }
 });
-
-//     $(".js-example-basic-multiple").change(function() {
-//     //var theID = $(test).val(); // works
-//     //var theSelection = $(test).filter(':selected').text(); // doesn't work
-//     var theID = $(".js-example-basic-multiple").select2('data').id;
-//     var theSelection = $(".js-example-basic-multiple").select2('data').text;
-//     alert(theID);
-//     // $('#selectedID').text(theID);
-//     // $('#selectedText').text(theSelection);
-// });
 
 
 
