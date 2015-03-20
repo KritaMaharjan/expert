@@ -11,7 +11,11 @@
 @section('content')
 
 <!-- Main content -->
-<section class="invoice">
+<div class="row">
+<div class="col-xs-12 mainContainer">
+<div class="box box-solid">
+
+<div class="box-body">
   <!-- title row -->
   <div class="row">
     <div class="col-xs-12">
@@ -180,39 +184,15 @@
       <button class="btn btn-primary pull-right" style="margin-right: 5px;">Submit</button>
     </div>
   </div>
-</section><!-- /.content -->
+</div>
+</div>
+</div><!-- /.content -->
+</div>
 <div class="clearfix"></div>
-
-
-    <script src="assets/plugins/slimScroll/jquery.slimScroll.min.js" type="text/javascript"></script>
-    <script src='assets/plugins/fastclick/fastclick.min.js'></script>
-    <script src="assets/js/app.min.js" type="text/javascript"></script>
-    <script src="assets/js/select2.js" type="text/javascript"></script>
-
-    <script type="text/javascript">
-    (function(){
-      var invoice_tr_html = $('.invoice-table .position-r').html();
-      var invoice_tr_html_wrap = '<tr class="position-r">'+ invoice_tr_html +'</tr>';
-      var invoice_tr = $('.invoice-table .position-r');
-      var add_btn = $('.add-btn');
-
-      add_btn.on('click',function(){
-        invoice_tr.after(invoice_tr_html_wrap);
-      });
-      invoice_tr.on('mouseover',function(){
-       $(this).find('.action-buttons').show();
-      });
-
-      invoice_tr.on('mouseout',function(){
-        $(this).find('.action-buttons').hide();
-      });
-
-       $(".select-single").select2({
-        theme: "classic"
-        });
-
-    })();
-    </script>
+    {{FB::js('assets/plugins/slimScroll/jquery.slimScroll.min.js')}}
+    {{FB::js('assets/plugins/fastclick/fastclick.min.js')}}
+    {{FB::js('assets/js/select2.js')}}
+    {{FB::js('assets/js/create-bill.js')}}
 @stop
 
 

@@ -616,6 +616,7 @@ fieldset.wrapper-box legend{
 #print input {
     height: 30px;
     width: 100%!important;
+    border: 1px solid #dbdbdb;
 }
 #print input.small-input {
     width: 30px !important;

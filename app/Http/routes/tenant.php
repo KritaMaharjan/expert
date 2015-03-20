@@ -53,7 +53,7 @@ Route::group($group_auth, function () {
         get('email', ['as' => 'desk.email', 'uses' => 'EmailController@index']);
         post('email/upload/data', ['as' => 'desk.email.upload', 'uses' => 'EmailController@attach']);
         post('email/send', ['as' => 'desk.email.send', 'uses' => 'EmailController@send']);
-        get('email/customers', ['as' => 'tenant.email.customers', 'uses' => 'EmailController@getCustomer']);
+        get('email/customer/search', ['as' => 'tenant.email.customer.search', 'uses' => 'EmailController@customerSearch']);
 
     });
 
@@ -161,6 +161,7 @@ Route::group($group_auth, function () {
         post('customer/data', ['as' => 'tenant.customer.data', 'uses' => 'Tenant\Customer\CustomerController@dataJson']);
         post('customer/upload', ['as' => 'tenant.customer.upload', 'uses' => 'Tenant\Customer\CustomerController@upload']);
         post('customer/changeStatus', ['as' => 'tenant.customer.changeStatus', 'uses' => 'Tenant\Customer\CustomerController@changeStatus']);
+        get('customer/suggestions', ['as' => 'tenant.customer.suggestions', 'uses' => 'Tenant\Customer\CustomerController@getCustomerSuggestions']);
         post('test/upload', ['as' => 'test.upload', 'uses' => 'Tenant\Customer\CustomerController@testUpload']);
 
     });

@@ -11,7 +11,17 @@ Email
 
 @section('content')
 <link href="{{asset('assets/css/zabuto_calendar.css')}}" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<style>
+.ui-autocomplete-loading {
+background: white url("images/ui-anim_basic_16x16.gif") right center no-repeat;
+}
+.ui-autocomplete {z-index: 99999999}
+</style>
 {{FB::js('assets/plugins/plupload/js/plupload.full.min.js')}}
+{{FB::js('assets/js/desk/email.js')}}
+{{--
 {{FB::js('assets/js/zabuto_calendar.js')}}
 {{FB::js('
   $(document).ready(function () {
@@ -21,13 +31,18 @@ Email
         today: true
       });
   });')}}
+--}}
 <?php
 $successCallback ="
     var response = JSON.parse(object.response);
-    console.log(response);
+      var wrap = $('#attachment');
+      wrap.after('<input type=\"hidden\" class=\"attachment\" name=\"attach[]\" value=\"'+response.data.fileName+'\" />');
+     console.log(response);
 ";
 ?>
 <script type="text/javascript">
+
+
 $(function(){
     {!! plupload()->button('attachment')->maxSize('800kb')->mimeTypes('image')->url(url('/desk/email/upload/data'))->autoStart(true)->success($successCallback)->init() !!}
 });
@@ -53,18 +68,23 @@ $(function(){
                                   <div class="table-responsive fix-height">
                                     <!-- THE MESSAGES -->
                                     <table class="table table-mailbox no-mg-btm">
-                                      @if($mails)
-                                      <tr class="unread">
-                                        <td class="small-col"><i class="fa fa-envelope"></i></td>
-                                        <td class="name">
-                                          <a href="#">John Doe
-                                            <small class="subject">Aspergers syn...</small>
-                                          </a>
-                                        </td>
-                                        <td class="time">12:30 PM</td>
-                                      </tr>
-                                     @endif
-                                      
+                                        <tbody>
+                                              @if(!empty($mails))
+                                              @foreach($mails as $mail)
+
+                                              <tr class="unread">
+                                                <td class="small-col"><i class="fa fa-envelope"></i></td>
+                                                <td class="name">
+                                                  <a href="#">$mail
+                                                    <small class="subject">{{$mail->subject}}</small>
+                                                  </a>
+                                                </td>
+                                                <td class="time">12:30 PM</td>
+                                              </tr>
+
+                                              @endforeach
+                                             @endif
+                                        </tbody>
                                     </table>                                    
                                   </div><!-- /.table-responsive -->
                                   <p class="align-right">
@@ -128,6 +148,8 @@ $(function(){
               </div><!-- /.box-body -->
             </div><!-- /.box -->
             @include('tenant.email.compose')
+
+
 
 @stop
 
