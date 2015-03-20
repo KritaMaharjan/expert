@@ -322,7 +322,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 $value->status = '<span class="label label-warning">Pending</span>';
 
             $value->created = $value->created_at->format('d-M-Y  h:i:s A');
-            $value->days = '<a href="#" title="Register vacation" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="'.tenant()->url('user/registerDays')."/".$value->guid.'" data-target="#fb-modal">vacation</a><a href="#" title="Register Sick days" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="" data-target="#fb-modal">Sick</a>';
+            $value->days = '<a href="#" title="Register vacation" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="'.tenant()->url('user/registerDays/vacation')."/".$value->guid.'" data-target="#fb-modal">vacation</a><a href="#" title="Register Sick days" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="'.tenant()->url('user/registerDays/sick')."/".$value->guid.'" data-target="#fb-modal">Sick</a>';
             $value->DT_RowId = "row-".$value->guid;
         }    
 
@@ -337,21 +337,34 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $json;
     }
 
-    function getUserVacation($guid){
-         $user = DB::table('fb_users')->where('guid', $guid)->first();
-        $details = DB::table('fb_vacation')->where('user_id', $user->id)->first();
+    function getUserVacation($user_id){
+        
+        $details = DB::table('fb_vacation')->where('user_id', $user_id)->get();
         return $details;
 
     }
 
-    function addVacation($leave,$user_id){
-        $vacation = Vacation::create([
+    function addVacation($leave,$user_id,$type){
+        if($type == 'vacation_days'){
+            $vacation = Vacation::create([
                     'user_id' =>  $user_id,
                     'vacation_days' => $leave,
                     'sick_days' => 0,
                     
             ]);
 
+
+        }elseif($type == 'sick_days'){
+            $vacation = Vacation::create([
+                    'user_id' =>  $user_id,
+                    'vacation_days' => 0,
+                    'sick_days' => $leave,
+                    
+            ]);
+
+
+        }
+        
 
 
     }
