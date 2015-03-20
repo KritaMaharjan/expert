@@ -59,6 +59,16 @@ class Email extends Model {
         $query->where('sender_id', current_user()->id);
     }
 
+    function scopeType($query, $type=0)
+    {
+        $query->where('type', $type);
+    }
+
+    function scopeLatest($query)
+    {
+        $query->orderBy('created_at', 'DESC');
+    }
+
     /**
      * @return array|bool
      */
@@ -101,7 +111,7 @@ class Email extends Model {
         } catch (\PDOException $e) {
             DB::rollback();
 
-              print_r($e->errorInfo[2]);
+            print_r($e->errorInfo[2]);
 
             return false;
         }
@@ -113,7 +123,7 @@ class Email extends Model {
         } catch (\PDOException $e) {
             DB::rollback();
 
-             print_r($e->errorInfo[2]);
+            print_r($e->errorInfo[2]);
 
             return false;
         }
