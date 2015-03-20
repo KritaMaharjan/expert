@@ -37,14 +37,11 @@ $successCallback ="
     var response = JSON.parse(object.response);
       var wrap = $('#attachment');
       wrap.after('<input type=\"hidden\" class=\"attachment\" name=\"attach[]\" value=\"'+response.data.fileName+'\" />');
-     console.log(response);
 ";
 ?>
 <script type="text/javascript">
-
-
 $(function(){
-    {!! plupload()->button('attachment')->maxSize('800kb')->mimeTypes('image')->url(url('/desk/email/upload/data'))->autoStart(true)->success($successCallback)->init() !!}
+    {!! plupload()->button('attachment')->maxSize('2mb')->mimeTypes('image')->url(url('/desk/email/upload/data'))->autoStart(true)->success($successCallback)->init() !!}
 });
 </script>
            <div class="box box-solid">
@@ -52,14 +49,14 @@ $(function(){
                 <div class="row">
                   <div class="col-md-12">
                     <div class="mail-wrap-section clearfix">
-                      <div class="col-md-3 bg-white">
+                      <div class="col-md-4 bg-white">
                         <div class="box box-solid">
                           
                           <div class="box-body">
                             <div class="row mailbox">
                               <div class="col-md-12 col-sm-12">
                                   <div class="row pad pad-top-0 pad-btm-0">
-                                    <div class="col-md-12 pad-5">
+                                    <div class="col-md-12 pad-6">
                                       <a href="#" class="btn btn-primary btn-flat btn-small">Personal Inbox</a>
                                       <a href="#" class="btn btn-default btn-flat btn-small">Support Inbox</a>
                                     </div>
@@ -75,13 +72,12 @@ $(function(){
                                               <tr class="unread">
                                                 <td class="small-col"><i class="fa fa-envelope"></i></td>
                                                 <td class="name">
-                                                  <a href="#">$mail
+                                                  <a href="#">{{$mail->to or ''}}
                                                     <small class="subject">{{$mail->subject}}</small>
                                                   </a>
                                                 </td>
-                                                <td class="time">12:30 PM</td>
+                                                <td class="time">{{$mail->created_at->diffForHumans()}}</td>
                                               </tr>
-
                                               @endforeach
                                              @endif
                                         </tbody>
@@ -102,13 +98,33 @@ $(function(){
                         </div><!-- /.box -->
                       </div><!-- bg-white -->
                       </div>
-                      <div class="col-md-6 bg-white">
+                      <div class="col-md-8 bg-white">
                         <div class="box box-solid">
                           <div class="box-header block-header">
-                            <h3 class="box-title"><strong>Aspergers syn...</strong>
+
+                          <?php foreach($mails as $mail):?>
+
+                            <h3 class="box-title"><strong><?php echo $mail->subject;?></strong>
                             </h3>
-                            <p><small class="color-blue">Sent: </small> Mon 3/2/2015 3:52 AM</p>
-                            <p><small class="color-blue">To: </small> John@abc.com</p>
+                            <p><small class="color-blue">Sent: </small> <?php echo $mail->created_at->format('D m/d/Y h:i A');?></p>
+                             <?php $receiver = $mail->receivers;?>
+                             <p><small class="color-blue"> To: </small>
+                                @foreach($receiver as $to)
+                                    @if($to->type ==1)
+                                       {{ '('.$to->customer_id.') '. $to->email}};
+                                    @endif
+                                 @endforeach
+                             </p>
+
+                               <p><small class="color-blue"> CC: </small>
+                                 @foreach($receiver as $cc)
+                                     @if($cc->type ==2)
+                                        {{ '('.$cc->customer_id.') '. $cc->email  }};
+                                     @endif
+                                  @endforeach
+                              </p>
+
+
                             <div class="link-reply">
                               <button data-toggle="dropdown" class="btn btn-default btn-sm btn-flat dropdown-toggle" type="button">
                                 Action <span class="caret"></span>
@@ -117,30 +133,37 @@ $(function(){
                                 <li><a href="#"><small class="color-grey"><i class="fa fa-reply"></i></small> Reply</a></li>
                                 <li><a href="#"><small class="color-grey"><i class="fa fa-mail-forward"></i></small> Forward</a></li>
                                 <li><a href="#"><small class="color-grey"><i class="fa fa-close"></i></small> Delete</a></li>
-                                
                               </ul>
                             </div>
                             <hr>
+                            <i class="fa fa-attach"></i> :
+                           <?php $attachments = $mail->attachments;?>
+                            @foreach($attachments as $file)
+                                <a href="{{$file->path()}}">{{$file->file}}</a>
+                            @endforeach
+                            <hr>
                           </div><!-- /.box-header -->
-                          <div class="box-body">
-                            <p>Hello John,<br>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum egestas pellentesque quam, lobortis ultrices felis. Praesent venenatis vulputate leo. Donec efficitur libero vel lectus finibus sollicitudin. Pellentesque pharetra eleifend viverra. Nulla in volutpat turpis. Ut dolor tellus, aliquam ut tristique id, suscipit quis libero. In tristique id lacus vel ornare. Quisque mauris leo, hendrerit ultrices dolor ac, suscipit tristique nunc.
-                            </p>
-                            <p>
-                              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum egestas pellentesque quam, lobortis ultrices felis. Praesent venenatis vulputate leo. Donec efficitur libero vel lectus finibus sollicitudin. Pellentesque pharetra eleifend viverra. Nulla in volutpat turpis. Ut dolor tellus, aliquam ut tristique id, suscipit quis libero. In tristique id lacus vel ornare. Quisque mauris leo, hendrerit ultrices dolor ac, suscipit tristique nunc.
-                            </p>
 
+
+                          <div class="box-body">
+                                <?php echo nl2br($mail->message);?>
+
+
+                              <hr/>
+                               <p>Note :</p>
+                               <?php echo nl2br($mail->note);?>
 
                           </div>
 
 
+
+                        <?php
+                         break;
+                        endforeach;?>
+
                         </div><!-- /.box -->
                       </div><!-- bg-white -->
-                      <div class="col-md-3">
-                        <div class="box-body">
-                          <div id="my-calendar"></div>
-                        </div>
-                      </div>  
+
                     </div>
                     
                   </div>
@@ -148,9 +171,6 @@ $(function(){
               </div><!-- /.box-body -->
             </div><!-- /.box -->
             @include('tenant.email.compose')
-
-
-
 @stop
 
 

@@ -16,6 +16,7 @@
 <div class="box box-solid">
 
 <div class="box-body">
+
   <!-- title row -->
   <div class="row">
     <div class="col-xs-12">
@@ -25,34 +26,27 @@
       </h2>
     </div><!-- /.col -->
   </div>
+
+  {!! Form::open(array('method'=>'POST', 'files'=>true, 'id'=>'subuser-form')) !!}
   <!-- info row -->
   <div class="row invoice-info">
 
     <div class="col-sm-5 invoice-col col-xs-6">
-      <form>
+
         <div class="form-group clearfix">
-          <label>Bill no.</label>
-          <input type="text" class="form-control" />
+          {!! Form::label('invoice_number', 'Bill No.') !!}
+          {!! Form:: text('invoice_number', null, array('class' => 'form-control')) !!}
         </div>
         <div class="form-group clearfix">
-          <label>Select customer</label>
-          <select class="select-single form-control">
-            <option>a</option>
-            <option>b</option>
-            <option>c</option>
-          </select>
+         {!! Form::label('customer', 'Select customer') !!}
+         {!! Form::select('customer', array('' => 'Select Customer'), null, array('class' => 'select-single form-control', 'required' => 'required')) !!}
           <p class="align-right mg-adj">
             <a href="#">Add customer</a>
         </p>
         </div>
-      </form>
+        {{--{!! Form::button('Save', array('class'=>'btn btn-primary pull-right subuser-submit', 'type'=>'submit')) !!}--}}
 
-      <address>
-        <strong>John Doe</strong><br>
-        795 Folsom Ave, Suite 600<br>
-        San Francisco, CA 94107<br>
-        Phone: (555) 539-1037<br/>
-        Email: john.doe@example.com
+      <address class="customer-info">
       </address>
     </div><!-- /.col -->
      <div class="col-sm-7 invoice-col col-xs-6">
@@ -64,32 +58,48 @@
         Email: info@fastbooks.com
       </address>
 
-      <form class="right-from">
+      <div class="right-from">
         <div class="form-group clearfix">
-          <label>Invoice date</label>
-          <input type="text" class="form-control" />
+          {!! Form::label('created_at', 'Invoice date') !!}
+          {!! Form:: input('date', 'created_at', null, array('class' => 'form-control')) !!}
         </div>
         <div class="form-group clearfix">
-          <label>Invoice number</label>
-          <input type="text" class="form-control" />
+          {!! Form::label('invoice_number', 'Invoice number') !!}
+          {!! Form:: text('invoice_number', null, array('class' => 'form-control')) !!}
         </div>
         <div class="form-group clearfix">
-          <label>Kid</label>
-          <input type="text" class="form-control" />
+          {!! Form::label('kid', 'Kid') !!}
+          {!! Form:: text('kid', null, array('class' => 'form-control')) !!}
         </div>
         <div class="form-group clearfix">
-          <label>Customer id</label>
-          <input type="text" class="form-control" />
+          {!! Form::label('customer_id', 'Customer id') !!}
+          {!! Form:: text('customer_id', null, array('class' => 'form-control', 'disabled'=>'disabled')) !!}
         </div>
         <div class="form-group clearfix">
-          <label>Due date</label>
-          <input type="text" class="form-control" />
+          {!! Form::label('due_date', 'Due date') !!}
+          {!! Form:: text('due_date', null, array('class' => 'form-control')) !!}
         </div>
         <div class="form-group clearfix">
-          <label>Account no.</label>
-          <input type="text" class="form-control" />
+          {!! Form::label('account_number', 'Account no') !!}
+          {!! Form:: text('account_number', null, array('class' => 'form-control')) !!}
         </div>
-      </form>
+        <div class="form-group clearfix">
+          {!! Form::label('currency', 'Currency') !!}
+          {!! Form::select('currency', array(
+                                        'NOK' => 'NOK',
+                                        'GBP' => 'GBP',
+                                        'EUR' => 'EUR',
+                                        'USD' => 'USD',
+                                        'AUD' => 'AUD',
+                                        'NZD' => 'NZD',
+                                        'CHF' => 'CHF',
+                                        'PLN' => 'PLN',
+                                        'DKK' => 'DKK',
+                                        'SEK' => 'SEK',
+                                        'CNY' => 'CNY'
+                            ), 'NOK', array('class' => 'form-control')) !!}
+        </div>
+      </div>
 
     </div><!-- /.col -->
   </div><!-- /.row -->
@@ -99,14 +109,13 @@
   <!-- Table row -->
   <div class="row">
     <div class="col-xs-12 table-responsive pad-0-40">
-      <table class="table table-striped invoice-table">
+      <table class="table table-striped product-table">
         <thead>
           <tr>
             <th width="40%">Product name</th>
-            <th width="10%">Quantity</th>
+            <th width="15%">Quantity</th>
             <th width="15%">Price</th>
-            <th width="10%">VAT %</th>
-            <th width="10%">Currency</th>
+            <th width="15%">VAT %</th>
             <th width="15%">Total</th>
           </tr>
         </thead>
@@ -118,26 +127,15 @@
                   <a title="Delete line" class="invoice-delete fa fa-close btn-danger" href="#"></a>
                 </div>
               </div>
-              <input type="text"/>
+
+            {!! Form::select('product_name', array('' => 'Select Product'), null, array('class' => 'select-product form-control', 'required' => 'required')) !!}
+            {{--{!! Form:: text('product_name', null, array('class' => 'form-control')) !!}--}}
             </td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><input type="text" /></td>
-            <td><select>
-                  <option selected="selected">NOK</option>
-                  <option>GBP</option>
-                  <option>EUR</option>
-                  <option>USD</option>
-                  <option>AUD</option>
-                  <option>NZD</option>
-                  <option>CHF</option>
-                  <option>PLN</option>
-                  <option>DKK</option>
-                  <option>SEK</option>
-                  <option>CNY</option>
-                </select>
-            </td>
-            <td><input type="text" class="no-border no-bg"></td>
+
+            <td>{!! Form:: input('number', 'quantity', null, array('class' => 'form-control', 'id' => 'quantity')) !!}</td>
+            <td>{!! Form:: text('price', null, array('class' => 'form-control price')) !!}</td>
+            <td>{!! Form:: text('vat', null, array('class' => 'form-control vat')) !!}</td>
+            <td>{!! Form:: text('total', null, array('class' => 'form-control total', 'readonly' => 'readonly')) !!}</td>
           </tr>
 
 
@@ -184,6 +182,8 @@
       <button class="btn btn-primary pull-right" style="margin-right: 5px;">Submit</button>
     </div>
   </div>
+
+  {!! Form::close() !!}
 </div>
 </div>
 </div><!-- /.content -->

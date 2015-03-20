@@ -251,4 +251,11 @@ class CustomerController extends BaseController {
 
         return $newResult;
     }
+
+    public function getCustomerDetails()
+    {
+        $customer_id = \Input::get('customerId');
+        $customer = Customer::first($customer_id);
+        return \Response::json(['success' => true, 'details' => $customer]);
+    }
 }

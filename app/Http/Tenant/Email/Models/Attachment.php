@@ -31,6 +31,17 @@ class Attachment extends Model {
     public $timestamps = false;
 
 
+    public function email()
+    {
+        return $this->belongsTo('App\Http\Tenant\Email\Models\Email');
+    }
+
+    function path()
+    {
+        return asset('assets/uploads/'.$this->file);
+    }
+
+
     function add($email, $files)
     {
         $data = array();

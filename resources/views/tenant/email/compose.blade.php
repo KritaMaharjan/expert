@@ -46,7 +46,7 @@
                                 Attachment
                             </a>
                         </div>
-                        <p class="help-block">Max. 32MB</p>
+                        <p class="help-block">Max. 2MB</p>
                         <div id='filelist'>Your browser doesn't have Flash, Silverlight or HTML5 support.</div>
                         <pre id='console'></pre>
                     </div>
@@ -62,7 +62,6 @@
                                 <option value="1">Mark open</option>
                                 <option value="2">Mark closed</option>
                                 <option value="3">Mark pending</option>
-                                <option value="4">Select from list of coworkers</option>
                                 <option value="5">Add to-do list</option>
                             </select>
                         </div>
@@ -72,6 +71,7 @@
                     </div>
             {!! Form::close() !!}
         </div>
+            </div>
         <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->

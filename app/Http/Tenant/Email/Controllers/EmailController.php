@@ -21,17 +21,9 @@ class EmailController extends BaseController {
         $this->email = $email;
     }
 
-    protected $rules = [
-        'subject'  => 'required',
-        'email_to' => 'required',
-        'message'  => 'required'
-    ];
-
     function index()
     {
-        $mails = $this->email->user()->get();
-
-
+        $mails = $this->email->user()->with('attachments', 'receivers')->paginate(10);
         return view('tenant.email.index', compact('mails'));
     }
 
@@ -42,7 +34,6 @@ class EmailController extends BaseController {
 
         return \Response::JSON($details);
     }
-
 
     function attach()
     {
@@ -60,6 +51,7 @@ class EmailController extends BaseController {
 
         return $this->fail(['error' => 'Invalid access']);
     }
+
 
 
     function send()
@@ -82,7 +74,7 @@ class EmailController extends BaseController {
     {
         $rules = [
             'email_to' => 'required|validArrayEmail',
-            'email_cc' => 'required|validArrayEmail',
+            'email_cc' => 'validArrayEmail',
             'subject'  => 'required',
             'message'  => 'required'
         ];

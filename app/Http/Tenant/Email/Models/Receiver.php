@@ -19,7 +19,7 @@ class Receiver extends Model {
      *
      * @var array
      */
-    protected $fillable = ['id', 'email_id', 'file'];
+    protected $fillable = ['id', 'email_id', 'customer_id', 'type'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -30,6 +30,12 @@ class Receiver extends Model {
 
 
     public $timestamps = false;
+
+
+    public function email()
+    {
+        return $this->belongsTo('App\Http\Tenant\Email\Models\Email');
+    }
 
 
     public function add($email_id, $to, $cc)

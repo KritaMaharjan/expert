@@ -7,6 +7,7 @@ use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use App\Models\Tenant\Profile;
+use App\Models\Tenant\Vacation;
 use Illuminate\Support\Facades\Request as FacadeRequest;
 use App\Models\Tenant\User as TenantUser;
 use DB;
@@ -321,6 +322,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 $value->status = '<span class="label label-warning">Pending</span>';
 
             $value->created = $value->created_at->format('d-M-Y  h:i:s A');
+            $value->days = '<a href="#" title="Register vacation" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="'.tenant()->url('user/registerDays')."/".$value->guid.'" data-target="#fb-modal">vacation</a><a href="#" title="Register Sick days" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="" data-target="#fb-modal">Sick</a>';
             $value->DT_RowId = "row-".$value->guid;
         }    
 
@@ -333,6 +335,25 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $json->data = $users['data'];
 
         return $json;
+    }
+
+    function getUserVacation($guid){
+         $user = DB::table('fb_users')->where('guid', $guid)->first();
+        $details = DB::table('fb_vacation')->where('user_id', $user->id)->first();
+        return $details;
+
+    }
+
+    function addVacation($leave,$user_id){
+        $vacation = Vacation::create([
+                    'user_id' =>  $user_id,
+                    'vacation_days' => $leave,
+                    'sick_days' => 0,
+                    
+            ]);
+
+
+
     }
 
 }

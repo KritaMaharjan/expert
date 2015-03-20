@@ -17,7 +17,7 @@ $(function () {
         },
         "columnDefs": [{
             "orderable": false,
-            "targets": 4,
+            "targets": 5,
             "render": function (data, type, row) {
                 return showActionbtn(row);
             }
@@ -26,8 +26,8 @@ $(function () {
             {"data": "fullname"},
             {"data": "created"},
             {"data": "email"},
-            {"data": "status"}
-
+            {"data": "status"},
+            {"data": "days"}
         ]     
 
     });

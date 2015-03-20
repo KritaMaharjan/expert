@@ -232,63 +232,25 @@ var initSelection = function (elem, cb) {
 
 $.fn.select2.defaults.set("theme", "classic");
 //fix modal force focus
-$.fn.modal.Constructor.prototype.enforceFocus = function () {
+// $.fn.modal.Constructor.prototype.enforceFocus = function () {
 
-    var that = this;
-    $(document).on('focusin.modal', function (e) {
+//     var that = this;
+//     $(document).on('focusin.modal', function (e) {
 
-        if ($(e.target).hasClass('select2-search__field')) {
+//         if ($(e.target).hasClass('select2-search__field')) {
 
-            return true;
-        }
+//             return true;
+//         }
 
-        if (that.$element[0] !== e.target && !that.$element.has(e.target).length) {
-            that.$element.focus();
-        }
-    });
-
-
-    $(".js-example-basic-multiple").select2({
-
-        ajax: {
-            url: appUrl + 'postal/suggestions',
-            dataType: 'json',
-            cache: false,
-            data: function (params) {
-                return {
-                    postcode: params.term, // search term
-                    page: params.page
-                };
-            },
-            processResults: function (data) {
-
-                return {
-                    results: $.map(data, function (obj) {
-                        return {id: obj.text, text: obj.text};
-                    })
-                };
-            }
-        },
-        formatResult: FormatResult,
-        formatSelection: FormatSelection,
-        escapeMarkup: function (m) {
-            return m;
-        }
-    })
+//         if (that.$element[0] !== e.target && !that.$element.has(e.target).length) {
+//             that.$element.focus();
+//         }
+//     });
 
 
-}
 
 
-function FormatResult(item) {
-    var markup = "";
-    if (item.text !== undefined) {
-        markup += "<option value='" + item.text + "'>" + item.text + "</option>";
-    }
-    return markup;
-}
 
-function FormatSelection(item) {
-    console.log(item.text)
-    return item.text;
-}
+// }
+
+

@@ -8,4 +8,4 @@
             <div class="box-footer clearfix">
                 {!! Form::button('Save', array('class'=>'btn btn-primary pull-right subuser-submit', 'type'=>'submit')) !!}
             </div>
-{!! Form::close() !!}
+            {!! Form::close() !!}

@@ -21,7 +21,7 @@ class Email extends Model {
      *
      * @var array
      */
-    protected $fillable = ['id', 'sender_id', 'email', 'message', 'status'];
+    protected $fillable = ['id', 'sender_id', 'email', 'subject', 'message', 'status', 'note', 'type'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -30,14 +30,29 @@ class Email extends Model {
      */
     protected $hidden = [];
 
-    private $subject;
-    private $message;
-    private $note;
+    private $email_subject;
+    private $email_message;
+    private $email_note;
+    private $email_type;
+    private $email_status;
+
     private $attach;
     private $to;
     private $cc;
     private $fromName;
     private $fromEmail;
+
+
+    public function attachments()
+    {
+        return $this->hasMany('App\Http\Tenant\Email\Models\Attachment');
+    }
+
+    public function receivers()
+    {
+        return $this->hasMany('App\Http\Tenant\Email\Models\Receiver');
+    }
+
 
     function scopeUser($query)
     {
@@ -51,10 +66,14 @@ class Email extends Model {
     {
         $this->setTo(Request::input('email_to'));
         $this->setCc(Request::input('email_cc'));
-        $this->subject = Request::input('subject');
-        $this->message = Request::input('message');
+        $this->email_subject = Request::input('subject');
+        $this->email_message = Request::input('message');
         $this->attach = Request::input('attach');
-        $this->note = Request::input('note');
+        $this->email_note = Request::input('note');
+        $this->email_type = 1; // Request::input('type');
+        $this->email_status = Request::input('status');
+
+
         $this->fromName = 'Manish Gopal Singh';
         $this->fromEmail = 'manish.aucio@gmail.com';
         // Send email
@@ -68,6 +87,7 @@ class Email extends Model {
             $email = $this->saveEmail();
         } catch (\PDOException $e) {
             DB::rollback();
+
             print_r($e->errorInfo[2]);
 
             return false;
@@ -80,7 +100,8 @@ class Email extends Model {
             $attachment->add($email, $attached);
         } catch (\PDOException $e) {
             DB::rollback();
-            print_r($e->errorInfo[2]);
+
+              print_r($e->errorInfo[2]);
 
             return false;
         }
@@ -91,7 +112,8 @@ class Email extends Model {
             $receiver->add($email['id'], $this->to, $this->cc);
         } catch (\PDOException $e) {
             DB::rollback();
-            print_r($e->errorInfo[2]);
+
+             print_r($e->errorInfo[2]);
 
             return false;
         }
@@ -147,11 +169,12 @@ class Email extends Model {
     function saveEmail()
     {
         $email = new Email();
-        $email->message = $this->message;
-        $email->subject = $this->subject;
+        $email->message = $this->email_message;
+        $email->subject = $this->email_subject;
         $email->sender_id = current_user()->id;
-        $email->note = $this->note;
-        $email->status = 1;
+        $email->note = $this->email_note;
+        $email->type = $this->email_type;
+        $email->status = $this->email_status;
         $email->save();
 
         return $email->toArray();
@@ -164,11 +187,12 @@ class Email extends Model {
         $send->fromEmail = $this->fromEmail;
         $send->fromName = $this->fromName;
         $send->to = $this->to;
+        $send->subject = $this->email_subject;
         $send->cc = $this->cc;
         $send->attach = $this->getAttachment();
 
         $param = [
-            'content'    => $this->message,
+            'content'    => $this->email_message,
             'heading'    => 'FastBooks',
             'subheading' => 'All your business in one space',
         ];
@@ -176,6 +200,8 @@ class Email extends Model {
         \Mail::send('template.master', $param, function ($message) use ($send) {
             $message->from($send->fromEmail, $send->fromName);
             $message->to($send->to);
+            $message->subject($send->subject);
+
             if (!empty($send->cc)) {
                 $message->cc($send->cc);
             }
