@@ -4,7 +4,7 @@ use App\Http\Controllers\Tenant\BaseController;
 use TCPDF;
 use FB;
 use Session;
-use RecursiveIteratorIterator;
+
 
 class PdfController extends BaseController {
 
@@ -168,7 +168,10 @@ class PdfController extends BaseController {
 			      60050625977
 			    </span>
 			   </td>
-			   <td></td>
+			   <td>
+			    <label>dfdfd</label><br/>
+			      <label>dfdfdf</label>
+			   </td>
 			   <td>dfd</td>
 			   <td>dfdf</td>
 			  
@@ -371,7 +374,10 @@ class PdfController extends BaseController {
 			      60050625977
 			    </span>
 			   </td>
-			   <td></td>
+			   <td>
+			      <label>dfdfd</label>
+			      <label>dfdfdf</label>
+			   </td>
 			   <td>dfd</td>
 			   <td>dfdf</td>
 			  
@@ -429,7 +435,7 @@ class PdfController extends BaseController {
 			{
 				foreach($attatchments as $attatchment) 
 				{
-					$this->DeleteFileOrFolder($path);
+					@unlink($attatchment);
 				}
 			}
 
@@ -440,38 +446,7 @@ class PdfController extends BaseController {
      }
 
 
-     function DeleteFileOrFolder($path)
-		{
-		    if (is_dir($path) === true)
-		    {
-		        $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path), RecursiveIteratorIterator::CHILD_FIRST);
-
-		        foreach ($files as $file)
-		        {
-		            if (in_array($file->getBasename(), array('.', '..')) !== true)
-		            {
-		                if ($file->isDir() === true)
-		                {
-		                    rmdir($file->getPathName());
-		                }
-
-		                else if (($file->isFile() === true) || ($file->isLink() === true))
-		                {
-		                    unlink($file->getPathname());
-		                }
-		            }
-		        }
-
-		        return rmdir($path);
-		    }
-
-		    else if ((is_file($path) === true) || (is_link($path) === true))
-		    {
-		        return unlink($path);
-		    }
-
-		    return false;
-		}
+     
 
 
 
