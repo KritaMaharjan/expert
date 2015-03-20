@@ -151,14 +151,6 @@ function FormatSelection(item) {
 }
 });
 
-//     $(".js-example-basic-multiple").change(function() {
-//     //var theID = $(test).val(); // works
-//     //var theSelection = $(test).filter(':selected').text(); // doesn't work
-//     var theID = $(".js-example-basic-multiple").select2('data').id;
-//     var theSelection = $(".js-example-basic-multiple").select2('data').text;
-//     alert(theID);
-//     // $('#selectedID').text(theID);
-//     // $('#selectedText').text(theSelection);
-// });
+
 
 </script>

@@ -24,11 +24,9 @@ ul.ui-autocomplete.ui-menu {
       
 	    	<div class="box box-solid">
           <p class="align-right btn-inside">
-<<<<<<< HEAD
-            <a class="btn btn-primary " id="customer-add" data-toggle="modal" data-url="#customer-modal-data" data-target="#fb-modal">
-=======
+
             <a class="btn btn-primary" id="customer-add" data-toggle="modal" data-url="#customer-modal-data" data-target="#fb-modal">
->>>>>>> e001955c2dcce9fb16e93b928b8d7d67faeadedb
+
                  <i class="fa fa-plus"></i> Add new Customer
                  
             </a>
