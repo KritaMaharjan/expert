@@ -57,8 +57,8 @@ $(function(){
                             <div class="col-md-12 col-sm-12">
                                 <div class="row pad pad-top-0 pad-btm-0">
                                   <div class="col-md-12 pad-6">
-                                    <a href="#" class="btn btn-primary btn-flat btn-small">Personal Inbox</a>
-                                    <a href="#" class="btn btn-default btn-flat btn-small">Support Inbox</a>
+                                    <a href="javascript:;" id="personal_inbox" class="btn btn-primary btn-flat btn-small">Personal Inbox</a>
+                                    <a href="javascript:;" id="support_inbox" class="btn btn-default btn-flat btn-small">Support Inbox</a>
                                   </div>
                                 </div><!-- /.row -->
 

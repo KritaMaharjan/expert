@@ -3,11 +3,11 @@
 <table class="table table-mailbox no-mg-btm">
     <tbody>
           @foreach($mails as $mail)
-          <tr class="unread">
+          <tr class="unread" mail_id="{{$mail->id}}">
             <td class="small-col"><i class="fa fa-envelope"></i></td>
             <td class="name">
              <?php $receiver = $mail->receivers;?>
-              <a href="#">
+              <a href="javascript:;">
                     @foreach($receiver as $to)
                         @if($to->type ==1)
                            {{ '('.$to->customer_id.') '. $to->email}};
@@ -39,7 +39,7 @@ $from =  $to - $mails->perPage()+1+($mails->perPage()-$items);
 ?>
 
 <span class="color-grey">{{$from}}-{{$to}} of {{$mails->total()}}</span>
-  <a href="#next" class="mg-lr-5  color-grey"><i class="fa  fa-chevron-left"></i></a>
-  <a href="#previous" class="color-grey"><i class="fa  fa-chevron-right"></i></a>
+  <a href="#previous" class="mg-lr-5  color-grey"><i class="fa  fa-chevron-left"></i></a>
+  <a href="#next" class="color-grey"><i class="fa  fa-chevron-right"></i></a>
 </p>
 
