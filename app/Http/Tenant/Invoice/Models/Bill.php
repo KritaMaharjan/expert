@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Tenant\Customer;
+use App\Http\Tenant\Invoice\Models\ProductBill;
+use App\Http\Tenant\Inventory\Models\Product;
+use Illuminate\Support\Facades\DB;
 
 class Bill extends Model {
 
@@ -18,7 +21,7 @@ class Bill extends Model {
      *
      * @var array
      */
-    protected $fillable = ['invoice_number', 'customer_id', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'status', 'account_number', 'due_date'];
+    protected $fillable = ['invoice_number', 'customer_id', 'invoice_date', 'currency', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'status', 'account_number', 'due_date'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -30,52 +33,57 @@ class Bill extends Model {
 
     function add(Request $request)
     {
-        $product = new Product();
-        $product->number = $request->input('number');
-        $product->name = $request->input('name');
-        $product->vat = $request->input('vat');
-        $product->selling_price = $request->input('selling_price');
-        $product->purchase_cost = $request->input('purchase_cost');
-        $product->user_id = current_user()->id;
-        $product->save();
+        // Start transaction!
+        DB::beginTransaction();
+        try {
+            $bill = Bill::create([
+                'invoice_number' => $request->input('invoice_number'),
+                'customer_id' => $request->input('customer_id'),
+                'invoice_date' => $request->input('invoice_date'),
+                'due_date' => $request->input('due_date'),
+                'account_number' => $request->input('account_number'),
+                'currency' => $request->input('currency'),
+            ]);
 
-        return $product->toData();
-    }
+            $products = $request->input('product');
+            $quantity = $request->input('quantity');
 
-    function scopeLatest($query)
-    {
-        $query->orderBY('created_at', 'DESC');
-    }
+            $alltotal = 0;
+            $subtotal = 0;
+            $tax = 0;
 
-    function selling_price()
-    {
-        return $this->convertToCurrency($this->selling_price);
-    }
+            foreach($products as $key => $product)
+            {
+                if(isset($quantity[$key]) && $quantity[$key] > 0) {
+                    $product_details = Product::find($product);
+                    $total = ($product_details->selling_price + $product_details->vat * 0.01 * $product_details->selling_price) * $quantity[$key];
+                    $product_bill = ProductBill::create([
+                        'product_id' => $product,
+                        'bill_id' => $bill->id,
+                        'quantity' => $quantity[$key],
+                        'price' => $product_details->selling_price,
+                        'vat' => $product_details->vat,
+                        'total' => $total
+                    ]);
+                    $alltotal += $total;
+                    $tax += $product_details->vat * 0.01 * $product_details->selling_price * $quantity[$key];
+                    $subtotal += $product_details->selling_price * $quantity[$key];
+                }
 
-    function vat()
-    {
-        return $this->vat . '%';
-    }
+            }
 
-    function purchase_cost()
-    {
-        return $this->convertToCurrency($this->purchase_cost);
-    }
+            $bill->subtotal = $subtotal;
+            $bill->tax = $tax;
+            $bill->total = $alltotal;
+            $bill->save();
 
-    function convertToCurrency($num)
-    {
-        return '$' . number_format($num, 2);
-    }
+            DB::commit();
+            return array('bill_details' => $bill);
 
-    function toData()
-    {
-        $this->show_url = tenant()->url('inventory/product/' . $this->id);
-        $this->edit_url = tenant()->url('inventory/product/' . $this->id . '/edit');
-        $this->purchase_cost = $this->purchase_cost();
-        $this->selling_price = $this->selling_price();
-        $this->vat = $this->vat();
-
-        return $this->toArray();
+        } catch(\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
     }
 
 

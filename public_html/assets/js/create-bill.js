@@ -6,13 +6,6 @@
         'format': 'yyyy-mm-dd'
     });
 
-    $("#invoice-date-picker").on("dp.change",function (e) {
-        $('#due-date-picker').data("DatePicker").minDate(e.date);
-    });
-    $("#due-date-picker").on("dp.change",function (e) {
-        $('#invoice-date-picker').data("DatePicker").maxDate(e.date);
-    });
-
     var invoice_tr = $('.product-table .position-r');
     var invoice_tr_html = invoice_tr.html();
     var invoice_tr_html_wrap = '<tr class="position-r">' + invoice_tr_html + '</tr>';
@@ -212,9 +205,10 @@
             {
                 var vat = parseFloat($(this).parent().parent().find('.vat').val());
                 var price = parseFloat($(this).parent().parent().find('.price').val());
-                vatTotal = vatTotal + (vat * 0.01 * price);
+                var thisQuantity = parseFloat($(this).parent().parent().find('.quantity').val());
+                vatTotal = vatTotal + (vat * 0.01 * price * thisQuantity);
                 allTotal = allTotal + thisTotal;
-                subtotal = subtotal + price;
+                subtotal = subtotal + price * thisQuantity;
             }
         });
         $('#subtotal').html(subtotal);

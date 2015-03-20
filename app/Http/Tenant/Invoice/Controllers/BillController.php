@@ -28,11 +28,11 @@ class BillController extends BaseController {
      */
 
     protected $rules = [
-        'number'        => 'required|alpha_dash|max:25|unique:fb_products',
-        'name'          => 'required|string|max:100|unique:fb_products',
-        'vat'           => 'required|numeric|max:99',
-        'selling_price' => 'required|numeric|min:1|max:9999999999',
-        'purchase_cost' => 'required|numeric|min:1|max:999999999',
+        'customer_id'        => 'required',
+        'invoice_date'          => 'required|date',
+        'invoice_number'           => 'required|numeric|unique:fb_bill',
+        'due_date' => 'required|date',
+        'account_number' => 'required',
     ];
 
 
@@ -66,11 +66,10 @@ class BillController extends BaseController {
         $validator = Validator::make($this->request->all(), $this->rules);
 
         if ($validator->fails())
-            return $this->fail(['errors' => $validator->getMessageBag()]);
+            return redirect()->back()->withErrors($validator)->withInput();
 
-        $result = $this->bill->add($this->request);
-
-        return ($result) ? $this->success($result) : $this->fail(['errors' => 'something went wrong']);
+        $this->bill->add($this->request);
+        tenant()->redirect('tenant.invoice.bill.index');
     }
 
 

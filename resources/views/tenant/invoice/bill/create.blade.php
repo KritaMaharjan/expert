@@ -27,7 +27,7 @@
     </div><!-- /.col -->
   </div>
 
-  {!! Form::open(array('method'=>'POST', 'files'=>true, 'id'=>'subuser-form')) !!}
+  {!! Form::open(array('method'=>'POST')) !!}
   <!-- info row -->
   <div class="row invoice-info">
 
@@ -39,12 +39,12 @@
         </div>
         <div class="form-group clearfix">
          {!! Form::label('customer', 'Select customer') !!}
-         {!! Form::select('customer', array('' => 'Select Customer'), null, array('class' => 'select-single form-control', 'required' => 'required')) !!}
+         {!! Form::select('customer', array('' => 'Select Customer'), null, array('class' => 'select-single form-control')) !!}
           <p class="align-right mg-adj">
             <a href="#">Add customer</a>
         </p>
         </div>
-        {{--{!! Form::button('Save', array('class'=>'btn btn-primary pull-right subuser-submit', 'type'=>'submit')) !!}--}}
+
 
       <address class="customer-info">
       </address>
@@ -60,8 +60,8 @@
 
       <div class="right-from">
         <div class="form-group clearfix">
-          {!! Form::label('created_at', 'Invoice date') !!}
-          {!! Form:: input('date', 'created_at', null, array('class' => 'form-control', 'id' => 'invoice-date-picker')) !!}
+          {!! Form::label('invoice_date', 'Invoice date') !!}
+          {!! Form:: input('date', 'invoice_date', null, array('class' => 'form-control', 'id' => 'invoice-date-picker')) !!}
         </div>
         <div class="form-group clearfix">
           {!! Form::label('invoice_number', 'Invoice number') !!}
@@ -73,7 +73,7 @@
         </div>
         <div class="form-group clearfix">
           {!! Form::label('customer_id', 'Customer id') !!}
-          {!! Form:: text('customer_id', null, array('class' => 'form-control', 'disabled'=>'disabled')) !!}
+          {!! Form:: text('customer_id', null, array('class' => 'form-control')) !!}
         </div>
         <div class="form-group clearfix">
           {!! Form::label('due_date', 'Due date') !!}
@@ -128,11 +128,11 @@
                 </div>
               </div>
 
-            {!! Form::select('product_name', array('' => 'Select Product'), null, array('class' => 'select-product form-control', 'required' => 'required')) !!}
+            {!! Form::select('product[]', array('' => 'Select Product'), null, array('class' => 'select-product form-control')) !!}
             {{--{!! Form:: text('product_name', null, array('class' => 'form-control')) !!}--}}
             </td>
 
-            <td>{!! Form:: input('number', 'quantity', null, array('class' => 'form-control', 'id' => 'quantity')) !!}</td>
+            <td>{!! Form:: input('number', 'quantity[]', null, array('class' => 'form-control quantity', 'id' => 'quantity', 'required'=>'required')) !!}</td>
             <td>{!! Form:: text('price', null, array('class' => 'form-control price')) !!}</td>
             <td>{!! Form:: text('vat', null, array('class' => 'form-control vat')) !!}</td>
             <td>{!! Form:: text('total', null, array('class' => 'form-control total', 'readonly' => 'readonly')) !!}</td>
@@ -175,7 +175,7 @@
   <!-- this row will not appear when printing -->
   <div class="row no-print">
     <div class="col-xs-12">
-      <button class="btn btn-primary pull-right" style="margin-right: 5px;">Submit</button>
+        {!! Form::button('Submit', array('class'=>'btn btn-primary pull-right', 'type'=>'submit')) !!}
     </div>
   </div>
 
