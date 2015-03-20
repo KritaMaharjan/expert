@@ -20,7 +20,6 @@ class EmailController extends BaseController {
 
     public function index()
     {
-        \FB::can('Settings');
         $profile = new Profile;
     	$personal_email_setting = $profile->getPersonalSetting($this->current_user->id);
     	$support_email_setting = $profile->getSupportSetting($this->current_user->id);

@@ -36,7 +36,9 @@ All Users
           <th>Active Since</th>
           <th>Email Address</th>
           <th>Status</th>
+          <th>Register Days</th>
           <th>Actions</th>
+
         </tr>
       </thead>
     </table>

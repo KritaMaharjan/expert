@@ -134,7 +134,6 @@ class Customer extends Model {
         return $updated_customer;
     }
 
-
     public function getTemplate($details = '')
     {
         $details->name = "<a href=" . tenant_route('tenant.customer.CustomerCard', ['id' => $details->id]) . ">" . $details->name . "</a>";
@@ -158,6 +157,4 @@ class Customer extends Model {
 
         return $data;
     }
-
-
 }

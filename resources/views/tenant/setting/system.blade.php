@@ -19,6 +19,7 @@ System Settings
             <ul class="nav nav-tabs">
               <li class="active"><a href="#business" data-toggle="tab">Your Business</a></li>
               <li><a href="#fix-it" data-toggle="tab">Fix It Now</a></li>
+              <li><a href="#vacation" data-toggle="tab">Vacation</a></li>
               
             </ul>
             <div class="tab-content">
@@ -28,6 +29,11 @@ System Settings
               </div><!-- /.tab-pane -->
               <div class="tab-pane" id="fix-it">
               	@include('tenant.setting.fixForm')
+
+              </div><!-- /.tab-pane -->
+
+               <div class="tab-pane" id="vacation">
+                @include('tenant.setting.vacation')
 
               </div><!-- /.tab-pane -->
 

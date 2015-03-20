@@ -155,15 +155,4 @@ class ProductController extends BaseController {
         return $this->fail(['message' => 'Something went wrong. Please try again later']);
     }
 
-
-    function getPrduct(){
-
-        if ($this->request->ajax()) {
-
-            return ((array)$product) ? $this->success((array)$product) : $this->fail(['errors' => 'something went wrong']);
-
-        } 
-    }
-
-
 }

@@ -37,6 +37,11 @@ class Setting extends Model {
         return $query->where('name', 'business');
     }
 
+    function scopeVacation($query)
+    {
+        return $query->where('name', 'vacation');
+    }
+
     function getCompany()
     {
         $company = $this->company()->first(['value']);
@@ -47,6 +52,11 @@ class Setting extends Model {
     {
         $setting = $this->setting()->first(['value']);
        return isset($setting->value) ? $setting->value : null;
+    }
+
+    function getvacation(){
+          $vacation = $this->setting()->first(['value']);
+       return isset($vacation->value) ? $vacation->value : null;
     }
 
      function getFix()
