@@ -167,31 +167,58 @@ class UserController extends BaseController {
     }
 
     function registerVacation(){
-        $id = $this->request->route('id');
-        //dd($id);
-        $User = \DB::table('fb_users')->where('guid', $id)->first();
-        //dd($User);
-        $vacation = $this->user->getUserVacation($id);
-        $vacationDays = $this->setting->getVacation();
+        $guid = $this->request->route('guid'); 
+        $type = $this->request->route('type'); 
+        $User = \DB::table('fb_users')->where('guid', $guid)->first();
         
-        return view('tenant.users.vacation', compact('vacation','vacationDays','User'));
+        $vacationDays = \DB::table('fb_settings')->where('name', 'vacation')->first();
+        $vacationDetails = @unserialize($vacationDays->value);
+
+        $leaves = $this->user->getUserVacation($User->id);
+         $sick_total = 0;
+            $vacation_total = 0;
+
+        if(!empty($leaves)){
+            foreach ($leaves as $key => $value) {
+               $sick_total += $value->sick_days;
+               $vacation_total += $value->vacation_days;
+               $sick_leave_left = $vacationDetails['sick_days'] - $sick_total;
+               $vacation_leave_left = $vacationDetails['vacation_days'] - $vacation_total;
+            }
+
+        }else{
+             $sick_total = 0;
+            $vacation_total = 0;
+             $sick_leave_left = $vacationDetails['sick_days'];
+               $vacation_leave_left = $vacationDetails['vacation_days'];
+        }
+
+        if($type == 'vacation')
+            return view('tenant.users.vacation', compact('sick_total','vacation_total','User','sick_leave_left','vacation_leave_left'));
+        else
+             return view('tenant.users.sickLeave', compact('sick_total','vacation_total','User','sick_leave_left','vacation_leave_left'));
+
+       
+   
 
     }
 
     function addVacation(Request $request){
         $leave = $this->request['days'];
-         $user_id = $this->request['user_id'];
-     //dd($this->request['user_id']);
-         $result = $this->user->addVacation($leave,$user_id);
+        $user_id = $this->request['user_id'];
+        $type = $this->request['type'];
 
-         $total_leave = $this->vacation->totalVacation($this->request['user_id']);
+     //dd($this->request['user_id']);
+         $result = $this->user->addVacation($leave,$user_id,$type);
+
+         $total_leave = $this->vacation->totalVacation($this->request['user_id'],$type);
         // dd($total_leave);
 
          $vacation = $this->request['vacation_days'];
 
          $leave_left = $vacation - $total_leave;
 
-        return \Response::json(array('success' => true, 'vacation_days' => $leave_left,'vacation_used'=> $total_leave));
+        return \Response::json(array('status' => true, 'vacation_days' => $leave_left,'vacation_used'=> $total_leave));
 
     }
     

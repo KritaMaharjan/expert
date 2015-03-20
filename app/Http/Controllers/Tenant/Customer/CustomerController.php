@@ -6,8 +6,7 @@ use App\Http\Controllers\Tenant\BaseController;
 use Illuminate\Http\Request;
 use Input;
 
-class CustomerController extends BaseController
-{
+class CustomerController extends BaseController {
 
 
     protected $request;
@@ -47,17 +46,17 @@ class CustomerController extends BaseController
 
         $validator = \Validator::make($this->request->all(),
             array(
-                'name' => 'required|between:2,30',
-                'email' => 'required|unique:fb_customers',
-                'dob' => '',
-                'street_name' => 'required',
+                'name'          => 'required|between:2,30',
+                'email'         => 'required|unique:fb_customers',
+                'dob'           => '',
+                'street_name'   => 'required',
                 'street_number' => 'required',
-                'telephone' => 'numeric',
-                'mobile' => 'numeric',
+                'telephone'     => 'numeric',
+                'mobile'        => 'numeric',
 
 
-                'postcode' => 'required|size:4',
-                'town' => 'alpha|between:2,50',
+                'postcode'      => 'required|size:4',
+                'town'          => 'alpha|between:2,50',
 
                 //  'photo'         => 'image'
             )
@@ -76,6 +75,7 @@ class CustomerController extends BaseController
         }
         $result = $this->customer->createCustomer($this->request, $this->current_user->id, $fileName);
         $redirect_url = tenant_route('tenant.customer.index');
+
         return \Response::json(array('success' => true, 'data' => $result['data'], 'template' => $result['template'], 'redirect_url' => $redirect_url));
 
 
@@ -116,17 +116,17 @@ class CustomerController extends BaseController
 
         $validator = \Validator::make($this->request->all(),
             array(
-                'name' => 'required|between:2,30',
-                'email' => 'required',
-                'dob' => '',
-                'street_name' => 'required',
+                'name'          => 'required|between:2,30',
+                'email'         => 'required',
+                'dob'           => '',
+                'street_name'   => 'required',
                 'street_number' => 'required',
 
-                'telephone' => 'numeric',
-                'mobile' => 'numeric',
+                'telephone'     => 'numeric',
+                'mobile'        => 'numeric',
 
-                'postcode' => 'required|size:4',
-                'town' => 'between:2,50',
+                'postcode'      => 'required|size:4',
+                'town'          => 'between:2,50',
                 //'photo'         => 'image'
             )
         );
@@ -144,6 +144,7 @@ class CustomerController extends BaseController
         $customers = $this->customer->updateCustomer($id, $this->request, $dob, $this->current_user->id, $fileName);
 
         $redirect_url = tenant_route('tenant.customer.index');
+
         return \Response::json(array('success' => true, 'data' => $customers['data'], 'template' => $customers['template'], 'show_url' => $customers['show_url'], 'edit_url' => $customers['edit_url'], 'redirect_url' => $redirect_url));
     }
 
@@ -199,8 +200,9 @@ class CustomerController extends BaseController
             $customer->save();
 
 
-            return \Response::json(array('status' => TRUE));
+            return \Response::json(array('status' => true));
         }
+
         return $this->fail(['message' => 'Something went  wrong. Please try again later']);
 
     }
@@ -224,6 +226,7 @@ class CustomerController extends BaseController
             $destinationPath = 'uploads/';
             $filename = $file->getClientOriginalName();
             \Input::file('image')->move($destinationPath, $filename);
+
             return \Response::json(['success' => true, 'file' => asset($destinationPath . $filename)]);
         }
 
@@ -233,12 +236,12 @@ class CustomerController extends BaseController
     {
         $name = \Input::get('name');
         //change this later
-        $details = Customer::where('name', 'LIKE', '%'.$name.'%')->get();
+        $details = Customer::where('name', 'LIKE', '%' . $name . '%')->get();
         $newResult = array();
 
-        if(!empty($details)) {
+        if (!empty($details)) {
 
-            foreach($details as $d) {
+            foreach ($details as $d) {
                 $new = array();
                 $new['id'] = $d->id;
                 $new['text'] = $d->name;

@@ -3,6 +3,7 @@
 namespace APP\Http\Tenant\Email\Controllers;
 
 use App\Http\Controllers\Tenant\BaseController;
+use App\Models\Tenant\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Tenant\Email\Models\Email;
@@ -10,38 +11,29 @@ use App\Http\Tenant\Email\Models\Email;
 class EmailController extends BaseController {
 
     protected $request;
-     protected $email;
+    protected $email;
 
 
-    function __construct(Request $request,Email $email)
+    function __construct(Request $request, Email $email)
     {
         parent::__construct();
         $this->request = $request;
         $this->email = $email;
     }
 
-     protected $rules = [
-        'subject'    => 'required',
-        'email_to'      => 'required',
-        'message' => 'required'
-    ];
-
     function index()
     {
-       // $mails = $this->email->where('user_id', '=', $this->current_user->id)->get();
-        $data = array('mails' => '');
-
-        return view('tenant.email.index')->withPageTitle('Emails')->with($data);
-        
+        $mails = $this->email->user()->with('attachments', 'receivers')->paginate(10);
+        return view('tenant.email.index', compact('mails'));
     }
 
-    function getCustomer()
+    function customerSearch(Customer $customer)
     {
-        $email_to = \Input::get('email_to');
-        $details = \DB::table('fb_customers')->where('email', 'LIKE', '%'.$email_to.'%')->get();
-        return \Response::json($details);
-    }
+        $query = $this->request->input('term');
+        $details = $customer->select('id', 'name as label', 'email as value')->where('email', 'LIKE', '%' . $query . '%')->orWhere('name', 'LIKE', '%' . $query . '%')->get()->toArray();
 
+        return \Response::JSON($details);
+    }
 
     function attach()
     {
@@ -61,34 +53,35 @@ class EmailController extends BaseController {
     }
 
 
-    // function send()
-    // {
-    //     $validator = $this->validateComposer();
-    //     if ($validator->fails()) {
-    //         return $this->fail(['errors' => $validator->messages()]);
-    //     }
 
-    //     return $this->success($this->request->all());
-    // }
-
-
-    function send(){
-         $validator = Validator::make($this->request->all(), $this->rules);
-
-        if ($validator->fails())
+    function send()
+    {
+        $validator = $this->validateComposer();
+        if ($validator->fails()) {
             return $this->fail(['errors' => $validator->messages()]);
+        }
 
-        $result = $this->email->add($this->request);
+        if ($email = $this->email->send()) {
+            return $this->success($email);
+        }
+
+        return $this->fail(['error' => 'Could not send email at this moment. Please try again later']);
 
     }
 
-    // function validate($rules)
-    // {
-    //     $rules = [];
-    //     $validator = Validator::make($this->request->all(), $rules);
 
-    //     return $validator;
-    // }
+    function validateComposer()
+    {
+        $rules = [
+            'email_to' => 'required|validArrayEmail',
+            'email_cc' => 'validArrayEmail',
+            'subject'  => 'required',
+            'message'  => 'required'
+        ];
+        $validator = \Validator::make($this->request->all(), $rules);
+
+        return $validator;
+    }
 
 
 }

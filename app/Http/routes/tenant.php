@@ -53,7 +53,7 @@ Route::group($group_auth, function () {
         get('email', ['as' => 'desk.email', 'uses' => 'EmailController@index']);
         post('email/upload/data', ['as' => 'desk.email.upload', 'uses' => 'EmailController@attach']);
         post('email/send', ['as' => 'desk.email.send', 'uses' => 'EmailController@send']);
-        get('email/customers', ['as' => 'tenant.email.customers', 'uses' => 'EmailController@getCustomer']);
+        get('email/customer/search', ['as' => 'tenant.email.customer.search', 'uses' => 'EmailController@customerSearch']);
 
     });
 
@@ -150,7 +150,7 @@ Route::group($group_auth, function () {
         post('user/update', ['as' => 'tenant.user.update', 'uses' => 'Tenant\Users\UserController@updateUser']);
         get('user/{guid}', ['as' => 'subuser.profile', 'uses' => 'Tenant\Users\UserController@profile']);
         post('user/data', ['as' => 'tenant.user.data', 'uses' => 'Tenant\Users\UserController@dataJson']);
-         get('user/registerDays/{id}', ['as' => 'user.registerDays', 'uses' => 'Tenant\Users\UserController@registerVacation']);
+         get('user/registerDays/{type}/{guid}', ['as' => 'user.registerDays', 'uses' => 'Tenant\Users\UserController@registerVacation']);
           post('user/addVacation', ['as' => 'user.addVacation', 'uses' => 'Tenant\Users\UserController@addVacation']);
 
 
@@ -178,5 +178,12 @@ Route::group($group_auth, function () {
         
 
     });
+
+/*for test add by pradeep */
+
+    Route:: get('tenant/test', ['as' => 'pdf', 'uses' => 'Controllers\Tenant\Pdf\PdfController@index']);
+    Route:: get('tenant/create/pdf', ['as' => 'pdf', 'uses' => 'Controllers\Tenant\Pdf\PdfController@create_pdf']);
+    Route:: get('tenant/send/pdf', ['as' => 'sendpdf', 'uses' => 'Controllers\Tenant\Pdf\PdfController@sendEmailPdf']);
+   
 
 });

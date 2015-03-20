@@ -615,6 +615,7 @@ fieldset.wrapper-box legend{
 #print input {
     height: 30px;
     width: 100%!important;
+    border: 1px solid #dbdbdb;
 }
 #print input.small-input {
     width: 30px !important;
@@ -696,6 +697,10 @@ fieldset.wrapper-box legend{
 /*print*/
 
 @media print{
+    * {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+   }
     #print{
         width: 700px;
     }
@@ -735,6 +740,10 @@ div.dataTables_length select {
 
 .fix-height {
     height: 435px;
+}
+
+.payment-info label{
+    width: 100%;
 }
 
 /*calendar*/
