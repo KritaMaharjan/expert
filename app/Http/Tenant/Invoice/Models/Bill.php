@@ -101,10 +101,7 @@ class Bill extends Model {
         $query = $this->select($select);
 
         if ($orderColumn != '' AND $orderdir != '') {
-            if($orderColumn != 'invoice_date')
-                $query = $query->orderBy($orderColumn, $orderdir);
-            else
-                $query = $query->orderBy('created_at', $orderdir);
+            $query = $query->orderBy($orderColumn, $orderdir);
         }
 
         if ($search != '') {
@@ -131,7 +128,8 @@ class Bill extends Model {
             else
                 $value->status = '<span class="label label-danger">Unpaid</span>';
 
-            $value->invoice_date = $value->created_at->format('d-M-Y  h:i:s A');
+            $value->invoice_date = date('d-M-Y  h:i:s A', strtotime($value->invoice_date));
+            //$value->created_at->format('d-M-Y  h:i:s A');
             $value->DT_RowId = "row-".$value->guid;
         }
 

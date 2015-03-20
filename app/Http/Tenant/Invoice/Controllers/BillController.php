@@ -17,7 +17,7 @@ class BillController extends BaseController {
     {
         \FB::can('Invoice');
         parent::__construct();
-        $this->product = $bill;
+        $this->bill = $bill;
         $this->request = $request;
     }
 
@@ -48,8 +48,8 @@ class BillController extends BaseController {
     public function dataJson()
     {
         if ($this->request->ajax()) {
-            $select = ['id', 'bill_number', 'customer_id', 'total', 'due_date', 'created_at', 'status'];
-            $json = $this->product->dataTablePagination($this->request, $select);
+            $select = ['id', 'invoice_number', 'customer_id', 'total', 'due_date', 'created_at', 'invoice_date', 'status'];
+            $json = $this->bill->dataTablePagination($this->request, $select);
             echo json_encode($json, JSON_PRETTY_PRINT);
         } else {
             show_404();
@@ -68,7 +68,7 @@ class BillController extends BaseController {
         if ($validator->fails())
             return $this->fail(['errors' => $validator->getMessageBag()]);
 
-        $result = $this->product->add($this->request);
+        $result = $this->bill->add($this->request);
 
         return ($result) ? $this->success($result) : $this->fail(['errors' => 'something went wrong']);
     }
@@ -81,7 +81,7 @@ class BillController extends BaseController {
     function show()
     {
         $id = $this->request->route('id');
-        $bill = $this->product->find($id);
+        $bill = $this->bill->find($id);
         if ($bill == null) {
             show_404();
         }
@@ -103,7 +103,7 @@ class BillController extends BaseController {
     {
         $id = $this->request->route('id');
 
-        $bill = $this->product->find($id);
+        $bill = $this->bill->find($id);
         if ($bill == null) {
             show_404();
         }
@@ -120,7 +120,7 @@ class BillController extends BaseController {
     {
         $id = $this->request->route('id');
 
-        $bill = $this->product->find($id);
+        $bill = $this->bill->find($id);
 
         if (empty($bill))
             return $this->fail(['error' => 'Invalid Product ID']);
@@ -154,7 +154,7 @@ class BillController extends BaseController {
     {
         $id = $this->request->route('id');
 
-        $bill = $this->product->find($id);
+        $bill = $this->bill->find($id);
         if (!empty($bill)) {
             if ($bill->delete()) {
                 return $this->success(['message' => 'Product deleted Successfully']);

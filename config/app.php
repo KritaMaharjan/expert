@@ -135,7 +135,7 @@ return [
         'Illuminate\Translation\TranslationServiceProvider',
         'Illuminate\Validation\ValidationServiceProvider',
         'Illuminate\View\ViewServiceProvider',
-        'Barryvdh\Debugbar\ServiceProvider',
+       // 'Barryvdh\Debugbar\ServiceProvider',
         'Illuminate\Html\HtmlServiceProvider',
         'Laracasts\Flash\FlashServiceProvider',
         'anlutro\cURL\Laravel\cURLServiceProvider',
@@ -150,6 +150,7 @@ return [
         'App\Providers\EventServiceProvider',
         'App\Providers\RouteServiceProvider',
         'App\Providers\HelperServiceProvider',
+        'Elibyy\TCPDF\ServiceProvider',
 
 
     ],
