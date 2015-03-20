@@ -161,6 +161,7 @@
  var test = value.split(','); 
 
  $('#town').val(test[1]);
+
  
 });
 
