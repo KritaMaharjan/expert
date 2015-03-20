@@ -1,14 +1,30 @@
 (function () {
+    $("#invoice-date-picker").datepicker({
+        'format': 'yyyy-mm-dd'
+        });
+    $("#due-date-picker").datepicker({
+        'format': 'yyyy-mm-dd'
+    });
+
+    $("#invoice-date-picker").on("dp.change",function (e) {
+        $('#due-date-picker').data("DatePicker").minDate(e.date);
+    });
+    $("#due-date-picker").on("dp.change",function (e) {
+        $('#invoice-date-picker').data("DatePicker").maxDate(e.date);
+    });
+
     var invoice_tr = $('.product-table .position-r');
     var invoice_tr_html = invoice_tr.html();
     var invoice_tr_html_wrap = '<tr class="position-r">' + invoice_tr_html + '</tr>';
     var add_btn = $('.add-btn');
+
 
     add_btn.on('click', function () {
         invoice_tr.after(invoice_tr_html_wrap);
         selectProduct();
     });
 
+    //select2 for customer
     var customerSelect = $(".select-single");
     customerSelect.select2({
         ajax: {
@@ -38,6 +54,7 @@
         theme: "classic"
     });
 
+    //Select2 for product
     function selectProduct() {
         $(".select-product").select2({
             ajax: {
@@ -84,16 +101,17 @@
         return item.text;
     }
 
-    $('table').on('click','tr .delete',function(e){
+    //delete current product row
+    $('table').on('click', 'tr .delete', function (e) {
         e.preventDefault();
         var rowCount = $('.product-table tr').length;
-        if(rowCount > 2)
+        if (rowCount > 2)
             $(this).closest('tr').remove();
         else
-        alert("At least one product needs to be chosen.");
+            alert("At least one product needs to be chosen.");
     });
 
-    customerSelect.on("change", function(e) {
+    customerSelect.on("change", function (e) {
         var $this = $(this);
         var customer_id = $this.val();
         var doing = false;
@@ -102,7 +120,7 @@
             doing = true;
             $('.customer-info').html('<i class="fa fa-spinner fa-spin"></i> Processing...');
             $.ajax({
-                url: appUrl + 'customer/details/'+customer_id,
+                url: appUrl + 'customer/details/' + customer_id,
                 type: 'GET',
                 dataType: 'json'
             })
@@ -127,45 +145,81 @@
 
     });
 
-    function DetailsTemplate(details)
-    {
-        var template = '<strong>'+details.name+
-        '</strong><br>' + details.street_name+' '+ details.street_number+
-            '<br>' +details.town+'<br>Phone: ' +details.telephone+'<br>Email: ' +details.email;
+    function DetailsTemplate(details) {
+        var template = '<strong>' + details.name +
+            '</strong><br>' + details.street_name + ' ' + details.street_number +
+            '<br>' + details.town + '<br>Phone: ' + details.telephone + '<br>Email: ' + details.email;
         return template;
     }
 
-    //if ($(".select-product").change() || $('#quantity').change()) {
-    $(".select-product").on("change", function(e) {
-            var $this = $(this);
-            var product_id = $this.val();
-            var doing = false;
+    //change product details : vat and price for selected product
+    $(document).on('change', '.select-product', function () {
+        var $this = $(this);
+        var product_id = $this.val();
+        var productDoing = false;
 
-            if (doing == false) {
-                doing = true;
-                $('.product-info').html('<i class="fa fa-spinner fa-spin"></i> Processing...');
-                $.ajax({
-                    url: appUrl + 'product/details/' + product_id,
-                    type: 'GET',
-                    dataType: 'json'
+        if (productDoing == false) {
+            productDoing = true;
+            $.ajax({
+                url: appUrl + 'product/details/' + product_id,
+                type: 'GET',
+                dataType: 'json'
+            })
+                .done(function (response) {
+                    if (response.success === true) {
+                        /*$('#price').val(response.details.selling_price);
+                         $('#vat').val(response.details.vat);*/
+                        $this.parent().parent().find('.price').val(response.details.selling_price);
+                        $this.parent().parent().find('.vat').val(response.details.vat);
+                    } else {
+                        alert('Something went wrong!');
+                    }
                 })
-                    .done(function (response) {
-                        if (response.success === true) {
-                            /*$('#price').val(response.details.selling_price);
-                             $('#vat').val(response.details.vat);*/
-                            $this.parent().parent().find('.price').val(response.details.selling_price);
-                            $this.parent().parent().find('.vat').val(response.details.vat);
-                        } else {
-                            alert('Something went wrong!');
-                        }
-                    })
-                    .fail(function () {
-                        alert('something went wrong');
-                    })
-                    .always(function () {
-                        doing = false;
-                    });
+                .fail(function () {
+                    alert('something went wrong');
+                })
+                .always(function () {
+                    productDoing = false;
+                });
+        }
+
+    });
+
+    //calculate the cost
+    $(document).on('keyup', '#quantity', function () {
+        var $this = $(this);
+        var quantity = parseInt($this.val());
+        if(quantity < 1 || isNaN(quantity))
+        {
+            alert('Please select a number above 0.');
+            $this.parent().parent().find('.total').val('');
+        }
+        else
+        {
+            var vat = parseFloat($this.parent().parent().find('.vat').val());
+            var price = parseFloat($this.parent().parent().find('.price').val());
+            var total = (price + vat * 0.01 * price) * quantity;
+            $this.parent().parent().find('.total').val(total);
+        }
+
+        var allTotal = 0;
+        var vatTotal = 0;
+        var subtotal = 0;
+
+        $(".total").each(function(){
+            var thisTotal = parseFloat($(this).val());
+            if(thisTotal > 0)
+            {
+                var vat = parseFloat($(this).parent().parent().find('.vat').val());
+                var price = parseFloat($(this).parent().parent().find('.price').val());
+                vatTotal = vatTotal + (vat * 0.01 * price);
+                allTotal = allTotal + thisTotal;
+                subtotal = subtotal + price;
             }
-    })
+        });
+        $('#subtotal').html(subtotal);
+        $('#tax-amount').html(vatTotal);
+        $('#all-total').html(allTotal);
+    });
 
 })();

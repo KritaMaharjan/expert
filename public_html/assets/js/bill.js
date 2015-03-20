@@ -23,7 +23,7 @@ $(function () {
             }
         }],
         "columns": [
-            {"data": "bill_number"},
+            {"data": "invoice_number"},
             {"data": "customer"},
             {"data": "total"},
             {"data": "invoice_date"},

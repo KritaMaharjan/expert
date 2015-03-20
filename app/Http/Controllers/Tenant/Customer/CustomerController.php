@@ -254,8 +254,8 @@ class CustomerController extends BaseController {
 
     public function getCustomerDetails()
     {
-        $customer_id = \Input::get('customerId');
-        $customer = Customer::first($customer_id);
+        $customer_id = $this->request->route('customerId');
+        $customer = Customer::find($customer_id);
         return \Response::json(['success' => true, 'details' => $customer]);
     }
 }

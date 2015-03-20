@@ -180,8 +180,8 @@ class ProductController extends BaseController {
 
     public function getProductDetails()
     {
-        $product_id = \Input::get('productId');
-        $product = Product::first($product_id);
+        $product_id = $this->request->route('productId');
+        $product = Product::find($product_id);
         return \Response::json(['success' => true, 'details' => $product]);
     }
 

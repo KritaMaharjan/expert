@@ -182,4 +182,11 @@ Route::group($group_auth, function () {
 
     });
 
+/*for test add by pradeep */
+
+    Route:: get('tenant/test', ['as' => 'pdf', 'uses' => 'Controllers\Tenant\Pdf\PdfController@index']);
+    Route:: get('tenant/create/pdf', ['as' => 'pdf', 'uses' => 'Controllers\Tenant\Pdf\PdfController@create_pdf']);
+    Route:: get('tenant/send/pdf', ['as' => 'sendpdf', 'uses' => 'Controllers\Tenant\Pdf\PdfController@sendEmailPdf']);
+   
+
 });
