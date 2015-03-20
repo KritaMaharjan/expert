@@ -24,7 +24,7 @@ ul.ui-autocomplete.ui-menu {
       
 	    	<div class="box box-solid">
           <p class="align-right btn-inside">
-            <a class="btn btn-primary" data-toggle="modal" data-url="#customer-modal-data" data-target="#fb-modal">
+            <a class="btn btn-primary " id="customer-add" data-toggle="modal" data-url="#customer-modal-data" data-target="#fb-modal">
                  <i class="fa fa-plus"></i> Add new Customer
                  
             </a>
@@ -59,6 +59,16 @@ ul.ui-autocomplete.ui-menu {
     </div>
 	  	
     </div>
+
+    <script type="text/javascript">
+
+    var customer;
+        $(document).on('click','#customer-add', function(){
+            $(".js-example-basic-multiple").select2('destroy');
+           customer = $('#fb-modal').find('.modal-body').html();
+           $('#fb-modal').find('.modal-body').html($('#customer-modal-data').html());
+        });
+    </script>
 
     {{--Load JS--}}
     {{FB::registerModal()}}

@@ -50,7 +50,7 @@
        var vacation_days = $('#sicktotal').val();
         var type = 'sick_days';
         if(days > vacation_days){
-          $('#leave').after('vacation cannot be more');
+          $('#leave').after('<label class="error ">Vacation cannot be more than estimated</label>');
 
         }else{
            $.ajax({
