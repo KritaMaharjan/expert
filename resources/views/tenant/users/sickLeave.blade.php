@@ -10,18 +10,24 @@
         <input type="hidden" name="sicktotal" id="sicktotal" value="{{ $sick_leave_left }}">
 
            <div class="box-body">
-              Sick days left this year: <span id="sick_days"> {{ $sick_leave_left or '0'}} days </span> <span id="sick_used">{{ $sick_total or '0'}} used  </span>  
-              <br>
-              <a href="javascript:;" id="add_sick_leave">Add Vacation </a>
+              <p>
+                Sick days left this year: <span id="sick_days"> {{ $sick_leave_left or '0'}} days </span> <span id="sick_used">{{ $sick_total or '0'}} used  </span> 
+              </p> 
+              <p class="align-right">  
+              <a href="javascript:;" id="add_sick_leave" class="btn btn-primary">Add Vacation </a>
+            </p>
 
 
             </div><!-- /.box-body -->
 
           <div id="add_part" style="display:none">
-            <input name="vacation" id="leave" value="" />
+           <div class="form-group">
+              <label for="exampleInputEmail1">Sick leave</label>
+              <input class="form-control" name="vacation" id="leave" value="" placeholder="Sick leave">
+            </div>
 
         <div class="box-footer clearfix">
-           <button type="button" class="btn sm-mg-btn" data-dismiss="modal"><i class="fa fa-times"></i> Abort</button>
+         <button type="button" class="btn sm-mg-btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Abort</button>
           {!! Form::button('Save', array('class'=>'btn btn-primary pull-right saveleave', 'type'=>'submit')) !!}
         </div>
       </div>
@@ -43,7 +49,11 @@
        var user_id = $('#user_id').val();
        var vacation_days = $('#sicktotal').val();
         var type = 'sick_days';
-        $.ajax({
+        if(days > vacation_days){
+          $('#leave').after('vacation cannot be more');
+
+        }else{
+           $.ajax({
             url: appUrl + 'user/addVacation',
             type: 'POST',
             dataType: 'json',
@@ -66,7 +76,10 @@
                 }
 
                  }
-        })
+        });
+
+        }
+
             
     });
    

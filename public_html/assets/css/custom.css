@@ -276,6 +276,8 @@ small.subject {
         margin-top: 5px;
     }
 
+#add_part{padding: 10px;}
+
 
 .overlay {
     background: none repeat scroll 0 0 rgba(0, 0, 0, 0.6);
