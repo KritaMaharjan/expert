@@ -82,6 +82,9 @@ class Customer extends Model {
         elseif ($request['type'] == 1)
             $dob = $request['year'] . '-' . $request['month'] . '-' . $request['day'];
 
+        $postal_code = explode(',', $request['postcode']);
+
+
 
         $customer = Customer::create([
             'type'           => $request['type'],
@@ -93,7 +96,7 @@ class Customer extends Model {
             'street_number'  => $request['street_number'],
             'telephone'      => $request['telephone'],
             'mobile'         => $request['mobile'],
-            'postcode'       => $request['postcode'],
+            'postcode'       => $postal_code[0],
             'town'           => $request['town'],
             'image'          => $fileName,
             'status'         => $request['status'],
@@ -109,6 +112,8 @@ class Customer extends Model {
     public function updateCustomer($id, $details, $dob, $fileName)
     {
 
+         $postal_code = explode(',', $details['postcode']);
+
         $customer = Customer::where('id', $id)->first();
         $customer->type = $details['type'];
         $customer->name = $details['name'];
@@ -119,7 +124,7 @@ class Customer extends Model {
         $customer->street_number = $details['street_number'];
         $customer->telephone = $details['telephone'];
         $customer->mobile = $details['mobile'];
-        $customer->postcode = $details['postcode'];
+        $customer->postcode = $postal_code[0];
         $customer->town = $details['town'];
         $customer->image = $fileName;
         $customer->status = $details['status'];

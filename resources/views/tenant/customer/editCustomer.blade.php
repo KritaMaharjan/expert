@@ -64,6 +64,7 @@
                       <div class="form-group two-inputs">
                         <label for="">Postal code/Town</label>
                         <select class="form-control js-example-basic-multiple postcode"  placeholder="Postal code" id="postcode" name="postcode"  value="{{old('postcode')}}">
+                          <option value="{{$customer->postcode}}">{{$customer->postcode}}</option>
                       
                         </select>
                         <input type="text" placeholder="Town"  id="town" name="town"  value="{{$customer->town}}" class="form-control">
