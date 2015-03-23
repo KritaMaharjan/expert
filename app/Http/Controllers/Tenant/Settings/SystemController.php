@@ -25,7 +25,8 @@ class SystemController extends BaseController {
     	$company = $this->setting->getCompany();
     	$business = $this->setting->getBusiness();
     	$fixit = $this->setting->getfix();
-        $vacation = $this->setting->getvacation();
+        $vacationDays = \DB::table('fb_settings')->where('name', 'vacation')->first();
+        $vacation = @unserialize($vacationDays->value);
     
     	$data = array('countries' => \Config::get('tenant.countries'),'company'=>$company,'business'=>$business,'fix'=>$fixit,'vacation'=>$vacation);
     	return view('tenant.setting.system')->withPageTitle('System Controller')->with($data);

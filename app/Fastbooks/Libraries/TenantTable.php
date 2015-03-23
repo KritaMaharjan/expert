@@ -231,4 +231,24 @@ class TenantTable {
             });
         }
     }
+
+
+    function vacation()
+    {
+        if (!Schema::hasTable(self::TBL_PREFIX . 'vacation')) {
+            Schema::create(self::TBL_PREFIX . 'vacation', function ($table) {
+                $table->increments('id'); // autoincrement value of a vacation
+                $table->integer('user_id')->unsign()->index(); 
+                $table->integer('vacation_days')->unsign()->index(); 
+                $table->integer('sick_days')->unsign()->index(); 
+                
+
+                // created_at, updated_at DATETIME
+                $table->timestamps();
+            });
+        }
+    }
+
+
+
 }
