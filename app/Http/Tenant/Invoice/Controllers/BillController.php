@@ -103,12 +103,12 @@ class BillController extends BaseController {
     {
         $id = $this->request->route('id');
 
-        $bill = $this->bill->find($id);
+        $bill = Bill::find($id);
         if ($bill == null) {
             show_404();
         }
 
-        return view('tenant.inventory.product.edit', compact('product'));
+        return view('tenant.invoice.bill.edit', compact('bill'));
     }
 
     /**  update product detail

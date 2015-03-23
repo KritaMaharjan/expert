@@ -1,6 +1,6 @@
 @extends('tenant.layouts.main')
 
-@section('heading') Create Bill @stop
+@section('heading') Edit Bill @stop
 
 @section('breadcrumb')
     @parent
@@ -26,27 +26,18 @@
     </div><!-- /.col -->
   </div>
 
-  {!! Form::open(array('method'=>'POST')) !!}
+       {!!Form::model($bill,['id'=>'bill-form'])!!}
+            @include('tenant.invoice.bill.form')
+       {!!Form::close()!!}
+</div>
 
-  @include('tenant.invoice.bill.form')
-
-  <!-- this row will not appear when printing -->
-  <div class="row no-print">
-    <div class="col-xs-12">
-        {!! Form::button('Submit', array('class'=>'btn btn-primary pull-right', 'type'=>'submit')) !!}
-    </div>
-  </div>
-
-  {!! Form::close() !!}
 </div>
 </div>
 </div><!-- /.content -->
 </div>
 <div class="clearfix"></div>
-    {{FB::js('assets/plugins/slimScroll/jquery.slimScroll.min.js')}}
-    {{FB::js('assets/plugins/fastclick/fastclick.min.js')}}
-    {{FB::js('assets/js/select2.js')}}
-    {{FB::js('assets/js/create-bill.js')}}
+{{FB::js('assets/plugins/slimScroll/jquery.slimScroll.min.js')}}
+{{FB::js('assets/plugins/fastclick/fastclick.min.js')}}
+{{FB::js('assets/js/select2.js')}}
+{{FB::js('assets/js/create-bill.js')}}
 @stop
-
-
