@@ -162,6 +162,8 @@
  var test = value.split(','); 
 
  $('#town').val(test[1]);
+ $('span #select2-postcode-container').text(test[0]);
+
 
  
 });
