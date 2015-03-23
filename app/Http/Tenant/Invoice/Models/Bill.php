@@ -54,7 +54,7 @@ class Bill extends Model {
 
             foreach($products as $key => $product)
             {
-                if(isset($quantity[$key]) && $quantity[$key] > 0) {
+                if(isset($quantity[$key]) && $quantity[$key] > 0 && $product > 0) {
                     $product_details = Product::find($product);
                     $total = ($product_details->selling_price + $product_details->vat * 0.01 * $product_details->selling_price) * $quantity[$key];
                     $product_bill = ProductBill::create([

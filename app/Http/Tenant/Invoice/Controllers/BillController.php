@@ -4,6 +4,7 @@ namespace App\Http\Tenant\Invoice\Controllers;
 
 use App\Http\Controllers\Tenant\BaseController;
 use App\Http\Tenant\Invoice\Models\Bill;
+use App\Http\Tenant\Invoice\Models\ProductBill;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -66,10 +67,10 @@ class BillController extends BaseController {
         $validator = Validator::make($this->request->all(), $this->rules);
 
         if ($validator->fails())
-            return redirect()->back()->withErrors($validator)->withInput();
+            redirect()->back()->withErrors($validator)->withInput();
 
         $this->bill->add($this->request);
-        tenant()->redirect('tenant.invoice.bill.index');
+        return tenant()->route('tenant.invoice.bill.index');
     }
 
 
@@ -106,8 +107,6 @@ class BillController extends BaseController {
         if ($bill == null) {
             show_404();
         }
-
-
 
         return view('tenant.inventory.product.edit', compact('product'));
     }
@@ -153,10 +152,16 @@ class BillController extends BaseController {
     {
         $id = $this->request->route('id');
 
-        $bill = $this->bill->find($id);
+        $bill = Bill::find($id);
         if (!empty($bill)) {
             if ($bill->delete()) {
-                return $this->success(['message' => 'Product deleted Successfully']);
+                $product_bills = ProductBill::where('bill_id', $id)->get();
+                if (!empty($product_bills)) {
+                    foreach ($product_bills as $product_bill) {
+                        $product_bill->delete();
+                    }
+                    return $this->success(['message' => 'Bill deleted Successfully']);
+                }
             }
         }
 
