@@ -166,6 +166,8 @@ class Tenant {
         $this->createTable->customers();
         $this->createTable->products();
         $this->createTable->inventory();
+        $this->createTable->bill();
+        $this->createTable->productBill();
     }
 
 
