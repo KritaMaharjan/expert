@@ -39,7 +39,7 @@ class TenantTable {
                 $table->string('suspended_reason')->nullable(); // suspended reason set by admin
                 $table->boolean('first_time')->default(1); // 1 for first time login
 
-               // remembers token column
+                // remembers token column
                 $table->rememberToken();
 
                 // created_at, updated_at DATETIME
@@ -178,6 +178,55 @@ class TenantTable {
                 $table->date('purchase_date'); // Add time or purchased date of an product
 
                 // created_at DATETIME
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Table for Bills [Many to one relation with customer table]
+     */
+    function bill()
+    {
+        if (!Schema::hasTable(self::TBL_PREFIX . 'bill')) {
+            Schema::create(self::TBL_PREFIX . 'bill', function ($table) {
+                $table->increments('id'); // autoincrement value of a tenant admin
+                $table->string('invoice_number', 25);
+                $table->integer('customer_id')->index(); // customer id
+                $table->string('currency', 10);
+                $table->float('subtotal');
+                $table->float('tax');
+                $table->float('shipping')->default(0);
+                $table->float('total');
+                $table->float('paid')->default(0);
+                $table->float('remaining');
+                $table->boolean('status')->default(0); // 0: unpaid, 1: paid, 2: collection
+                $table->string('account_number', 20);
+                $table->datetime('invoice_date');
+                $table->datetime('due_date');
+                // created_at, updated_at DATETIME
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
+     * Table for Product [Many to one relation with bills table]
+     */
+    function productBill()
+    {
+        if (!Schema::hasTable(self::TBL_PREFIX . 'product_bill')) {
+            Schema::create(self::TBL_PREFIX . 'product_bill', function ($table) {
+                $table->increments('id'); // autoincrement value
+                $table->integer('product_id')->index(); // product id
+                $table->integer('bill_id')->index(); // bill id
+                $table->integer('quantity');
+                $table->float('price');
+                $table->float('vat');
+                $table->string('currency', 10);
+                $table->float('total');
+
+                // created_at, updated_at DATETIME
                 $table->timestamps();
             });
         }

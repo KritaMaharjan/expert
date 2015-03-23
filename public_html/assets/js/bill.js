@@ -1,6 +1,6 @@
 $(function () {
 
-    var userDatatable = $("#table-bill").DataTable({
+    var billDatatable = $("#table-bill").DataTable({
         "dom": '<"top"f>rt<"bottom"lip><"clear">',
         "order": [[0, "desc"]],
 
@@ -35,7 +35,7 @@ $(function () {
     $('#table-bill tbody').on('click', '.link', function (event) {
         event.preventDefault();
         var tr = $(this).closest('tr');
-        var row = userDatatable.row(tr);
+        var row = billDatatable.row(tr);
 
         if (row.child.isShown()) {
             // This row is already open - close it
@@ -74,6 +74,57 @@ $(function () {
     }
 
     function showActionbtn(row) {
-        return '<div class="box-tools"> <span data-toggle="modal" data-target="#fb-modal" data-url="' + appUrl + 'update/user/' + row.guid + '"> <a data-original-title="Update" data-toggle="tooltip" class="btn btn-box-tool"><i class="fa fa-edit"></i></a> </span> <button data-original-title="Remove" data-toggle="tooltip" class="btn btn-delete-user btn-box-tool" link="' + appUrl + 'delete/user/' + row.guid + '" ><i class="fa fa-times"></i></button></div>';
+        return '<div class="box-tools"> ' +
+        '<span data-toggle="modal" data-target="#fb-modal" data-url="' + appUrl + 'update/bill/' + row.guid + '"> <a data-original-title="Update" data-toggle="tooltip" class="btn btn-box-tool"><i class="fa fa-edit"></i></a> </span> ' +
+        '<button class="btn btn-box-tool btn-delete-bill" data-toggle="tooltip" data-id="' + row.id + '" data-original-title="Remove"><i class="fa fa-times"></i></button>' +
+        '</div>';
     }
-})
+
+    $(document).on('click', '.btn-delete-bill', function (e) {
+        e.preventDefault();
+        var $this = $(this);
+        var parentTr = $this.parent().parent().parent();
+        var id = $this.attr('data-id');
+        var doing = false;
+
+        if (!confirm('Are you sure, you want delete? This action will delete data permanently and can\'t be undo')) {
+            return false;
+        }
+
+        if (id != '' && doing == false) {
+            doing = true;
+            parentTr.hide('slow');
+
+            $.ajax({
+                url: appUrl + 'invoice/bill/' + id + '/delete',
+                type: 'GET',
+                dataType: 'json'
+            })
+                .done(function (response) {
+                    if (response.status === 1) {
+                        $('.mainContainer .box-solid').before(notify('success', response.data.message));
+                        parentTr.remove();
+                    } else {
+                        $('.mainContainer .box-solid').before(notify('error', response.data.message));
+                        parentTr.show('fast');
+                    }
+                    setTimeout(function () {
+                        $('.callout').remove()
+                    }, 2500);
+                })
+                .fail(function () {
+                    parentTr.show('fast');
+                    alert('Something went wrong');
+                })
+                .always(function () {
+                    doing = false;
+                });
+        }
+
+    });
+
+    function notify(type, text) {
+        return '<div class="callout callout-' + type + '"><p>' + text + '</p></div>';
+    }
+
+});

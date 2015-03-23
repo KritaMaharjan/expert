@@ -9,7 +9,6 @@
 @stop
 
 @section('content')
-
 <!-- Main content -->
 <div class="row">
 <div class="col-xs-12 mainContainer">
@@ -22,7 +21,7 @@
     <div class="col-xs-12">
       <h2 class="page-header">
         FastBooks
-        <small class="pull-right">Date: 3/6/2015</small>
+        <small class="pull-right">Date: <?php echo date('d/m/Y') ?></small>
       </h2>
     </div><!-- /.col -->
   </div>
@@ -34,14 +33,14 @@
     <div class="col-sm-5 invoice-col col-xs-6">
 
         <div class="form-group clearfix">
-          {!! Form::label('invoice_number', 'Bill No.') !!}
-          {!! Form:: text('invoice_number', null, array('class' => 'form-control')) !!}
+          {!! Form::label('id', 'Bill No.') !!}
+          {!! Form:: text('id', null, array('class' => 'form-control')) !!}
         </div>
         <div class="form-group clearfix">
          {!! Form::label('customer', 'Select customer') !!}
          {!! Form::select('customer', array('' => 'Select Customer'), null, array('class' => 'select-single form-control')) !!}
           <p class="align-right mg-adj">
-            <a href="#">Add customer</a>
+            <a href="{{ tenant_route('tenant.customer') }}">Add customer</a>
         </p>
         </div>
 
@@ -62,10 +61,16 @@
         <div class="form-group clearfix">
           {!! Form::label('invoice_date', 'Invoice date') !!}
           {!! Form:: input('date', 'invoice_date', null, array('class' => 'form-control', 'id' => 'invoice-date-picker')) !!}
+          @if($errors->has('invoice_date'))
+            {!! $errors->first('invoice_date', '<label class="control-label" for="inputError">:message</label>') !!}
+          @endif
         </div>
         <div class="form-group clearfix">
           {!! Form::label('invoice_number', 'Invoice number') !!}
           {!! Form:: text('invoice_number', null, array('class' => 'form-control')) !!}
+          @if($errors->has('invoice_number'))
+              {!! $errors->first('invoice_number', '<label class="control-label" for="inputError">:message</label>') !!}
+          @endif
         </div>
         <div class="form-group clearfix">
           {!! Form::label('kid', 'Kid') !!}
@@ -74,14 +79,23 @@
         <div class="form-group clearfix">
           {!! Form::label('customer_id', 'Customer id') !!}
           {!! Form:: text('customer_id', null, array('class' => 'form-control')) !!}
+          @if($errors->has('customer_id'))
+              {!! $errors->first('customer_id', '<label class="control-label" for="inputError">:message</label>') !!}
+          @endif
         </div>
         <div class="form-group clearfix">
           {!! Form::label('due_date', 'Due date') !!}
           {!! Form:: text('due_date', null, array('class' => 'form-control', 'id' =>'due-date-picker')) !!}
+          @if($errors->has('due_date'))
+              {!! $errors->first('due_date', '<label class="control-label" for="inputError">:message</label>') !!}
+          @endif
         </div>
         <div class="form-group clearfix">
           {!! Form::label('account_number', 'Account no') !!}
           {!! Form:: text('account_number', null, array('class' => 'form-control')) !!}
+          @if($errors->has('account_number'))
+              {!! $errors->first('account_number', '<label class="control-label" for="inputError">:message</label>') !!}
+          @endif
         </div>
         <div class="form-group clearfix">
           {!! Form::label('currency', 'Currency') !!}

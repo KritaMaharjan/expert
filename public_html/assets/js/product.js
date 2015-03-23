@@ -40,7 +40,7 @@ $(function () {
 
             $(nRow).attr('id', 'product-' + aData.id);
             return nRow;
-        },
+        }
 
     });
 
@@ -127,7 +127,7 @@ $(document).on('click', '.btn-delete-product', function (e) {
         $.ajax({
             url: appUrl + 'inventory/product/' + id + '/delete',
             type: 'GET',
-            dataType: 'json',
+            dataType: 'json'
         })
             .done(function (response) {
                 if (response.status === 1) {

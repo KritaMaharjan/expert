@@ -14,6 +14,7 @@ Bill
 @section('content')
 
 <div class="row">
+        @include('flash::message')
         <div class="col-xs-12 mainContainer">
           <div class="box box-solid">
             <p class="align-right btn-inside">
