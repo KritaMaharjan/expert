@@ -39,6 +39,7 @@
                 };
             }
         },
+
         formatResult: FormatResult,
         formatSelection: FormatSelection,
         escapeMarkup: function (m) {

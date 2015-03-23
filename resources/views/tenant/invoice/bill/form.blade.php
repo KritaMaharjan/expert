@@ -9,12 +9,15 @@
         </div>
         <div class="form-group clearfix">
          {!! Form::label('customer', 'Select customer') !!}
-         {!! Form::select('customer', array('' => 'Select Customer'), null, array('class' => 'select-single form-control')) !!}
+         @if(isset($bill) && !empty($bill->customer))
+            {!! Form::select('customer', array($bill->customer_id => $bill->customer), $bill->customer_id, array('class' => 'select-single form-control', 'required' => 'required')) !!}
+         @else
+            {!! Form::select('customer', array('' => 'Select Customer'), null, array('class' => 'select-single form-control', 'required' => 'required')) !!}
+         @endif
           <p class="align-right mg-adj">
             <a href="{{ tenant_route('tenant.customer') }}">Add customer</a>
         </p>
         </div>
-
 
       <address class="customer-info">
       </address>
@@ -82,7 +85,7 @@
                                         'DKK' => 'DKK',
                                         'SEK' => 'SEK',
                                         'CNY' => 'CNY'
-                            ), 'NOK', array('class' => 'form-control')) !!}
+                            ), null, array('class' => 'form-control')) !!}
         </div>
       </div>
 
@@ -105,25 +108,44 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="position-r">
+          @if(isset($bill) && !empty($bill->products))
+            @foreach($bill->products as $product)
+                <tr class="position-r">
             <td>
               <div class="action-buttons">
                 <div class="delete">
                   <a title="Delete line" class="invoice-delete fa fa-close btn-danger" href="#"></a>
                 </div>
               </div>
-
-            {!! Form::select('product[]', array('' => 'Select Product'), null, array('class' => 'select-product form-control')) !!}
+            {!! Form::select('product[]', array($product->product_id => $product->product_name), $product->id, array('class' => 'select-product form-control')) !!}
             {{--{!! Form:: text('product_name', null, array('class' => 'form-control')) !!}--}}
             </td>
 
-            <td>{!! Form:: input('number', 'quantity[]', null, array('class' => 'form-control quantity', 'id' => 'quantity', 'required'=>'required')) !!}</td>
-            <td>{!! Form:: text('price', null, array('class' => 'form-control price')) !!}</td>
-            <td>{!! Form:: text('vat', null, array('class' => 'form-control vat')) !!}</td>
-            <td>{!! Form:: text('total', null, array('class' => 'form-control total', 'readonly' => 'readonly')) !!}</td>
+            <td>{!! Form:: input('number', 'quantity[]', $product->quantity, array('class' => 'form-control quantity', 'id' => 'quantity', 'required'=>'required')) !!}</td>
+            <td>{!! Form:: text('price', $product->price, array('class' => 'form-control price')) !!}</td>
+            <td>{!! Form:: text('vat', $product->vat, array('class' => 'form-control vat')) !!}</td>
+            <td>{!! Form:: text('total', $product->total, array('class' => 'form-control total', 'readonly' => 'readonly')) !!}</td>
+          </tr>
+            @endforeach
+          @else
+          <tr class="position-r">
+              <td>
+                <div class="action-buttons">
+                  <div class="delete">
+                    <a title="Delete line" class="invoice-delete fa fa-close btn-danger" href="#"></a>
+                  </div>
+                </div>
+              {!! Form::select('product[]', array('' => 'Select Product'), null, array('class' => 'select-product form-control')) !!}
+              {{--{!! Form:: text('product_name', null, array('class' => 'form-control')) !!}--}}
+              </td>
+
+              <td>{!! Form:: input('number', 'quantity[]', null, array('class' => 'form-control quantity', 'id' => 'quantity', 'required'=>'required')) !!}</td>
+              <td>{!! Form:: text('price', null, array('class' => 'form-control price')) !!}</td>
+              <td>{!! Form:: text('vat', null, array('class' => 'form-control vat')) !!}</td>
+              <td>{!! Form:: text('total', null, array('class' => 'form-control total', 'readonly' => 'readonly')) !!}</td>
           </tr>
 
-
+          @endif
 
         </tbody>
       </table>
@@ -142,15 +164,15 @@
         <table class="table">
           <tr>
             <th style="width:50%">Subtotal:</th>
-            <td id="subtotal"></td>
+            <td id="subtotal">{{ $bill->subtotal or '' }}</td>
           </tr>
           <tr>
             <th>Tax Amount:</th>
-            <td id="tax-amount"></td>
+            <td id="tax-amount">{{ $bill->tax or '' }}</td>
           </tr>
           <tr>
             <th>Total:</th>
-            <td id="all-total"></td>
+            <td id="all-total">{{ $bill->total or '' }}</td>
           </tr>
         </table>
       </div>

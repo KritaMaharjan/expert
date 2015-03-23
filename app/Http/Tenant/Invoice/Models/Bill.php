@@ -153,4 +153,24 @@ class Bill extends Model {
     }
 
 
+    function billDetails($id = '')
+    {
+        $bill = Bill::find($id);
+
+        if($bill != NULL) {
+            $bill->customer = Customer::find($bill->customer_id)->name;
+            $bill_products = BillProduct::where('bill_id', $id)->get();
+            if($bill_products) {
+                foreach ($bill_products as $bill_product)
+                {
+                    $bill_product->product_name = Product::find($bill_product->product_id)->name;
+                }
+                $bill->products = $bill_products;
+            }
+
+            return $bill;
+        }
+
+        return false;
+    }
 }

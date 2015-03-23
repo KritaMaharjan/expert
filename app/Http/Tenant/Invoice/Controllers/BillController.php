@@ -103,8 +103,8 @@ class BillController extends BaseController {
     {
         $id = $this->request->route('id');
 
-        $bill = Bill::find($id);
-        if ($bill == null) {
+        $bill = $this->bill->billDetails($id);
+        if ($bill == null || empty($bill)) {
             show_404();
         }
 
