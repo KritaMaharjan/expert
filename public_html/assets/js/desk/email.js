@@ -136,8 +136,7 @@ $(function () {
 
     $('.inbox').on('click', function () {
 
-        if(!$(this).hasClass('btn-primary'))
-        {
+        if (!$(this).hasClass('btn-primary')) {
             $('.inbox').removeClass('btn-primary');
 
             $(this).addClass('btn-primary');
@@ -156,8 +155,16 @@ $(function () {
     $(document).on('click', '.table-mailbox a', function (e) {
         e.preventDefault();
         var id = $(this).attr('data-id');
-        $('#email-single').load(appUrl + 'desk/email/' + id + '/show');
+        if(!$('#email-single').hasClass('email-'+id))
+        {
+            $('#email-single').load(appUrl + 'desk/email/' + id + '/show');
+            $('#email-single').removeClass (function (index, css) {
+                return (css.match (/(^|\s)email-\S+/g) || []).join(' ');
+            });
+            $('#email-single').addClass('email-'+id);
+        }
     });
+
 
     function loadEmailList(type, page) {
         if (type != 0 && type != 1)
