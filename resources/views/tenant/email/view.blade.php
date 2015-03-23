@@ -13,13 +13,24 @@
          @endforeach
      </p>
 
+     <?php
+     $has_cc = false;
+      foreach($receiver as $cc):
+          if($cc->type ==2):
+            $has_cc = true;
+            break;
+          endif;
+       endforeach;
+     ?>
+       @if($has_cc)
        <p><small class="color-blue"> CC: </small>
          @foreach($receiver as $cc)
              @if($cc->type ==2)
                 {{ '('.$cc->customer_id.') '. $cc->email  }};
              @endif
           @endforeach
-      </p>
+          </p>
+       @endif
     <div class="link-reply">
       <button data-toggle="dropdown" class="btn btn-default btn-sm btn-flat dropdown-toggle" type="button">
         Action <span class="caret"></span>
@@ -30,13 +41,15 @@
         <li><a href="<?php echo url('desk/email/'.$mail->id.'/delete');?>"><small class="color-grey"><i class="fa fa-close"></i></small> Delete</a></li>
       </ul>
     </div>
-    <hr>
-    <i class="fa fa-attach"></i> :
+    <hr/>
    <?php $attachments = $mail->attachments;?>
-    @foreach($attachments as $file)
-        <a href="{{$file->path()}}">{{$file->file}}</a>
-    @endforeach
-    <hr>
+    @if(count($attachments)>0)
+        <i class="fa fa-attach"></i> :
+        @foreach($attachments as $file)
+            <a href="{{$file->path()}}">{{$file->file}}</a>
+        @endforeach
+    <hr/>
+    @endif
   </div><!-- /.box-header -->
   <div class="box-body">
         <?php echo nl2br($mail->message);?>

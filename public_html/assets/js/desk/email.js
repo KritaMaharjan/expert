@@ -128,40 +128,49 @@ $(function () {
 
 
 // load emails
-$(function(){
-    loadEmailList(1);
+$(function () {
+
+    var personal_type = 0, support_type = 1;
+
+    loadEmailList(0, 1);
+
+    $('.inbox').on('click', function () {
+
+        if(!$(this).hasClass('btn-primary'))
+        {
+            $('.inbox').removeClass('btn-primary');
+
+            $(this).addClass('btn-primary');
+
+            var type = $(this).attr('id');
+            if (type == "personal") {
+                loadEmailList(personal_type, 1);
+            }
+            else {
+                loadEmailList(support_type, 1);
+            }
+        }
+
+    });
+
+    $(document).on('click', '.table-mailbox a', function (e) {
+        e.preventDefault();
+        var id = $(this).attr('data-id');
+        $('#email-single').load(appUrl + 'desk/email/' + id + '/show');
+    });
 
     function loadEmailList(type, page) {
-        if (type == '1') {
-            $('#email-list').load(appUrl + 'desk/email/list?page=2');
-        }
-        else {
-            $('#email-list').load(appUrl + 'desk/email/list?type=1&page=2');
-        }
+        if (type != 0 && type != 1)
+            type = 0
+
+        if (typeof page != 'undefine' && page < 0)
+            page = 1
+
+        $('#email-list').load(appUrl + 'desk/email/list?type=' + type + '&page=' + page);
     }
 
+});
 
-    $('#personal_inbox').on('click',function(){
-       
-        loadEmailList(1);
-    });
-
-
-    $('#support_inbox').on('click',function(){
-        loadEmailList(0, 1);
-    });
-
-    
-
-
-})
-
-  $(document).on('click','.unread ',function(){
-       var mail_id = $(this).attr('mail_id');
-       
-        $('#email-single').load(appUrl + 'desk/email/'+mail_id+'/show');
-
-    });
 
 
 
