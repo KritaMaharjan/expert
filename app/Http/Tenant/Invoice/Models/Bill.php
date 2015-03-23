@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Tenant\Customer;
-use App\Http\Tenant\Invoice\Models\ProductBill;
+use App\Http\Tenant\Invoice\Models\BillProduct;
 use App\Http\Tenant\Inventory\Models\Product;
 use Illuminate\Support\Facades\DB;
 
@@ -57,7 +57,7 @@ class Bill extends Model {
                 if(isset($quantity[$key]) && $quantity[$key] > 0 && $product > 0) {
                     $product_details = Product::find($product);
                     $total = ($product_details->selling_price + $product_details->vat * 0.01 * $product_details->selling_price) * $quantity[$key];
-                    $product_bill = ProductBill::create([
+                    $product_bill = BillProduct::create([
                         'product_id' => $product,
                         'bill_id' => $bill->id,
                         'quantity' => $quantity[$key],

@@ -4,7 +4,7 @@ namespace App\Http\Tenant\Invoice\Controllers;
 
 use App\Http\Controllers\Tenant\BaseController;
 use App\Http\Tenant\Invoice\Models\Bill;
-use App\Http\Tenant\Invoice\Models\ProductBill;
+use App\Http\Tenant\Invoice\Models\BillProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -155,7 +155,7 @@ class BillController extends BaseController {
         $bill = Bill::find($id);
         if (!empty($bill)) {
             if ($bill->delete()) {
-                $product_bills = ProductBill::where('bill_id', $id)->get();
+                $product_bills = BillProduct::where('bill_id', $id)->get();
                 if (!empty($product_bills)) {
                     foreach ($product_bills as $product_bill) {
                         $product_bill->delete();

@@ -213,10 +213,10 @@ class TenantTable {
     /**
      * Table for Product [Many to one relation with bills table]
      */
-    function productBill()
+    function billProduct()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'product_bill')) {
-            Schema::create(self::TBL_PREFIX . 'product_bill', function ($table) {
+        if (!Schema::hasTable(self::TBL_PREFIX . 'bill_product')) {
+            Schema::create(self::TBL_PREFIX . 'bill_product', function ($table) {
                 $table->increments('id'); // autoincrement value
                 $table->integer('product_id')->index(); // product id
                 $table->integer('bill_id')->index(); // bill id
