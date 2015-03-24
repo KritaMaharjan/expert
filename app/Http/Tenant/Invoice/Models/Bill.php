@@ -263,4 +263,16 @@ class Bill extends Model {
         }
         return$new_invoice_num;
     }
+
+    function convertToBill($id)
+    {
+        $bill = Bill::find($id);
+        if($bill) {
+            $bill->is_offer = 0;
+            $bill->save();
+            return $bill;
+        }
+        else
+            return false;
+    }
 }

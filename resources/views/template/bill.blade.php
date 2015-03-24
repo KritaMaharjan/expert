@@ -118,11 +118,11 @@
       </table> -->
 
       <table id="print">
-          <tr bgcolor="#FFFF00"><td colspan="4"><h1>Kvittering</h1></td></tr>
+          <tr bgcolor="#FFFF00"><td colspan="4"><h1>Receipt</h1></td></tr>
           <tr bgcolor="#FFFF00">
-              <th>Innbetalt till konto</th>
-              <th style="font-size:11px;">Belop</th>
-              <th style="font-size:11px;">Betalerens kontonummer</th>
+              <th>Paid till account</th>
+              <th style="font-size:11px;">Amounts</th>
+              <th style="font-size:11px;">Payer account number</th>
               <th style="font-size:11px;">Blankettnr</th>           
           </tr>  
       </table>
@@ -139,19 +139,19 @@
             <td colspan="2">
              <table>
               <tbody>
-               <tr><td colspan="2" style="font-size:11px;">Betalingsinformasjon</td></tr>
+               <tr><td colspan="2" style="font-size:11px;">Payment information</td></tr>
                <br />
                <tr>
                 <td style="text-indent:15px;">Kundenr:</td>
                 <td>4785007</td>
                </tr>
                <tr>
-                <td style="text-indent:15px;">Fakturanr:</td>
-                <td>4785007</td>
+                <td style="text-indent:15px;">Invoice:</td>
+                <td>20453945</td>
                </tr>
                <tr>
-                <td style="text-indent:15px;">Fakturadato:</td>
-                <td>4785007</td>
+                <td style="text-indent:15px;">Invoice date:</td>
+                <td>11.09.14</td>
                </tr>
               </tbody>
              </table>
@@ -160,13 +160,13 @@
               <tbody>
                <tr>
                 <td style="font-size:13px;">GIRO</td>
-                <td style="font-size:11px;">Betalings-first</td>
+                <td style="font-size:11px;">Payment first</td>
                 <td class="border-block" bgcolor="#ffffff"></td>
                </tr>               
               </tbody>
              </table>
             <table cellpadding="0">
-              <tr><td style="font-size:11px;">Underskrift ved girering</td>         
+              <tr><td style="font-size:11px;">Signature by Giro</td>         
               </tr>
             </table>
             <table cellpadding="0">
@@ -179,7 +179,7 @@
       </table>
       <table cellpadding="6">
         <tr>
-          <td><table><tr><td>Betalt av</td></tr></table>
+          <td><table><tr><td>Paid</td></tr></table>
              <table class="border" cellpadding="2">
               <tbody>       
                <tr>
@@ -194,7 +194,7 @@
               </tbody>
              </table>
             </td>
-            <td><table><tr><td>Betalt til</td></tr></table>
+            <td><table><tr><td>Paid to</td></tr></table>
                 <table class="border" cellpadding="2">
                   <tbody>       
                    <tr>
@@ -216,7 +216,7 @@
           <td width="75%">
               <table>
                 <tr>
-                  <td width="50px">Belast Konto</td>
+                  <td width="50px">Charge account</td>
                   <td width="30px"><p class="sm-box border" bgcolor="#ffffff"></p></td>
                   <td width="30px"><p class="sm-box border" bgcolor="#ffffff"></p></td>
                   <td width="30px"><p class="sm-box border" bgcolor="#ffffff"></p></td>
@@ -234,7 +234,7 @@
             <table>
               <tr>
                 <td width="120px">
-                    Kvittering tilbake
+                    Receipt back
                 </td>
                 <td width="30px"><p class="sm-box border" bgcolor="#ffffff"></p></td>
               </tr>
@@ -245,14 +245,14 @@
       <table class="footer" cellpadding="6">
         <tr>
           <td width="30%" style="border-right:1px solid #ccc;">
-            <table><tr><td>Kundeidentifikasjon(KID)</td></tr></table>
+            <table><tr><td>Customer Identification (CID)</td></tr></table>
             <table cellpadding="5"><tr style="text-align: right;">
               <td>478507204539453</td>
               </tr>
             </table>
           </td>
           <td width="20%" style="border-right:1px solid #fff000;">
-            <table><tr><td>Kroner</td></tr></table>
+            <table><tr><td>Crowns</td></tr></table>
             <table  cellpadding="5"><tr style="text-align: right;">
               <td>296</td>
               </tr>
@@ -266,7 +266,7 @@
             </table>
           </td>
           <td width="39%">
-            <table><tr><td>Til konto</td></tr></table>
+            <table><tr><td>To account</td></tr></table>
             <table  cellpadding="5"><tr>
               <td>60050625977</td>
               </tr>
