@@ -1,11 +1,12 @@
 @extends('tenant.layouts.main')
 
-@section('heading') Create Bill @stop
+<?php $type = Request::segment(2); ?>
+@section('heading') Create {{ ucfirst($type) }} @stop
 
 @section('breadcrumb')
     @parent
     <li><a data-push="true" href="{{tenant_route('tenant.invoice.index')}}"><i class="fa fa-cog"></i> Invoice</a></li>
-    <li><i class="fa fa-money"></i> Bill</li>
+    <li><i class="fa fa-money"></i> {{ ucfirst($type) }}</li>
 @stop
 
 @section('content')
@@ -21,7 +22,7 @@
     <div class="col-xs-12">
       <h2 class="page-header">
         FastBooks
-        <small class="pull-right">Date: <?php echo date('d/m/Y') ?></small>
+        <small class="pull-right">Invoice Date: <?php echo date('d-M-Y') ?></small>
       </h2>
     </div><!-- /.col -->
   </div>

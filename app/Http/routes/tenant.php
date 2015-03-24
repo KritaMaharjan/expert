@@ -112,6 +112,16 @@ Route::group($group_auth, function () {
 
         // invoice routes
         get('invoice', ['as' => 'tenant.invoice.index', 'uses' => 'InvoiceController@index']);
+
+        // offer routes
+        get('invoice/offer', ['as' => 'tenant.invoice.offer.index', 'uses' => 'OfferController@index']);
+        get('invoice/offer/add', ['as' => 'tenant.invoice.offer.add', 'uses' => 'OfferController@add']);
+        post('invoice/offer/add', ['as' => 'tenant.invoice.offer.post', 'uses' => 'OfferController@create']);
+        post('invoice/offer/data', ['as' => 'tenant.invoice.offer.data', 'uses' => 'OfferController@dataJson']);
+        get('invoice/offer/{id}', ['as' => 'tenant.invoice.offer.show', 'uses' => 'OfferController@show']);
+        get('invoice/offer/{id}/edit', ['as' => 'tenant.invoice.offer.edit', 'uses' => 'OfferController@edit']);
+        post('invoice/offer/{id}/edit', ['as' => 'tenant.invoice.offer.update', 'uses' => 'OfferController@update']);
+        get('invoice/offer/{id}/delete', ['as' => 'tenant.invoice.offer.delete', 'uses' => 'OfferController@delete']);
     });
 
 
