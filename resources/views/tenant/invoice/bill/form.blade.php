@@ -13,8 +13,7 @@
     <div class="col-sm-5 invoice-col col-xs-6">
 
         <div class="form-group clearfix">
-          {!! Form::label('id', 'Bill No.') !!}
-          {!! Form:: text('id', null, array('class' => 'form-control')) !!}
+          Invoice Number: {{ $company_details['invoice_number'] or $bill->invoice_number }}
         </div>
         <div class="form-group clearfix sel-2">
          {!! Form::label('customer', 'Select customer') !!}
@@ -49,13 +48,13 @@
       </address>
 
       <div class="right-from">
-        <div class="form-group clearfix">
+        {{--<div class="form-group clearfix">
           {!! Form::label('invoice_number', 'Invoice number') !!}
           {!! Form:: text('invoice_number', null, array('class' => 'form-control')) !!}
           @if($errors->has('invoice_number'))
               {!! $errors->first('invoice_number', '<label class="control-label" for="inputError">:message</label>') !!}
           @endif
-        </div>
+        </div>--}}
         {{--<div class="form-group clearfix">
           {!! Form::label('kid', 'Kid') !!}
           {!! Form:: text('kid', null, array('class' => 'form-control')) !!}
@@ -76,7 +75,7 @@
         </div>
         <div class="form-group clearfix">
           {!! Form::label('account_number', 'Account no') !!}
-          <span class="">{{ $company_details['account_no'] }}</span>
+          <span class="border-bx block">{{ $company_details['account_no'] }}</span>
         </div>
         <div class="form-group clearfix">
           {!! Form::label('currency', 'Currency') !!}
@@ -124,9 +123,9 @@
             </td>
 
             <td>{!! Form:: input('number', 'quantity[]', $product->quantity, array('class' => 'form-control quantity', 'id' => 'quantity', 'required'=>'required')) !!}</td>
-            <td>{!! Form:: text('price', $product->price, array('class' => 'form-control price')) !!}</td>
-            <td>{!! Form:: text('vat', $product->vat, array('class' => 'form-control vat')) !!}</td>
-            <td>{!! Form:: text('total', $product->total, array('class' => 'form-control total', 'readonly' => 'readonly')) !!}</td>
+            <td><span class="border-bx block price">{{ $product->price }} </span></td>
+            <td><span class="border-bx block vat">{{ $product->vat }} </span></td>
+            <td><span class="border-bx block total">{{ $product->total }} </span></td>
           </tr>
             @endforeach
           @else
@@ -138,13 +137,13 @@
               </td>
 
               <td>{!! Form:: input('number', 'quantity[]', null, array('class' => 'form-control quantity', 'id' => 'quantity', 'required'=>'required')) !!}</td>
-              <td>{{--{!! Form:: text('price', null, array('class' => 'form-control price')) !!}--}}<span class="border-bx block"> </span></td>
-              <td>{{--{!! Form:: text('vat', null, array('class' => 'form-control vat')) !!}--}}<span class="border-bx block"> </span></td>
+              <td>{{--{!! Form:: text('price', null, array('class' => 'form-control price')) !!}--}}<span class="border-bx block price"> </span></td>
+              <td>{{--{!! Form:: text('vat', null, array('class' => 'form-control vat')) !!}--}}<span class="border-bx block vat"> </span></td>
               <td class="position-relative">
                 <div class="action-buttons">
                     <a title="Delete line" class="invoice-delete fa fa-close btn-danger" href="#"></a>
                 </div>
-                <span class="border-bx block"> </span>
+                <span class="border-bx block total"> </span>
                 {{--{!! Form:: text('total', null, array('class' => 'form-control total', 'readonly' => 'readonly')) !!}--}}
               </td>
           </tr>

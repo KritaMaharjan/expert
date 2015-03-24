@@ -178,8 +178,8 @@
 
                         
                         $this.parent().parent().find('#quantity').removeAttr('readonly','readonly');
-                        $this.parent().parent().find('.price').val(response.details.selling_price);
-                        $this.parent().parent().find('.vat').val(response.details.vat);
+                        $this.parent().parent().find('.price').html(response.details.selling_price);
+                        $this.parent().parent().find('.vat').html(response.details.vat);
                     } else {
                         alert('Something went wrong!');
                     }
@@ -201,14 +201,14 @@
         if(quantity < 1 || isNaN(quantity))
         {
             alert('Please select a number above 0.');
-            $this.parent().parent().find('.total').val('');
+            $this.parent().parent().find('.total').html('');
         }
         else
         {
-            var vat = parseFloat($this.parent().parent().find('.vat').val());
-            var price = parseFloat($this.parent().parent().find('.price').val());
+            var vat = parseFloat($this.parent().parent().find('.vat').html());
+            var price = parseFloat($this.parent().parent().find('.price').html());
             var total = (price + vat * 0.01 * price) * quantity;
-            $this.parent().parent().find('.total').val(total);
+            $this.parent().parent().find('.total').html(total);
         }
 
         var allTotal = 0;
@@ -216,11 +216,11 @@
         var subtotal = 0;
 
         $(".total").each(function(){
-            var thisTotal = parseFloat($(this).val());
+            var thisTotal = parseFloat($(this).html());
             if(thisTotal > 0)
             {
-                var vat = parseFloat($(this).parent().parent().find('.vat').val());
-                var price = parseFloat($(this).parent().parent().find('.price').val());
+                var vat = parseFloat($(this).parent().parent().find('.vat').html());
+                var price = parseFloat($(this).parent().parent().find('.price').html());
                 var thisQuantity = parseFloat($(this).parent().parent().find('.quantity').val());
                 vatTotal = vatTotal + (vat * 0.01 * price * thisQuantity);
                 allTotal = allTotal + thisTotal;
