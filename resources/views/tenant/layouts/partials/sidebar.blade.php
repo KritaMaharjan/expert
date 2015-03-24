@@ -25,7 +25,7 @@
               </a>
               <ul class="treeview-menu">
                 <li><a data-push="true" href="{{tenant_route('tenant.invoice.bill.index')}}" title="Manage Bills"><i class="fa fa-money"></i >Bills</a></li>
-                <li><a href="#" title="Offers"><i class="fa fa-circle-o"></i> Offers</a></li>
+                <li><a href="{{tenant_route('tenant.invoice.offer.index')}}" title="Manage Offers"><i class="fa fa-gavel"></i> Offers</a></li>
               </ul>
             </li> 
             @endif 

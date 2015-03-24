@@ -12,7 +12,7 @@ $(function () {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": appUrl + 'invoice/bill/data',
+            "url": appUrl + 'invoice/'+thisUrl+'/data',
             "type": "POST"
         },
         "columnDefs": [{

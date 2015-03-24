@@ -8,19 +8,21 @@ use App\Http\Tenant\Invoice\Models\BillProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Laracasts\Flash\Flash;
+use App\Models\Tenant\Setting;
 
-class BillController extends BaseController {
+class OfferController extends BaseController {
 
 
     protected $bill;
     protected $request;
 
-    public function __construct(Bill $bill, Request $request)
+    public function __construct(Bill $bill, Request $request, Setting $setting)
     {
         \FB::can('Invoice');
         parent::__construct();
         $this->bill = $bill;
         $this->request = $request;
+        $this->setting = $setting;
     }
 
     /**
@@ -44,14 +46,14 @@ class BillController extends BaseController {
      */
     public function index()
     {
-        return view('tenant.invoice.bill.index')->with('pageTitle', 'All Bills');
+        return view('tenant.invoice.bill.index')->with('pageTitle', 'All Offers');
     }
 
     public function dataJson()
     {
         if ($this->request->ajax()) {
             $select = ['id', 'invoice_number', 'customer_id', 'total', 'due_date', 'created_at', 'invoice_date', 'status'];
-            $json = $this->bill->dataTablePagination($this->request, $select);
+            $json = $this->bill->dataTablePagination($this->request, $select, true);
             echo json_encode($json, JSON_PRETTY_PRINT);
         } else {
             show_404();
@@ -60,7 +62,9 @@ class BillController extends BaseController {
 
     public function add()
     {
-        return view('tenant.invoice.bill.create')->with('pageTitle', 'Add new bill');
+        $company_details = $this->setting->getBusiness();
+        dd($company_details);
+        return view('tenant.invoice.bill.create')->with('pageTitle', 'Add new offer');
     }
 
     public function create()
@@ -72,8 +76,8 @@ class BillController extends BaseController {
 
         $this->bill->add($this->request);
 
-        Flash::success('Bill added successfully!');
-        return tenant()->route('tenant.invoice.bill.index');
+        Flash::success('Offer added successfully!');
+        return tenant()->route('tenant.invoice.offer.index');
     }
 
 
@@ -111,7 +115,7 @@ class BillController extends BaseController {
             show_404();
         }
 
-        return view('tenant.invoice.bill.edit', compact('bill'))->with('pageTitle', 'Update Bill');
+        return view('tenant.invoice.bill.edit', compact('bill'))->with('pageTitle', 'Update Offer');
     }
 
     /**  update bill detail
@@ -132,8 +136,8 @@ class BillController extends BaseController {
 
         $this->bill->edit($this->request, $id);
 
-        Flash::success('Bill updated successfully!');
-        return tenant()->route('tenant.invoice.bill.index');
+        Flash::success('Offer updated successfully!');
+        return tenant()->route('tenant.invoice.offer.index');
     }
 
 
@@ -141,7 +145,7 @@ class BillController extends BaseController {
     {
         $id = $this->request->route('id');
 
-        $bill = Bill::find($id);
+        $bill = Offer::find($id);
         if (!empty($bill)) {
             if ($bill->delete()) {
                 $product_bills = BillProduct::where('bill_id', $id)->get();
@@ -149,7 +153,7 @@ class BillController extends BaseController {
                     foreach ($product_bills as $product_bill) {
                         $product_bill->delete();
                     }
-                    return $this->success(['message' => 'Bill deleted Successfully']);
+                    return $this->success(['message' => 'Offer deleted Successfully']);
                 }
             }
         }

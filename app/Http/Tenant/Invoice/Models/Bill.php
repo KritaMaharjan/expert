@@ -157,9 +157,8 @@ class Bill extends Model {
     }
 
 
-    function dataTablePagination(Request $request, array $select = array())
+    function dataTablePagination(Request $request, array $select = array(), $is_offer = false)
     {
-
         if ((is_array($select) AND count($select) < 1)) {
             $select = "*";
         }
@@ -177,6 +176,11 @@ class Bill extends Model {
 
         $products = array();
         $query = $this->select($select);
+
+        if ($is_offer == true)
+            $query = $query->where('is_offer', 1);
+        else
+            $query = $query->where('is_offer', 0);
 
         if ($orderColumn != '' AND $orderdir != '') {
             $query = $query->orderBy($orderColumn, $orderdir);
