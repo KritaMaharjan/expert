@@ -8,7 +8,6 @@ Validator::extend('validArrayEmail', function ($attribute, $value, $parameters) 
     $emails = array_map('trim', $emails);
     $emails = array_filter($emails);
 
-
     foreach ($emails as $k => $email) {
         $email = filter_var($email, FILTER_SANITIZE_EMAIL);
 
@@ -22,9 +21,7 @@ Validator::extend('validArrayEmail', function ($attribute, $value, $parameters) 
 });
 
 
-get('genpdf', function(\App\Fastbooks\Libraries\Pdf $pdf){
-
+get('getpdf', function(\App\Fastbooks\Libraries\Pdf $pdf){
     $data['data'] = 'data';
     $pdf->generate(time(),'template.bill',$data);
-
 });

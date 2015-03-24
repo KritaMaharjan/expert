@@ -16,7 +16,7 @@
           {!! Form::label('id', 'Bill No.') !!}
           {!! Form:: text('id', null, array('class' => 'form-control')) !!}
         </div>
-        <div class="form-group clearfix">
+        <div class="form-group clearfix sel-2">
          {!! Form::label('customer', 'Select customer') !!}
          @if(isset($bill) && !empty($bill->customer))
             {!! Form::select('customer', array($bill->customer_id => $bill->customer), $bill->customer_id, array('class' => 'select-single form-control', 'required' => 'required')) !!}
@@ -117,13 +117,8 @@
         <tbody>
           @if(isset($bill) && !empty($bill->products))
             @foreach($bill->products as $product)
-                <tr class="position-r">
-            <td>
-              <div class="action-buttons">
-                <div class="delete">
-                  <a title="Delete line" class="invoice-delete fa fa-close btn-danger" href="#"></a>
-                </div>
-              </div>
+            <tr class="position-r">
+            <td>              
             {!! Form::select('product[]', array($product->product_id => $product->product_name), $product->id, array('class' => 'select-product form-control')) !!}
             {{--{!! Form:: text('product_name', null, array('class' => 'form-control')) !!}--}}
             </td>
@@ -137,19 +132,21 @@
           @else
           <tr class="position-r">
               <td>
-                <div class="action-buttons">
-                  <div class="delete">
-                    <a title="Delete line" class="invoice-delete fa fa-close btn-danger" href="#"></a>
-                  </div>
-                </div>
+                
               {!! Form::select('product[]', array('' => 'Select Product'), null, array('class' => 'select-product form-control')) !!}
               {{--{!! Form:: text('product_name', null, array('class' => 'form-control')) !!}--}}
               </td>
 
               <td>{!! Form:: input('number', 'quantity[]', null, array('class' => 'form-control quantity', 'id' => 'quantity', 'required'=>'required')) !!}</td>
-              <td>{!! Form:: text('price', null, array('class' => 'form-control price')) !!}</td>
-              <td>{!! Form:: text('vat', null, array('class' => 'form-control vat')) !!}</td>
-              <td>{!! Form:: text('total', null, array('class' => 'form-control total', 'readonly' => 'readonly')) !!}</td>
+              <td>{{--{!! Form:: text('price', null, array('class' => 'form-control price')) !!}--}}<span class="border-bx block"> </span></td>
+              <td>{{--{!! Form:: text('vat', null, array('class' => 'form-control vat')) !!}--}}<span class="border-bx block"> </span></td>
+              <td class="position-relative">
+                <div class="action-buttons">
+                    <a title="Delete line" class="invoice-delete fa fa-close btn-danger" href="#"></a>
+                </div>
+                <span class="border-bx block"> </span>
+                {{--{!! Form:: text('total', null, array('class' => 'form-control total', 'readonly' => 'readonly')) !!}--}}
+              </td>
           </tr>
 
           @endif
