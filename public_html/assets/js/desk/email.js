@@ -130,7 +130,7 @@ $(function () {
             '<small class="subject">' + data.subject + '</small>' +
             '</a>' +
             '</td>' +
-            '<td class="time">'cd lara + data.created_at + '</td>' +
+            '<td class="time">'+ data.created_at + '</td>' +
             '</tr>';
 
         return html;
