@@ -52,20 +52,20 @@ Print Invoice
                               </div>
                               <div class="row">
                                 <label class="col-md-5 col-sm-5 col-xs-5 font-mid">Fakturanr:</label>
-                                <span class="col-md-7 col-sm-7 col-xs-7">20453945</span>
+                                <span class="col-md-7 col-sm-7 col-xs-7">{{ $data['invoice_number']}}</span>
                               </div>
                               <div class="row">
                                 <label class="col-md-5 col-sm-5 col-xs-5 font-mid">Fakturadato:</label>
-                                <span class="col-md-7 col-sm-7 col-xs-7">11.09.14</span>
+                                <span class="col-md-7 col-sm-7 col-xs-7"><?php echo date('d-m-y', strtotime($data['invoice_date'])) ?></span>
                               </div>
                             </div>
                           </div>
                           <div class="info-paid">
                             <h3>Betalt av</h3>
                             <div class="info-payer border">
-                              <p>Andreas</p>
-                              <p>Helleveien 199</p>
-                              <p>5039 Bergen</p>
+                              <p>{{ $data['customer_details']->name }}</p>
+                              <p>{{ $data['customer_details']->street_number }}</p>
+                              <p>{{ $data['customer_details']->address }}</p>
                             </div>
                           </div>
                         </div>
@@ -88,9 +88,9 @@ Print Invoice
                             <div class="info-paid">
                               <h3>Betalt til</h3>
                               <div class="info-payer border">
-                                <p>Telio Telecom AS</p>
-                                <p>Pb.54 Skoyen</p>
-                                <p>0212 Oslo</p>
+                                <p>{{ $data['company_details']['company_name'] }}</p>
+                                <p>{{ $data['company_details']['postal_code'] }} {{ $data['company_details']['town'] }}</p>
+                                <p>{{ $data['company_details']['address'] }}</p>
                               </div>
                             </div>
                         </div>

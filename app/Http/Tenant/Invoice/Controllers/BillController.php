@@ -205,24 +205,25 @@ class BillController extends BaseController {
     function printBill()
     {
         $id = $this->request->route('id');
-
-        $data['details'] = $this->getInfo($id);
-        return view('template.print');
+        $data = $this->getInfo($id);
+        return view('template.print', compact('data'));
     }
 
 
     function getInfo($id)
     {
         $bill = $this->bill->billDetails($id);
+        $company_details = $this->getCompanyDetails();
         $bill_details = array(
             'amount' => $bill->total,
             'invoice_number' => $bill->invoice_number,
             'invoice_date' => $bill->created_at,
             'customer' => $bill->customer,
             'customer_details' => $bill->customer_details,
-            'amount' => $bill->total,
-            'amount' => $bill->total,
+            'company_details' => $company_details
         );
+
+        return $bill_details;
     }
 
 }
