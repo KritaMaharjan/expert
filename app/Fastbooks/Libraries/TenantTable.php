@@ -203,7 +203,6 @@ class TenantTable {
                 $table->boolean('status')->default(0); // 0: unpaid, 1: paid, 2: collection
                 $table->string('account_number', 20);
                 $table->boolean('is_offer')->default(0); // 0: no (bill), 1: yes (offer)
-                $table->datetime('invoice_date');
                 $table->datetime('due_date');
                 // created_at, updated_at DATETIME
                 $table->timestamps();

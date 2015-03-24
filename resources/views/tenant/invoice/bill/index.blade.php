@@ -19,7 +19,7 @@
             @include('flash::message')
           <div class="box box-solid">
             <p class="align-right btn-inside">
-                 <a class="btn btn-primary" href="{{tenant_route('tenant.invoice.bill.add')}}">
+                 <a class="btn btn-primary" href="{{tenant_route('tenant.invoice.'.$type.'.add')}}">
                        <i class="fa fa-plus"></i> Add new {{ $type }}
                  </a>
              </p>
