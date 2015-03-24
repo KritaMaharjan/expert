@@ -186,12 +186,15 @@ a{
         width: 40%;
         float: left;
     }
-    .invoice-col .form-group input.form-control,.invoice-col .form-group select.form-control{
+    .invoice-col .form-group input.form-control,.invoice-col .form-group select.form-control,.invoice-col .form-group span.border-bx{
         display: block;
         float: left;
         width: 40%;
         margin-left: 10px;
 
+    }
+    .invoice-col .form-group span.border-bx{
+        margin-left: 20px!important;
     }
         .address-info{
             float: right;
@@ -735,21 +738,25 @@ div.dataTables_length select {
     max-width: 100px;
     height: 100px;
 }
-.invoice .select2,.sel-2 .select2{
+.invoice .select2{
     margin-left: 10px;
+    width: 40% !important;
+}
+.sel-2 .select2{
     width: 40% !important;
 }
 .uploaded-img2{
     max-width: 100px;
 }
 .mg-adj{
-    margin-right: 18%;
+    margin-right: 20%;
 }
 .mg-adj a{
     white-space: nowrap;
 }
 
 .position-r input{border: 1px solid #dbdbdb;}
+.position-r .select2{width:100%!important;}
 
 
 .fix-height {

@@ -13,7 +13,7 @@
     <div class="col-sm-5 invoice-col col-xs-6">
 
         <div class="form-group clearfix">
-          Invoice Number: {{ $company_details['invoice_number'] or $bill->invoice_number }}
+          <label>Invoice Number: </label>{{ $company_details['invoice_number'] or $bill->invoice_number }}
         </div>
         <div class="form-group clearfix sel-2">
          {!! Form::label('customer', 'Select customer') !!}
@@ -136,15 +136,14 @@
               {{--{!! Form:: text('product_name', null, array('class' => 'form-control')) !!}--}}
               </td>
 
-              <td>{!! Form:: input('number', 'quantity[]', null, array('class' => 'form-control quantity', 'id' => 'quantity', 'required'=>'required')) !!}</td>
-              <td>{{--{!! Form:: text('price', null, array('class' => 'form-control price')) !!}--}}<span class="border-bx block price"> </span></td>
-              <td>{{--{!! Form:: text('vat', null, array('class' => 'form-control vat')) !!}--}}<span class="border-bx block vat"> </span></td>
+              <td>{!! Form:: input('number', 'quantity[]', null, array('class' => 'form-control add-quantity quantity', 'id' => 'quantity', 'required'=>'required')) !!}</td>
+              <td><span class="border-bx block price"> </span></td>
+              <td><span class="border-bx block vat"> </span></td>
               <td class="position-relative">
                 <div class="action-buttons">
                     <a title="Delete line" class="invoice-delete fa fa-close btn-danger" href="#"></a>
                 </div>
                 <span class="border-bx block total"> </span>
-                {{--{!! Form:: text('total', null, array('class' => 'form-control total', 'readonly' => 'readonly')) !!}--}}
               </td>
           </tr>
 
