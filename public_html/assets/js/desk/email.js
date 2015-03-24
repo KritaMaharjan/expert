@@ -137,11 +137,18 @@ $(function () {
     }
 
 // modal actions
-
     $(document).on('show.bs.modal', '#compose-modal', function (event) {
         var button = $(event.relatedTarget); // Button that triggered the modal
         var action = button.data('action');
         var type = button.data('type');
+
+
+        //@pooja
+        if(action =='reply')
+        {
+           $('.modal-title').html('reply');
+        }
+
         var inputType = 0;
         if (type == 'support')
             inputType = 1
