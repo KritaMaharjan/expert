@@ -247,4 +247,14 @@ class Bill extends Model {
         }
         return false;
     }
+
+    function getPrecedingInvoiceNumber()
+    {
+        $latest = Bill::orderBy('id', 'desc')->first();
+        if($latest)
+            $new_invoice_num = date('my').sprintf("%03d", ($latest->id + 1));
+        else
+            $new_invoice_num = date('my').'001';
+        return$new_invoice_num;
+    }
 }
