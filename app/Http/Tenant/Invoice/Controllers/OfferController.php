@@ -189,4 +189,16 @@ class OfferController extends BaseController {
         return $newResult;
     }
 
+    function convertToBill()
+    {
+        $id = $this->request->route('id');
+        $bill = $this->bill->convertToBill($id);
+
+        if(!$bill)
+            show_404();
+
+        Flash::success('Offer converted to bill successfully!');
+        return tenant()->route('tenant.invoice.offer.index');
+    }
+
 }

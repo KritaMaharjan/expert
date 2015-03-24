@@ -126,6 +126,7 @@ Route::group($group_auth, function () {
         get('invoice/offer/{id}/delete', ['as' => 'tenant.invoice.offer.delete', 'uses' => 'OfferController@delete']);
         get('invoice/offer/{id}/download', ['as' => 'tenant.invoice.offer.download', 'uses' => 'BillController@download']);
         get('invoice/offer/{id}/print', ['as' => 'tenant.invoice.offer.print', 'uses' => 'BillController@printBill']);
+        get('invoice/offer/{id}/convert', ['as' => 'tenant.invoice.offer.convert', 'uses' => 'OfferController@convertToBill']);
     });
 
 

@@ -17,7 +17,7 @@ $(function () {
         },
         "columnDefs": [{
             "orderable": false,
-            "targets": 5,
+            "targets": (thisUrl == 'offer')? 4: 5,
             "render": function (data, type, row) {
                 return showActionbtn(row);
             }
@@ -27,7 +27,7 @@ $(function () {
             {"data": "customer"},
             {"data": "total"},
             {"data": "invoice_date"},
-            {"data": "status"}
+            (thisUrl == 'offer')? {"data": "status"} : ''
         ]
 
     });
@@ -50,11 +50,17 @@ $(function () {
     });
 
     function format(d) {
+
+        if(thisUrl == 'offer')
+            var conv = '<li><a href="'+appUrl+'invoice/offer/'+d.id+'/convert">Convert to Bill</a></li>';
+        else
+            var conv = '';
+
         $hidden_child = '<tr class="temp_tr">' +
         '<td colspan="5"><div class="clearfix">' +
         '<ul class="links-td">' +
         '<li><a href="'+appUrl+'invoice/'+thisUrl+'/'+d.id+'/download">Download</a></li>' +
-        '<li><a href="'+appUrl+'invoice/'+thisUrl+'/'+d.id+'/print">Print</a></li>' +
+        '<li><a href="'+appUrl+'invoice/'+thisUrl+'/'+d.id+'/print">Print</a></li>' + conv +
         '</ul>' +
         '</div></td></tr>';
         return $hidden_child;

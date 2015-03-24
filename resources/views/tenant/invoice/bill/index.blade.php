@@ -31,7 +31,7 @@
                       <th>Name of recipient</th>
                       <th>Amount</th>
                       <th>Invoice Date</th>
-                      <th>Status</th>
+                      @if($type == 'bill') <th>Status</th> @endif
                       <th>Action</th>
                     </tr>
                 </thead>
