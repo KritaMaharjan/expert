@@ -8,7 +8,8 @@
             </div>
                 <div class="modal-body">
                  {!!Form::open(['url'=>url('desk/email/send'), 'id'=>'compose-form'])!!}
-                    <div class="form-group disply-inline">
+                    <div class="table-blk">
+                        <div class="form-group disply-inline">
                         <div class="input-group">
                             <span class="input-group-addon">TO:</span>
                              {!! Form::text('email_to', null, ['id'=>'email_to','class'=>'form-control', 'placeholder'=>'Email To', 'autocomplete'=>'off']) !!}
@@ -19,6 +20,7 @@
                             <span class="input-group-addon">CC:</span>
                            {!! Form::text('email_cc', null, ['id'=>'email_cc', 'class'=>'form-control', 'placeholder'=>'Email CC']) !!}
                         </div>
+                    </div>
                     </div>
                     <div class="form-group clearfix">
                         <div class="input-group">
@@ -33,7 +35,7 @@
                     </div>
                     <div class="form-group">
                         <div class="input-group" style="width: 100%">
-                          {!! Form::textarea('note', null, ['id'=>'note','class'=>'form-control', 'placeholder'=>'Note', 'style'=>'height: 70px;']) !!}
+                          {!! Form::textarea('note', null, ['id'=>'note','class'=>'form-control', 'placeholder'=>'Note', 'style'=>'height: 70px;background: #FDFCBC;border: 1px solid #F8F7B6;box-shadow: 0 2px 1px rgba(0,0,0,.2);']) !!}
                         </div>
                     </div>
 

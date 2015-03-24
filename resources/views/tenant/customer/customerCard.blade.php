@@ -134,6 +134,22 @@ Customers
              
              
           </div>
+           <div class="col-md-2">
+             <div class="box box-solid">
+                   <div class="box-header">
+                  <h3 class="box-title">Attachments</h3>
+                  
+                </div>
+                <div class="box-body">
+                  <div class="row">
+                     <div class="col-md-2 col-sm-2">   
+                        @if($customer->image) {{$customer->image}} @endif
+                   </div>
+              </div>
+            </div>
+
+             </div>
+           </div>
           </div> 
 
           <div class="row">
