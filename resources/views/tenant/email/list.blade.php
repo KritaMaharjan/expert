@@ -25,8 +25,8 @@
                 <small class="subject">{{str_limit($mail->subject,40)}}</small>
               </a> 
             </td>
-            <td> @if(!empty($mail['attachments'])) {!!'<i class="fa fa-paperclip grey"></i>'!!} @endif</td>
-            
+            <td> @if(!empty($mail['attachments']->file)) {!!'<i class="fa fa-paperclip grey"></i>'!!} @endif</td>
+
             <td class="time"><small>{{email_date($mail->created_at)}}</small></td>
           </tr>
           @endforeach
