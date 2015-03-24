@@ -198,8 +198,8 @@ class BillController extends BaseController {
     function download(Pdf $pdf)
     {
         $id = $this->request->route('id');
-        $data['bill'] = $this->bill->billDetails($id);
-        $pdf->generate(time(), 'template.bill', $data);
+        $data = $this->getInfo($id);
+        $pdf->generate(time(), 'template.bill', compact('data'), false);
     }
 
     function printBill()
@@ -215,6 +215,7 @@ class BillController extends BaseController {
         $bill = $this->bill->billDetails($id);
         $company_details = $this->getCompanyDetails();
         $bill_details = array(
+            'id' => $bill->id,
             'amount' => $bill->total,
             'invoice_number' => $bill->invoice_number,
             'invoice_date' => $bill->created_at,

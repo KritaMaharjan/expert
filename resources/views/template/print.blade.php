@@ -24,7 +24,7 @@ Print Invoice
                       </div>
                       <div class="col-md-3 col-sm-3 col-xs-3">
                         <label>Belop</label>
-                        <input type="text">
+                        <input type="text" value="{{ $data['amount'] }}">
                       </div>
                       <div class="col-md-3 col-sm-3 pad-0 col-xs-3">
                         <label>Betalerens kontonummer</label>
@@ -161,7 +161,7 @@ Print Invoice
                 <div class="col-xs-12 align-center">
                   <a class="btn btn-default" href="#"  onclick=" window.print();" style="margin-right: 5px;"><i class="fa fa-print"></i> Print</a>
              {{--     <button class="btn btn-default" style="margin-right: 5px;"><i class="fa fa-credit-card"></i> Send an email</button>--}}
-                  <a href="<?php echo tenant()->url('nvoice/bill/'.$data['id'].'/download');?>" style="margin-right: 5px;" class="btn btn-primary"><i class="fa fa-download"></i> Generate PDF</a>
+                  <a href="<?php echo tenant()->url('invoice/bill/'.$data['id'].'/download');?>" style="margin-right: 5px;" class="btn btn-primary"><i class="fa fa-download"></i> Generate PDF</a>
                 </div>
               </div>
   </div>

@@ -29,7 +29,7 @@
       <table cellpadding="4">
           <tr bgcolor="#FFFF00" > 
             <td> <span style="text-indent: 10px;">9879879879789</span></td>
-            <td><p class="border-block" bgcolor="#ffffff" >&nbsp; </p></td>
+            <td><p class="border-block" bgcolor="#ffffff" >&nbsp; {{ $data['amount'] }}</p></td>
             <td><p class="border-block" bgcolor="#ffffff"></p></td>
             <td><p class="border-block" bgcolor="#ffffff"></p></td>
           </tr>
@@ -47,11 +47,11 @@
                </tr>
                <tr>
                 <td style="text-indent:15px;">Invoice:</td>
-                <td>20453945</td>
+                <td>{{ $data['invoice_number']}}</td>
                </tr>
                <tr>
                 <td style="text-indent:15px;">Invoice date:</td>
-                <td>11.09.14</td>
+                <td><?php echo date('d-m-y', strtotime($data['invoice_date'])) ?></td>
                </tr>
               </tbody>
              </table>
@@ -83,13 +83,13 @@
              <table class="border" cellpadding="2">
               <tbody>       
                <tr>
-                <td style="text-indent:15px;">Andreas Bratholmen</td>
+                <td style="text-indent:15px;">{{ $data['customer_details']->name }}</td>
                </tr>
                <tr>
-                <td style="text-indent:15px;">Helleveien 199</td>
+                <td style="text-indent:15px;">{{ $data['customer_details']->street_number }}</td>
                </tr>
                <tr>
-                <td style="text-indent:15px;">5039 Bergen</td>
+                <td style="text-indent:15px;">{{ $data['customer_details']->address }}</td>
                </tr>
               </tbody>
              </table>
@@ -98,13 +98,13 @@
                 <table class="border" cellpadding="2">
                   <tbody>       
                    <tr>
-                    <td style="text-indent:15px;">Telio Telecom AS</td>
+                    <td style="text-indent:15px;">{{ $data['company_details']['company_name'] }}</td>
                    </tr>
                    <tr>
-                    <td style="text-indent:15px;">Pb.54 Skoyen</td>
+                    <td style="text-indent:15px;">{{ $data['company_details']['postal_code'] }} {{ $data['company_details']['town'] }}</td>
                    </tr>
                    <tr>
-                    <td style="text-indent:15px;">0212 Oslo</td>
+                    <td style="text-indent:15px;">{{ $data['company_details']['address'] }}</td>
                    </tr>
                   </tbody>
                 </table>
