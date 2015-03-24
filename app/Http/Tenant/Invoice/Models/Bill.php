@@ -39,7 +39,6 @@ class Bill extends Model {
             $bill = Bill::create([
                 'invoice_number' => $request->input('invoice_number'),
                 'customer_id' => $request->input('customer'),
-                'invoice_date' => $request->input('invoice_date'),
                 'due_date' => $request->input('due_date'),
                 'account_number' => $request->input('account_number'),
                 'currency' => $request->input('currency'),
@@ -95,7 +94,6 @@ class Bill extends Model {
             $bill = Bill::find($id);
             $bill->invoice_number = $request->input('invoice_number');
             $bill->customer_id = $request->input('customer');
-            $bill->invoice_date = $request->input('invoice_date');
             $bill->due_date = $request->input('due_date');
             $bill->account_number = $request->input('account_number');
             $bill->currency = $request->input('currency');
@@ -210,7 +208,7 @@ class Bill extends Model {
             else
                 $value->status = '<span class="label label-danger">Unpaid</span>';
 
-            $value->invoice_date = date('d-M-Y  h:i:s A', strtotime($value->invoice_date));
+            $value->invoice_date = date('d-M-Y  h:i:s A', strtotime($value->created_at));
             //$value->created_at->format('d-M-Y  h:i:s A');
             $value->DT_RowId = "row-".$value->guid;
         }

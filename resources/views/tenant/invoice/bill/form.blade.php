@@ -1,3 +1,12 @@
+<?php
+    function format_telephone($phone_number)
+    {
+       $cleaned = preg_replace('/[^[:digit:]]/', '', $phone_number);
+       preg_match('/(\d{3})(\d{3})(\d{4})/', $cleaned, $matches);
+       return "({$matches[1]}) {$matches[2]}-{$matches[3]}";
+    }
+?>
+
 <!-- info row -->
   <div class="row invoice-info">
 
@@ -32,21 +41,14 @@
     </div><!-- /.col -->
      <div class="col-sm-7 invoice-col col-xs-6">
       <address class="address-info">
-        <strong>FastBooks</strong><br>
-        795 Folsom Ave, Suite 600<br>
-        Norway, CA 94107<br>
-        Phone: (804) 123-5432<br/>
-        Email: info@fastbooks.com
+        <strong>{{ $company_details['company_name'] }}</strong><br>
+        {{ $company_details['postal_code'] }}, {{ $company_details['town'] }}<br>
+        {{ $company_details['address'] }}<br>
+        {!! (isset($company_details['telephone']))? 'Phone: '. format_telephone($company_details['telephone']).'<br/>': " " !!}
+        {!! (isset($company_details['service_email']))? 'Email: '. $company_details['service_email'].'<br/>': " " !!}
       </address>
 
       <div class="right-from">
-        <div class="form-group clearfix">
-          {!! Form::label('invoice_date', 'Invoice date') !!}
-          {!! Form:: text('invoice_date', null, array('class' => 'form-control', 'id' => 'invoice-date-picker')) !!}
-          @if($errors->has('invoice_date'))
-            {!! $errors->first('invoice_date', '<label class="control-label" for="inputError">:message</label>') !!}
-          @endif
-        </div>
         <div class="form-group clearfix">
           {!! Form::label('invoice_number', 'Invoice number') !!}
           {!! Form:: text('invoice_number', null, array('class' => 'form-control')) !!}
@@ -74,10 +76,7 @@
         </div>
         <div class="form-group clearfix">
           {!! Form::label('account_number', 'Account no') !!}
-          {!! Form:: text('account_number', null, array('class' => 'form-control')) !!}
-          @if($errors->has('account_number'))
-              {!! $errors->first('account_number', '<label class="control-label" for="inputError">:message</label>') !!}
-          @endif
+          <span class="">{{ $company_details['account_no'] }}</span>
         </div>
         <div class="form-group clearfix">
           {!! Form::label('currency', 'Currency') !!}

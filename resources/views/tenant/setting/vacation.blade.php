@@ -38,8 +38,8 @@ $(document).ready(function () {
         $this = $(this);
         $('.alert-info').remove();
         var datatosave = $('.vacationform').serialize();
-        var url = appUrl+'setting/system/fixupdate';/*$this.attr('link');
-*/    $this.attr('disabled', 'disabled');
+        var url = appUrl+'setting/system/fixupdate';
+        $this.attr('disabled', 'disabled');
         
         $.ajax({
             url: url,

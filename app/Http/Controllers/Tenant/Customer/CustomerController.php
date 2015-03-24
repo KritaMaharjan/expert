@@ -199,7 +199,6 @@ class CustomerController extends BaseController {
             $customer->status = $status;
             $customer->save();
 
-
             return \Response::json(array('status' => true));
         }
 

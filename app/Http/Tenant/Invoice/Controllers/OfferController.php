@@ -33,10 +33,8 @@ class OfferController extends BaseController {
 
     protected $rules = [
         'customer'        => 'required',
-        'invoice_date'          => 'required|date',
         'invoice_number'           => 'required|numeric|unique:fb_bill',
-        'due_date' => 'required|date',
-        'account_number' => 'required',
+        'due_date' => 'required|date'
     ];
 
 
@@ -62,9 +60,17 @@ class OfferController extends BaseController {
 
     public function add()
     {
-        $company_details = $this->setting->getBusiness();
-        dd($company_details);
-        return view('tenant.invoice.bill.create')->with('pageTitle', 'Add new offer');
+        $company_details = $this->getCompanyDetails();
+        return view('tenant.invoice.bill.create', compact('company_details'))->with('pageTitle', 'Add new offer');
+    }
+
+    function getCompanyDetails()
+    {
+        $company = $this->setting->getCompany();
+        $business = $this->setting->getBusiness();
+        $fix = $this->setting->getFix();
+        $company_details = array_merge($company, $business, $fix);
+        return $company_details;
     }
 
     public function create()
@@ -115,7 +121,8 @@ class OfferController extends BaseController {
             show_404();
         }
 
-        return view('tenant.invoice.bill.edit', compact('bill'))->with('pageTitle', 'Update Offer');
+        $company_details = $this->getCompanyDetails();
+        return view('tenant.invoice.bill.edit', compact('bill'))->with('pageTitle', 'Update Offer')->with('company_details', $company_details);
     }
 
     /**  update bill detail
