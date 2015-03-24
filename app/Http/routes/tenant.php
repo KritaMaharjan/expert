@@ -112,6 +112,16 @@ Route::group($group_auth, function () {
 
         // invoice routes
         get('invoice', ['as' => 'tenant.invoice.index', 'uses' => 'InvoiceController@index']);
+
+        // offer routes
+        get('invoice/offer', ['as' => 'tenant.invoice.offer.index', 'uses' => 'OfferController@index']);
+        get('invoice/offer/add', ['as' => 'tenant.invoice.offer.add', 'uses' => 'OfferController@add']);
+        post('invoice/offer/add', ['as' => 'tenant.invoice.offer.post', 'uses' => 'OfferController@create']);
+        post('invoice/offer/data', ['as' => 'tenant.invoice.offer.data', 'uses' => 'OfferController@dataJson']);
+        get('invoice/offer/{id}', ['as' => 'tenant.invoice.offer.show', 'uses' => 'OfferController@show']);
+        get('invoice/offer/{id}/edit', ['as' => 'tenant.invoice.offer.edit', 'uses' => 'OfferController@edit']);
+        post('invoice/offer/{id}/edit', ['as' => 'tenant.invoice.offer.update', 'uses' => 'OfferController@update']);
+        get('invoice/offer/{id}/delete', ['as' => 'tenant.invoice.offer.delete', 'uses' => 'OfferController@delete']);
     });
 
 
@@ -181,15 +191,5 @@ Route::group($group_auth, function () {
         get('customer/suggestions', ['as' => 'tenant.customer.suggestions', 'uses' => 'Tenant\Customer\CustomerController@getCustomerSuggestions']);
         get('customer/details/{customerId}', ['as' => 'tenant.customer.details', 'uses' => 'Tenant\Customer\CustomerController@getCustomerDetails']);
         post('test/upload', ['as' => 'test.upload', 'uses' => 'Tenant\Customer\CustomerController@testUpload']);
-
-
     });
-
-/*for test add by pradeep */
-
-    Route:: get('tenant/test', ['as' => 'pdf', 'uses' => 'Controllers\Tenant\Pdf\PdfController@index']);
-    Route:: get('tenant/create/pdf', ['as' => 'pdf', 'uses' => 'Controllers\Tenant\Pdf\PdfController@create_pdf']);
-    Route:: get('tenant/send/pdf', ['as' => 'sendpdf', 'uses' => 'Controllers\Tenant\Pdf\PdfController@sendEmailPdf']);
-   
-
 });
