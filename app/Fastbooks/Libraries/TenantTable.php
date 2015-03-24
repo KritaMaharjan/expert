@@ -181,13 +181,15 @@ class TenantTable {
     }
 
 
-    function email_attachments()
+    function email_receivers()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'emails')) {
-            Schema::create(self::TBL_PREFIX . 'emails', function (Blueprint $table) {
-                $table->increments('id'); // autoincrement value of an attachment
-                $table->integer('email_id')->unsign()->index(); //email id
-                $table->string('file'); //file name
+        if (!Schema::hasTable(self::TBL_PREFIX . 'email_receivers')) {
+            Schema::create(self::TBL_PREFIX . 'email_receivers', function (Blueprint $table) {
+                $table->increments('id'); // autoincrement value of an receiver
+                $table->integer('email_id')->unsign()->index(); //email ID
+                $table->integer('customer_id')->unsign()->index()->nullable(); //customer ID
+                $table->string('email', 100); //email Address
+                $table->tinyInteger('type')->default(1); //'1 for to, 2 for cc, 3 for bcc'
             });
         }
     }
@@ -199,7 +201,7 @@ class TenantTable {
             Schema::create(self::TBL_PREFIX . 'emails', function (Blueprint $table) {
                 $table->increments('id'); // autoincrement value of an attachment
                 $table->integer('email_id')->unsign()->index(); //email id
-                $table->string('file'); //file name
+                $table->string('file', 75); //file name
             });
         }
     }

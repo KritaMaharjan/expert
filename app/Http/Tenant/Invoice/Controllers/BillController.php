@@ -2,6 +2,7 @@
 
 namespace App\Http\Tenant\Invoice\Controllers;
 
+use App\Fastbooks\Libraries\Pdf;
 use App\Http\Controllers\Tenant\BaseController;
 use App\Http\Tenant\Invoice\Models\Bill;
 use App\Http\Tenant\Invoice\Models\BillProduct;
@@ -10,8 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Laracasts\Flash\Flash;
 use App\Models\Tenant\Setting;
 
-class BillController extends BaseController
-{
+class BillController extends BaseController {
 
 
     protected $bill;
@@ -33,9 +33,9 @@ class BillController extends BaseController
      */
 
     protected $rules = [
-        'customer' => 'required',
+        'customer'       => 'required',
         'invoice_number' => 'required|numeric|unique:fb_bill',
-        'due_date' => 'required|date'
+        'due_date'       => 'required|date'
     ];
 
 
@@ -63,6 +63,7 @@ class BillController extends BaseController
     {
         $company_details = $this->getCompanyDetails();
         $company_details['invoice_number'] = $this->bill->getPrecedingInvoiceNumber();
+
         return view('tenant.invoice.bill.create', compact('company_details'))->with('pageTitle', 'Add new bill');
     }
 
@@ -72,6 +73,7 @@ class BillController extends BaseController
         $business = $this->setting->getBusiness();
         $fix = $this->setting->getFix();
         $company_details = array_merge($company, $business, $fix);
+
         return $company_details;
     }
 
@@ -86,6 +88,7 @@ class BillController extends BaseController
         $this->bill->add($this->request);
 
         Flash::success('Bill added successfully!');
+
         return tenant()->route('tenant.invoice.bill.index');
     }
 
@@ -105,6 +108,7 @@ class BillController extends BaseController
         if ($this->request->ajax()) {
             return $this->success($bill->toArray());
         }
+
         return view('tenant.inventory.product.show', compact('product'));
 
     }
@@ -123,6 +127,7 @@ class BillController extends BaseController
             show_404();
         }
         $company_details = $this->getCompanyDetails();
+
         return view('tenant.invoice.bill.edit', compact('bill'))->with('pageTitle', 'Update Bill')->with('company_details', $company_details);
     }
 
@@ -145,6 +150,7 @@ class BillController extends BaseController
         $this->bill->edit($this->request, $id);
 
         Flash::success('Bill updated successfully!');
+
         return tenant()->route('tenant.invoice.bill.index');
     }
 
@@ -161,6 +167,7 @@ class BillController extends BaseController
                     foreach ($product_bills as $product_bill) {
                         $product_bill->delete();
                     }
+
                     return $this->success(['message' => 'Bill deleted Successfully']);
                 }
             }
@@ -189,14 +196,34 @@ class BillController extends BaseController
         return $newResult;
     }
 
-    function download()
+    function download(Pdf $pdf)
     {
-
+        $id = $this->request->route('id');
+        $data['bill'] = $this->bill->billDetails($id);
+        $pdf->generate(time(), 'template.bill', $data);
     }
 
     function printBill()
     {
+        $id = $this->request->route('id');
 
+        $data['details'] = $this->getInfo($id);
+        return view('template.print');
+    }
+
+
+    function getInfo($id)
+    {
+        $bill = $this->bill->billDetails($id);
+        $bill_details = array(
+            'amount' => $bill->total,
+            'invoice_number' => $bill->invoice_number,
+            'invoice_date' => $bill->created_at,
+            'customer' => $bill->customer,
+            'customer_details' => $bill->customer_details,
+            'amount' => $bill->total,
+            'amount' => $bill->total,
+        );
     }
 
 }
