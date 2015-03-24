@@ -34,7 +34,6 @@ class EmailController extends BaseController {
     function index()
     {
         $action = 'add';
-
         return view('tenant.email.index', compact('action'));
     }
 
@@ -119,11 +118,14 @@ class EmailController extends BaseController {
         $mail['to'] = $to;
         $mail['cc'] = $cc;
 
+        $display_name = current_user()->display_name;
+        $email = current_user()->smtp->email;
+
         $message = "
 
 
 -------------------------------------------------------------------------------
-From: " . current_user()->fullname . "[mailto:]
+From: " . $display_name . "[mailto:".$email."]
 Sent: " . date('D, F d, Y, h:i A') . "
 To: " . $mail['to'];
 

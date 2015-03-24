@@ -33,6 +33,16 @@ function current_user()
 {
     $user = \Auth::user();
     $user->profile = \App\Models\Tenant\Profile::firstOrCreate(['user_id' => $user->id]);
+    $user->display_name = $user->fullname;
+    $setting = $user->profile->personal_email_setting;
+
+    $smtp = new stdClass();
+    $smtp->email = (isset($setting['email_username'])) ? $setting['email_username'] : $user->email;
+    $smtp->password = (isset($setting['email_password'])) ? $setting['email_password'] : '';
+    $smtp->incoming_server = (isset($setting['incoming_server'])) ? $setting['incoming_server'] : '';
+    $smtp->outgoing_server = (isset($setting['outgoing_server'])) ? $setting['outgoing_server'] : '';
+    $user->smtp = $smtp;
+
     return $user;
 }
 
@@ -57,4 +67,18 @@ function page_title()
     else
         return env('APP_TITLE');
 
+}
+
+
+function email_date($dateTime)
+{
+    $date = \Carbon::createFromTimeStamp(strtotime($dateTime));
+
+    if ($date->isToday()) {
+        return $date->format('h:i a');
+    } elseif ($date->year == date('Y')) {
+        return $date->format('M d');
+    } else {
+        return $date->format('M d, Y');
+    }
 }
