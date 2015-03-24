@@ -724,10 +724,12 @@ fieldset.wrapper-box legend{
       print-color-adjust: exact;
    }
     #print{
-        width: 100%;
+        width: 700px;
         margin-top: -20px;
         margin-left: -275px;
     }
+    .main-footer {display: none}
+
 }
 
 

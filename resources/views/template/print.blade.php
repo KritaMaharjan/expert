@@ -159,12 +159,18 @@ Print Invoice
 
               <div class="row no-print">
                 <div class="col-xs-12 align-center">
-                  <a class="btn btn-default" href="#" style="margin-right: 5px;"><i class="fa fa-print"></i> Print</a>
-                  <button class="btn btn-default" style="margin-right: 5px;"><i class="fa fa-credit-card"></i> Send an email</button>
-                  <button style="margin-right: 5px;" class="btn btn-primary"><i class="fa fa-download"></i> Generate PDF</button>
+                  <a class="btn btn-default" href="#"  onclick=" window.print();" style="margin-right: 5px;"><i class="fa fa-print"></i> Print</a>
+             {{--     <button class="btn btn-default" style="margin-right: 5px;"><i class="fa fa-credit-card"></i> Send an email</button>--}}
+                  <a href="<?php echo tenant()->url('nvoice/bill/'.$data['id'].'/download');?>" style="margin-right: 5px;" class="btn btn-primary"><i class="fa fa-download"></i> Generate PDF</a>
                 </div>
               </div>
   </div>
   </div>
-
+<?php if(Input::get('print') == 'auto'):?>
+<script>
+        $(function(){
+                window.print();
+        });
+</script>
+<?php endif;?>
 @stop
