@@ -123,7 +123,7 @@ class EmailController extends BaseController {
 
 
 -------------------------------------------------------------------------------
-From: Rojal Shrestha [mailto:rshrestha@alucio.com]
+From: " . current_user()->fullname . "[mailto:]
 Sent: " . date('D, F d, Y, h:i A') . "
 To: " . $mail['to'];
 

@@ -31,8 +31,11 @@ function plupload()
 
 function current_user()
 {
-    return \Auth::user();
+    $user = \Auth::user();
+    $user->profile = \App\Models\Tenant\Profile::firstOrCreate(['user_id' => $user->id]);
+    return $user;
 }
+
 
 function tenant_route($route, $param = array())
 {
