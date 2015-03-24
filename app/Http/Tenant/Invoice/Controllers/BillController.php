@@ -30,7 +30,7 @@ class BillController extends BaseController {
      */
 
     protected $rules = [
-        'customer_id'        => 'required',
+        'customer_id'        => 'required' ,
         'invoice_date'          => 'required|date',
         'invoice_number'           => 'required|numeric|unique:fb_bill',
         'due_date' => 'required|date',
@@ -67,9 +67,11 @@ class BillController extends BaseController {
     {
         $validator = Validator::make($this->request->all(), $this->rules);
 
+
         if ($validator->fails())
             redirect()->back()->withErrors($validator)->withInput();
 
+    
         $this->bill->add($this->request);
 
         Flash::success('Bill added successfully!');
