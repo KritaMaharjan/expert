@@ -48,6 +48,7 @@ class RemindersController extends BaseController {
 
         \FB::sendEmail($user->email, $user->fullname, 'forgot_password', ['{{RESET_URL}}' => $link, '{{DONT_RESET_URL}}' => $no_link, '{{ USERNAME }}' => $user->fullname, '{{ NAME }}' => $user->fullname]);
 
+
     }
 
 

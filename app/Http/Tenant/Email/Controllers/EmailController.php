@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Tenant\Email\Models\Email;
 
+
 class EmailController extends BaseController {
 
     protected $request;
@@ -20,6 +21,7 @@ class EmailController extends BaseController {
 
     function __construct(Request $request, Email $email, Attachment $attachment, Receiver $receiver)
     {
+
         parent::__construct();
         $this->request = $request;
         $this->email = $email;
