@@ -27,10 +27,7 @@
   </div>
 
   {!! Form::open(array('method'=>'POST')) !!}
-
-  @include('tenant.invoice.bill.form')
-
-  <!-- this row will not appear when printing -->
+    @include('tenant.invoice.bill.form')
   <div class="row no-print">
     <div class="col-xs-12">
         {!! Form::button('Submit', array('class'=>'btn btn-primary pull-right', 'type'=>'submit')) !!}

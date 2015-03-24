@@ -3,14 +3,14 @@
 <table class="table table-mailbox no-mg-btm">
     <tbody>
           @foreach($mails as $mail)
-          <tr>
+          <tr class="e{{$mail->id}}">
             <td class="small-col"><i class="fa fa-envelope"></i></td>
             <td class="name">
              <?php $receiver = $mail->receivers;?>
               <a style="display: block" href="#" data-id="{{$mail->id}}" >
                     @foreach($receiver as $to)
                         @if($to->type ==1)
-                           {{ '('.$to->customer_id.') '. $to->email}};
+                           {{ $to->email}};
                         @endif
                      @endforeach
                 <small class="subject">{{$mail->subject}}</small>
@@ -38,7 +38,11 @@ else
 $from =  $to - $mails->perPage()+1+($mails->perPage()-$items);
 ?>
 <span class="color-grey">{{$from}}-{{$to}} of {{$mails->total()}}</span>
-  <a href="#previous" class="mg-lr-5  color-grey"><i class="fa  fa-chevron-left"></i></a>
-  <a href="#next" class="color-grey"><i class="fa  fa-chevron-right"></i></a>
+    @if($from !=1)
+      <a href="#{{$mails->currentPage()-1}}" data class="mg-lr-5 mail-previous color-grey"><i class="fa  fa-chevron-left"></i></a>
+    @endif
+    @if($to != $mails->total())
+      <a href="#{{$mails->currentPage()+1}}"  class="color-grey mail-next"><i class="fa  fa-chevron-right"></i></a>
+    @endif
 </p>
 @endif

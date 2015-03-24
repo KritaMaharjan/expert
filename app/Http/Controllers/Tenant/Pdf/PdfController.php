@@ -63,6 +63,8 @@ class PdfController extends BaseController {
 
 		// set image scale factor
 		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+		$pdf->setCellHeightRatio(1.5);
+		$pdf->SetCellPadding(3);
 
 		// set some language-dependent strings (optional)
 		/*if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
@@ -96,103 +98,122 @@ class PdfController extends BaseController {
 	   // $html= file_get_contents(base_path('resources/views/tenant/pdf/pdf.html'));
 	    $html = '
 	    <style>
-			    h1 {
-			        color: navy;
-			        font-family: times;
-			        font-size: 24pt;
-			        text-decoration: underline;
-			    }
-			    p.first {
-			        color: #003300;
-			        font-family: helvetica;
-			        font-size: 12pt;
-			    }
-			    p.first span {
-			        color: #006600;
-			        font-style: italic;
-			    }
-			    p#second {
-			        color: rgb(00,63,127);
-			        font-family: times;
-			        font-size: 12pt;
-			        text-align: justify;
-			    }
-			    p#second > span {
-			        background-color: #FFFFAA;
-			    }
-			    table.first {
-			        color: #003300;
-			        font-family: helvetica;
-			        font-size: 8pt;
-			        border-collapse: collapse;
-			        
-			    }
-			    tr{
-			      height: 40pt;
+	   table, th, td {
+		    border-collapse: collapse;
+		}
+    	th, td {
+		    padding: 10px;
+		}
+    	h1{
+    		font-size:20px;
+    		font-weight:600;
+    		line-height:2;
+    	}	        
+    	.border{border:1px solid #dbdbdb;}
+    	.border-block{border:1px solid #dbdbdb;line-height:2;}
+    	.fix-size{border:1px solid #dbdbdb;line-height:4;}
+    	
+		</style>
 
 
-			    }
-			   
-			    div.test {
-			        color: #CC0000;
-			        background-color: #FFFF66;
-			        font-family: helvetica;
-			        font-size: 10pt;
-			        border-style: solid solid solid solid;
-			        border-width: 2px 2px 2px 2px;
-			        border-color: green #FF00FF blue red;
-			        text-align: center;
-			    }
-			    .lowercase {
-			        text-transform: lowercase;
-			    }
-			    .uppercase {
-			        text-transform: uppercase;
-			    }
-			    .capitalize {
-			        text-transform: capitalize;
-			    }
-			</style>
+     	<table id="print" width="100%">
+         	<tr bgcolor="#FFFF00"  style="line-height:.5;"><td colspan="4" style="padding:20px;"><h1>Kvittering</h1></td></tr>
+			<tr bgcolor="#FFFF00">
+				<th>Innbetalt till konto</th>
+			   	<th style="font-size:11px;">Belop</th>
+			    <th style="font-size:11px;">Betalerens kontonummer</th>
+			    <th style="font-size:11px;">Blankettnr</th>			   			  
+			</tr>
+			<tr bgcolor="#FFFF00">
+				<td>60050625977</td>
+				<td><p class="border-block" bgcolor="#ffffff"></p></td>
+				<td><p class="border-block" bgcolor="#ffffff"></p></td>
+				<td><p class="border-block" bgcolor="#ffffff"></p></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<table>
+						<tbody>
+							<tr><td colspan="2" style="font-size:11px;">Betalingsinformasjon</td></tr>
+							<br />
+							<tr>
+								<td style="text-indent:15px;">Kundenr:</td>
+								<td>4785007</td>
+							</tr>
+							<tr>
+								<td style="text-indent:15px;">Fakturanr:</td>
+								<td>4785007</td>
+							</tr>
+							<tr>
+								<td style="text-indent:15px;">Fakturadato:</td>
+								<td>4785007</td>
+							</tr>
+						</tbody>
+					</table>
+				</td>
+				<td colspan="2">
+					<table>
+						<tbody>
+							<tr><td style="font-size:13px;">GIRO</td>
+								<td style="font-size:11px;">Betalings-first</td>
+								<td><p class="border-block" bgcolor="#ffffff"></p></td>
+							</tr>
+							<br />
+							<tr>
+								<td style="font-size:11px;" colspan="3">Underskrift ved girering</td>									
+							</tr>
+							<tr style="margin-top:10px;">
+								<td colspan="3">
+									<p class="fix-size"></p>
+								</td>									
+							</tr>							
+						</tbody>
+					</table>
+				</td>				  
+			</tr>
+			
+			<tr>									
+				<td colspan="2"><p style="font-size:11px;">Betalt av</p>
+					<table class="border" cellpadding="2">
+						<tbody>							
+							<tr>
+								<td style="text-indent:15px;">Andreas Bratholmen</td>
+							</tr>
+							<tr>
+								<td style="text-indent:15px;">Helleveien 199</td>
+							</tr>
+							<tr>
+								<td style="text-indent:15px;">5039 Bergen</td>
+							</tr>
+							
 
+						</tbody>
+					</table>
+				</td>
+				<td colspan="2"><p style="font-size:11px;">Betalt til</p>
+					<table class="border" cellpadding="2">
+						<tbody>							
+							<tr>
+								<td style="text-indent:15px;">Telio Telecom AS</td>
+							</tr>
+							<tr>
+								<td style="text-indent:15px;">Pb.54 Skoyen</td>
+							</tr>
+							<tr>
+								<td style="text-indent:15px;">0212 Oslo</td>
+							</tr>
+							
 
-
-
-			<table class="first">
-			 <tr cols="4" bgcolor="#FFFF00">
-			   <td height="4">
-			      Kvittering
-			      <br/>
-			      <span style="margin-left:500px;">
-			      Innbetalt till konto
-			      <br/>
-			      60050625977
-			    </span>
-			   </td>
-			   <td>
-			    <label>dfdfd</label><br/>
-			      <label>dfdfdf</label>
-			   </td>
-			   <td>dfd</td>
-			   <td>dfdf</td>
-			  
-			 </tr>
-			 <tr >
-			  <td colspan="2">dfdfd</td>
-			  <td colspan="2">dfdfd</td>
-			  
-			 </tr>
-			 <tr>
-			 <td colspan="2">dfdfd</td>
-			 <td colspan="2">dfdfd</td>
-			  
-			 </tr>
-			 <tr  bgcolor="#FFFF00">
+						</tbody>
+					</table>
+				</td>				  
+			</tr>
+			
+			<tr  bgcolor="#FFFF00">
 			    <td colspan="2">dfdfd</td>
-			    <td colspan="2">dfdfd</td>
-			  
-			 </tr>
-
-			</table>';
+			    <td colspan="2">dfdfd</td>				  
+			</tr>
+		</table>';
 	 
 	
 	
@@ -299,106 +320,67 @@ class PdfController extends BaseController {
 
 		// define some HTML content with style
 
-	
-		 $html = '
+		$html = '
 	    <style>
-			    h1 {
-			        color: navy;
-			        font-family: times;
-			        font-size: 24pt;
-			        text-decoration: underline;
-			    }
-			    p.first {
-			        color: #003300;
-			        font-family: helvetica;
-			        font-size: 12pt;
-			    }
-			    p.first span {
-			        color: #006600;
-			        font-style: italic;
-			    }
-			    p#second {
-			        color: rgb(00,63,127);
-			        font-family: times;
-			        font-size: 12pt;
-			        text-align: justify;
-			    }
-			    p#second > span {
-			        background-color: #FFFFAA;
-			    }
-			    table.first {
-			        color: #003300;
-			        font-family: helvetica;
-			        font-size: 8pt;
-			        border-collapse: collapse;
-			        
-			    }
-			    tr{
-			      height: 40pt;
+	    table {
+			display: table;
+		}
+    	h1{
+    		font-size:20px;
+    		font-weight:600;
+    		margin:0;
+    	}	        
+	    	
+    	.border-block{border:1px solid #dbdbdb;line-height:2;}
+		</style>
 
 
-			    }
-			   
-			    div.test {
-			        color: #CC0000;
-			        background-color: #FFFF66;
-			        font-family: helvetica;
-			        font-size: 10pt;
-			        border-style: solid solid solid solid;
-			        border-width: 2px 2px 2px 2px;
-			        border-color: green #FF00FF blue red;
-			        text-align: center;
-			    }
-			    .lowercase {
-			        text-transform: lowercase;
-			    }
-			    .uppercase {
-			        text-transform: uppercase;
-			    }
-			    .capitalize {
-			        text-transform: capitalize;
-			    }
-			</style>
-
-
-
-
-			<table class="first">
-			 <tr cols="4" bgcolor="#FFFF00">
-			   <td height="4">
-			      Kvittering
-			      <br/>
-			      <span style="margin-left:500px;">
-			      Innbetalt till konto
-			      <br/>
-			      60050625977
-			    </span>
-			   </td>
-			   <td>
-			      <label>dfdfd</label>
-			      <label>dfdfdf</label>
-			   </td>
-			   <td>dfd</td>
-			   <td>dfdf</td>
-			  
-			 </tr>
-			 <tr >
-			  <td colspan="2">dfdfd</td>
-			  <td colspan="2">dfdfd</td>
-			  
-			 </tr>
-			 <tr>
-			 <td colspan="2">dfdfd</td>
-			 <td colspan="2">dfdfd</td>
-			  
-			 </tr>
-			 <tr  bgcolor="#FFFF00">
-			    <td colspan="2">dfdfd</td>
-			    <td colspan="2">dfdfd</td>
-			  
-			 </tr>
-
-			</table>';
+     	<table id="print" width="100%" cellpadding="10">
+         	<tbody>
+	         	<tr bgcolor="#FFFF00"  style="line-height:.5;"><td colspan="4"><h1>Kvittering</h1></td></tr>
+				<tr bgcolor="#FFFF00" style="line-height:1.3;"><td>Innbetalt till konto					  	
+			      		60050625977</td>
+				   	<td style="font-size:11px;">Belop<p class="border-block" bgcolor="#ffffff"></p></td>
+				    <td style="font-size:11px;">Betalerens kontonummer<p class="border-block" bgcolor="#ffffff"></p></td>
+				    <td style="font-size:11px;">Blankettnr<p class="border-block" bgcolor="#ffffff"></p></td>			   			  
+				</tr>
+				<tr>
+					<td colspan="2">
+						<table>
+							<tbody>
+								<tr><td colspan="2" style="font-size:11px;">Betalingsinformasjon</td></tr>
+								<br />
+								<tr>
+									<td style="text-indent:15px;">Kundenr:</td>
+									<td>4785007</td>
+								</tr>
+								<tr>
+									<td style="text-indent:15px;">Fakturanr:</td>
+									<td>4785007</td>
+								</tr>
+								<tr>
+									<td style="text-indent:15px;">Fakturadato:</td>
+									<td>4785007</td>
+								</tr>
+							</tbody>
+						</table>
+					</td>
+					<td colspan="2">dfdfd</td>				  
+				</tr>
+				
+				<tr>
+					<td colspan="2">dfdfd</td>
+					<td colspan="2">dfdfd</td>				  
+				</tr>
+				
+				<tr  bgcolor="#FFFF00">
+				    <td colspan="2">dfdfd</td>
+				    <td colspan="2">dfdfd</td>				  
+				</tr>
+			 </tbody>
+		</table>';
+	 
+		
 	
 		// output the HTML content
 		$pdf->writeHTML($html, true, false, true, false, '');

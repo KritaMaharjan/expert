@@ -20,6 +20,14 @@
         </div>
 
       <address class="customer-info">
+
+        @if(isset($bill->customer_details))
+            <strong>{{ $bill->customer_details->name }} </strong><br>
+            {{ $bill->customer_details->street_name  }} {{ $bill->customer_details->street_number  }} <br>
+            {{ $bill->customer_details->town  }} <br>
+            Phone: {{ $bill->customer_details->telephone  }} <br>
+            Email: {{ $bill->customer_details->email }}
+        @endif
       </address>
     </div><!-- /.col -->
      <div class="col-sm-7 invoice-col col-xs-6">
@@ -34,7 +42,7 @@
       <div class="right-from">
         <div class="form-group clearfix">
           {!! Form::label('invoice_date', 'Invoice date') !!}
-          {!! Form:: input('date', 'invoice_date', null, array('class' => 'form-control', 'id' => 'invoice-date-picker')) !!}
+          {!! Form:: text('invoice_date', null, array('class' => 'form-control', 'id' => 'invoice-date-picker')) !!}
           @if($errors->has('invoice_date'))
             {!! $errors->first('invoice_date', '<label class="control-label" for="inputError">:message</label>') !!}
           @endif
@@ -46,17 +54,17 @@
               {!! $errors->first('invoice_number', '<label class="control-label" for="inputError">:message</label>') !!}
           @endif
         </div>
-        <div class="form-group clearfix">
+        {{--<div class="form-group clearfix">
           {!! Form::label('kid', 'Kid') !!}
           {!! Form:: text('kid', null, array('class' => 'form-control')) !!}
-        </div>
-        <div class="form-group clearfix">
+        </div>--}}
+        {{--<div class="form-group clearfix">
           {!! Form::label('customer_id', 'Customer id') !!}
           {!! Form:: text('customer_id', null, array('class' => 'form-control')) !!}
           @if($errors->has('customer_id'))
               {!! $errors->first('customer_id', '<label class="control-label" for="inputError">:message</label>') !!}
           @endif
-        </div>
+        </div>--}}
         <div class="form-group clearfix">
           {!! Form::label('due_date', 'Due date') !!}
           {!! Form:: text('due_date', null, array('class' => 'form-control', 'id' =>'due-date-picker')) !!}
@@ -159,7 +167,7 @@
     <!-- accepted payments column -->
 
     <div class="col-xs-6 pull-right pad-0-40">
-      <p class="lead">Amount Due 2/22/2015</p>
+      <p class="lead">Summary</p>
       <div class="table-responsive">
         <table class="table">
           <tr>
