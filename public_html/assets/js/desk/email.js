@@ -146,7 +146,7 @@ $(function () {
         //@pooja
         if(action =='reply')
         {
-           $('.modal-title').html('reply');
+           $('.modal-title').html('Reply to Message');
         }
 
         var inputType = 0;
