@@ -16,6 +16,7 @@ class EmailController extends BaseController {
     protected $email;
     protected $attachment;
     protected $receiver;
+    protected $upload_path = './assets/uploads/';
 
 
     function __construct(Request $request, Email $email, Attachment $attachment, Receiver $receiver)
@@ -30,7 +31,9 @@ class EmailController extends BaseController {
 
     function index()
     {
-        return view('tenant.email.index');
+        $action = 'add';
+
+        return view('tenant.email.index', compact('action'));
     }
 
     function customerSearch(Customer $customer)
@@ -45,7 +48,7 @@ class EmailController extends BaseController {
     {
         if ($this->request->hasFile('file') AND $this->request->file('file')->isValid()) {
             $extension = $this->request->file('file')->getClientOriginalExtension();
-            $destinationPath = './assets/uploads/';
+            $destinationPath = $this->upload_path;
             $fileName = uniqid() . '_' . time() . '.' . $extension;
             $data = $this->request->file('file')->move($destinationPath, $fileName);
             $return = ['pathName' => asset(trim($data->getPathname(), '.')), 'fileName' => $data->getFilename()];
@@ -81,7 +84,8 @@ class EmailController extends BaseController {
             'email_to' => 'required|validArrayEmail',
             'email_cc' => 'validArrayEmail',
             'subject'  => 'required',
-            'message'  => 'required'
+            'message'  => 'required',
+            'status'   => 'required'
         ];
         $validator = \Validator::make($this->request->all(), $rules);
 
@@ -89,14 +93,51 @@ class EmailController extends BaseController {
     }
 
 
-    function reply()
+    function get()
     {
+        $id = $this->request->route('id');
+        $mail = $this->email->with('attachments', 'receivers')->where('id', $id)->user()->first()->toArray();
 
-    }
+        $to = "";
+        $cc = "";
+        foreach ($mail['receivers'] as $re) {
+            if ($re['type'] == 1)
+                $to .= $re['email'] . ';';
+            else
+                $cc .= $re['email'];
+        }
 
-    function forward()
-    {
+        foreach ($mail['attachments'] as &$at) {
+            unset($at['id']);
+            unset($at['email_id']);
+        }
 
+
+        unset($mail['receivers']);
+        $mail['to'] = $to;
+        $mail['cc'] = $cc;
+
+        $message = "
+
+
+-------------------------------------------------------------------------------
+From: Rojal Shrestha [mailto:rshrestha@alucio.com]
+Sent: " . date('D, F d, Y, h:i A') . "
+To: " . $mail['to'];
+
+        if ($mail['cc'] != '')
+            $message .= "
+Cc: " . $mail['to'];
+
+        $message .= "
+Subject: " . $mail['subject'] . "
+
+" . $mail['message'];
+
+        $mail['message'] = $message;
+        $data['mail'] = $mail;
+
+        return $this->success($data);
     }
 
 
@@ -112,10 +153,23 @@ class EmailController extends BaseController {
     {
         $type = $this->request->input('type');
         $data['type'] = $type = ($type == 1) ? $type : 0;
-        $data['per_page'] = $per_page = 4;
+        $data['per_page'] = $per_page = 5;
         $data['mails'] = $this->email->user()->type($type)->latest()->with('attachments', 'receivers')->paginate($per_page);
 
         return view('tenant.email.list', $data);
+    }
+
+    function deleteAttachment()
+    {
+        if ($this->request->ajax()) {
+            $file = $this->request->input('file');
+            $destinationPath = $this->upload_path . $file;
+            unlink($destinationPath);
+
+            return $this->success(['message' => 'File deleted']);
+        }
+
+        return $this->fail(['error' => 'Something went wrong. Please try again later']);
     }
 
     function delete()
@@ -133,7 +187,7 @@ class EmailController extends BaseController {
                 }
             }
 
-            return $this->fail(['message' => 'Something went wrong. Please try again later']);
+            return $this->fail(['error' => 'Something went wrong. Please try again later']);
         }
 
     }

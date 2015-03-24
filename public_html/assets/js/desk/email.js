@@ -1,3 +1,5 @@
+var personal_type = 0, support_type = 1;
+
 $(function () {
     var requestURL = appUrl + 'desk/email/customer/search'
 
@@ -59,6 +61,9 @@ $(function () {
             }
         });
 
+
+    // SEnd email
+
     $(document).on('submit', '#compose-form', function (e) {
         e.preventDefault();
 
@@ -80,7 +85,7 @@ $(function () {
                 if (response.status == '1') {
                     $('#compose-modal').modal('hide');
                     var tbody = $('.table-mailbox');
-                    $('.content').prepend(notify('success', 'Message sent successfully'));
+                    $('.content').prepend(notify('success', 'Message sent'));
                     tbody.prepend(getTemplate(response.data));
                     setTimeout(function () {
                         $('.callout').remove()
@@ -89,8 +94,8 @@ $(function () {
                 else {
                     if ("errors" in response.data) {
                         $.each(response.data.errors, function (id, error) {
-                            $('.modal-body #' + id).parent().parent().addClass('has-error')
-                            $('.modal-body #' + id).parent().parent().append('<label class="error error-' + id + '">' + error[0] + '<label>');
+                            form.find('#' + id).parent().parent().addClass('has-error')
+                            form.find('#' + id).parent().parent().append('<label class="error error-' + id + '">' + error[0] + '<label>');
                         })
                     }
 
@@ -117,10 +122,83 @@ $(function () {
 
 
     function getTemplate(data) {
-        var html = '<td>' + data.id + '</td>' +
-            '<td>' + data.subject + '</td>' +
-            '<td>' + data.status + '</td>' +
-            '</td>';
+        var html = '<tr class="e' + data.id + '">' +
+            '<td class="small-col"><i class="fa fa-envelope"></i></td>' +
+            '<td class="name">' +
+            '<a style="display: block" href="#" data-id="' + data.id + '">' +
+            data.to +
+            '<small class="subject">' + data.subject + '</small>' +
+            '</a>' +
+            '</td>' +
+            '<td class="time">'cd lara + data.created_at + '</td>' +
+            '</tr>';
+
+        return html;
+    }
+
+// modal actions
+
+    $(document).on('show.bs.modal', '#compose-modal', function (event) {
+        var button = $(event.relatedTarget); // Button that triggered the modal
+        var action = button.data('action');
+        var type = button.data('type');
+        var inputType = 0;
+        if (type == 'support')
+            inputType = 1
+
+        if ($('#type').length > 0) {
+            $('#type').val(inputType);
+        } else {
+            $('#message').before('<input type="hidden" id="type" name="type" value="' + inputType + '"/>');
+        }
+
+        var modal = $(this);
+
+        if (typeof action != 'undefined') {
+            var id = button.data('id');
+            $.ajax({
+                url: appUrl + 'desk/email/' + id + '/get',
+                type: 'GET',
+                dataType: 'json',
+            })
+                .done(function (response) {
+                    var mail = response.data.mail;
+                    $('#email_to').val(mail.to);
+                    $('#email_cc').val(mail.cc);
+                    if (action == 'reply')
+                        $('#subject').val('RE: ' + mail.subject);
+                    else if (action == 'forward')
+                        $('#subject').val('FW: ' + mail.subject);
+
+                    $('#message').val(mail.message);
+                    //    $('#note').val(mail.note);
+
+                    if (mail.attachments.length > 0) {
+                        $('#filelist').append(getTemplateFields(mail.attachments));
+                    }
+
+                })
+        }
+
+    });
+
+    $(document).on('hidden.bs.modal', '#compose-modal', function (event) {
+        var modal = $(this)
+        var form = modal.find('form');
+        $('#filelist').html('');
+        form[0].reset();
+        form.find('.error').remove();
+        form.find('.has-error').removeClass('has-error');
+    })
+
+
+    function getTemplateFields(data) {
+        html = '';
+        $.each(data, function (key, item) {
+            file = item.file
+            html += '<div>' + file + '<input type="hidden" class="attachment" name="attach[]" value="' + file + '"><a href="#" data-action="reply" data-url="' + file + '" class="cancel_upload"><i class="fa fa-times"></i></a></div>';
+        });
+
         return html;
     }
 
@@ -130,14 +208,11 @@ $(function () {
 // load emails
 $(function () {
 
-    var personal_type = 0, support_type = 1;
-
     loadEmailList(0, 1);
 
     $('.inbox').on('click', function () {
 
-        if(!$(this).hasClass('btn-primary'))
-        {
+        if (!$(this).hasClass('btn-primary')) {
             $('.inbox').removeClass('btn-primary');
 
             $(this).addClass('btn-primary');
@@ -156,7 +231,42 @@ $(function () {
     $(document).on('click', '.table-mailbox a', function (e) {
         e.preventDefault();
         var id = $(this).attr('data-id');
-        $('#email-single').load(appUrl + 'desk/email/' + id + '/show');
+        if (!$('#email-single').hasClass('email-' + id)) {
+            $('#email-single').load(appUrl + 'desk/email/' + id + '/show');
+            $('#email-single').removeClass(function (index, css) {
+                return (css.match(/(^|\s)email-\S+/g) || []).join(' ');
+            });
+            $('#email-single').addClass('email-' + id);
+        }
+    });
+
+
+    // Delete Email
+
+    $(document).on('click', '.email-delete', function (e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        $.ajax({
+            url: appUrl + 'desk/email/' + id + '/delete',
+            type: 'GET',
+            dataType: 'json',
+        })
+            .done(function (response) {
+                if (response.status == 1) {
+                    $('#email-single').html('');
+                    $('#email-single').removeClass(function (index, css) {
+                        return (css.match(/(^|\s)email-\S+/g) || []).join(' ');
+                    });
+                    $('tr.e' + id).remove();
+                    $('.content').prepend(notify('success', 'Message deleted'));
+                }
+                else {
+                    alert(response.data.error);
+                }
+            })
+            .fail(function () {
+                alert("Connect error!");
+            })
     });
 
     function loadEmailList(type, page) {
@@ -168,6 +278,48 @@ $(function () {
 
         $('#email-list').load(appUrl + 'desk/email/list?type=' + type + '&page=' + page);
     }
+
+    $(document).on('click', '.mail-next,.mail-previous', function (e) {
+        e.preventDefault();
+        var href = $(this).attr('href');
+        var page = href.replace('#', '');
+        loadEmailList(0, page);
+    });
+
+    $(document).on('click', '.cancel_upload', function (e) {
+        e.preventDefault();
+        var url = $(this).data('url');
+        var wrap = $(this).parent();
+        var action = $(this).data('action');
+
+        if (!confirm('Are you sure, you want to delete attachment permanently?')) return false;
+
+        if (action == 'compose') {
+            $.ajax({
+                url: appUrl + 'desk/email/delete/attach',
+                type: 'GET',
+                dataType: 'json',
+                data: {file: url}
+            })
+                .done(function (response) {
+                    if (response.status == 1) {
+                        wrap.remove();
+                    }
+                    else {
+                        alert(response.data.error);
+                    }
+                })
+                .fail(function () {
+                    alert("Connect error!");
+                })
+        }
+        else {
+            wrap.remove();
+        }
+
+
+    });
+
 
 });
 

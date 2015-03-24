@@ -130,11 +130,21 @@ Class Plupload {
         $html .= "},
 
                     UploadProgress: function(up, file) {
-                        document.getElementById(file.id).getElementsByTagName('b')[0].innerHTML = '<span>' + file.percent + '%</span>';
+                        fileDiv = $('#'+file.id)
+                        if(fileDiv.find('.progress').length > 0)
+                        {
+                            fileDiv.find('.progress-bar').css('width',file.percent+'%');
+                        }
+                        else
+                        {
+                         fileDiv.append('<div class=\"progress\" style=\"height: 2px;\"><div class=\"progress-bar\" style=\"width: 0%\"></div></div>');
+                        }
+
+                       fileDiv.find('b').html(file.percent + '%');
                     },
 
                     Error: function(up, err) {
-                        document.getElementById('console').innerHTML += 'Error #' + err.code + ': ' + err.message;
+                        alert(err.message);
                     }
                 }
             });
@@ -146,6 +156,9 @@ Class Plupload {
              });
 
              uploader.bind('FileUploaded', function(upldr, file, object) {";
+
+
+
 
         $html .= $this->successCallback;
 
@@ -169,6 +182,7 @@ Class Plupload {
                 </a>
             </div>';
         }
+
         return $buttons;
     }
 
@@ -177,7 +191,7 @@ Class Plupload {
     {
         $render = "<div id='$this->filelist'>Your browser doesn't have Flash, Silverlight or HTML5 support.</div>";
 
-        $render .= "<pre id='console'></pre>";
+        //   $render .= "<pre id='console'></pre>";
 
         return $render;
     }

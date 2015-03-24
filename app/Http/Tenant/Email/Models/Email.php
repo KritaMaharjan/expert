@@ -80,7 +80,7 @@ class Email extends Model {
         $this->email_message = Request::input('message');
         $this->attach = Request::input('attach');
         $this->email_note = Request::input('note');
-        $this->email_type = 1; // Request::input('type');
+        $this->email_type = Request::input('type');
         $this->email_status = Request::input('status');
 
 
@@ -129,6 +129,8 @@ class Email extends Model {
         }
         DB::commit();
 
+
+        $email['to'] =Request::input('email_to');
         return $email;
     }
 
