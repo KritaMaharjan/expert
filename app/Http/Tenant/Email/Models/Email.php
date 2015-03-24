@@ -39,8 +39,9 @@ class Email extends Model {
     private $attach;
     private $to;
     private $cc;
-    private $fromName;
-    private $fromEmail;
+    protected $fromName;
+    protected $fromEmail;
+
 
 
     public function attachments()
@@ -82,12 +83,10 @@ class Email extends Model {
         $this->email_note = Request::input('note');
         $this->email_type = Request::input('type');
         $this->email_status = Request::input('status');
-
-
-        $this->fromName = 'Manish Gopal Singh';
-        $this->fromEmail = 'manish.aucio@gmail.com';
+        $this->fromName = current_user()->display_name;
+        $this->fromEmail = current_user()->smtp->email;
         // Send email
-        //  $this->fire();
+        $this->fire();
 
 
         DB::beginTransaction();
@@ -131,6 +130,7 @@ class Email extends Model {
 
 
         $email['to'] =Request::input('email_to');
+        $email['created_at'] = email_date($email['created_at']);
         return $email;
     }
 
