@@ -4,8 +4,10 @@ namespace App\Http\Tenant\Invoice\Controllers;
 
 use App\Http\Controllers\Tenant\BaseController;
 use App\Http\Tenant\Invoice\Models\Bill;
+use App\Http\Tenant\Invoice\Models\BillProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Laracasts\Flash\Flash;
 
 class BillController extends BaseController {
 
@@ -28,11 +30,11 @@ class BillController extends BaseController {
      */
 
     protected $rules = [
-        'number'        => 'required|alpha_dash|max:25|unique:fb_products',
-        'name'          => 'required|string|max:100|unique:fb_products',
-        'vat'           => 'required|numeric|max:99',
-        'selling_price' => 'required|numeric|min:1|max:9999999999',
-        'purchase_cost' => 'required|numeric|min:1|max:999999999',
+        'customer_id'        => 'required',
+        'invoice_date'          => 'required|date',
+        'invoice_number'           => 'required|numeric|unique:fb_bill',
+        'due_date' => 'required|date',
+        'account_number' => 'required',
     ];
 
 
@@ -42,7 +44,7 @@ class BillController extends BaseController {
      */
     public function index()
     {
-        return view('tenant.invoice.bill.index');
+        return view('tenant.invoice.bill.index')->with('pageTitle', 'All Bills');
     }
 
     public function dataJson()
@@ -58,7 +60,7 @@ class BillController extends BaseController {
 
     public function add()
     {
-        return view('tenant.invoice.bill.create');
+        return view('tenant.invoice.bill.create')->with('pageTitle', 'Add new bill');
     }
 
     public function create()
@@ -66,11 +68,12 @@ class BillController extends BaseController {
         $validator = Validator::make($this->request->all(), $this->rules);
 
         if ($validator->fails())
-            return $this->fail(['errors' => $validator->getMessageBag()]);
+            redirect()->back()->withErrors($validator)->withInput();
 
-        $result = $this->bill->add($this->request);
+        $this->bill->add($this->request);
 
-        return ($result) ? $this->success($result) : $this->fail(['errors' => 'something went wrong']);
+        Flash::success('Bill added successfully!');
+        return tenant()->route('tenant.invoice.bill.index');
     }
 
 
@@ -103,17 +106,15 @@ class BillController extends BaseController {
     {
         $id = $this->request->route('id');
 
-        $bill = $this->bill->find($id);
-        if ($bill == null) {
+        $bill = $this->bill->billDetails($id);
+        if ($bill == null || empty($bill)) {
             show_404();
         }
 
-
-
-        return view('tenant.inventory.product.edit', compact('product'));
+        return view('tenant.invoice.bill.edit', compact('bill'))->with('pageTitle', 'Update Bill');
     }
 
-    /**  update product detail
+    /**  update bill detail
      * @return string
      */
     function update()
@@ -121,32 +122,18 @@ class BillController extends BaseController {
         $id = $this->request->route('id');
 
         $bill = $this->bill->find($id);
-
         if (empty($bill))
-            return $this->fail(['error' => 'Invalid Product ID']);
-
-        if ($bill->name == $this->request->input('name')) {
-            unset($this->rules['name']);
-        }
-
-        if ($bill->number == $this->request->input('number')) {
-            unset($this->rules['number']);
-        }
+            show_404();
 
         $validator = Validator::make($this->request->all(), $this->rules);
 
         if ($validator->fails())
-            return $this->fail(['errors' => $validator->messages()]);
+            redirect()->back()->withErrors($validator)->withInput();
 
-        $bill->number = $this->request->input('number');
-        $bill->name = $this->request->input('name');
-        $bill->vat = $this->request->input('vat');
-        $bill->selling_price = $this->request->input('selling_price');
-        $bill->purchase_cost = $this->request->input('purchase_cost');
-        $bill->save();
-        $result = $bill->toData();
+        $this->bill->edit($this->request, $id);
 
-        return ($result) ? $this->success($result) : $this->fail(['errors' => 'something went wrong']);
+        Flash::success('Bill updated successfully!');
+        return tenant()->route('tenant.invoice.bill.index');
     }
 
 
@@ -154,10 +141,16 @@ class BillController extends BaseController {
     {
         $id = $this->request->route('id');
 
-        $bill = $this->bill->find($id);
+        $bill = Bill::find($id);
         if (!empty($bill)) {
             if ($bill->delete()) {
-                return $this->success(['message' => 'Product deleted Successfully']);
+                $product_bills = BillProduct::where('bill_id', $id)->get();
+                if (!empty($product_bills)) {
+                    foreach ($product_bills as $product_bill) {
+                        $product_bill->delete();
+                    }
+                    return $this->success(['message' => 'Bill deleted Successfully']);
+                }
             }
         }
 

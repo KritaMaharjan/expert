@@ -105,6 +105,9 @@
                    
            {!! Form::close() !!}
 
+
+
+
 <script type="text/javascript">
 
   $(document).ready(function () {
@@ -135,7 +138,18 @@
             return m;
         }
     });
-  
+
+$(document.body).on("change",".js-example-basic-multiple",function(){
+
+ var value = this.value;
+ var test = value.split(','); 
+
+ $('#town').val(test[1]);
+ $('span #select2-postcode-container').text(test[0]);
+
+
+ 
+});
 
     function FormatResult(item) {
     var markup = "";

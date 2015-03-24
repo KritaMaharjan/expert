@@ -60,6 +60,9 @@ Route::group($group_auth, function () {
         get('email/{id}/forward', ['as' => 'tenant.email.forward', 'uses' => 'EmailController@forward']);
         get('email/list', ['as' => 'tenant.email.forward', 'uses' => 'EmailController@listing']);
         get('email/{id}/show', ['as' => 'tenant.email.show', 'uses' => 'EmailController@show']);
+        get('email/{id}/get', ['as' => 'tenant.email.get', 'uses' => 'EmailController@get']);
+        get('email/delete/attach', ['as' => 'tenant.email.attach.delete', 'uses' => 'EmailController@deleteAttachment']);
+
 
     });
 
@@ -100,7 +103,7 @@ Route::group($group_auth, function () {
         // bill routes
         get('invoice/bill', ['as' => 'tenant.invoice.bill.index', 'uses' => 'BillController@index']);
         get('invoice/bill/add', ['as' => 'tenant.invoice.bill.add', 'uses' => 'BillController@add']);
-        post('invoice/bill', ['as' => 'tenant.invoice.bill.post', 'uses' => 'BillController@create']);
+        post('invoice/bill/add', ['as' => 'tenant.invoice.bill.post', 'uses' => 'BillController@create']);
         post('invoice/bill/data', ['as' => 'tenant.invoice.bill.data', 'uses' => 'BillController@dataJson']);
         get('invoice/bill/{id}', ['as' => 'tenant.invoice.bill.show', 'uses' => 'BillController@show']);
         get('invoice/bill/{id}/edit', ['as' => 'tenant.invoice.bill.edit', 'uses' => 'BillController@edit']);

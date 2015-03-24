@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>{{ page_title() }}</title>
+<title>{{ $pageTitle or page_title() }}</title>
 <meta name="csrf-token" content="{{ csrf_token() }}" />
 <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 <link href="{{ asset('assets/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css" />

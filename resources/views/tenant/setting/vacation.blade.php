@@ -1,3 +1,4 @@
+
 {!! Form::open(array('method'=>'POST', 'name'=>'vacationform','files'=>true, 'class'=>'form-horizontal vacationform')) !!}
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">
   <input type="hidden" name="group" value="vacation">	        
@@ -6,7 +7,7 @@
       <div class="@if($errors->has('vacation_days')) {{'has-error'}} @endif">
       	{!!Form::text('vacation_days',$vacation['vacation_days'],array('class' => 'form-control','id' => 'vacation_days'))!!}  
       	@if($errors->has('vacation_days'))
-       		{!! $errors->first('vacation_days', '<label class="control-label" for="inputError">:message</label>') !!}
+       		{!! $errors->first('vacation_days', '<label class="control-label has-error" for="inputError" style="color: red !important;">:message</label>') !!}
       	@endif
       </div>
     </div>
@@ -15,7 +16,7 @@
       <div class="@if($errors->has('sick_days')) {{'has-error'}} @endif">
       	{!!Form::text('sick_days',$vacation['sick_days'],array('class' => 'form-control','id' => 'sick_days'))!!}  
       	@if($errors->has('sick_days'))
-       		{!! $errors->first('sick_days', '<label class="control-label" for="inputError">:message</label>') !!}
+       		{!! $errors->first('sick_days', '<label class="control-label has-error" for="inputError" style="color: red !important;">:message</label>') !!}
       	@endif
       </div>
     </div>
@@ -35,9 +36,11 @@ $(document).ready(function () {
  
     $( '.savevacation' ).on( 'click', function() {
         $this = $(this);
+        $('.alert-info').remove();
         var datatosave = $('.vacationform').serialize();
         var url = appUrl+'setting/system/fixupdate';/*$this.attr('link');
-*/
+*/    $this.attr('disabled', 'disabled');
+        
         $.ajax({
             url: url,
             dataType: 'json',
@@ -57,6 +60,7 @@ $(document).ready(function () {
                       {
                          
                          $('.box-solid').before('<p class="alert alert-info">Setting Updated successfully</p>');
+                           $('.savevacation').removeAttr('disabled');
                         $(this).val('Save');
                       } else if(data.status == 'false') {
                        
@@ -64,12 +68,15 @@ $(document).ready(function () {
                              $('#'+i).after('<label class="control-label error" for="inputError">'+v+'</label>');
                         });
                          $(this).val('Save');
+                          $('.savevacation').removeAttr('disabled');
                       }
             })
             .fail(function(jqXHR, ajaxOptions, thrownError)
             {
                 alert('No response from server');
                  $(this).val('Save');
+                  $('.savevacation').removeAttr('disabled');
+
             });
             return false;
 

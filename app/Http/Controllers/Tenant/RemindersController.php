@@ -57,8 +57,11 @@ class RemindersController extends BaseController {
      * @param  string $token
      * @return Response
      */
-    public function getReset($token = null)
+    public function getReset(Request $request)
     {
+        $token = null;
+         $token = $request->route('code'); 
+
         if (is_null($token)) \App::abort(404);
 
         return view('system.auth.passwordreset')->with('token', $token);
@@ -69,19 +72,23 @@ class RemindersController extends BaseController {
      *
      * @return Response
      */
-    public function postReset()
+    public function postReset(Request $request)
     {
+         $token = $request->route('code'); 
         $rules = array('email' => 'required', 'new_password' => 'required|min:6', 'new_password_confirmation' => 'required|same:new_password|min:6');
-        $user_reset = DB::table('fb_password_resets')->where('token', Input::only('confirmed_code'))->first();
-
-        if (!empty($user_reset)) {
-            $user = DB::table('fb_password_resets')->where('email', Input::only('email'))->first();
-            $validator = \Validator::make(\Input::all(), $rules);
+        $user_reset = DB::table('fb_password_resets')->where('token', $token)->first();
+       
+        $validator = \Validator::make(\Input::all(), $rules);
 
             //Is the input valid? new_password confirmed and meets requirements
             if ($validator->fails()) {
                 return \Redirect::back()->withErrors($validator)->withInput();
             }
+
+
+        if (!empty($user_reset)) {
+            $user = DB::table('fb_password_resets')->where('email', Input::only('email'))->first();
+           
 
             $newpassword = Hash::make(Input::get('new_password'));
 
@@ -94,7 +101,7 @@ class RemindersController extends BaseController {
             return tenant()->route('tenant.login')->with('message_success', 'Password Reset successfully.');
 
         } else {
-            return tenant()->route('tenant.login')->with('message', 'Invalid url');
+            return redirect()->back()->with('message', 'Invalid url');
         }
 
 

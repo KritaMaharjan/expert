@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Tenant\Customer;
+use App\Http\Tenant\Invoice\Models\BillProduct;
+use App\Http\Tenant\Inventory\Models\Product;
+use Illuminate\Support\Facades\DB;
 
 class Bill extends Model {
 
@@ -18,7 +21,7 @@ class Bill extends Model {
      *
      * @var array
      */
-    protected $fillable = ['invoice_number', 'customer_id', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'status', 'account_number', 'due_date'];
+    protected $fillable = ['invoice_number', 'customer_id', 'invoice_date', 'currency', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'status', 'account_number', 'due_date'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -30,52 +33,127 @@ class Bill extends Model {
 
     function add(Request $request)
     {
-        $product = new Product();
-        $product->number = $request->input('number');
-        $product->name = $request->input('name');
-        $product->vat = $request->input('vat');
-        $product->selling_price = $request->input('selling_price');
-        $product->purchase_cost = $request->input('purchase_cost');
-        $product->user_id = current_user()->id;
-        $product->save();
+        // Start transaction!
+        DB::beginTransaction();
+        try {
+            $bill = Bill::create([
+                'invoice_number' => $request->input('invoice_number'),
+                'customer_id' => $request->input('customer'),
+                'invoice_date' => $request->input('invoice_date'),
+                'due_date' => $request->input('due_date'),
+                'account_number' => $request->input('account_number'),
+                'currency' => $request->input('currency'),
+            ]);
 
-        return $product->toData();
+            $products = $request->input('product');
+            $quantity = $request->input('quantity');
+
+            $alltotal = 0;
+            $subtotal = 0;
+            $tax = 0;
+
+            foreach($products as $key => $product)
+            {
+                if(isset($quantity[$key]) && $quantity[$key] > 0 && $product > 0) {
+                    $product_details = Product::find($product);
+                    $total = ($product_details->selling_price + $product_details->vat * 0.01 * $product_details->selling_price) * $quantity[$key];
+                    $product_bill = BillProduct::create([
+                        'product_id' => $product,
+                        'bill_id' => $bill->id,
+                        'quantity' => $quantity[$key],
+                        'price' => $product_details->selling_price,
+                        'vat' => $product_details->vat,
+                        'total' => $total
+                    ]);
+                    $alltotal += $total;
+                    $tax += $product_details->vat * 0.01 * $product_details->selling_price * $quantity[$key];
+                    $subtotal += $product_details->selling_price * $quantity[$key];
+                }
+
+            }
+
+            $bill->subtotal = $subtotal;
+            $bill->tax = $tax;
+            $bill->total = $alltotal;
+            $bill->save();
+
+            DB::commit();
+            return array('bill_details' => $bill);
+
+        } catch(\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
     }
 
-    function scopeLatest($query)
+
+    function edit(Request $request, $id)
     {
-        $query->orderBY('created_at', 'DESC');
+        // Start transaction!
+        DB::beginTransaction();
+        try {
+            $bill = Bill::find($id);
+            $bill->invoice_number = $request->input('invoice_number');
+            $bill->customer_id = $request->input('customer');
+            $bill->invoice_date = $request->input('invoice_date');
+            $bill->due_date = $request->input('due_date');
+            $bill->account_number = $request->input('account_number');
+            $bill->currency = $request->input('currency');
+            $bill->save();
+
+            $products = $request->input('product');
+            $quantity = $request->input('quantity');
+
+            $alltotal = 0;
+            $subtotal = 0;
+            $tax = 0;
+
+            $this->deleteBillProducts($id);
+
+            foreach($products as $key => $product)
+            {
+                if(isset($quantity[$key]) && $quantity[$key] > 0 && $product > 0) {
+                    $product_details = Product::find($product);
+                    $total = ($product_details->selling_price + $product_details->vat * 0.01 * $product_details->selling_price) * $quantity[$key];
+                    $product_bill = BillProduct::create([
+                        'product_id' => $product,
+                        'bill_id' => $bill->id,
+                        'quantity' => $quantity[$key],
+                        'price' => $product_details->selling_price,
+                        'vat' => $product_details->vat,
+                        'total' => $total
+                    ]);
+                    $alltotal += $total;
+                    $tax += $product_details->vat * 0.01 * $product_details->selling_price * $quantity[$key];
+                    $subtotal += $product_details->selling_price * $quantity[$key];
+                }
+
+            }
+
+            $bill->subtotal = $subtotal;
+            $bill->tax = $tax;
+            $bill->total = $alltotal;
+            $bill->save();
+
+            DB::commit();
+            return array('bill_details' => $bill);
+
+        } catch(\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
     }
 
-    function selling_price()
+    function deleteBillProducts($id)
     {
-        return $this->convertToCurrency($this->selling_price);
-    }
-
-    function vat()
-    {
-        return $this->vat . '%';
-    }
-
-    function purchase_cost()
-    {
-        return $this->convertToCurrency($this->purchase_cost);
-    }
-
-    function convertToCurrency($num)
-    {
-        return '$' . number_format($num, 2);
-    }
-
-    function toData()
-    {
-        $this->show_url = tenant()->url('inventory/product/' . $this->id);
-        $this->edit_url = tenant()->url('inventory/product/' . $this->id . '/edit');
-        $this->purchase_cost = $this->purchase_cost();
-        $this->selling_price = $this->selling_price();
-        $this->vat = $this->vat();
-
-        return $this->toArray();
+        $product_bills = BillProduct::where('bill_id', $id)->get();
+        if (!empty($product_bills)) {
+            foreach ($product_bills as $product_bill) {
+                $product_bill->delete();
+            }
+            return true;
+        }
+        return false;
     }
 
 
@@ -145,4 +223,26 @@ class Bill extends Model {
     }
 
 
+    function billDetails($id = '')
+    {
+        $bill = Bill::find($id);
+
+        if($bill != NULL) {
+            $bill->customer = Customer::find($bill->customer_id)->name;
+
+            $bill->customer_details = Customer::find($bill->customer_id);
+
+            $bill_products = BillProduct::where('bill_id', $id)->get();
+            if($bill_products) {
+                foreach ($bill_products as $bill_product)
+                {
+                    $bill_product->product_name = Product::find($bill_product->product_id)->name;
+                }
+                $bill->products = $bill_products;
+            }
+
+            return $bill;
+        }
+        return false;
+    }
 }

@@ -46,7 +46,7 @@ class UserController extends BaseController {
     {
     	$all_users = $this->user->where('id', '!=', $this->current_user->id)->get();
     	$data = array('all_users' => $all_users);
-    	return view('tenant.users.list')->withPageTitle('All Users')->with($data);
+    	return view('tenant.users.list')->with('pageTitle', 'All Users')->with($data);
     }
 
     public function saveUser(Request $request)
@@ -139,7 +139,7 @@ class UserController extends BaseController {
     	$guid = $this->request->route('guid');
         $user = User::where('guid', $guid)->first();
         $profile = Profile::where('user_id', $user['id'])->first();
-        return view('tenant.users.profile', compact('user', 'profile'))->withPageTitle('User Details');
+        return view('tenant.users.profile', compact('user', 'profile'))->with('pageTitle', 'User Details');
     }
 
     public function updateUser(Request $request)

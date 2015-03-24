@@ -138,8 +138,8 @@ return [
        // 'Barryvdh\Debugbar\ServiceProvider',
         'Illuminate\Html\HtmlServiceProvider',
         'Laracasts\Flash\FlashServiceProvider',
-        'anlutro\cURL\Laravel\cURLServiceProvider',
-        'Clockwork\Support\Laravel\ClockworkServiceProvider',
+       // 'anlutro\cURL\Laravel\cURLServiceProvider',
+       'Clockwork\Support\Laravel\ClockworkServiceProvider',
 
         /*
          * Application Service Providers...
@@ -150,7 +150,7 @@ return [
         'App\Providers\EventServiceProvider',
         'App\Providers\RouteServiceProvider',
         'App\Providers\HelperServiceProvider',
-        'Elibyy\TCPDF\ServiceProvider',
+        //'Elibyy\TCPDF\ServiceProvider',
 
 
     ],
