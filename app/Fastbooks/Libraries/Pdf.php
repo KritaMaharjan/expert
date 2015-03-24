@@ -75,7 +75,7 @@ class Pdf {
         if ($download)
             $this->pdf->Output($filename . '.pdf', 'D');
         else
-            $this->pdf->Output($this->uploadPath . $filename . '.pdf', 'f');
+            $this->pdf->Output($this->uploadPath . $filename . '.pdf', 'I');
 
     }
 

@@ -4,7 +4,7 @@ namespace App\Models\Tenant;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Profile extends Model  {
+class Profile extends Model {
 
     /**
      * The database table used by the model.
@@ -26,35 +26,47 @@ class Profile extends Model  {
      *
      * @var array
      */
-  
-     protected $primaryKey = "user_id";
+
+    protected $primaryKey = "user_id";
 
 
-    public function updateprofile($user_id,$details,$flieds)
-   {
+    public function updateprofile($user_id, $details, $flieds)
+    {
         $profile = Profile::firstorNew(['user_id' => $user_id]);
         $profile->$flieds = $details;
         $profile->save();
-        
-   }
 
-   public function getPersonalSetting($user_id='')
-   {
-       $profile = Profile::firstOrCreate(['user_id'=>$user_id]);
+    }
+
+    function getPersonalEmailSettingAttribute($value)
+    {
+        $data = @unserialize($value);
+        if ($data !== false) {
+            return $data;
+        } else {
+            return $value;
+        }
+    }
+
+    public function getPersonalSetting($user_id = '')
+    {
+        $profile = Profile::firstOrCreate(['user_id' => $user_id]);
         $data = @unserialize($profile->personal_email_setting);
         if ($data !== false) {
             return $data;
         } else {
             return $profile->personal_email_setting;
         }
-   }
-   public function getSupportSetting()
-   {
-       $profile = \DB::table('fb_settings')->where('name', 'support_email_setting')->first();
+
+
+    public function getSupportSetting($user_id = '')
+    {
+         $profile = \DB::table('fb_settings')->where('name', 'support_email_setting')->first();
+
 
         $data = @unserialize($profile->value);
         if ($data !== false) {
             return $data;
         }
-   }
+    }
 }

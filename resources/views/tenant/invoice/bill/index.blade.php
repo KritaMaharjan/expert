@@ -1,13 +1,14 @@
 @extends('tenant.layouts.main')
 
+<?php $type = Request::segment(2); ?>
 @section('heading')
-Bill
+{{ ucfirst($type) }}
 @stop
 
 @section('breadcrumb')
     @parent
     <li><a data-push="true" href="{{tenant_route('tenant.invoice.index')}}"><i class="fa fa-cog"></i> Invoice</a></li>
-    <li><i class="fa fa-money"></i> Bill</li>
+    <li><i class="fa fa-money"></i> {{ ucfirst($type) }}</li>
 @stop
 
 
@@ -19,7 +20,7 @@ Bill
           <div class="box box-solid">
             <p class="align-right btn-inside">
                  <a class="btn btn-primary" href="{{tenant_route('tenant.invoice.bill.add')}}">
-                       <i class="fa fa-plus"></i> Add new bill
+                       <i class="fa fa-plus"></i> Add new {{ $type }}
                  </a>
              </p>
             <div class="box-body table-responsive">
@@ -39,6 +40,9 @@ Bill
           </div><!-- /.box -->
         </div>
 </div>
+    <script>
+       var thisUrl = "{{ $type }}";
+    </script>
     {{--Load JS--}}
     {{FB::js('assets/js/bill.js')}}
 

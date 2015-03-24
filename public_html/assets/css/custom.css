@@ -137,13 +137,20 @@ a{
     .invoice-table tr {
         position: relative;
       }
-        .position-r {
+        .position-r,.position-relative {
             position: relative;
         }
-        .action-buttons .delete {
-            margin-left: 99%;
-            position: absolute;
+        .action-buttons {
+          position:absolute;
+          right:0;
+          top:10px;
         }
+        /*.action-buttons .delete {
+          display:block;
+          position:absolute;
+          right:38px;
+          top:50px;
+        }*/
             .invoice-edit-line, .invoice-delete, .invoice-drag {
                 display: block;
             }
@@ -179,7 +186,7 @@ a{
         width: 40%;
         float: left;
     }
-    .invoice-col .form-group input.form-control{
+    .invoice-col .form-group input.form-control,.invoice-col .form-group select.form-control{
         display: block;
         float: left;
         width: 40%;
@@ -203,9 +210,17 @@ a{
         .right-from .form-control {
             float: right !important;
         }
+
         .position-r .select2{
             width: 100%!important;
         }
+
+        .border-bx{
+            border: 1px solid #dbdbdb;
+            padding: 6px 12px;
+            height:34px;
+        }
+
           
 .disply-inline{
     float: left;width: 50%;
@@ -733,7 +748,7 @@ div.dataTables_length select {
     max-width: 100px;
 }
 .mg-adj{
-    margin-right: 16%;
+    margin-right: 18%;
 }
 .mg-adj a{
     white-space: nowrap;
