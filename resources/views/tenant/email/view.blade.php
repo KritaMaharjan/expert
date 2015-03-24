@@ -50,7 +50,7 @@
     <hr/>
    <?php $attachments = $mail->attachments;?>
     @if(count($attachments)>0)
-        <i class="fa fa-attach"></i> :
+        <i class="fa fa-paperclip"></i> :
         @foreach($attachments as $file)
             <a target="_blank" href="{{$file->path()}}">{{$file->file}}</a>
         @endforeach
