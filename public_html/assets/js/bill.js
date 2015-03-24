@@ -53,6 +53,21 @@ $(function () {
         $hidden_child = '<tr class="temp_tr">' +
         '<td colspan="5"><div class="clearfix">' +
         '<ul class="links-td">' +
+        '<li><a href="'+appUrl+'invoice/'+thisUrl+'/'+d.id+'/download">Download</a></li>' +
+        '<li><a href="'+appUrl+'invoice/'+thisUrl+'/'+d.id+'/print">Print</a></li>' +
+        '</ul>' +
+        '</div></td></tr>';
+        return $hidden_child;
+
+        return 'Full name: ' + d.name + '<br>' +
+        'Salary: ' + d.due_date + '<br>' +
+        'The child row can contain any data you wish, including links, images, inner tables etc.';
+    }
+
+    function format_bck(d) {
+        $hidden_child = '<tr class="temp_tr">' +
+        '<td colspan="5"><div class="clearfix">' +
+        '<ul class="links-td">' +
         '<li><a class="link-block" href="#">Register payment</a></li>' +
         '<li><a href="#">Last ned and print</a></li>' +
         '<li><a href="#">Resend</a></li>' +
@@ -75,7 +90,7 @@ $(function () {
 
     function showActionbtn(row) {
         return '<div class="box-tools"> ' +
-        '<a href="' + appUrl + 'invoice/bill/' + row.id + '/edit" title="Edit" class="btn btn-box-tool">' +
+        '<a href="' + appUrl + 'invoice/'+thisUrl+'/' + row.id + '/edit" title="Edit" class="btn btn-box-tool">' +
         '<i class="fa fa-edit"></i>' +
         '</a>' +
         '<button class="btn btn-box-tool btn-delete-bill" data-toggle="tooltip" data-id="' + row.id + '" data-original-title="Remove"><i class="fa fa-times"></i></button>' +
@@ -98,7 +113,7 @@ $(function () {
             parentTr.hide('slow');
 
             $.ajax({
-                url: appUrl + 'invoice/bill/' + id + '/delete',
+                url: appUrl + 'invoice/'+thisUrl+'/' + id + '/delete',
                 type: 'GET',
                 dataType: 'json'
             })
