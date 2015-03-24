@@ -33,7 +33,6 @@ class OfferController extends BaseController {
 
     protected $rules = [
         'customer'        => 'required',
-        'invoice_number'           => 'required|numeric|unique:fb_bill',
         'due_date' => 'required|date'
     ];
 

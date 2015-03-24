@@ -27,7 +27,7 @@ $(function () {
             {"data": "customer"},
             {"data": "total"},
             {"data": "invoice_date"},
-            (thisUrl == 'offer')? {"data": "status"} : ''
+            (thisUrl == 'bill')? {"data": "status"} : ''
         ]
 
     });
