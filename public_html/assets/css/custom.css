@@ -203,7 +203,9 @@ a{
         .right-from .form-control {
             float: right !important;
         }
-
+        .position-r .select2{
+            width: 100%!important;
+        }
           
 .disply-inline{
     float: left;width: 50%;

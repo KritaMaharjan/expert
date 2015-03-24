@@ -48,15 +48,13 @@ class Profile extends Model  {
             return $profile->personal_email_setting;
         }
    }
-   public function getSupportSetting($user_id='')
+   public function getSupportSetting()
    {
-       $profile = Profile::find($user_id);
+       $profile = \DB::table('fb_settings')->where('name', 'support_email_setting')->first();
 
-        $data = @unserialize($profile->support_email_setting);
+        $data = @unserialize($profile->value);
         if ($data !== false) {
             return $data;
-        } else {
-            return $profile->support_email_setting;
         }
    }
 }
