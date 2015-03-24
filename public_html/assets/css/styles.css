@@ -3034,3 +3034,7 @@ table.text-center, table.text-center td, table.text-center th {
     margin: 10% auto;
     width: 500px;
 }
+
+.error{
+    color:red;
+}

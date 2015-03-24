@@ -1,32 +1,5 @@
-@extends('tenant.layouts.main')
-
-@section('heading') Create Bill @stop
-
-@section('breadcrumb')
-    @parent
-    <li><a data-push="true" href="{{tenant_route('tenant.invoice.index')}}"><i class="fa fa-cog"></i> Invoice</a></li>
-    <li><i class="fa fa-money"></i> Bill</li>
-@stop
-
-@section('content')
-<!-- Main content -->
-<div class="row">
-<div class="col-xs-12 mainContainer">
-<div class="box box-solid">
-
-<div class="box-body">
-
-  <!-- title row -->
-  <div class="row">
-    <div class="col-xs-12">
-      <h2 class="page-header">
-        FastBooks
-        <small class="pull-right">Date: <?php echo date('d/m/Y') ?></small>
-      </h2>
-    </div><!-- /.col -->
-  </div>
-
-  {!! Form::open(array('method'=>'POST')) !!}
+<!-- info row -->
+  <div class="row invoice-info">
 
     <div class="col-sm-5 invoice-col col-xs-6">
 
@@ -34,16 +7,27 @@
           {!! Form::label('id', 'Bill No.') !!}
           {!! Form:: text('id', null, array('class' => 'form-control')) !!}
         </div>
-        <div class="form-group clearfix sel-2">
+        <div class="form-group clearfix">
          {!! Form::label('customer', 'Select customer') !!}
-         {!! Form::select('customer', array('' => 'Select Customer'), null, array('class' => 'select-single form-control')) !!}
+         @if(isset($bill) && !empty($bill->customer))
+            {!! Form::select('customer', array($bill->customer_id => $bill->customer), $bill->customer_id, array('class' => 'select-single form-control', 'required' => 'required')) !!}
+         @else
+            {!! Form::select('customer', array('' => 'Select Customer'), null, array('class' => 'select-single form-control', 'required' => 'required')) !!}
+         @endif
           <p class="align-right mg-adj">
             <a href="{{ tenant_route('tenant.customer') }}">Add customer</a>
         </p>
         </div>
 
-
       <address class="customer-info">
+
+        @if(isset($bill->customer_details))
+            <strong>{{ $bill->customer_details->name }} </strong><br>
+            {{ $bill->customer_details->street_name  }} {{ $bill->customer_details->street_number  }} <br>
+            {{ $bill->customer_details->town  }} <br>
+            Phone: {{ $bill->customer_details->telephone  }} <br>
+            Email: {{ $bill->customer_details->email }}
+        @endif
       </address>
     </div><!-- /.col -->
      <div class="col-sm-7 invoice-col col-xs-6">
@@ -109,7 +93,7 @@
                                         'DKK' => 'DKK',
                                         'SEK' => 'SEK',
                                         'CNY' => 'CNY'
-                            ), 'NOK', array('class' => 'form-control')) !!}
+                            ), null, array('class' => 'form-control')) !!}
         </div>
       </div>
 
@@ -132,25 +116,44 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="position-r">
+          @if(isset($bill) && !empty($bill->products))
+            @foreach($bill->products as $product)
+                <tr class="position-r">
             <td>
               <div class="action-buttons">
                 <div class="delete">
                   <a title="Delete line" class="invoice-delete fa fa-close btn-danger" href="#"></a>
                 </div>
               </div>
-
-            {!! Form::select('product[]', array('' => 'Select Product'), null, array('class' => 'select-product form-control')) !!}
+            {!! Form::select('product[]', array($product->product_id => $product->product_name), $product->id, array('class' => 'select-product form-control')) !!}
             {{--{!! Form:: text('product_name', null, array('class' => 'form-control')) !!}--}}
             </td>
 
-            <td>{!! Form:: input('number', 'quantity[]', null, array('class' => 'form-control quantity', 'id' => 'quantity', 'required'=>'required')) !!}</td>
-            <td><span class="border-bx block price"></span></td>
-            <td><span class="border-bx block vat"></span></td>
-            <td><span class="border-bx block total"></span></td>
+            <td>{!! Form:: input('number', 'quantity[]', $product->quantity, array('class' => 'form-control quantity', 'id' => 'quantity', 'required'=>'required')) !!}</td>
+            <td>{!! Form:: text('price', $product->price, array('class' => 'form-control price')) !!}</td>
+            <td>{!! Form:: text('vat', $product->vat, array('class' => 'form-control vat')) !!}</td>
+            <td>{!! Form:: text('total', $product->total, array('class' => 'form-control total', 'readonly' => 'readonly')) !!}</td>
+          </tr>
+            @endforeach
+          @else
+          <tr class="position-r">
+              <td>
+                <div class="action-buttons">
+                  <div class="delete">
+                    <a title="Delete line" class="invoice-delete fa fa-close btn-danger" href="#"></a>
+                  </div>
+                </div>
+              {!! Form::select('product[]', array('' => 'Select Product'), null, array('class' => 'select-product form-control')) !!}
+              {{--{!! Form:: text('product_name', null, array('class' => 'form-control')) !!}--}}
+              </td>
+
+              <td>{!! Form:: input('number', 'quantity[]', null, array('class' => 'form-control quantity', 'id' => 'quantity', 'required'=>'required')) !!}</td>
+              <td>{!! Form:: text('price', null, array('class' => 'form-control price')) !!}</td>
+              <td>{!! Form:: text('vat', null, array('class' => 'form-control vat')) !!}</td>
+              <td>{!! Form:: text('total', null, array('class' => 'form-control total', 'readonly' => 'readonly')) !!}</td>
           </tr>
 
-
+          @endif
 
         </tbody>
       </table>
@@ -169,38 +172,17 @@
         <table class="table">
           <tr>
             <th style="width:50%">Subtotal:</th>
-            <td id="subtotal"></td>
+            <td id="subtotal">{{ $bill->subtotal or '' }}</td>
           </tr>
           <tr>
             <th>Tax Amount:</th>
-            <td id="tax-amount"></td>
+            <td id="tax-amount">{{ $bill->tax or '' }}</td>
           </tr>
           <tr>
             <th>Total:</th>
-            <td id="all-total"></td>
+            <td id="all-total">{{ $bill->total or '' }}</td>
           </tr>
         </table>
       </div>
     </div><!-- /.col -->
   </div><!-- /.row -->
-
- <!-- this row will not appear when printing -->
-  <div class="row no-print">
-    <div class="col-xs-12">
-        {!! Form::button('Submit', array('class'=>'btn btn-primary pull-right', 'type'=>'submit')) !!}
-    </div>
-  </div>
-
-  {!! Form::close() !!}
-</div>
-</div>
-</div><!-- /.content -->
-</div>
-<div class="clearfix"></div>
-    {{FB::js('assets/plugins/slimScroll/jquery.slimScroll.min.js')}}
-    {{FB::js('assets/plugins/fastclick/fastclick.min.js')}}
-    {{FB::js('assets/js/select2.js')}}
-    {{FB::js('assets/js/create-bill.js')}}
-@stop
-
-

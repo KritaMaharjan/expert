@@ -75,7 +75,9 @@ $(function () {
 
     function showActionbtn(row) {
         return '<div class="box-tools"> ' +
-        '<span data-toggle="modal" data-target="#fb-modal" data-url="' + appUrl + 'update/bill/' + row.guid + '"> <a data-original-title="Update" data-toggle="tooltip" class="btn btn-box-tool"><i class="fa fa-edit"></i></a> </span> ' +
+        '<a href="' + appUrl + 'invoice/bill/' + row.id + '/edit" title="Edit" class="btn btn-box-tool">' +
+        '<i class="fa fa-edit"></i>' +
+        '</a>' +
         '<button class="btn btn-box-tool btn-delete-bill" data-toggle="tooltip" data-id="' + row.id + '" data-original-title="Remove"><i class="fa fa-times"></i></button>' +
         '</div>';
     }
