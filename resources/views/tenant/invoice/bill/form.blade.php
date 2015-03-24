@@ -20,6 +20,14 @@
         </div>
 
       <address class="customer-info">
+
+        @if(isset($bill->customer_details))
+            <strong>{{ $bill->customer_details->name }} </strong><br>
+            {{ $bill->customer_details->street_name  }} {{ $bill->customer_details->street_number  }} <br>
+            {{ $bill->customer_details->town  }} <br>
+            Phone: {{ $bill->customer_details->telephone  }} <br>
+            Email: {{ $bill->customer_details->email }}
+        @endif
       </address>
     </div><!-- /.col -->
      <div class="col-sm-7 invoice-col col-xs-6">

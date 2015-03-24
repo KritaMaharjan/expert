@@ -28,6 +28,12 @@
 
        {!!Form::model($bill,['id'=>'bill-form'])!!}
             @include('tenant.invoice.bill.form')
+            <div class="row no-print">
+            <div class="col-xs-12">
+                {!! Form::button('Submit', array('class'=>'btn btn-primary pull-right', 'type'=>'submit')) !!}
+            </div>
+            </div>
+
        {!!Form::close()!!}
 </div>
 

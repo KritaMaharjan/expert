@@ -87,6 +87,76 @@ class Bill extends Model {
     }
 
 
+    function edit(Request $request, $id)
+    {
+        // Start transaction!
+        DB::beginTransaction();
+        try {
+            $bill = Bill::find($id);
+            $bill->invoice_number = $request->input('invoice_number');
+            $bill->customer_id = $request->input('customer_id');
+            $bill->invoice_date = $request->input('invoice_date');
+            $bill->due_date = $request->input('due_date');
+            $bill->account_number = $request->input('account_number');
+            $bill->currency = $request->input('currency');
+            $bill->save();
+
+            $products = $request->input('product');
+            $quantity = $request->input('quantity');
+
+            $alltotal = 0;
+            $subtotal = 0;
+            $tax = 0;
+
+            $this->deleteBillProducts($id);
+
+            foreach($products as $key => $product)
+            {
+                if(isset($quantity[$key]) && $quantity[$key] > 0 && $product > 0) {
+                    $product_details = Product::find($product);
+                    $total = ($product_details->selling_price + $product_details->vat * 0.01 * $product_details->selling_price) * $quantity[$key];
+                    $product_bill = BillProduct::create([
+                        'product_id' => $product,
+                        'bill_id' => $bill->id,
+                        'quantity' => $quantity[$key],
+                        'price' => $product_details->selling_price,
+                        'vat' => $product_details->vat,
+                        'total' => $total
+                    ]);
+                    $alltotal += $total;
+                    $tax += $product_details->vat * 0.01 * $product_details->selling_price * $quantity[$key];
+                    $subtotal += $product_details->selling_price * $quantity[$key];
+                }
+
+            }
+
+            $bill->subtotal = $subtotal;
+            $bill->tax = $tax;
+            $bill->total = $alltotal;
+            $bill->save();
+
+            DB::commit();
+            return array('bill_details' => $bill);
+
+        } catch(\Exception $e) {
+            DB::rollback();
+            throw $e;
+        }
+    }
+
+    function deleteBillProducts($id)
+    {
+        $product_bills = BillProduct::where('bill_id', $id)->get();
+        if (!empty($product_bills)) {
+            foreach ($product_bills as $product_bill) {
+                $product_bill->delete();
+            }
+            return true;
+        }
+        return false;
+    }
+
+
     function dataTablePagination(Request $request, array $select = array())
     {
 
@@ -159,6 +229,9 @@ class Bill extends Model {
 
         if($bill != NULL) {
             $bill->customer = Customer::find($bill->customer_id)->name;
+
+            $bill->customer_details = Customer::find($bill->customer_id);
+
             $bill_products = BillProduct::where('bill_id', $id)->get();
             if($bill_products) {
                 foreach ($bill_products as $bill_product)
@@ -170,7 +243,6 @@ class Bill extends Model {
 
             return $bill;
         }
-
         return false;
     }
 }

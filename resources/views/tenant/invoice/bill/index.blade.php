@@ -14,8 +14,8 @@ Bill
 @section('content')
 
 <div class="row">
-        @include('flash::message')
         <div class="col-xs-12 mainContainer">
+            @include('flash::message')
           <div class="box box-solid">
             <p class="align-right btn-inside">
                  <a class="btn btn-primary" href="{{tenant_route('tenant.invoice.bill.add')}}">
