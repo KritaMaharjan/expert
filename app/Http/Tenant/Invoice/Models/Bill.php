@@ -38,7 +38,7 @@ class Bill extends Model {
         try {
             $bill = Bill::create([
                 'invoice_number' => $request->input('invoice_number'),
-                'customer_id' => $request->input('customer_id'),
+                'customer_id' => $request->input('customer'),
                 'invoice_date' => $request->input('invoice_date'),
                 'due_date' => $request->input('due_date'),
                 'account_number' => $request->input('account_number'),
@@ -94,7 +94,7 @@ class Bill extends Model {
         try {
             $bill = Bill::find($id);
             $bill->invoice_number = $request->input('invoice_number');
-            $bill->customer_id = $request->input('customer_id');
+            $bill->customer_id = $request->input('customer');
             $bill->invoice_date = $request->input('invoice_date');
             $bill->due_date = $request->input('due_date');
             $bill->account_number = $request->input('account_number');
