@@ -103,15 +103,11 @@ $(function () {
                         form.prepend(notify('danger', response.data.error));
                     }
                 }
-
-
             })
             .fail(function () {
-                console.log("error");
+               alert("Connect Error!");
             })
-            .always(function () {
-                console.log("complete");
-            });
+
 
     });
 
@@ -123,14 +119,14 @@ $(function () {
 
     function getTemplate(data) {
         var html = '<tr class="e' + data.id + '">' +
-            '<td class="small-col"><i class="fa fa-envelope"></i></td>' +
+            '<td class="small-col"><i class="fa fa-reply"></i></td>' +
             '<td class="name">' +
             '<a style="display: block" href="#" data-id="' + data.id + '">' +
             data.to +
             '<small class="subject">' + data.subject + '</small>' +
             '</a>' +
             '</td>' +
-            '<td class="time">'+ data.created_at + '</td>' +
+            '<td class="time"><span>' + data.created_at + '</span></td>' +
             '</tr>';
 
         return html;
@@ -144,9 +140,12 @@ $(function () {
 
 
         //@pooja
+       
         if(action =='reply')
         {
-           $('.modal-title').html('reply');
+           $('.modal-title').html('Reply to Message');
+        }else if(action == 'forward'){
+            $('.modal-title').html('Forward Message');
         }
 
         var inputType = 0;
@@ -166,7 +165,7 @@ $(function () {
             $.ajax({
                 url: appUrl + 'desk/email/' + id + '/get',
                 type: 'GET',
-                dataType: 'json',
+                dataType: 'json'
             })
                 .done(function (response) {
                     var mail = response.data.mail;
@@ -252,6 +251,9 @@ $(function () {
 
     $(document).on('click', '.email-delete', function (e) {
         e.preventDefault();
+
+        if (!confirm('Are you sure, you want to delete email permanently?')) return false;
+
         var id = $(this).data('id');
         $.ajax({
             url: appUrl + 'desk/email/' + id + '/delete',
@@ -299,7 +301,7 @@ $(function () {
         var wrap = $(this).parent();
         var action = $(this).data('action');
 
-        if (!confirm('Are you sure, you want to delete attachment permanently?')) return false;
+        if (!confirm('Are you sure, you want to delete attachment?')) return false;
 
         if (action == 'compose') {
             $.ajax({

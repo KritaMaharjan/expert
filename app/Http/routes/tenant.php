@@ -109,6 +109,8 @@ Route::group($group_auth, function () {
         get('invoice/bill/{id}/edit', ['as' => 'tenant.invoice.bill.edit', 'uses' => 'BillController@edit']);
         post('invoice/bill/{id}/edit', ['as' => 'tenant.invoice.bill.update', 'uses' => 'BillController@update']);
         get('invoice/bill/{id}/delete', ['as' => 'tenant.invoice.bill.delete', 'uses' => 'BillController@delete']);
+        get('invoice/bill/{id}/download', ['as' => 'tenant.invoice.bill.download', 'uses' => 'BillController@download']);
+        get('invoice/bill/{id}/print', ['as' => 'tenant.invoice.bill.download', 'uses' => 'BillController@printBill']);
 
         // invoice routes
         get('invoice', ['as' => 'tenant.invoice.index', 'uses' => 'InvoiceController@index']);
@@ -122,6 +124,8 @@ Route::group($group_auth, function () {
         get('invoice/offer/{id}/edit', ['as' => 'tenant.invoice.offer.edit', 'uses' => 'OfferController@edit']);
         post('invoice/offer/{id}/edit', ['as' => 'tenant.invoice.offer.update', 'uses' => 'OfferController@update']);
         get('invoice/offer/{id}/delete', ['as' => 'tenant.invoice.offer.delete', 'uses' => 'OfferController@delete']);
+        get('invoice/offer/{id}/download', ['as' => 'tenant.invoice.offer.download', 'uses' => 'BillController@download']);
+        get('invoice/offer/{id}/print', ['as' => 'tenant.invoice.offer.print', 'uses' => 'BillController@printBill']);
     });
 
 

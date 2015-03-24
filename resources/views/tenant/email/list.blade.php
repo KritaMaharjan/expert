@@ -10,13 +10,13 @@
               <a style="display: block" href="#" data-id="{{$mail->id}}" >
                     @foreach($receiver as $to)
                         @if($to->type ==1)
-                           {{ $to->email}};
+                           {{ str_limit($to->email,30)}};
                         @endif
                      @endforeach
-                <small class="subject">{{$mail->subject}}</small>
+                <small class="subject">{{str_limit($mail->subject,40)}}</small>
               </a>
             </td>
-            <td class="time">{{$mail->created_at->diffForHumans()}}</td>
+            <td class="time"><small>{{email_date($mail->created_at)}}</small></td>
           </tr>
           @endforeach
     </tbody>

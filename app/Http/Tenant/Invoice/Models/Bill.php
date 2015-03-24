@@ -21,7 +21,7 @@ class Bill extends Model {
      *
      * @var array
      */
-    protected $fillable = ['invoice_number', 'customer_id', 'invoice_date', 'currency', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'status', 'account_number', 'due_date'];
+    protected $fillable = ['invoice_number', 'customer_id', 'currency', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'status', 'due_date', 'is_offer'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -31,17 +31,17 @@ class Bill extends Model {
     protected $hidden = [];
 
 
-    function add(Request $request)
+    function add(Request $request, $offer = false)
     {
         // Start transaction!
         DB::beginTransaction();
         try {
             $bill = Bill::create([
-                'invoice_number' => $request->input('invoice_number'),
+                'invoice_number' => $this->getPrecedingInvoiceNumber(),
                 'customer_id' => $request->input('customer'),
                 'due_date' => $request->input('due_date'),
-                'account_number' => $request->input('account_number'),
                 'currency' => $request->input('currency'),
+                'is_offer' => ($offer == true)? 1:0
             ]);
 
             $products = $request->input('product');
@@ -72,6 +72,7 @@ class Bill extends Model {
             }
 
             $bill->subtotal = $subtotal;
+            $bill->invoice_number = $this->getPrecedingInvoiceNumber($bill->id);
             $bill->tax = $tax;
             $bill->total = $alltotal;
             $bill->save();
@@ -92,10 +93,8 @@ class Bill extends Model {
         DB::beginTransaction();
         try {
             $bill = Bill::find($id);
-            $bill->invoice_number = $request->input('invoice_number');
             $bill->customer_id = $request->input('customer');
             $bill->due_date = $request->input('due_date');
-            $bill->account_number = $request->input('account_number');
             $bill->currency = $request->input('currency');
             $bill->save();
 
@@ -181,7 +180,10 @@ class Bill extends Model {
             $query = $query->where('is_offer', 0);
 
         if ($orderColumn != '' AND $orderdir != '') {
-            $query = $query->orderBy($orderColumn, $orderdir);
+            if($orderColumn != 'invoice_date')
+                $query = $query->orderBy($orderColumn, $orderdir);
+            else
+                $query = $query->orderBy('created_at', $orderdir);
         }
 
         if ($search != '') {
@@ -248,13 +250,17 @@ class Bill extends Model {
         return false;
     }
 
-    function getPrecedingInvoiceNumber()
+    function getPrecedingInvoiceNumber($id = NULL)
     {
-        $latest = Bill::orderBy('id', 'desc')->first();
-        if($latest)
-            $new_invoice_num = date('my').sprintf("%03d", ($latest->id + 1));
-        else
-            $new_invoice_num = date('my').'001';
+        if($id != NUll)
+            $new_invoice_num = date('my').sprintf("%03d", $id);
+        else {
+            $latest = Bill::orderBy('id', 'desc')->first();
+            if ($latest)
+                $new_invoice_num = date('my') . sprintf("%03d", ($latest->id + 1));
+            else
+                $new_invoice_num = date('my') . '001';
+        }
         return$new_invoice_num;
     }
 }

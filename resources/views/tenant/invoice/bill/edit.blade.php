@@ -21,7 +21,7 @@
     <div class="col-xs-12">
       <h2 class="page-header">
         FastBooks
-        <small class="pull-right">Invoice Date: <?php echo date('d-M-Y') ?></small>
+        <small class="pull-right">Invoice Date: <?php echo date('d-M-Y', strtotime($bill->created_at)) ?></small>
       </h2>
     </div><!-- /.col -->
   </div>
