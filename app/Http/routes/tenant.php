@@ -181,15 +181,5 @@ Route::group($group_auth, function () {
         get('customer/suggestions', ['as' => 'tenant.customer.suggestions', 'uses' => 'Tenant\Customer\CustomerController@getCustomerSuggestions']);
         get('customer/details/{customerId}', ['as' => 'tenant.customer.details', 'uses' => 'Tenant\Customer\CustomerController@getCustomerDetails']);
         post('test/upload', ['as' => 'test.upload', 'uses' => 'Tenant\Customer\CustomerController@testUpload']);
-
-
     });
-
-/*for test add by pradeep */
-
-    Route:: get('tenant/test', ['as' => 'pdf', 'uses' => 'Controllers\Tenant\Pdf\PdfController@index']);
-    Route:: get('tenant/create/pdf', ['as' => 'pdf', 'uses' => 'Controllers\Tenant\Pdf\PdfController@create_pdf']);
-    Route:: get('tenant/send/pdf', ['as' => 'sendpdf', 'uses' => 'Controllers\Tenant\Pdf\PdfController@sendEmailPdf']);
-   
-
 });
