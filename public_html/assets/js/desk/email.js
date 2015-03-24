@@ -140,8 +140,9 @@ $(function () {
 
 
         //@pooja
-        if (action == 'reply') {
-            $('.modal-title').html('reply');
+        if(action =='reply')
+        {
+           $('.modal-title').html('Reply to Message');
         }
 
         var inputType = 0;
@@ -161,7 +162,7 @@ $(function () {
             $.ajax({
                 url: appUrl + 'desk/email/' + id + '/get',
                 type: 'GET',
-                dataType: 'json',
+                dataType: 'json'
             })
                 .done(function (response) {
                     var mail = response.data.mail;

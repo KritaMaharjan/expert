@@ -20,7 +20,7 @@
                            {!! Form::text('email_cc', null, ['id'=>'email_cc', 'class'=>'form-control', 'placeholder'=>'Email CC']) !!}
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group clearfix">
                         <div class="input-group">
                             <span class="input-group-addon">Subject:</span>
                               {!! Form::text('subject', null, ['id'=>'subject','class'=>'form-control', 'placeholder'=>'']) !!}
