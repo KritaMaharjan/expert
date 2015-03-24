@@ -61,8 +61,8 @@ class BillController extends BaseController
 
     public function add()
     {
-        dd($this->bill->getPrecedingInvoiceNumber());
         $company_details = $this->getCompanyDetails();
+        $company_details['invoice_number'] = $this->bill->getPrecedingInvoiceNumber();
         return view('tenant.invoice.bill.create', compact('company_details'))->with('pageTitle', 'Add new bill');
     }
 
