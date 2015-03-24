@@ -7,6 +7,7 @@
     }
 ?>
 
+
 <!-- info row -->
   <div class="row invoice-info">
 
@@ -15,12 +16,15 @@
         <div class="form-group clearfix">
           <label>Invoice Number: </label>{{ $company_details['invoice_number'] or $bill->invoice_number }}
         </div>
-        <div class="form-group clearfix sel-2">
+        <div class="form-group clearfix sel-2 {{ ($errors->has('customer'))? 'has-error': '' }}">
          {!! Form::label('customer', 'Select customer') !!}
          @if(isset($bill) && !empty($bill->customer))
             {!! Form::select('customer', array($bill->customer_id => $bill->customer), $bill->customer_id, array('class' => 'select-single form-control', 'required' => 'required')) !!}
          @else
             {!! Form::select('customer', array('' => 'Select Customer'), null, array('class' => 'select-single form-control', 'required' => 'required')) !!}
+         @endif
+         @if($errors->has('customer'))
+             {!! $errors->first('customer', '<label class="control-label error" for="inputError">:message</label>') !!}
          @endif
           <p class="align-right mg-adj">
             <a href="{{ tenant_route('tenant.customer') }}">Add customer</a>
@@ -47,7 +51,7 @@
         {!! (isset($company_details['service_email']))? 'Email: '. $company_details['service_email'].'<br/>': " " !!}
       </address>
 
-      <div class="right-from">
+      <div class="right-from align-right">
         {{--<div class="form-group clearfix">
           {!! Form::label('invoice_number', 'Invoice number') !!}
           {!! Form:: text('invoice_number', null, array('class' => 'form-control')) !!}
@@ -66,13 +70,14 @@
               {!! $errors->first('customer_id', '<label class="control-label" for="inputError">:message</label>') !!}
           @endif
         </div>--}}
-        <div class="form-group clearfix">
+        <div class="form-group clearfix {{ ($errors->has('due_date'))? 'has-error': '' }}">
           {!! Form::label('due_date', 'Due date') !!}
           {!! Form:: text('due_date', null, array('class' => 'form-control', 'id' =>'due-date-picker')) !!}
-          @if($errors->has('due_date'))
-              {!! $errors->first('due_date', '<label class="control-label" for="inputError">:message</label>') !!}
-          @endif
+
         </div>
+         @if($errors->has('due_date'))
+                      {!! $errors->first('due_date', '<label class="control-label error" style="position: relative;top: -10px;"for="inputError">:message</label>') !!}
+                  @endif
         <div class="form-group clearfix">
           {!! Form::label('account_number', 'Account no') !!}
           <span class="border-bx block">{{ $company_details['account_no'] }}</span>
@@ -117,12 +122,16 @@
           @if(isset($bill) && !empty($bill->products))
             @foreach($bill->products as $product)
             <tr class="position-r">
-            <td>              
-            {!! Form::select('product[]', array($product->product_id => $product->product_name), $product->id, array('class' => 'select-product form-control', 'required' => 'required')) !!}
-            {{--{!! Form:: text('product_name', null, array('class' => 'form-control')) !!}--}}
+            <td>
+                <select name="product[]" class="select-product form-control">
+                    <option value="{{ $product->product_id }}">{{ $product->product_name }}</option>
+                </select>
+
             </td>
 
-            <td>{!! Form:: input('number', 'quantity[]', $product->quantity, array('class' => 'form-control quantity', 'id' => 'quantity', 'required'=>'required')) !!}</td>
+            <td>
+                <input type="number" name="quantity[]" class="add-quantity quantity form-control" id="quantity" value="{{$product->quantity}}" required="required" />
+            </td>
             <td><span class="border-bx block price">{{ $product->price }} </span></td>
             <td><span class="border-bx block vat">{{ $product->vat }} </span></td>
             <td class="position-relative">
@@ -137,12 +146,15 @@
           @else
           <tr class="position-r">
               <td>
-                
-              {!! Form::select('product[]', array('' => 'Select Product'), null, array('class' => 'select-product form-control')) !!}
-              {{--{!! Form:: text('product_name', null, array('class' => 'form-control')) !!}--}}
+                <select name="product[]" class="select-product form-control">
+                    <option value="">Select Product</option>
+                </select>
+              {{--{!! Form::select('product[]', array('' => 'Select Product'), null, array('class' => 'select-product form-control')) !!}--}}
               </td>
 
-              <td>{!! Form:: input('number', 'quantity[]', null, array('class' => 'form-control add-quantity quantity', 'id' => 'quantity', 'required'=>'required')) !!}</td>
+              <td>
+                <input type="number" name="quantity[]" class="add-quantity quantity form-control" id="quantity" required="required" />
+                {{--{!! Form:: text('number', 'quantity[]', null, array('class' => 'form-control add-quantity quantity', 'id' => 'quantity', 'required'=>'required')) !!}--}}</td>
               <td><span class="border-bx block price"> </span></td>
               <td><span class="border-bx block vat"> </span></td>
               <td class="position-relative">
