@@ -36,7 +36,7 @@
           {!! Form::label('id', 'Bill No.') !!}
           {!! Form:: text('id', null, array('class' => 'form-control')) !!}
         </div>
-        <div class="form-group clearfix">
+        <div class="form-group clearfix sel-2">
          {!! Form::label('customer', 'Select customer') !!}
          {!! Form::select('customer', array('' => 'Select Customer'), null, array('class' => 'select-single form-control')) !!}
           <p class="align-right mg-adj">
@@ -147,9 +147,9 @@
             </td>
 
             <td>{!! Form:: input('number', 'quantity[]', null, array('class' => 'form-control quantity', 'id' => 'quantity', 'required'=>'required')) !!}</td>
-            <td>{!! Form:: text('price', null, array('class' => 'form-control price')) !!}</td>
-            <td>{!! Form:: text('vat', null, array('class' => 'form-control vat')) !!}</td>
-            <td>{!! Form:: text('total', null, array('class' => 'form-control total', 'readonly' => 'readonly')) !!}</td>
+            <td><span class="border-bx block price"></span></td>
+            <td><span class="border-bx block vat"></span></td>
+            <td><span class="border-bx block total"></span></td>
           </tr>
 
 

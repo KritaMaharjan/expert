@@ -60,6 +60,9 @@ Route::group($group_auth, function () {
         get('email/{id}/forward', ['as' => 'tenant.email.forward', 'uses' => 'EmailController@forward']);
         get('email/list', ['as' => 'tenant.email.forward', 'uses' => 'EmailController@listing']);
         get('email/{id}/show', ['as' => 'tenant.email.show', 'uses' => 'EmailController@show']);
+        get('email/{id}/get', ['as' => 'tenant.email.get', 'uses' => 'EmailController@get']);
+        get('email/delete/attach', ['as' => 'tenant.email.attach.delete', 'uses' => 'EmailController@deleteAttachment']);
+
 
     });
 

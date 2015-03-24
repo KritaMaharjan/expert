@@ -614,7 +614,7 @@ fieldset.wrapper-box legend{
     font-size: 12px;
     margin-bottom: 0 !important;
 }
-#print input {
+#print input,#print .border-bx {
     height: 30px;
     width: 100%!important;
     border: 1px solid #dbdbdb;
@@ -723,7 +723,7 @@ div.dataTables_length select {
     max-width: 100px;
     height: 100px;
 }
-.invoice .select2{
+.invoice .select2,.sel-2 .select2{
     margin-left: 10px;
     width: 40% !important;
 }
