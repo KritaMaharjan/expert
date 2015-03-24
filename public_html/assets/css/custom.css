@@ -781,3 +781,18 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
 .error{
     color:red;
 }
+
+.red{
+    color:#dd4b39!important;
+}
+.green{
+    color: #00a65a!important;
+}
+.orange{
+    color: #f0ad4e!important;
+}
+.grey {
+    color: #bbb!important;
+}
+.orange,.red,.green{padding: 5px;}
+
