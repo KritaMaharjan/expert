@@ -118,14 +118,20 @@
             @foreach($bill->products as $product)
             <tr class="position-r">
             <td>              
-            {!! Form::select('product[]', array($product->product_id => $product->product_name), $product->id, array('class' => 'select-product form-control')) !!}
+            {!! Form::select('product[]', array($product->product_id => $product->product_name), $product->id, array('class' => 'select-product form-control', 'required' => 'required')) !!}
             {{--{!! Form:: text('product_name', null, array('class' => 'form-control')) !!}--}}
             </td>
 
             <td>{!! Form:: input('number', 'quantity[]', $product->quantity, array('class' => 'form-control quantity', 'id' => 'quantity', 'required'=>'required')) !!}</td>
             <td><span class="border-bx block price">{{ $product->price }} </span></td>
             <td><span class="border-bx block vat">{{ $product->vat }} </span></td>
-            <td><span class="border-bx block total">{{ $product->total }} </span></td>
+            <td class="position-relative">
+                <div class="action-buttons">
+                    <a title="Delete line" class="invoice-delete fa fa-close btn-danger" href="#"></a>
+                </div>
+                <span class="border-bx block total">{{ $product->total }} </span>
+            </td>
+
           </tr>
             @endforeach
           @else
@@ -141,7 +147,7 @@
               <td><span class="border-bx block vat"> </span></td>
               <td class="position-relative">
                 <div class="action-buttons">
-                    <a title="Delete line" class="invoice-delete fa fa-close btn-danger" href="#"></a>
+                    <a title="Delete" class="invoice-delete fa fa-close btn-danger" href="#"></a>
                 </div>
                 <span class="border-bx block total"> </span>
               </td>

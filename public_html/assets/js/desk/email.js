@@ -140,9 +140,12 @@ $(function () {
 
 
         //@pooja
+       
         if(action =='reply')
         {
            $('.modal-title').html('Reply to Message');
+        }else if(action == 'forward'){
+            $('.modal-title').html('Forward Message');
         }
 
         var inputType = 0;
