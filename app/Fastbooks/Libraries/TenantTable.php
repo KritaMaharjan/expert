@@ -147,7 +147,7 @@ class TenantTable {
     {
         if (!Schema::hasTable(self::TBL_PREFIX . 'products')) {
             Schema::create(self::TBL_PREFIX . 'products', function (Blueprint $table) {
-                $table->increments('id'); // autoincrement value of an product
+                $table->increments('id'); // autoincrement value of a product
                 $table->integer('user_id')->unsign()->index(); //user id who added the product
                 $table->string('number', 25)->unique();  // product
                 $table->string('name', 100)->unique();  // name of an product
@@ -160,6 +160,50 @@ class TenantTable {
             });
         }
     }
+
+    function emails()
+    {
+        if (!Schema::hasTable(self::TBL_PREFIX . 'emails')) {
+            Schema::create(self::TBL_PREFIX . 'emails', function (Blueprint $table) {
+                $table->increments('id'); // autoincrement value of an email
+                $table->integer('sender_id')->unsign()->index(); //sender user id
+                $table->text('message'); //message for email
+                $table->string('subject'); //subject for email
+                $table->text('note'); //note for email
+                $table->tinyInteger('status'); // email action status
+                $table->tinyInteger('type')->default('0'); //'0 for personal, 1 for support'
+
+                // created_at DATETIME
+                $table->timestamps();
+            });
+        }
+
+    }
+
+
+    function email_attachments()
+    {
+        if (!Schema::hasTable(self::TBL_PREFIX . 'emails')) {
+            Schema::create(self::TBL_PREFIX . 'emails', function (Blueprint $table) {
+                $table->increments('id'); // autoincrement value of an attachment
+                $table->integer('email_id')->unsign()->index(); //email id
+                $table->string('file'); //file name
+            });
+        }
+    }
+
+
+    function email_attachments()
+    {
+        if (!Schema::hasTable(self::TBL_PREFIX . 'emails')) {
+            Schema::create(self::TBL_PREFIX . 'emails', function (Blueprint $table) {
+                $table->increments('id'); // autoincrement value of an attachment
+                $table->integer('email_id')->unsign()->index(); //email id
+                $table->string('file'); //file name
+            });
+        }
+    }
+
 
     /**
      * Inventory Table (used to record all the inventory items)
@@ -239,17 +283,16 @@ class TenantTable {
         if (!Schema::hasTable(self::TBL_PREFIX . 'vacation')) {
             Schema::create(self::TBL_PREFIX . 'vacation', function ($table) {
                 $table->increments('id'); // autoincrement value of a vacation
-                $table->integer('user_id')->unsign()->index(); 
-                $table->integer('vacation_days')->unsign()->index(); 
-                $table->integer('sick_days')->unsign()->index(); 
-                
+                $table->integer('user_id')->unsign()->index();
+                $table->integer('vacation_days')->unsign()->index();
+                $table->integer('sick_days')->unsign()->index();
+
 
                 // created_at, updated_at DATETIME
                 $table->timestamps();
             });
         }
     }
-
 
 
 }
