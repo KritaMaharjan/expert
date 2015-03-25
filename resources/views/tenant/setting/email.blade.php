@@ -1,7 +1,7 @@
 @extends('tenant.layouts.main')
 
 @section('heading')
-System Settings
+SMTP Settings
 @stop
 
 @section('breadcrumb')
@@ -13,116 +13,32 @@ System Settings
 @section('content')
 <div class="box box-solid">
 	<div class="row">
-		<div id="email-settings" class="col-md-6">
-			<div class="inner-set-block pad">
-				<h4>Customer service email</h4>
-				<form method="post" name="personal_email_setting">
-						<input type="hidden" name="_token" value="{{ csrf_token() }}">
-  <input type="hidden" name="group" value="personal_email_setting">	        
-					<div class="form-group no-mg">
-		      			<label class="control-label">SMTP Server <span>(Incoming)</span></label>
-						<div class="@if($errors->has('incoming_server')) {{'has-error'}} @endif">
-						<input class="form-control" name="incoming_server" value="<?php echo isset($support['incoming_server'])?$support['incoming_server']:'';?>" >
-				       
-				      	@if($errors->has('incoming_server'))
-				       		{!! $errors->first('incoming_server', '<label class="control-label" for="inputError">:message</label>') !!}
-				      	@endif
-				      </div>
-					</div>
-					<div class="form-group no-mg">
-		      			<label class="control-label">SMTP Server <span>(Outgoing)</span></label>
-						<div class="@if($errors->has('outgoing_server')) {{'has-error'}} @endif">
+        <div class="col-md-6">
+          <!-- Custom Tabs -->
+          <div class="nav-tabs-custom no-shadow">
+            <ul class="nav nav-tabs">
+              <li class="active"><a href="#personal-smtp" data-toggle="tab">SMTP</a></li>
+              <li><a href="#support-smtp" data-toggle="tab">Support SMTP</a></li>
+            
+              
+            </ul>
+            <div class="tab-content">
+              <div class="tab-pane active" id="personal-smtp">
+              	@include('tenant.setting.personalsmtp')
 
-				        <input class="form-control" name="outgoing_server" value="<?php echo isset($support['outgoing_server'])?$support['outgoing_server']:'';?>" >
-				      	@if($errors->has('outgoing_server'))
-				       		{!! $errors->first('outgoing_server', '<label class="control-label" for="inputError">:message</label>') !!}
-				      	@endif
-				      </div>
-					</div>
-					<div class="form-group no-mg">
-		      			<label class="control-label">Username</label>
-						<div class="@if($errors->has('username')) {{'has-error'}} @endif">
-				       
-				         <input class="form-control" name="username" value="<?php echo isset($support['username'])?$support['username']:'';?>" >  
-				      	@if($errors->has('username'))
-				       		{!! $errors->first('username', '<label class="control-label" for="inputError">:message</label>') !!}
-				      	@endif
-				      </div>
-					</div>
-					<div class="form-group no-mg">
-		      			<label class="control-label">Password</label>
-						<div class="@if($errors->has('password')) {{'has-error'}} @endif">
-				        <input type="password" name="password"  class="form-control" value="<?php echo isset($support['password'])?$support['password']:'';?>">  
-				      	@if($errors->has('password'))
-				       		{!! $errors->first('password', '<label class="control-label" for="inputError">:message</label>') !!}
-				      	@endif
-				      </div>
-					</div>
-					<div class="form-group clearfix">        
-				      <div class="col-sm-offset-2 col-sm-10">
-				        <button link="{{tenant_route('tenant.setting.email')}}"  class="btn btn-success pull-right save">Save</button>
-				      </div>
-				    </div>
-				</form>
-			</div>
+              </div><!-- /.tab-pane -->
+              <div class="tab-pane" id="support-smtp">
+              	@include('tenant.setting.supportsmtp')
 
-		</div>
-		<div id="email-settings" class="col-md-6">
-			<div class="inner-set-block pad">
-				<h4>Personal (Admin) email</h4>
-				<form method="post" name="support_email_setting">
-						<input type="hidden" name="_token" value="{{ csrf_token() }}">
-  						<input type="hidden" name="group" value="support_email_setting">	        
-					<div class="form-group no-mg">
-		      			<label class="control-label">SMTP Server <span>(Incoming)</span></label>
-						<div class="@if($errors->has('incoming_server')) {{'has-error'}} @endif">
-						<input class="form-control" name="incoming_server" value="<?php echo isset($personal['incoming_server'])?$personal['incoming_server']:'';?>" >  
-				       
-				      	@if($errors->has('incoming_server'))
-				       		{!! $errors->first('incoming_server', '<label class="control-label" for="inputError">:message</label>') !!}
-				      	@endif
-				      </div>
-					</div>
-					<div class="form-group no-mg">
-		      			<label class="control-label">SMTP Server <span>(Outgoing)</span></label>
-						<div class="@if($errors->has('outgoing_server')) {{'has-error'}} @endif">
-							<input class="form-control" name="outgoing_server" value="<?php echo isset($personal['outgoing_server'])?$personal['outgoing_server']:'';?>" >  
+              </div><!-- /.tab-pane -->
 
-				      	@if($errors->has('outgoing_server'))
-				       		{!! $errors->first('outgoing_server', '<label class="control-label" for="inputError">:message</label>') !!}
-				      	@endif
-				      </div>
-					</div>
-					<div class="form-group no-mg">
-		      			<label class="control-label">Username</label>
-						<div class="@if($errors->has('username')) {{'has-error'}} @endif">
-						<input class="form-control" name="username" value="<?php echo isset($personal['username'])?$personal['username']:'';?>" >  
-				     
-				         
-				      	@if($errors->has('username'))
-				       		{!! $errors->first('username', '<label class="control-label" for="inputError">:message</label>') !!}
-				      	@endif
-				      </div>
-					</div>
-					<div class="form-group no-mg">
-		      			<label class="control-label">Password</label>
-						<div class="@if($errors->has('password')) {{'has-error'}} @endif">
-				        <input type="password" name="password"  class="form-control" value="<?php echo isset($personal['password'])?$personal['password']:'';?>">   
-				      	@if($errors->has('password'))
-				       		{!! $errors->first('password', '<label class="control-label" for="inputError">:message</label>') !!}
-				      	@endif
-				      </div>
-					</div>
-					<div class="form-group clearfix">        
-				      <div class="col-sm-offset-2 col-sm-10">
-				        <button link="{{tenant_route('tenant.setting.email')}}" class="btn btn-success pull-right save">Save</button>
-				      </div>
-				    </div>
-				</form>
-			</div>
+              
 
-		</div>
-	</div>
+            </div><!-- /.tab-content -->
+          </div><!-- nav-tabs-custom -->
+        </div><!-- /.col -->
+    </div>
+
 </div>
 
 <script type="text/javascript">
@@ -180,5 +96,6 @@ $(document).ready(function () {
 });
 </script>
 
-
 @stop
+
+

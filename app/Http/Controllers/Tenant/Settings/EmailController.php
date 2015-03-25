@@ -23,10 +23,10 @@ class EmailController extends BaseController {
     public function index()
     {
         $profile = new Profile;
-    	$personal_email_setting = $profile->getPersonalSetting($this->current_user->id);
-    	$support_email_setting = $profile->getSupportSetting();
+    	$smtp = $profile->getPersonalSetting($this->current_user->id);
+    	$support_smtp = $profile->getSupportSetting();
       
-    	$data = array('page_title' => 'Email Controller','personal'=>$personal_email_setting,'support'=>$support_email_setting);
+    	$data = array('page_title' => 'Email Controller','smtp'=>$smtp,'support_smtp'=>$support_smtp);
     	return view('tenant.setting.email')->with($data);
     	//return view('tenant.setting.email');
     }
@@ -37,7 +37,7 @@ class EmailController extends BaseController {
                                         array(
                                             'incoming_server' => 'required',
                                             'outgoing_server' => 'required',
-                                            'username' => 'required',
+                                            'email' => 'required',
                                             'password' => 'required',
                                            
                                 
@@ -53,7 +53,7 @@ class EmailController extends BaseController {
     	$details = serialize([
         						'incoming_server'=>$all['incoming_server'],
 								'outgoing_server'=>$all['outgoing_server'],
-								'username'=>$all['username'],
+								'email'=>$all['email'],
 								'password'=>$all['password']
 							]);
     	$flied = $request->input('group');
@@ -63,7 +63,7 @@ class EmailController extends BaseController {
         $user_id = $this->current_user->id;
        
         
-        if($flied == 'support_email_setting'){
+        if($flied == 'support_smtp'){
             $all = $request->except('_token', 'group');
             $group = $request->input('group');
             $setting->addOrUpdate([$group => $all], $group);

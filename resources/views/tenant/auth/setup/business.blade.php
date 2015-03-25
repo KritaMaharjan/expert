@@ -110,7 +110,7 @@ $(function() {
 
 
 
- var cache = {};
+  var cache = {};
         $("#postal_code").autocomplete({
             minLength: 0,
             source: function(request, response) {
@@ -127,13 +127,13 @@ $(function() {
                     dataType: "json",
                     data: {'data': term,'_token':token},
                     success: function(data) {
-                      console.log(data);
+                      
                         cache[ term ] = data;
                         items1 = $.map(data, function(item) {
 
-                            return   {label: item.postcode +' , ' +item.legal_town ,
+                            return   {label: item.postcode +' , ' +item.town ,
                                 value: item.postcode,
-                                town :item.legal_town ,
+                                town :item.town ,
                                 id: item.id}
 
 
@@ -142,7 +142,7 @@ $(function() {
                     }
                 });
             },
-             appendTo: '#customer-modal-data',
+             //appendTo: '#customer-modal-data',
             search: function(event, ui) {
                
             },
@@ -161,9 +161,9 @@ $(function() {
                 this.menu.element.outerWidth(200);
             },
             select: function(event, ui) {
-                console.log(ui);
+                
                  var label = ui.item.town;
-              
+                 
                 $('#city').val(label);
  
 
@@ -171,6 +171,7 @@ $(function() {
 
             }
         });
+
 
 });
 </script>

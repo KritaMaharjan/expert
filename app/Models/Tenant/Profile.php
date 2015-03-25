@@ -19,7 +19,7 @@ class Profile extends Model {
      * @var array
      */
 
-    protected $fillable = ['user_id', 'personal_email_setting', 'support_email_setting', 'social_security_number', 'phone', 'address', 'postcode', 'town', 'comment', 'tax_card', 'vacation_fund_percentage', 'photo'];
+    protected $fillable = ['user_id', 'smtp', 'social_security_number', 'phone', 'address', 'postcode', 'town', 'comment', 'tax_card', 'vacation_fund_percentage', 'photo'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -51,18 +51,18 @@ class Profile extends Model {
     public function getPersonalSetting($user_id = '')
     {
         $profile = Profile::firstOrCreate(['user_id' => $user_id]);
-        $data = @unserialize($profile->personal_email_setting);
+        $data = @unserialize($profile->smtp);
         if ($data !== false) {
             return $data;
         } else {
-            return $profile->personal_email_setting;
+            return $profile->smtp;
         }
     }
 
 
      public function getSupportSetting()
     {
-         $profile = \DB::table('fb_settings')->where('name', 'support_email_setting')->first();
+         $profile = \DB::table('fb_settings')->where('name', 'support_smtp')->first();
 
 
         $data = @unserialize($profile->value);
