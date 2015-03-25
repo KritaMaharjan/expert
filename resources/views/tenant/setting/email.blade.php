@@ -17,8 +17,8 @@ SMTP Settings
           <!-- Custom Tabs -->
           <div class="nav-tabs-custom no-shadow">
             <ul class="nav nav-tabs">
-              <li class="active"><a href="#personal-smtp" data-toggle="tab">SMTP</a></li>
-              <li><a href="#support-smtp" data-toggle="tab">Support SMTP</a></li>
+              <li class="active"><a href="#personal-smtp" data-toggle="tab">Personal</a></li>
+              <li><a href="#support-smtp" data-toggle="tab">Support</a></li>
             
               
             </ul>
