@@ -70,10 +70,14 @@ $(function () {
         var form = $(this);
         var action = form.attr('action');
 
+        form.find('.btn-email-submit').attr('disabled', 'disabled');
+
         form.find('.error').remove();
         form.find('.has-error').removeClass('has-error');
+        var sending = false;
 
-
+        if(!sending){
+            sending = true
         $.ajax({
             url: action,
             type: 'POST',
@@ -107,7 +111,12 @@ $(function () {
             .fail(function () {
                alert("Connect Error!");
             })
+            .done(function(){
+                sending = false;
+                form.find('.btn-email-submit').removeAttr('disabled');
+            })
 
+        }
 
     });
 
@@ -138,8 +147,7 @@ $(function () {
         var action = button.data('action');
         var type = button.data('type');
 
-
-        //@pooja
+       //@pooja
         if(action =='reply')
         {
            $('.modal-title span').html('Reply to Message');
@@ -178,6 +186,7 @@ $(function () {
                         $('#subject').val('FW: ' + mail.subject);
 
                     $('#message').val(mail.message);
+                    $('iframe').contents().find('body').html(mail.message);
                     //    $('#note').val(mail.note);
 
                     if (mail.attachments.length > 0) {

@@ -48,7 +48,7 @@
     <div class="form-group no-mg">
       <label class="control-label" name="vat" value="">Vat</label>
       <div class="@if($errors->has('vat')) {{'has-error'}} @endif">
-      	{!!Form::text('vat','',array('class' => 'form-control','id' => 'dateformat'))!!}  
+      	{!!Form::text('vat',$vat->value,array('class' => 'form-control','id' => 'dateformat'))!!}  
       	@if($errors->has('vat'))
        		{!! $errors->first('vat', '<label class="control-label" for="inputError">:message</label>') !!}
       	@endif

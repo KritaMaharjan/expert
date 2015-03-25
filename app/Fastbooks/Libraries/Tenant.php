@@ -61,6 +61,9 @@ class Tenant {
 
     }
 
+    /**
+     *
+     */
     function init()
     {
         $config = App::make('config');
@@ -144,6 +147,10 @@ class Tenant {
 
         //insert tenant admin data
         $this->dataInsert();
+
+        //create folders
+        $this->createFolders();
+
     }
 
     /**
@@ -179,6 +186,8 @@ class Tenant {
      */
     function dataInsert()
     {
+
+        //add Admin user
         $tenantInfoInSystem = $this->getTenantinfo();
         $user = $this->tenatUser->findOrNew(1);
         $user->email = $tenantInfoInSystem->email;
@@ -187,6 +196,10 @@ class Tenant {
         $user->status = 1; // Activated
         $user->first_time = 1; // yes first time
         $user->save();
+
+        // add profile
+        $profile = App\Models\Tenant\Profile::findOrNew($user->id);
+        $profile->save();
 
         // update company name in setting table
         $setting = $this->tenantSettings->firstOrNew(['name' => 'company']);
@@ -197,6 +210,20 @@ class Tenant {
         $setting = $this->tenantSettings->firstOrNew(array('name' => 'domain'));
         $setting->value = $tenantInfoInSystem->domain;
         $setting->save();
+
+        $setting = $this->tenantSettings->firstOrNew(array('name' => 'folder'));
+        $setting->value = $tenantInfoInSystem->guid;
+        $setting->save();
+    }
+
+
+    function createFolders()
+    {
+        $this->folder('customer', true);
+        $this->folder('attachment', true);
+        $this->folder('invoice', true);
+        $this->folder('offer', true);
+        $this->folder('user', true);
     }
 
     /**
@@ -238,7 +265,6 @@ class Tenant {
      */
     function getTenantinfo()
     {
-
         $user = SystemTenant::where('domain', $this->domain)->first();
 
         return $user;
@@ -286,6 +312,9 @@ class Tenant {
     }
 
 
+    /**
+     * @return bool
+     */
     function isFirstTime()
     {
         $setupKey = $this->request->input('setup');
@@ -296,9 +325,13 @@ class Tenant {
                 return true;
             }
         }
+
         return false;
     }
 
+    /**
+     * Reset Setup
+     */
     function resetSetup()
     {
         $tenantInfoInSystem = $this->getTenantinfo();
@@ -381,6 +414,12 @@ class Tenant {
     }
 
 
+    /**
+     * @param string $route
+     * @param array $param
+     * @param bool $url
+     * @return \Illuminate\Http\RedirectResponse|string
+     */
     function route($route = '', $param = array(), $url = false)
     {
         if (!is_array($param)) {
@@ -410,12 +449,20 @@ class Tenant {
     }
 
 
+    /**
+     * @param string $url
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     function redirect($url = '')
     {
         return redirect($this->url($url));
     }
 
 
+    /**
+     * @param string $url
+     * @return string
+     */
     function url($url = '')
     {
         $subdomain = $this->getActualDomain();
@@ -429,6 +476,9 @@ class Tenant {
         return sprintf('http://%s.%s/%s', $subdomain, $domain, $url);
     }
 
+    /**
+     * @return bool|null|string
+     */
     function getActualDomain()
     {
         if ($this->domain == 'login')
@@ -437,6 +487,23 @@ class Tenant {
             $domain = $this->domain;
 
         return $domain;
+    }
+
+
+    /**
+     * @param null $folder
+     * @param bool $create
+     * @return App
+     */
+    function folder($folder = null, $create = false)
+    {
+        $tenantFile = app('App\Fastbooks\Libraries\TenantFileSystem');
+
+        if (!is_null($folder)) {
+            $tenantFile->folder($folder, $create);
+        }
+
+        return $tenantFile;
     }
 
 }

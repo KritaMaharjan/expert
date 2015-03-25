@@ -34,6 +34,7 @@ class EmailController extends BaseController {
     function index()
     {
         $action = 'add';
+
         return view('tenant.email.index', compact('action'));
     }
 
@@ -47,19 +48,11 @@ class EmailController extends BaseController {
 
     function attach()
     {
-        if ($this->request->hasFile('file') AND $this->request->file('file')->isValid()) {
-            $extension = $this->request->file('file')->getClientOriginalExtension();
-            $destinationPath = $this->upload_path;
-            $fileName = uniqid() . '_' . time() . '.' . $extension;
-            $data = $this->request->file('file')->move($destinationPath, $fileName);
-            $return = ['pathName' => asset(trim($data->getPathname(), '.')), 'fileName' => $data->getFilename()];
-
+        if ($return = tenant()->folder('attachment')->upload('file')) {
             return $this->success($return);
-        } else {
-            return $this->fail(['error' => 'File upload failed']);
         }
 
-        return $this->fail(['error' => 'Invalid access']);
+        return $this->fail(['error' => 'File upload failed']);
     }
 
 
@@ -125,7 +118,7 @@ class EmailController extends BaseController {
 
 
 -------------------------------------------------------------------------------
-From: " . $display_name . "[mailto:".$email."]
+From: " . $display_name . "[mailto:" . $email . "]
 Sent: " . date('D, F d, Y, h:i A') . "
 To: " . $mail['to'];
 
@@ -159,7 +152,7 @@ Subject: " . $mail['subject'] . "
         $data['type'] = $type = ($type == 1) ? $type : 0;
         $data['per_page'] = $per_page = 5;
         $data['mails'] = $this->email->user()->type($type)->latest()->with('attachments', 'receivers')->paginate($per_page);
-        
+
 
         return view('tenant.email.list', $data);
     }

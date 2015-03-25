@@ -169,6 +169,7 @@ class UserController extends BaseController {
     function registerVacation(){
         $guid = $this->request->route('guid'); 
         $type = $this->request->route('type'); 
+
         $User = \DB::table('fb_users')->where('guid', $guid)->first();
         
         $vacationDays = \DB::table('fb_settings')->where('name', 'vacation')->first();
@@ -193,10 +194,12 @@ class UserController extends BaseController {
                $vacation_leave_left = $vacationDetails['vacation_days'];
         }
 
+          $allVacation = $this->vacation->getUserVacation($User->id);
+
         if($type == 'vacation')
-            return view('tenant.users.vacation', compact('sick_total','vacation_total','User','sick_leave_left','vacation_leave_left'));
+            return view('tenant.users.vacation', compact('sick_total','vacation_total','User','sick_leave_left','vacation_leave_left','allVacation'));
         else
-             return view('tenant.users.sickLeave', compact('sick_total','vacation_total','User','sick_leave_left','vacation_leave_left'));
+             return view('tenant.users.sickLeave', compact('sick_total','vacation_total','User','sick_leave_left','vacation_leave_left','allVacation'));
 
        
    
@@ -209,7 +212,7 @@ class UserController extends BaseController {
         $type = $this->request['type'];
 
      //dd($this->request['user_id']);
-         $result = $this->user->addVacation($leave,$user_id,$type);
+         $result = $this->vacation->addVacation($request,$type);
 
          $total_leave = $this->vacation->totalVacation($this->request['user_id'],$type);
         // dd($total_leave);
@@ -221,5 +224,7 @@ class UserController extends BaseController {
         return \Response::json(array('status' => true, 'vacation_days' => $leave_left,'vacation_used'=> $total_leave));
 
     }
+
+
     
 }
