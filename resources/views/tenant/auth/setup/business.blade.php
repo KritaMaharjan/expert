@@ -1,7 +1,7 @@
 @extends('tenant.layouts.min')
 
 @section('content')
-
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
 	<div class="signup-content">
 			<section class="signup-section col-md-8">
 
@@ -105,11 +105,10 @@
 		</div>
 
 
-		<script>
-$(function() {
+<script>
+{{ FB::js('
 	 var cache = {};
     $(".postal_code")
-        // don't navigate away from the field on tab when selecting an item
         .bind("keydown", function (event) {
             if (event.keyCode === $.ui.keyCode.TAB &&
                 $(this).autocomplete("instance").menu.active) {
@@ -141,7 +140,7 @@ $(function() {
                         response(items1);
                 });
             },
-             //appendTo: '#customer-modal-data',
+             //appendTo: "#customer-modal-data",
             search: function(event, ui) {
                
             },
@@ -163,25 +162,7 @@ $(function() {
                 
                  var label = ui.item.town;
                  
-                $('.city').val(label);
- 
-
-                
-
+                $(".city").val(label);
             }
-        });
-
-
-
-
- 
-
-});
-</script>
-
-<?php //FB::js("jquery-ui.js"); ?>
-<?php //FB::js("postal.js"); ?>
-<?php //FB::js("autocomplete.js"); ?>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
-	
-@endsection
+        });')}}
+@stop
