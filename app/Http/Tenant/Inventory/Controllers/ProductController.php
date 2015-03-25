@@ -160,21 +160,12 @@ class ProductController extends BaseController {
 
     public function getSuggestions()
     {
-        $name = \Input::get('name');
-        //change this later
-        $details = Product::where('name', 'LIKE', '%' . $name . '%')->get();
-        $newResult = array();
+        if ($this->request->ajax()) {
+            $name = $this->request->input('name');
+            $products = $this->product->select('id', 'name as text')->where('name', 'LIKE',  $name . '%')->get() - toJson();
 
-        if (!empty($details)) {
-
-            foreach ($details as $d) {
-                $new = array();
-                $new['id'] = $d->id;
-                $new['text'] = $d->name;
-                array_push($newResult, $new);
-            }
+            return $products;
         }
 
-        return $newResult;
     }
 }
