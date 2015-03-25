@@ -72,20 +72,22 @@ class ProductController extends BaseController {
      * Display product detail
      * @return string
      */
-    function show()
+    function detail()
     {
+        if (!$this->request->ajax()) return show_404();
+
         $id = $this->request->route('id');
         $product = $this->product->find($id);
         if ($product == null) {
             show_404();
         }
 
-        if($this->request->ajax())
-        {
+        if ($this->request->input('json') == 1) {
             return $this->success($product->toArray());
         }
+
         return view('tenant.inventory.product.show', compact('product'));
-       
+
     }
 
 
@@ -101,8 +103,6 @@ class ProductController extends BaseController {
         if ($product == null) {
             show_404();
         }
-
-
 
         return view('tenant.inventory.product.edit', compact('product'));
     }
@@ -160,30 +160,12 @@ class ProductController extends BaseController {
 
     public function getSuggestions()
     {
-        $name = \Input::get('name');
-        //change this later
-        $details = Product::where('name', 'LIKE', '%'.$name.'%')->get();
-        $newResult = array();
+        if ($this->request->ajax()) {
+            $name = $this->request->input('name');
+            $products = $this->product->select('id', 'name as text')->where('name', 'LIKE', $name . '%')->get()->toJson();
 
-        if(!empty($details)) {
-
-            foreach($details as $d) {
-                $new = array();
-                $new['id'] = $d->id;
-                $new['text'] = $d->name;
-                array_push($newResult, $new);
-            }
+            return $products;
         }
 
-        return $newResult;
     }
-
-    public function getProductDetails()
-    {
-        $product_id = $this->request->route('productId');
-        $product = Product::find($product_id);
-        return \Response::json(['success' => true, 'details' => $product]);
-    }
-
-
 }
