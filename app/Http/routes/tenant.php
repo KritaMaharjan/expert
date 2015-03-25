@@ -77,15 +77,14 @@ Route::group($group_auth, function () {
         // product routes
         get('inventory/product', ['as' => 'tenant.inventory.product.index', 'uses' => 'ProductController@index']);
         post('inventory/product', ['as' => 'tenant.inventory.product.post', 'uses' => 'ProductController@create']);
+        get('inventory/product/{id}/detail', ['as' => 'tenant.inventory.product.show', 'uses' => 'ProductController@detail']);
         post('inventory/product/data', ['as' => 'tenant.inventory.product.data', 'uses' => 'ProductController@dataJson']);
-        get('inventory/product/{id}', ['as' => 'tenant.inventory.product.show', 'uses' => 'ProductController@show']);
         get('inventory/product/{id}/edit', ['as' => 'tenant.inventory.product.edit', 'uses' => 'ProductController@edit']);
         post('inventory/product/{id}/edit', ['as' => 'tenant.inventory.product.update', 'uses' => 'ProductController@update']);
         get('inventory/product/{id}/delete', ['as' => 'tenant.inventory.product.delete', 'uses' => 'ProductController@delete']);
 
         // Registered By Krita
         get('product/suggestions', ['as' => 'tenant.product.suggestions', 'uses' => 'ProductController@getSuggestions']);
-        get('product/details/{productId}', ['as' => 'tenant.product.details', 'uses' => 'ProductController@getProductDetails']);
 
         // inventory routes
         get('inventory', ['as' => 'tenant.inventory.index', 'uses' => 'InventoryController@index']);

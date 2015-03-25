@@ -73,14 +73,13 @@ class ProductController extends BaseController {
      * Display product detail
      * @return string
      */
-    function show()
+    function detail()
     {
         $id = $this->request->route('id');
         $product = $this->product->find($id);
         if ($product == null) {
             show_404();
         }
-
         return view('tenant.inventory.product.show', compact('product'));
        
     }

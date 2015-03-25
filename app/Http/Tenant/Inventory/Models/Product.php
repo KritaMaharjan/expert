@@ -68,7 +68,7 @@ class Product extends Model {
 
     function toData()
     {
-        $this->show_url = tenant()->url('inventory/product/' . $this->id);
+        $this->show_url = tenant()->url('inventory/product/' . $this->id. '/detail');
         $this->edit_url = tenant()->url('inventory/product/' . $this->id . '/edit');
         $this->purchase_cost = $this->purchase_cost();
         $this->selling_price = $this->selling_price();
