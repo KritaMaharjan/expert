@@ -725,7 +725,11 @@ fieldset.wrapper-box legend{
    }
     #print{
         width: 700px;
+        margin-top: -20px;
+        margin-left: -275px;
     }
+    .main-footer {display: none}
+
 }
 
 

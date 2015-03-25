@@ -17,119 +17,19 @@
      .footer{border-bottom: 3px solid #FFFF00;}
   </style>
 
-
-      <!-- <table id="print" width="100%">
-          <tr bgcolor="#FFFF00"  style="line-height:.5;"><td colspan="4"><h1>Kvittering</h1></td></tr>
-          <tr bgcolor="#FFFF00">
-            <th>Innbetalt till konto</th>
-               <th style="font-size:11px;">Belop</th>
-               <th style="font-size:11px;">Betalerens kontonummer</th>
-               <th style="font-size:11px;">Blankettnr</th>           
-           </tr>  
-           <tr bgcolor="#FFFF00">
-            <td>{{$data}}</td>
-            <td><p class="border-block" bgcolor="#ffffff"></p></td>
-            <td><p class="border-block" bgcolor="#ffffff"></p></td>
-            <td><p class="border-block" bgcolor="#ffffff"></p></td>
-           </tr>
-           <tr>
-            <td colspan="2">
-             <table>
-              <tbody>
-               <tr><td colspan="2" style="font-size:11px;">Betalingsinformasjon</td></tr>
-               <br />
-               <tr>
-                <td style="text-indent:15px;">Kundenr:</td>
-                <td>4785007</td>
-               </tr>
-               <tr>
-                <td style="text-indent:15px;">Fakturanr:</td>
-                <td>4785007</td>
-               </tr>
-               <tr>
-                <td style="text-indent:15px;">Fakturadato:</td>
-                <td>4785007</td>
-               </tr>
-              </tbody>
-             </table>
-            </td>
-            <td colspan="2">
-             <table>
-              <tbody>
-               <tr><td style="font-size:13px;">GIRO</td>
-                <td style="font-size:11px;">Betalings-first</td>
-                <td><p class="border-block" bgcolor="#ffffff"></p></td>
-               </tr>
-               <br />
-               <tr>
-                <td style="font-size:11px;" colspan="3">Underskrift ved girering</td>         
-               </tr>
-               <tr style="margin-top:10px;">
-                <td colspan="3">
-                 <p class="fix-size"></p>
-                </td>         
-               </tr>       
-              </tbody>
-             </table>
-            </td>      
-           </tr>
-           
-           <tr>         
-            <td colspan="2"><p style="font-size:11px;">Betalt av</p>
-             <table class="border" cellpadding="2">
-              <tbody>       
-               <tr>
-                <td style="text-indent:15px;">Andreas Bratholmen</td>
-               </tr>
-               <tr>
-                <td style="text-indent:15px;">Helleveien 199</td>
-               </tr>
-               <tr>
-                <td style="text-indent:15px;">5039 Bergen</td>
-               </tr>
-               
-
-              </tbody>
-             </table>
-            </td>
-            <td colspan="2"><p style="font-size:11px;">Betalt til</p>
-             <table class="border" cellpadding="2">
-              <tbody>       
-               <tr>
-                <td style="text-indent:15px;">Telio Telecom AS</td>
-               </tr>
-               <tr>
-                <td style="text-indent:15px;">Pb.54 Skoyen</td>
-               </tr>
-               <tr>
-                <td style="text-indent:15px;">0212 Oslo</td>
-               </tr>
-               
-
-              </tbody>
-             </table>
-            </td>      
-           </tr>
-           
-           <tr  bgcolor="#FFFF00">
-               <td colspan="2">dfdfd</td>
-               <td colspan="2">dfdfd</td>      
-           </tr>
-      </table> -->
-
       <table id="print">
-          <tr bgcolor="#FFFF00"><td colspan="4"><h1>Receipt</h1></td></tr>
+          <tr bgcolor="#FFFF00"><td colspan="4"><h1 style="text-indent: 5px;">Receipt</h1></td></tr>
           <tr bgcolor="#FFFF00">
-              <th>Paid till account</th>
+              <th> <span style="text-indent: 10px;">Paid till account</span></th>
               <th style="font-size:11px;">Amounts</th>
               <th style="font-size:11px;">Payer account number</th>
-              <th style="font-size:11px;">Blankettnr</th>           
+              <th style="font-size:11px;">Blankettnr</th>
           </tr>  
       </table>
       <table cellpadding="4">
           <tr bgcolor="#FFFF00" > 
-            <td><p>60050625977</p></td>
-            <td><p class="border-block" bgcolor="#ffffff" ></p></td>
+            <td> <span style="text-indent: 10px;">9879879879789</span></td>
+            <td><p class="border-block" bgcolor="#ffffff" >&nbsp; {{ $data['amount'] }}</p></td>
             <td><p class="border-block" bgcolor="#ffffff"></p></td>
             <td><p class="border-block" bgcolor="#ffffff"></p></td>
           </tr>
@@ -147,11 +47,11 @@
                </tr>
                <tr>
                 <td style="text-indent:15px;">Invoice:</td>
-                <td>20453945</td>
+                <td>{{ $data['invoice_number']}}</td>
                </tr>
                <tr>
                 <td style="text-indent:15px;">Invoice date:</td>
-                <td>11.09.14</td>
+                <td><?php echo date('d-m-y', strtotime($data['invoice_date'])) ?></td>
                </tr>
               </tbody>
              </table>
@@ -183,13 +83,13 @@
              <table class="border" cellpadding="2">
               <tbody>       
                <tr>
-                <td style="text-indent:15px;">Andreas Bratholmen</td>
+                <td style="text-indent:15px;">{{ $data['customer_details']->name }}</td>
                </tr>
                <tr>
-                <td style="text-indent:15px;">Helleveien 199</td>
+                <td style="text-indent:15px;">{{ $data['customer_details']->street_number }}</td>
                </tr>
                <tr>
-                <td style="text-indent:15px;">5039 Bergen</td>
+                <td style="text-indent:15px;">{{ $data['customer_details']->address }}</td>
                </tr>
               </tbody>
              </table>
@@ -198,13 +98,13 @@
                 <table class="border" cellpadding="2">
                   <tbody>       
                    <tr>
-                    <td style="text-indent:15px;">Telio Telecom AS</td>
+                    <td style="text-indent:15px;">{{ $data['company_details']['company_name'] }}</td>
                    </tr>
                    <tr>
-                    <td style="text-indent:15px;">Pb.54 Skoyen</td>
+                    <td style="text-indent:15px;">{{ $data['company_details']['postal_code'] }} {{ $data['company_details']['town'] }}</td>
                    </tr>
                    <tr>
-                    <td style="text-indent:15px;">0212 Oslo</td>
+                    <td style="text-indent:15px;">{{ $data['company_details']['address'] }}</td>
                    </tr>
                   </tbody>
                 </table>

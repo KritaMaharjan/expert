@@ -38,10 +38,10 @@ class Bill extends Model {
         try {
             $bill = Bill::create([
                 'invoice_number' => $this->getPrecedingInvoiceNumber(),
-                'customer_id' => $request->input('customer'),
-                'due_date' => $request->input('due_date'),
-                'currency' => $request->input('currency'),
-                'is_offer' => ($offer == true)? 1:0
+                'customer_id'    => $request->input('customer'),
+                'due_date'       => $request->input('due_date'),
+                'currency'       => $request->input('currency'),
+                'is_offer'       => ($offer == true) ? 1 : 0
             ]);
 
             $products = $request->input('product');
@@ -51,18 +51,17 @@ class Bill extends Model {
             $subtotal = 0;
             $tax = 0;
 
-            foreach($products as $key => $product)
-            {
-                if(isset($quantity[$key]) && $quantity[$key] > 0 && $product > 0) {
+            foreach ($products as $key => $product) {
+                if (isset($quantity[$key]) && $quantity[$key] > 0 && $product > 0) {
                     $product_details = Product::find($product);
                     $total = ($product_details->selling_price + $product_details->vat * 0.01 * $product_details->selling_price) * $quantity[$key];
                     $product_bill = BillProduct::create([
                         'product_id' => $product,
-                        'bill_id' => $bill->id,
-                        'quantity' => $quantity[$key],
-                        'price' => $product_details->selling_price,
-                        'vat' => $product_details->vat,
-                        'total' => $total
+                        'bill_id'    => $bill->id,
+                        'quantity'   => $quantity[$key],
+                        'price'      => $product_details->selling_price,
+                        'vat'        => $product_details->vat,
+                        'total'      => $total
                     ]);
                     $alltotal += $total;
                     $tax += $product_details->vat * 0.01 * $product_details->selling_price * $quantity[$key];
@@ -78,9 +77,10 @@ class Bill extends Model {
             $bill->save();
 
             DB::commit();
+
             return array('bill_details' => $bill);
 
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
             throw $e;
         }
@@ -107,18 +107,17 @@ class Bill extends Model {
 
             $this->deleteBillProducts($id);
 
-            foreach($products as $key => $product)
-            {
-                if(isset($quantity[$key]) && $quantity[$key] > 0 && $product > 0) {
+            foreach ($products as $key => $product) {
+                if (isset($quantity[$key]) && $quantity[$key] > 0 && $product > 0) {
                     $product_details = Product::find($product);
                     $total = ($product_details->selling_price + $product_details->vat * 0.01 * $product_details->selling_price) * $quantity[$key];
                     $product_bill = BillProduct::create([
                         'product_id' => $product,
-                        'bill_id' => $bill->id,
-                        'quantity' => $quantity[$key],
-                        'price' => $product_details->selling_price,
-                        'vat' => $product_details->vat,
-                        'total' => $total
+                        'bill_id'    => $bill->id,
+                        'quantity'   => $quantity[$key],
+                        'price'      => $product_details->selling_price,
+                        'vat'        => $product_details->vat,
+                        'total'      => $total
                     ]);
                     $alltotal += $total;
                     $tax += $product_details->vat * 0.01 * $product_details->selling_price * $quantity[$key];
@@ -133,9 +132,10 @@ class Bill extends Model {
             $bill->save();
 
             DB::commit();
+
             return array('bill_details' => $bill);
 
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
             throw $e;
         }
@@ -148,8 +148,10 @@ class Bill extends Model {
             foreach ($product_bills as $product_bill) {
                 $product_bill->delete();
             }
+
             return true;
         }
+
         return false;
     }
 
@@ -180,7 +182,7 @@ class Bill extends Model {
             $query = $query->where('is_offer', 0);
 
         if ($orderColumn != '' AND $orderdir != '') {
-            if($orderColumn != 'invoice_date')
+            if ($orderColumn != 'invoice_date')
                 $query = $query->orderBy($orderColumn, $orderdir);
             else
                 $query = $query->orderBy('created_at', $orderdir);
@@ -197,22 +199,22 @@ class Bill extends Model {
         $data = $query->get();
 
         foreach ($data as $key => &$value) {
-            $value->invoice_number = '<a class="link" href="#">'.$value->invoice_number.'</a>';
+            $value->invoice_number = '<a class="link" href="#">' . $value->invoice_number . '</a>';
             $customer = Customer::find($value->customer_id);
-            if($customer)
+            if ($customer)
                 $value->customer = $customer->name;
             else $value->customer = 'Undefined';
             $value->raw_status = $value->status;
-            if($value->status == 1)
+            if ($value->status == 1)
                 $value->status = '<span class="label label-success">Paid</span>';
-            elseif($value->status == 2)
+            elseif ($value->status == 2)
                 $value->status = '<span class="label label-warning">Collection</span>';
             else
                 $value->status = '<span class="label label-danger">Unpaid</span>';
 
             $value->invoice_date = date('d-M-Y  h:i:s A', strtotime($value->created_at));
             //$value->created_at->format('d-M-Y  h:i:s A');
-            $value->DT_RowId = "row-".$value->guid;
+            $value->DT_RowId = "row-" . $value->guid;
         }
 
         $products['data'] = $data->toArray();
@@ -231,15 +233,15 @@ class Bill extends Model {
     {
         $bill = Bill::find($id);
 
-        if($bill != NULL) {
-            $bill->customer = Customer::find($bill->customer_id)->name;
+        if ($bill != null) {
+            $customer = Customer::find($bill->customer_id);
+            $bill->customer = $customer->name;
 
-            $bill->customer_details = Customer::find($bill->customer_id);
+            $bill->customer_details = $customer;
 
             $bill_products = BillProduct::where('bill_id', $id)->get();
-            if($bill_products) {
-                foreach ($bill_products as $bill_product)
-                {
+            if ($bill_products) {
+                foreach ($bill_products as $bill_product) {
                     $bill_product->product_name = Product::find($bill_product->product_id)->name;
                 }
                 $bill->products = $bill_products;
@@ -247,13 +249,14 @@ class Bill extends Model {
 
             return $bill;
         }
+
         return false;
     }
 
-    function getPrecedingInvoiceNumber($id = NULL)
+    function getPrecedingInvoiceNumber($id = null)
     {
-        if($id != NUll)
-            $new_invoice_num = date('my').sprintf("%03d", $id);
+        if ($id != null)
+            $new_invoice_num = date('my') . sprintf("%03d", $id);
         else {
             $latest = Bill::orderBy('id', 'desc')->first();
             if ($latest)
@@ -261,18 +264,19 @@ class Bill extends Model {
             else
                 $new_invoice_num = date('my') . '001';
         }
-        return$new_invoice_num;
+
+        return $new_invoice_num;
     }
 
     function convertToBill($id)
     {
         $bill = Bill::find($id);
-        if($bill) {
+        if ($bill) {
             $bill->is_offer = 0;
             $bill->save();
+
             return $bill;
-        }
-        else
+        } else
             return false;
     }
 }
