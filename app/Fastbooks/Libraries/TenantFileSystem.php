@@ -55,7 +55,7 @@ class TenantFileSystem {
      */
     function setBasePath()
     {
-        $this->basePath = public_path() . '\\' . $this->uploadRoot . '\\' . $this->bucket . '\\';
+        $this->basePath = public_path() . '/' . $this->uploadRoot . '/' . $this->bucket . '/';
     }
 
     /**
@@ -139,7 +139,7 @@ class TenantFileSystem {
      */
     function path($file = '')
     {
-        return $this->basePath . $this->folder . '\\' . $file;
+        return $this->basePath . $this->folder . '/' . $file;
     }
 
     /**
@@ -214,7 +214,7 @@ class TenantFileSystem {
      */
     function tempPath($file = '')
     {
-        return $this->basePath . $this->tempName . '\\' . $file;
+        return $this->basePath . $this->tempName . '/' . $file;
     }
 
     /**
