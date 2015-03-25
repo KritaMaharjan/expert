@@ -110,6 +110,7 @@ Route::group($group_auth, function () {
         get('invoice/bill/{id}/delete', ['as' => 'tenant.invoice.bill.delete', 'uses' => 'BillController@delete']);
         get('invoice/bill/{id}/download', ['as' => 'tenant.invoice.bill.download', 'uses' => 'BillController@download']);
         get('invoice/bill/{id}/print', ['as' => 'tenant.invoice.bill.download', 'uses' => 'BillController@printBill']);
+        get('invoice/bill/{id}/mail', ['as' => 'tenant.invoice.bill.email', 'uses' => 'BillController@sendEmail']);
 
         // invoice routes
         get('invoice', ['as' => 'tenant.invoice.index', 'uses' => 'InvoiceController@index']);

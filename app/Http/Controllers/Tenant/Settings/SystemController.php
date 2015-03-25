@@ -27,8 +27,11 @@ class SystemController extends BaseController {
     	$fixit = $this->setting->getfix();
         $vacationDays = \DB::table('fb_settings')->where('name', 'vacation')->first();
         $vacation = @unserialize($vacationDays->value);
+        $dateformat = \DB::table('fb_settings')->where('name', 'dateformate')->first();
+         $vat = \DB::table('fb_settings')->where('name', 'vat')->first();
+          $currency = \DB::table('fb_settings')->where('name', 'currency')->first();
     
-    	$data = array('countries' => \Config::get('tenant.countries'),'company'=>$company,'business'=>$business,'fix'=>$fixit,'vacation'=>$vacation);
+    	$data = array('countries' => \Config::get('tenant.countries'),'company'=>$company,'business'=>$business,'fix'=>$fixit,'vacation'=>$vacation,'dateformat'=>$dateformat,'vat'=>$vat,'currency'=>$currency);
     	return view('tenant.setting.system')->withPageTitle('System Controller')->with($data);
     }
 
@@ -98,6 +101,11 @@ class SystemController extends BaseController {
                                                     
                             )
                     );
+            if($validator->fails())
+            {
+                return \Response::json(array('status' => 'false', 'errors' => $validator->getMessageBag()->toArray())); // 400 being the HTTP code for an invalid request.
+            } 
+
         }
 
         if($group == 'vacation')
@@ -108,14 +116,17 @@ class SystemController extends BaseController {
                                 'sick_days' => 'numeric',                        
                             )
                     );
+            if($validator->fails())
+            {
+                return \Response::json(array('status' => 'false', 'errors' => $validator->getMessageBag()->toArray())); // 400 being the HTTP code for an invalid request.
+            } 
+
         }
 
-      
-        if($validator->fails())
-        {
-            return \Response::json(array('status' => 'false', 'errors' => $validator->getMessageBag()->toArray())); // 400 being the HTTP code for an invalid request.
-        } 
 
+
+      
+        
 
         $all = $request->except('_token', 'group');
         $group = $request->input('group');
@@ -134,6 +145,7 @@ class SystemController extends BaseController {
             if ($group != '') {
                 $this->setting->addOrUpdate([$group => $all], $group);
             } else {
+               // dd($all);
                 $this->setting->addOrUpdate($all);
             }
 

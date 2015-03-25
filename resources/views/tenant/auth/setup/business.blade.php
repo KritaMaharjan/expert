@@ -71,8 +71,8 @@
 					    <div class="form-group">
 					      <label class="control-label col-sm-5">Potal Code/Town</label>
 					      <div class="col-sm-7 two-inputs @if($errors->has('postal_code') || $errors->has('town')) {{'has-error'}} @endif">
-					      	{!!Form::text('postal_code','',array('class' => 'form-control', 'id' => 'postal_code'))!!}  
-					      	{!!Form::text('town','',array('class' => 'form-control', 'id' => 'city'))!!} 
+					      	{!!Form::text('postal_code','',array('class' => 'form-control postal_code', 'id' => 'postal_code'))!!}  
+					      	{!!Form::text('town','',array('class' => 'form-control city', 'id' => 'city'))!!} 
 					     	@if($errors->has('postal_code'))
 				           		{!! $errors->first('postal_code', '<label class="control-label" for="inputError">:message</label>') !!}
 				          	@endif

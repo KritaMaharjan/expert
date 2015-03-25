@@ -75,7 +75,7 @@ class Customer extends Model {
         return $this->toArray();
     }
 
-    public function createCustomer($request, $user_id, $fileName)
+    public function createCustomer($request, $user_id)
     {
         if ($request['type'] == 2)
             $dob = '';
@@ -98,7 +98,6 @@ class Customer extends Model {
             'mobile'         => $request['mobile'],
             'postcode'       => $postal_code[0],
             'town'           => $request['town'],
-            'image'          => $fileName,
             'status'         => $request['status'],
 
 
@@ -109,7 +108,7 @@ class Customer extends Model {
         return $customer_add;
     }
 
-    public function updateCustomer($id, $details, $dob, $fileName)
+    public function updateCustomer($id, $details, $dob)
     {
 
          $postal_code = explode(',', $details['postcode']);
@@ -126,7 +125,6 @@ class Customer extends Model {
         $customer->mobile = $details['mobile'];
         $customer->postcode = $postal_code[0];
         $customer->town = $details['town'];
-        $customer->image = $fileName;
         $customer->status = $details['status'];
         $customer->save();
 

@@ -21,6 +21,18 @@
 				      	@endif
 				      </div>
 					</div>
+
+						<div class="form-group no-mg">
+		      			<label class="control-label">Port Number</label>
+						<div class="@if($errors->has('port')) {{'has-error'}} @endif">
+						<input class="form-control" name="port" value="<?php echo isset($smtp['port'])?$smtp['port']:'25';?>" >  
+				     
+				         
+				      	@if($errors->has('port'))
+				       		{!! $errors->first('port', '<label class="control-label" for="inputError">:message</label>') !!}
+				      	@endif
+				      </div>
+					</div>
 					<div class="form-group no-mg">
 		      			<label class="control-label">Email</label>
 						<div class="@if($errors->has('email')) {{'has-error'}} @endif">

@@ -137,7 +137,7 @@
                     if (response.success === true) {
                         var addressInfo = DetailsTemplate(response.details);
                         $('.customer-info').html(addressInfo);
-                        $('#customer_id').val(response.details.id);
+                        $('.cus-pay-no').html(response.details.paymentNo);
                     } else {
                         alert('Something went wrong!');
                         $('.customer-info').html('');
