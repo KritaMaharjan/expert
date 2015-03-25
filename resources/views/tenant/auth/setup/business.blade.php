@@ -1,7 +1,8 @@
 @extends('tenant.layouts.min')
 
 @section('content')
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+<link href="http://manish1.mashbooks.no/assets/plugins/jquery-ui-1.11.4.custom/jquery-ui.css" rel="stylesheet" type="text/css" />
+<script src="http://manish1.mashbooks.no/assets/plugins/jquery-ui-1.11.4.custom/jquery-ui.js" type="text/javascript"></script>
 	<div class="signup-content">
 			<section class="signup-section col-md-8">
 
@@ -104,6 +105,7 @@
 			</section>
 		</div>
 {{ FB::js('
+  var app_url = "http://pooja.mashbooks.no/manish_co/";
 	 var cache = {};
     $(".postal_code")
         .bind("keydown", function (event) {
