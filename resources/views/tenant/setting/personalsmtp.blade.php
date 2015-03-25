@@ -2,7 +2,7 @@
 						<input type="hidden" name="_token" value="{{ csrf_token() }}">
   						<input type="hidden" name="group" value="smtp">	        
 					<div class="form-group no-mg">
-		      			<label class="control-label">SMTP Server <span>(Incoming)</span></label>
+		      			<label class="control-label">Incoming Server</label>
 						<div class="@if($errors->has('incoming_server')) {{'has-error'}} @endif">
 						<input class="form-control" name="incoming_server" value="<?php echo isset($smtp['incoming_server'])?$smtp['incoming_server']:'';?>" >
 				       
@@ -12,7 +12,7 @@
 				      </div>
 					</div>
 					<div class="form-group no-mg">
-		      			<label class="control-label">SMTP Server <span>(Outgoing)</span></label>
+		      			<label class="control-label">Outgoing Server</label>
 						<div class="@if($errors->has('outgoing_server')) {{'has-error'}} @endif">
 
 				        <input class="form-control" name="outgoing_server" value="<?php echo isset($smtp['outgoing_server'])?$smtp['outgoing_server']:'';?>" >

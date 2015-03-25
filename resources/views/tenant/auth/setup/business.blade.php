@@ -107,29 +107,28 @@
 
 		<script>
 $(function() {
-
-
-
-  var cache = {};
-        $("#postal_code").autocomplete({
+	 var cache = {};
+    $(".postal_code")
+        // don't navigate away from the field on tab when selecting an item
+        .bind("keydown", function (event) {
+            if (event.keyCode === $.ui.keyCode.TAB &&
+                $(this).autocomplete("instance").menu.active) {
+                event.preventDefault();
+            }
+        })
+        .autocomplete({
             minLength: 0,
             source: function(request, response) {
-                var term = request.term;
-                var token = '{{csrf_token()}}';
+              requestURL =  appUrl+"postal/suggestions";
+                
+              var term = request.term;
                 if (term in cache) {
-                    response(cache[ term ]);
+                    response(cache[term]);
                     return;
                 }
-
-                $.ajax({
-                    url: appUrl+"postal/suggestions",
-                    type: "get",
-                    dataType: "json",
-                    data: {'data': term,'_token':token},
-                    success: function(data) {
-                      
-                        cache[ term ] = data;
-                        items1 = $.map(data, function(item) {
+                $.getJSON(requestURL, {term: request.term}, function (data, status, xhr) {
+                   cache[ term ] = data;
+                         items1 = $.map(data, function(item) {
 
                             return   {label: item.postcode +' , ' +item.town ,
                                 value: item.postcode,
@@ -138,8 +137,8 @@ $(function() {
 
 
                         });
+
                         response(items1);
-                    }
                 });
             },
              //appendTo: '#customer-modal-data',
@@ -164,7 +163,7 @@ $(function() {
                 
                  var label = ui.item.town;
                  
-                $('#city').val(label);
+                $('.city').val(label);
  
 
                 
@@ -172,6 +171,10 @@ $(function() {
             }
         });
 
+
+
+
+ 
 
 });
 </script>
