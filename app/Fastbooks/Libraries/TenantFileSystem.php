@@ -40,7 +40,7 @@ class TenantFileSystem {
      * file permission for write/read folder
      * @var string
      */
-    protected $filePermission = '0777';
+    protected $filePermission = 0777;
 
 
     function __construct()
@@ -55,8 +55,8 @@ class TenantFileSystem {
      */
     function setBasePath()
     {
-       // $this->basePath = public_path() . '/' . $this->uploadRoot . '/' . $this->bucket . '/';
-         $this->basePath = $this->uploadRoot . '/' . $this->bucket . '/';
+        // $this->basePath = public_path() . '/' . $this->uploadRoot . '/' . $this->bucket . '/';
+        $this->basePath = $this->uploadRoot . '/' . $this->bucket . '/';
 
     }
 
@@ -127,7 +127,7 @@ class TenantFileSystem {
      */
     function create()
     {
-        $dir = $this->path();
+        $dir = trim($this->path(), '/');
         if (!is_dir($dir))
             mkdir($dir, $this->filePermission, true);
 
