@@ -11,11 +11,7 @@ Customers
 
 
 @section('content')
-<style>
-ul.ui-autocomplete.ui-menu {
-  z-index: 1000 !important;
-}
-</style>
+
 {{--<link href="{{assets('assets/plugins/iCheck/all.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{assets('assets/plugins/iCheck/minimal/blue.css')}}" rel="stylesheet" type="text/css" />--}}
 
@@ -63,20 +59,12 @@ ul.ui-autocomplete.ui-menu {
     </div>
 
 
-    <script type="text/javascript">
-
-    var customer;
-        $(document).on('click','#customer-add', function(){
-            $(".js-example-basic-multiple").select2('destroy');
-           customer = $('#fb-modal').find('.modal-body').html();
-           $('#fb-modal').find('.modal-body').html($('#customer-modal-data').html());
-        });
-    </script>
-
+   
     {{--Load JS--}}
     {{FB::registerModal()}}
    
     {{FB::js('assets/js/customer.js')}}
+
        
 	@stop
   

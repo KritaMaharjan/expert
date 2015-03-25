@@ -63,13 +63,5 @@ class User extends Model {
         return isset($this->role[$this->role]) ? $this->role[$this->role] : 'Unknown';
     }
 
-    function isAdmin()
-    {
-        return ($this->role == 1) ? true : false;
-    }
 
-    function isUser()
-    {
-        return ($this->role == 2) ? true : false;
-    }
 } 

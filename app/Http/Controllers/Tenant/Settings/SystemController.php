@@ -98,6 +98,11 @@ class SystemController extends BaseController {
                                                     
                             )
                     );
+            if($validator->fails())
+            {
+                return \Response::json(array('status' => 'false', 'errors' => $validator->getMessageBag()->toArray())); // 400 being the HTTP code for an invalid request.
+            } 
+
         }
 
         if($group == 'vacation')
@@ -108,14 +113,17 @@ class SystemController extends BaseController {
                                 'sick_days' => 'numeric',                        
                             )
                     );
+            if($validator->fails())
+            {
+                return \Response::json(array('status' => 'false', 'errors' => $validator->getMessageBag()->toArray())); // 400 being the HTTP code for an invalid request.
+            } 
+
         }
 
-      
-        if($validator->fails())
-        {
-            return \Response::json(array('status' => 'false', 'errors' => $validator->getMessageBag()->toArray())); // 400 being the HTTP code for an invalid request.
-        } 
 
+
+      
+        
 
         $all = $request->except('_token', 'group');
         $group = $request->input('group');

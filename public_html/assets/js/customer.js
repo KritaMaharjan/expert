@@ -107,7 +107,7 @@ $(function () {
         //var formData = form.serialize();
 
         var formData = new FormData(form[0]);
-        formData.append('photo', $('#customer-form input[type=file]')[0].files[0]);
+//        formData.append('photo', $('#customer-form input[type=file]')[0].files[0]);
 
         var requestType = form.find('.customer-submit').val();
 

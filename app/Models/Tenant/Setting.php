@@ -74,7 +74,7 @@ class Setting extends Model {
         $setup->save();
     }
 
-    function addOrUpdate(array $data = array(), $group)
+    function addOrUpdate(array $data = array())
     {
         if (!empty($data)):
             foreach ($data as $key => $value) {

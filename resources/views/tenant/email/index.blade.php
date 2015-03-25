@@ -11,7 +11,11 @@ Email
 
 @section('content')
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link href="{{ asset('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}" rel="stylesheet" type="text/css" /> 
+
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="//cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
+<script src="{{ asset('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js')}}" type="text/javascript"></script>
 {{FB::js('assets/plugins/plupload/js/plupload.full.min.js')}}
 {{FB::registerModal()}}
 {{FB::js('assets/js/desk/email.js')}}
@@ -41,6 +45,9 @@ $(function(){
                             <div class="col-md-12 col-sm-12">
                                 <div class="row pad pad-top-0 pad-btm-0">
                                   <div class="col-md-12 pad-6">
+
+                                  <?php dd(current_user()->table); ?>
+
                                     <a href="javascript:;" id="personal" class="inbox btn btn-default  btn-flat btn-small btn-primary">Personal Inbox</a>
                                     <a href="javascript:;" id="support" class="inbox btn btn-default btn-flat btn-small">Support Inbox</a>
                                   </div>

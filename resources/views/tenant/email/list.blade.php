@@ -4,13 +4,11 @@
     <tbody>
           @foreach($mails as $mail)
           <tr class="e{{$mail->id}}">
-            <td class="small-col"><i class="fa fa-envelope"></i>
+            <td class="small-col"><i class="fa fa-reply"></i>
               @if($mail->status == 1)  {!!'<i class="fa fa-circle green"></i>'!!} @endif
                @if($mail->status == 2)  {!!'<i class="fa fa-circle red"></i>'!!} @endif
                 @if($mail->status == 3)  {!!'<i class="fa fa-circle orange"></i>'!!} @endif
                {{--   @if($mail->status == 4)  {!!'<i class="fa fa-circle"></i>'!!} @endif --}}
-
-
             </td>
             <td class="name">
              <?php $receiver = $mail->receivers;?>
