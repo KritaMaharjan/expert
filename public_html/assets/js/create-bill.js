@@ -29,7 +29,7 @@
    
 
     //select2 for customer
-    var customerSelect = $(".select-single");
+    var customerSelect = $(".select-customer");
     customerSelect.select2({
         ajax: {
             url: appUrl + 'customer/suggestions',
@@ -170,19 +170,19 @@
         if (productDoing == false) {
             productDoing = true;
             $.ajax({
-                url: appUrl + 'product/details/' + product_id,
+                url: appUrl + 'inventory/product/' + product_id + '/detail?json=1',
                 type: 'GET',
                 dataType: 'json'
             })
                 .done(function (response) {
-                    if (response.success === true) {
+                    if (response.status == 1) {
                         /*$('#price').val(response.details.selling_price);
                          $('#vat').val(response.details.vat);*/
 
                         
                         $this.parent().parent().find('.add-quantity').removeAttr('readonly','readonly');
-                        $this.parent().parent().find('.price').html(response.details.selling_price);
-                        $this.parent().parent().find('.vat').html(response.details.vat);
+                        $this.parent().parent().find('.price').html(response.data.selling_price);
+                        $this.parent().parent().find('.vat').html(response.data.vat);
                     } else {
                         alert('Something went wrong!');
                     }

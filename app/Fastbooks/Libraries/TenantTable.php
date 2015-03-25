@@ -181,7 +181,7 @@ class TenantTable {
     }
 
 
-    function email_receivers()
+    function emailReceivers()
     {
         if (!Schema::hasTable(self::TBL_PREFIX . 'email_receivers')) {
             Schema::create(self::TBL_PREFIX . 'email_receivers', function (Blueprint $table) {
@@ -195,10 +195,10 @@ class TenantTable {
     }
 
 
-    function email_attachments()
+    function AttachmentsEmail()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'emails')) {
-            Schema::create(self::TBL_PREFIX . 'emails', function (Blueprint $table) {
+        if (!Schema::hasTable(self::TBL_PREFIX . 'attachments_email')) {
+            Schema::create(self::TBL_PREFIX . 'attachments_email', function (Blueprint $table) {
                 $table->increments('id'); // autoincrement value of an attachment
                 $table->integer('email_id')->unsign()->index(); //email id
                 $table->string('file', 75); //file name
@@ -259,7 +259,7 @@ class TenantTable {
     /**
      * Table for Product [Many to one relation with bills table]
      */
-    function billProduct()
+    function billProducts()
     {
         if (!Schema::hasTable(self::TBL_PREFIX . 'bill_product')) {
             Schema::create(self::TBL_PREFIX . 'bill_product', function ($table) {

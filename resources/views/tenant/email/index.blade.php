@@ -10,22 +10,12 @@ Email
 @stop
 
 @section('content')
-<link href="{{asset('assets/css/zabuto_calendar.css')}}" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link href="{{ asset('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}" rel="stylesheet" type="text/css" /> 
+
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<style>
-.ui-autocomplete-loading {
-background: white url("images/ui-anim_basic_16x16.gif") right center no-repeat;
-}
-
-#filelist>div {position: relative}
-#filelist a.cancel_upload {  float: right;
-                             top: 0px;
-                             position: absolute;
-                             right: 1px;}
-
-.ui-autocomplete {z-index: 99999999}
-</style>
+<script src="//cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
+<script src="{{ asset('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js')}}" type="text/javascript"></script>
 {{FB::js('assets/plugins/plupload/js/plupload.full.min.js')}}
 {{FB::registerModal()}}
 {{FB::js('assets/js/desk/email.js')}}
@@ -55,6 +45,9 @@ $(function(){
                             <div class="col-md-12 col-sm-12">
                                 <div class="row pad pad-top-0 pad-btm-0">
                                   <div class="col-md-12 pad-6">
+
+                                  <?php dd(current_user()->table); ?>
+
                                     <a href="javascript:;" id="personal" class="inbox btn btn-default  btn-flat btn-small btn-primary">Personal Inbox</a>
                                     <a href="javascript:;" id="support" class="inbox btn btn-default btn-flat btn-small">Support Inbox</a>
                                   </div>
@@ -68,10 +61,6 @@ $(function(){
                                   </div>
                                 </div><!-- /.col (RIGHT) -->
                             </div>
-
-
-
-
                           </div><!-- /.box -->
                       </div><!-- bg-white -->
                       </div>
@@ -87,5 +76,3 @@ $(function(){
             </div><!-- /.box -->
             @include('tenant.email.compose')
 @stop
-
-

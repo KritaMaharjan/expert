@@ -11,7 +11,7 @@ class Attachment extends Model {
      *
      * @var string
      */
-    protected $table = 'fb_email_attachments';
+    protected $table = 'fb_attachments_email';
 
     /**
      * The attributes that are mass assignable.

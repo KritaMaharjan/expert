@@ -14,7 +14,7 @@ class Email extends Model {
      *
      * @var string
      */
-    protected $table = 'fb_email';
+    protected $table = 'fb_emails';
 
     /**
      * The attributes that are mass assignable.

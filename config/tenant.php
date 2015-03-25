@@ -258,5 +258,19 @@ return [
         'YE' => 'Yemen',
         'ZM' => 'Zambia',
         'ZW' => 'Zimbabwe',
+    ],
+
+    'currencies' => [
+        'NOK' => 'NOK',
+        'GBP' => 'GBP',
+        'EUR' => 'EUR',
+        'USD' => 'USD',
+        'AUD' => 'AUD',
+        'NZD' => 'NZD',
+        'CHF' => 'CHF',
+        'PLN' => 'PLN',
+        'DKK' => 'DKK',
+        'SEK' => 'SEK',
+        'CNY' => 'CNY'
     ]
 ];
