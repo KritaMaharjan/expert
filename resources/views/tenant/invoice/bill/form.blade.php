@@ -1,13 +1,3 @@
-<?php
-    function format_telephone($phone_number)
-    {
-       $cleaned = preg_replace('/[^[:digit:]]/', '', $phone_number);
-       preg_match('/(\d{3})(\d{3})(\d{4})/', $cleaned, $matches);
-       return "({$matches[1]}) {$matches[2]}-{$matches[3]}";
-    }
-?>
-
-
 <!-- info row -->
   <div class="row invoice-info">
 
@@ -19,15 +9,18 @@
         <div class="form-group clearfix sel-2 {{ ($errors->has('customer'))? 'has-error': '' }}">
          {!! Form::label('customer', 'Select customer') !!}
          @if(isset($bill) && !empty($bill->customer))
-            {!! Form::select('customer', array($bill->customer_id => $bill->customer), $bill->customer_id, array('class' => 'select-single form-control', 'required' => 'required')) !!}
+            {!! Form::select('customer', array($bill->customer_id => $bill->customer), $bill->customer_id, array('class' => 'select-customer form-control', 'required' => 'required')) !!}
          @else
-            {!! Form::select('customer', array('' => 'Select Customer'), null, array('class' => 'select-single form-control', 'required' => 'required')) !!}
+            {!! Form::select('customer', array('' => 'Select Customer'), null, array('class' => 'select-customer form-control', 'required' => 'required')) !!}
          @endif
          @if($errors->has('customer'))
              {!! $errors->first('customer', '<label class="control-label error" for="inputError">:message</label>') !!}
          @endif
           <p class="align-right mg-adj">
-            <a href="{{ tenant_route('tenant.customer') }}">Add customer</a>
+            <a data-target="#fb-modal" data-url="#customer-modal-data" data-toggle="modal" id="customer-add">
+                 Add new Customer
+            </a>
+            {{--<a href="{{ tenant_route('tenant.customer') }}">Add customer</a>--}}
         </p>
         </div>
 
@@ -72,31 +65,24 @@
         </div>--}}
         <div class="form-group clearfix {{ ($errors->has('due_date'))? 'has-error': '' }}">
           {!! Form::label('due_date', 'Due date') !!}
-          {!! Form:: text('due_date', null, array('class' => 'form-control', 'id' =>'due-date-picker')) !!}
+
+          <div class='input-group date date-box' id='due-date-picker'>
+              {!! Form:: text('due_date', null, array('class' => 'form-control', 'id' =>'due-date-pickers')) !!}
+              <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+              </span>
+          </div>
 
         </div>
          @if($errors->has('due_date'))
                       {!! $errors->first('due_date', '<label class="control-label error" style="position: relative;top: -10px;"for="inputError">:message</label>') !!}
                   @endif
-        <div class="form-group clearfix">
+        <div class="form-group clearfix" style="text-align: left!important;">
           {!! Form::label('account_number', 'Account no') !!}
           <span class="border-bx block">{{ $company_details['account_no'] }}</span>
         </div>
         <div class="form-group clearfix">
           {!! Form::label('currency', 'Currency') !!}
-          {!! Form::select('currency', array(
-                                        'NOK' => 'NOK',
-                                        'GBP' => 'GBP',
-                                        'EUR' => 'EUR',
-                                        'USD' => 'USD',
-                                        'AUD' => 'AUD',
-                                        'NZD' => 'NZD',
-                                        'CHF' => 'CHF',
-                                        'PLN' => 'PLN',
-                                        'DKK' => 'DKK',
-                                        'SEK' => 'SEK',
-                                        'CNY' => 'CNY'
-                            ), null, array('class' => 'form-control')) !!}
+          {!! Form::select('currency', $currencies, null, array('class' => 'form-control')) !!}
         </div>
       </div>
 
@@ -198,3 +184,17 @@
       </div>
     </div><!-- /.col -->
   </div><!-- /.row -->
+
+{{-- Customer Add Modal--}}
+<div id="customer-modal-data" class="hide">
+    <div class="box box-solid">
+        <div class="box-header">
+            <h3 class="box-title">Add New Customer</h3>
+        </div>
+        @include('tenant.customer.createCustomer')
+    </div><!-- /.box-body -->
+</div>
+
+{{--Load JS--}}
+{{FB::registerModal()}}
+{{FB::js('assets/js/customer.js')}}

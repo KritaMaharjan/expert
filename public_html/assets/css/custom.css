@@ -251,7 +251,6 @@ a {
 .input-custom {
     width: 48%;
     float: left;
-    margin-left: 10%;
 }
 
 .no-mg {
@@ -312,6 +311,23 @@ small.subject {
     padding: 10px 0 0 0 !important;
 }
 
+.pad-0-40 {
+    padding: 0 40px 0 10px;
+}
+
+.pad-btm-0 {
+    padding-bottom: 0
+}
+
+.pad-top-10 {
+    padding-top: 10px !important;
+}
+
+.pad-top-only {
+    padding: 10px 0 0 0 !important;
+}
+
+
 .bg-white {
     background: none repeat scroll 0 0 #fff;
     padding: 0;
@@ -323,6 +339,32 @@ small.subject {
 
 .mail-wrap-section {
     background: #fff;
+}
+
+
+.block-header h3 {
+    display: block !important;
+    margin-bottom: 10px !important;
+}
+
+.block-header p {
+    margin-bottom: 0 !important;
+    width: 90%;
+
+}
+
+.color-blue {
+    color: #337ab7;
+}
+
+small.color-blue {
+    display: inline-block;
+    width: 30px;
+}
+
+.block-header hr {
+    margin-bottom: 0;
+    margin-top: 5px;
 }
 
 .block-header h3 {
@@ -530,6 +572,12 @@ small.color-blue {
     width: 600px;
 }
 
+.modal-right .modal-content {
+    min-height: 100%;
+    position: absolute;
+    right: 0;
+    width: 600px;
+}
 /*Modal-right*/
 
 .dob_div label {
@@ -573,6 +621,21 @@ small.color-blue {
     list-style: none;
     overflow: hidden;
     padding-left: 0px;
+}
+
+.form-list > li {
+    float: left;
+    padding: 1%;
+    width: 32%;
+}
+
+.uploaded-img {
+    max-width: 200px;
+    margin-bottom: 10px;
+}
+
+.mrg-mng {
+    margin-top: 50px;
 }
 
 .form-list > li {
@@ -947,14 +1010,34 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
     padding: 5px;
 }
 
+.orange, .red, .green {
+    padding: 5px;
+}
+
 .table-blk {
     display: table;
     width: 100%;
 }
 
+
+.f-width{
+    width: 55%;float: left;margin-left: 3%;
+}
+.f-width .input-group.input-custom{
+    width: 100%;
+}
+.date-box {
+    float: right;
+    width: 40%;
+}
+
+.date-box input {
+    width: 100% !important;
+}
+
 /*Email style*/
 .ui-autocomplete-loading {
-    background: white url("images/ui-anim_basic_16x16.gif") right center no-repeat;
+    background: white url("images/loader.gif") right center no-repeat;
 }
 
 #filelist > div {
@@ -971,3 +1054,18 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
 .ui-autocomplete {
     z-index: 99999999 !important;
 }
+.ui-widget-content{
+    background: #fff!important;
+    background-image:none!important; 
+
+}
+.ui-widget-content .ui-menu-item{background: #fff!important;font-size: 12px!important;}
+.ui-menu-item:hover,.ui-menu-item:focus,.ui-menu-item:link{
+    background: #3875D7!important;
+    color: #fff!important;
+    background-image:none!important; 
+}
+.btn-primary {
+  color: #fff!important;
+}
+
