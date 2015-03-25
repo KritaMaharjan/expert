@@ -5,7 +5,7 @@ namespace App\Http\Tenant\Invoice\Controllers;
 use App\Fastbooks\Libraries\Pdf;
 use App\Http\Controllers\Tenant\BaseController;
 use App\Http\Tenant\Invoice\Models\Bill;
-use App\Http\Tenant\Invoice\Models\BillProduct;
+use App\Http\Tenant\Invoice\Models\BillProducts;
 use App\Models\Tenant\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -63,9 +63,7 @@ class BillController extends BaseController {
     {
         $months = \Config::get('tenant.month');
         $data = array('months' => $months, 'currencies' => \Config::get('tenant.currencies'));
-
         $company_details = $this->getCompanyDetails();
-        $company_details['invoice_number'] = $this->bill->getPrecedingInvoiceNumber();
 
         return view('tenant.invoice.bill.create', compact('company_details'))->with('pageTitle', 'Add new bill')->with($data);
     }
@@ -167,7 +165,7 @@ class BillController extends BaseController {
         $bill = Bill::find($id);
         if (!empty($bill)) {
             if ($bill->delete()) {
-                $product_bills = BillProduct::where('bill_id', $id)->get();
+                $product_bills = BillProducts::where('bill_id', $id)->get();
                 if (!empty($product_bills)) {
                     foreach ($product_bills as $product_bill) {
                         $product_bill->delete();
@@ -215,8 +213,7 @@ class BillController extends BaseController {
             $id = $this->request->route('id');
             $data = $this->getInfo($id);
             $pdf_file[] = $pdf->generate(time(), 'template.bill', compact('data'), false, true);
-            $template = "Attached PDF file";
-            $mail = \FB::sendEmail($data['customer_details']['email'], $data['customer'], $template, $param = array(), $pdf_file);
+            $mail = \FB::sendEmail($data['customer_details']['email'], $data['customer'], 'bill_email', ['{{NAME}}' => $data['customer']], $pdf_file);
             if($mail) {
                 return $this->success(['message' => 'Email Sent Successfully!']);
             }
