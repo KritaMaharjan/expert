@@ -14,7 +14,7 @@ class Email extends Model {
      *
      * @var string
      */
-    protected $table = 'fb_email';
+    protected $table = 'fb_emails';
 
     /**
      * The attributes that are mass assignable.
@@ -86,6 +86,7 @@ class Email extends Model {
         $this->fromName = current_user()->display_name;
         $this->fromEmail = current_user()->smtp->email;
         // Send email
+
         $this->fire();
 
 

@@ -83,9 +83,24 @@ function email_date($dateTime)
     }
 }
 
-function format_telephone($phone_number)
+function format_telephone($phone_number = null)
 {
+    if($phone_number == null)
+        return "";
+    
     $cleaned = preg_replace('/[^[:digit:]]/', '', $phone_number);
     preg_match('/(\d{3})(\d{3})(\d{4})/', $cleaned, $matches);
     return "({$matches[1]}) {$matches[2]}-{$matches[3]}";
+}
+
+function format_date($date)
+{
+    $formatted_date = date('d-m-y', strtotime($date));
+    return $formatted_date;
+}
+
+function format_id($id = 0, $zeros = 3)
+{
+    $id = sprintf("%0".$zeros."d", $id);
+    return $id;
 }

@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\Tenant;
+/*namespace App\Models\Tenant;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -99,4 +99,4 @@ class Setting extends Model {
         }
     }
 
-}
+}*/

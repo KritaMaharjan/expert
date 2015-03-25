@@ -71,8 +71,8 @@
 					    <div class="form-group">
 					      <label class="control-label col-sm-5">Potal Code/Town</label>
 					      <div class="col-sm-7 two-inputs @if($errors->has('postal_code') || $errors->has('town')) {{'has-error'}} @endif">
-					      	{!!Form::text('postal_code','',array('class' => 'form-control', 'id' => 'postal_code'))!!}  
-					      	{!!Form::text('town','',array('class' => 'form-control', 'id' => 'city'))!!} 
+					      	{!!Form::text('postal_code','',array('class' => 'form-control postal_code', 'id' => 'postal_code'))!!}  
+					      	{!!Form::text('town','',array('class' => 'form-control city', 'id' => 'city'))!!} 
 					     	@if($errors->has('postal_code'))
 				           		{!! $errors->first('postal_code', '<label class="control-label" for="inputError">:message</label>') !!}
 				          	@endif
@@ -107,29 +107,28 @@
 
 		<script>
 $(function() {
-
-
-
-  var cache = {};
-        $("#postal_code").autocomplete({
+	 var cache = {};
+    $(".postal_code")
+        // don't navigate away from the field on tab when selecting an item
+        .bind("keydown", function (event) {
+            if (event.keyCode === $.ui.keyCode.TAB &&
+                $(this).autocomplete("instance").menu.active) {
+                event.preventDefault();
+            }
+        })
+        .autocomplete({
             minLength: 0,
             source: function(request, response) {
-                var term = request.term;
-                var token = '{{csrf_token()}}';
+              requestURL =  appUrl+"postal/suggestions";
+                
+              var term = request.term;
                 if (term in cache) {
-                    response(cache[ term ]);
+                    response(cache[term]);
                     return;
                 }
-
-                $.ajax({
-                    url: appUrl+"postal/suggestions",
-                    type: "get",
-                    dataType: "json",
-                    data: {'data': term,'_token':token},
-                    success: function(data) {
-                      
-                        cache[ term ] = data;
-                        items1 = $.map(data, function(item) {
+                $.getJSON(requestURL, {term: request.term}, function (data, status, xhr) {
+                   cache[ term ] = data;
+                         items1 = $.map(data, function(item) {
 
                             return   {label: item.postcode +' , ' +item.town ,
                                 value: item.postcode,
@@ -138,8 +137,8 @@ $(function() {
 
 
                         });
+
                         response(items1);
-                    }
                 });
             },
              //appendTo: '#customer-modal-data',
@@ -164,7 +163,7 @@ $(function() {
                 
                  var label = ui.item.town;
                  
-                $('#city').val(label);
+                $('.city').val(label);
  
 
                 
@@ -172,6 +171,10 @@ $(function() {
             }
         });
 
+
+
+
+ 
 
 });
 </script>

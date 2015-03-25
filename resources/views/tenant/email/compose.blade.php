@@ -76,7 +76,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-envelope"></i> Send
+                        <button type="submit" class="btn btn-primary btn-email-submit pull-right"><i class="fa fa-envelope"></i> Send
                             Message
                         </button>
                      </div>
@@ -100,5 +100,5 @@
 
         $(".textarea").wysihtml5();
 
-    })();
+    });
 </script>

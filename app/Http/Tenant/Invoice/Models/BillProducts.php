@@ -2,14 +2,14 @@
 
 use Illuminate\Database\Eloquent\Model;
 
-class BillProduct extends Model {
+class BillProducts extends Model {
 
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'fb_bill_product';
+    protected $table = 'fb_bill_products';
 
     /**
      * The attributes that are mass assignable.

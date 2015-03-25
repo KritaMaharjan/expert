@@ -19,7 +19,7 @@ class Vacation extends Model  {
      * @var array
      */
 
-    protected $fillable = ['user_id', 'vacation_days', 'sick_days'];
+    protected $fillable = ['user_id', 'vacation_days', 'sick_days','from','to'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -46,6 +46,40 @@ class Vacation extends Model  {
           }
 
           return $totalVacation;
+     }
+
+     function addVacation($request, $type)
+    {
+        if ($type == 'vacation_days') {
+            $vacation = Vacation::create([
+                'user_id'       => $request['user_id'],
+                'vacation_days' => 0,
+                'sick_days'     => 0,
+                'from'     =>  $request['from'],
+                 'from'     =>  $request['to'],
+            ]);
+
+
+        } elseif ($type == 'sick_days') {
+            $vacation = Vacation::create([
+                'user_id'       =>  $request['user_id'],
+                'vacation_days' => 0,
+                'sick_days'     =>  0,
+                 'from'     =>  $request['from'],
+                 'from'     =>  $request['to'],
+
+            ]);
+
+
+        }
+
+
+    }
+
+     function getUserVacation($user_id){
+         $details = \DB::table('fb_vacation')->where('user_id', $user_id)->get();
+         return $details;
+
      }
  }
 

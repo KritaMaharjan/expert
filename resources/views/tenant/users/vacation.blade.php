@@ -18,11 +18,21 @@
             </p>  
 
             </div><!-- /.box-body -->
+            <div class="box-body">
+                @if($allVacation)
+              <ul>
+                @foreach($allVacation  as $vacation)
+                <li>{{$vacation->from}}{{$vacation->to}}{{$vacation->vacation_days}}</li>
+                @endforeach
+              </ul>
+              @endif
+            </div>
 
           <div id="add_part" style="display:none">
             <div class="form-group">
               <label for="exampleInputEmail1">Vacation leave</label>
-              <input class="form-control" name="vacation" id="leave" value="" placeholder="Vacation leave">
+              <input class="form-control" name="from" id="from" value="" placeholder="From">
+               <input class="form-control" name="to" id="to" value="" placeholder="To">
             </div>
         <div class="box-footer clearfix">
            <button type="button" class="btn sm-mg-btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Abort</button>
@@ -39,10 +49,43 @@
     $('#add_part').show();
   });
 
+   $("#from").datepicker({
+              'format': 'dd/mm/yyyy',
+        onSelect: function(date) {
+          alert(date);
+            $('#from').val(date);
+            
+
+        },  
+        onClose: function( selectedDate ) {
+            $( "#to" ).datepicker( "option", "minDate", selectedDate );
+        } 
+
+         });
+ $("#to").datepicker({
+            'format': 'dd/mm/yyyy',
+        onSelect: function(date) {
+            $('#to').val(date);
+            
+
+        },  
+        onClose: function( selectedDate ) {
+           
+        } 
+         });
+
   $(document).on('click', '.saveVacation', function (e) {
         e.preventDefault();
 
-      var days = $('#leave').val();
+          var a = $('#from_date').val();
+          var date1 = new Date(a);
+          var b =  $('#to_date').val();
+          var date2 = new Date(b);
+          var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+          var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+      
+
+       var days = diffDays;
        var _token = $('#_token').val();
        var user_id = $('#user_id').val();
        var vacation_days = $('#vacationtotal').val();
@@ -55,7 +98,7 @@
             url: appUrl + 'user/addVacation',
             type: 'POST',
             dataType: 'json',
-            data: {'days':days,'_token':_token,'user_id':user_id,'vacation_days':vacation_days,'type':type},
+            data: {'days':days,'_token':_token,'user_id':user_id,'vacation_days':vacation_days,'type':type,'from':a,'to':b},
                 async: false,
                  success: function(response) {
                     if (response.status == true) {

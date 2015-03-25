@@ -85,6 +85,17 @@ Template Settings
 
             </div>
 
+            <div class="form-group">
+                <label>Bill email</label><br>
+                <label>Subject : </label>
+                <input type="text" name="bill_email_subject" class="form-control" value="{{ $setting->bill_email_subject or old('bill_email_subject') }}"><br>
+
+                 <label>Body : </label>
+                    <textarea id="bill_email" rows="3" name="bill_email" class="form-control">{{ $setting->bill_email or old('bill_email') }}</textarea>
+
+
+            </div>
+
             <div class="box-footer">
                 <button class="btn btn-primary" type="submit">Submit</button>
             </div>
@@ -102,6 +113,7 @@ Template Settings
         CKEDITOR.replace('domain_setup');
         CKEDITOR.replace('forgot_password');
         CKEDITOR.replace('request_url');
+         CKEDITOR.replace('bill_email');
       });
     ")}}
 

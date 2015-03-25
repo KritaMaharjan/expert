@@ -4,7 +4,7 @@
     <div class="col-sm-5 invoice-col col-xs-6">
 
         <div class="form-group clearfix">
-          <label>Invoice Number: </label>{{ $company_details['invoice_number'] or $bill->invoice_number }}
+          <label>Invoice Number: </label><span class="invoice_number"> {{ $company_details['invoice_number'] or '' }} </span>
         </div>
         <div class="form-group clearfix sel-2 {{ ($errors->has('customer'))? 'has-error': '' }}">
          {!! Form::label('customer', 'Select customer') !!}
@@ -79,6 +79,10 @@
         <div class="form-group clearfix" style="text-align: left!important;">
           {!! Form::label('account_number', 'Account no') !!}
           <span class="border-bx block">{{ $company_details['account_no'] }}</span>
+        </div>
+        <div class="form-group clearfix" style="text-align: left !important;">
+          {!! Form::label('Customer Payment Number') !!}
+          <span class="border-bx block cus-pay-no">{{ $bill->customer_payment_number or ''}}</span>
         </div>
         <div class="form-group clearfix">
           {!! Form::label('currency', 'Currency') !!}
@@ -191,7 +195,7 @@
         <div class="box-header">
             <h3 class="box-title">Add New Customer</h3>
         </div>
-        @include('tenant.customer.createCustomer')
+        {{--@include('tenant.customer.createCustomer')--}}
     </div><!-- /.box-body -->
 </div>
 
