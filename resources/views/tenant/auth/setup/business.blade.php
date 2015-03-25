@@ -126,7 +126,7 @@
                    cache[ term ] = data;
                          items1 = $.map(data, function(item) {
 
-                            return   {label: item.postcode +' , ' +item.town ,
+                            return   {label: item.postcode +" , " +item.town ,
                                 value: item.postcode,
                                 town :item.town ,
                                 id: item.id}
