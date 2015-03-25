@@ -140,12 +140,11 @@ $(function () {
 
 
         //@pooja
-       
         if(action =='reply')
         {
-           $('.modal-title').html('Reply to Message');
+           $('.modal-title span').html('Reply to Message');
         }else if(action == 'forward'){
-            $('.modal-title').html('Forward Message');
+            $('.modal-title span').html('Forward Message');
         }
 
         var inputType = 0;
@@ -191,6 +190,7 @@ $(function () {
     $(document).on('hidden.bs.modal', '#compose-modal', function (event) {
         var modal = $(this)
         var form = modal.find('form');
+        modal.find('.modal-title span').html('Compose New Message');
         $('#filelist').html('');
         form[0].reset();
         form.find('.error').remove();

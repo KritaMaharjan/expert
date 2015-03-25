@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
 
-class User extends Model{
+class User extends Model {
 
 
     /**
@@ -37,18 +37,21 @@ class User extends Model{
     protected $hidden = ['password', 'remember_token'];
 
 
-    protected  $role = [1=>'Admin', 2=>'Staff'];
+    protected $role = [1 => 'Admin', 2 => 'Staff'];
 
     function redirectIfValid($user)
     {
         if ($user->status == 0) {
             \Auth::logout();
+
             return redirect()->route('system.login')->withInput()->with('message', lang('Your account has not been activated.'));
         } elseif ($user->status == 2) {
             \Auth::logout();
+
             return redirect()->route('system.login')->withInput()->with('message', lang('Your account has been suspended.'));
         } elseif ($user->status == 3) {
             \Auth::logout();
+
             return redirect()->route('system.login')->withInput()->with('message', lang('Your account has been permanently blocked.'));
         }
 
@@ -57,6 +60,16 @@ class User extends Model{
 
     function role()
     {
-        return isset($this->role[$this->role])?$this->role[$this->role]: 'Unknown';
+        return isset($this->role[$this->role]) ? $this->role[$this->role] : 'Unknown';
+    }
+
+    function isAdmin()
+    {
+        return ($this->role == 1) ? true : false;
+    }
+
+    function isUser()
+    {
+        return ($this->role == 2) ? true : false;
     }
 } 

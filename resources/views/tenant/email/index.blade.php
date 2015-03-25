@@ -10,22 +10,8 @@ Email
 @stop
 
 @section('content')
-<link href="{{asset('assets/css/zabuto_calendar.css')}}" rel="stylesheet" type="text/css" />
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
-<style>
-.ui-autocomplete-loading {
-background: white url("images/ui-anim_basic_16x16.gif") right center no-repeat;
-}
-
-#filelist>div {position: relative}
-#filelist a.cancel_upload {  float: right;
-                             top: 0px;
-                             position: absolute;
-                             right: 1px;}
-
-.ui-autocomplete {z-index: 99999999}
-</style>
 {{FB::js('assets/plugins/plupload/js/plupload.full.min.js')}}
 {{FB::registerModal()}}
 {{FB::js('assets/js/desk/email.js')}}
@@ -68,10 +54,6 @@ $(function(){
                                   </div>
                                 </div><!-- /.col (RIGHT) -->
                             </div>
-
-
-
-
                           </div><!-- /.box -->
                       </div><!-- bg-white -->
                       </div>
@@ -87,5 +69,3 @@ $(function(){
             </div><!-- /.box -->
             @include('tenant.email.compose')
 @stop
-
-
