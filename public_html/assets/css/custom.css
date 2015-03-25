@@ -251,7 +251,6 @@ a {
 .input-custom {
     width: 48%;
     float: left;
-    margin-left: 10%;
 }
 
 .no-mg {
@@ -1022,10 +1021,10 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
 
 
 .f-width{
-    width: 60%;float: left;
+    width: 55%;float: left;margin-left: 3%;
 }
 .f-width .input-group.input-custom{
-    width: 88%;
+    width: 100%;
 }
 .date-box {
     float: right;
@@ -1054,5 +1053,19 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
 
 .ui-autocomplete {
     z-index: 99999999 !important;
+}
+.ui-widget-content{
+    background: #fff!important;
+    background-image:none!important; 
+
+}
+.ui-widget-content .ui-menu-item{background: #fff!important;font-size: 12px!important;}
+.ui-menu-item:hover,.ui-menu-item:focus,.ui-menu-item:link{
+    background: #3875D7!important;
+    color: #fff!important;
+    background-image:none!important; 
+}
+.btn-primary {
+  color: #fff!important;
 }
 

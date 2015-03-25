@@ -1,3 +1,5 @@
+
+
 <div class="modal modal-right fade" id="compose-modal" data-backdrop="static" data-keyboard="false" tabindex="-1"
      role="dialog" aria-hidden="ture">
     <div class="modal-dialog">
@@ -30,10 +32,13 @@
                     </div>
                     <div class="form-group">
                          <div class="input-group" style="width: 100%">
-                           {!! Form::textarea('message', null, ['id'=>'message', 'class'=>'form-control', 'placeholder'=>'Message', 'style'=>'height: 120px;']) !!}
+                           {!! Form::textarea('message', null, ['id'=>'message', 'class'=>'form-control textarea', 'placeholder'=>'Message', 'style'=>'height: 250px;']) !!}
                         </div>
                     </div>
-                    <div class="form-group">
+                    <p class="align-right">
+                        <a href="javascript:;" id="note-link"><i class="fa fa-plus"></i> Add note</a>
+                    </p>
+                    <div id="note-box" class="form-group hidden">
                         <div class="input-group" style="width: 100%">
                           {!! Form::textarea('note', null, ['id'=>'note','class'=>'form-control', 'placeholder'=>'Note', 'style'=>'height: 70px;background: #FDFCBC;border: 1px solid #F8F7B6;box-shadow: 0 2px 1px rgba(0,0,0,.2);']) !!}
                         </div>
@@ -85,5 +90,15 @@
     </div>
     <!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 @endif
+
+<script type="text/javascript">
+    $(function(){
+        $('#note-link').click(function(){
+            $('#note-box').toggleClass('hidden');
+        });
+
+        $(".textarea").wysihtml5();
+
+    })();
+</script>

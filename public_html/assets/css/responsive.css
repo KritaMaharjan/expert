@@ -159,7 +159,7 @@
         display: block;
         float: none !important;
     }
-    .f-width .input-group.input-custom {
+    .f-width{
         margin-left: 0px !important;
     }
     .f-width {
