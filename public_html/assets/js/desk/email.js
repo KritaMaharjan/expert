@@ -168,10 +168,12 @@ $(function () {
             })
                 .done(function (response) {
                     var mail = response.data.mail;
-                    $('#email_to').val(mail.to);
-                    $('#email_cc').val(mail.cc);
                     if (action == 'reply')
+                    {
+                        $('#email_to').val(mail.to);
+                        $('#email_cc').val(mail.cc);
                         $('#subject').val('RE: ' + mail.subject);
+                    }
                     else if (action == 'forward')
                         $('#subject').val('FW: ' + mail.subject);
 

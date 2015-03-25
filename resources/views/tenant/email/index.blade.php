@@ -41,6 +41,9 @@ $(function(){
                             <div class="col-md-12 col-sm-12">
                                 <div class="row pad pad-top-0 pad-btm-0">
                                   <div class="col-md-12 pad-6">
+
+                                  <?php dd(current_user()->table); ?>
+
                                     <a href="javascript:;" id="personal" class="inbox btn btn-default  btn-flat btn-small btn-primary">Personal Inbox</a>
                                     <a href="javascript:;" id="support" class="inbox btn btn-default btn-flat btn-small">Support Inbox</a>
                                   </div>
