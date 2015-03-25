@@ -55,10 +55,9 @@ class CustomerController extends BaseController {
                 'mobile'        => 'numeric',
 
 
-                'postcode'      => 'required',
+                //'postcode'      => 'required',
                 'town'          => 'alpha|between:2,50',
 
-                //  'photo'         => 'image'
             )
         );
 
@@ -66,14 +65,8 @@ class CustomerController extends BaseController {
             return \Response::json(array('status' => 'fail', 'errors' => $validator->getMessageBag()->toArray()));
 
 
-        $fileName = '';
-
-        if ($this->request->hasFile('photo')) {
-            $file = $this->request->file('photo');
-            $fileName = \FB::uploadFile($file);
-
-        }
-        $result = $this->customer->createCustomer($this->request, $this->current_user->id, $fileName);
+       
+        $result = $this->customer->createCustomer($this->request, $this->current_user->id);
         $redirect_url = tenant_route('tenant.customer.index');
 
         return \Response::json(array('success' => true, 'data' => $result['data'], 'template' => $result['template'], 'redirect_url' => $redirect_url));
@@ -125,23 +118,17 @@ class CustomerController extends BaseController {
                 'telephone'     => 'numeric',
                 'mobile'        => 'numeric',
 
-                'postcode'      => 'required',
+                //'postcode'      => 'required',
                 'town'          => 'between:2,50',
-                //'photo'         => 'image'
+                
             )
         );
 
         if ($validator->fails())
             return \Response::json(array('status' => 'fail', 'errors' => $validator->getMessageBag()->toArray()));
 
-        $fileName = '';
-
-        if ($this->request->hasFile('photo')) {
-            $file = $this->request->file('photo');
-            $fileName = \FB::uploadFile($file);
-
-        }
-        $customers = $this->customer->updateCustomer($id, $this->request, $dob, $this->current_user->id, $fileName);
+       
+        $customers = $this->customer->updateCustomer($id, $this->request, $dob, $this->current_user->id);
 
         $redirect_url = tenant_route('tenant.customer.index');
 

@@ -63,16 +63,7 @@ ul.ui-autocomplete.ui-menu {
     </div>
 
 
-    <script type="text/javascript">
-
-    var customer;
-        $(document).on('click','#customer-add', function(){
-            $(".js-example-basic-multiple").select2('destroy');
-           customer = $('#fb-modal').find('.modal-body').html();
-           $('#fb-modal').find('.modal-body').html($('#customer-modal-data').html());
-        });
-    </script>
-
+   
     {{--Load JS--}}
     {{FB::registerModal()}}
    

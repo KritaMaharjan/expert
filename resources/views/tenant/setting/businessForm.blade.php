@@ -75,8 +75,8 @@
 	    <div class="form-group no-mg">
 	      <label class="control-label">Potal Code/Town</label>
 	      <div class="two-inputs @if($errors->has('postal_code') || $errors->has('town')) {{'has-error'}} @endif">
-	      	{!!Form::text('postal_code',$business['postal_code'],array('class' => 'form-control', 'id' => 'postal_code'))!!}  
-	      	{!!Form::text('town',$business['town'],array('class' => 'form-control', 'id' => 'city'))!!} 
+	      	{!!Form::text('postal_code',$business['postal_code'],array('class' => 'form-control postal_code', 'id' => 'postal_code'))!!}  
+	      	{!!Form::text('town',$business['town'],array('class' => 'form-control city', 'id' => 'city'))!!} 
 	     	@if($errors->has('postal_code'))
            		{!! $errors->first('postal_code', '<label class="control-label" for="inputError">:message</label>') !!}
           	@endif
@@ -105,76 +105,4 @@
 {!! Form::close() !!}
 
 
-<script>
-$(function() {
-
-
-
- var cache = {};
-        $("#postal_code").autocomplete({
-            minLength: 0,
-            source: function(request, response) {
-                var term = request.term;
-                var token = '{{csrf_token()}}';
-                if (term in cache) {
-                    response(cache[ term ]);
-                    return;
-                }
-
-                $.ajax({
-                    url: appUrl+"postal/suggestions",
-                    type: "get",
-                    dataType: "json",
-                    data: {'data': term,'_token':token},
-                    success: function(data) {
-                      
-                        cache[ term ] = data;
-                        items1 = $.map(data, function(item) {
-
-                            return   {label: item.postcode +' , ' +item.town ,
-                                value: item.postcode,
-                                town :item.town ,
-                                id: item.id}
-
-
-                        });
-                        response(items1);
-                    }
-                });
-            },
-             //appendTo: '#customer-modal-data',
-            search: function(event, ui) {
-               
-            },
-            response: function(event, ui) {
-               
-            },
-            create: function(event, ui) {
-            },
-            open: function(event, ui) {
-               
-            },
-            focus: function(event, ui) {
-
-            },
-            _resizeMenu: function() {
-                this.menu.element.outerWidth(200);
-            },
-            select: function(event, ui) {
-                
-                 var label = ui.item.town;
-                 
-                $('#city').val(label);
- 
-
-                
-
-            }
-        });
-
-});
-</script>
-
-
-  
 

@@ -1,3 +1,4 @@
+
    {!!Form::open(['id'=>'customer-form', 'files'=>true, 'enctype'=>'multipart/form-data'])!!}
                     <div class="box-body">
                       <div class="form-group">
@@ -63,11 +64,9 @@
                       </div>
                       <div class="form-group two-inputs">
                         <label for="">Postal code/Town</label>
-                        <select class="form-control js-example-basic-multiple postcode"  placeholder="Postal code" id="postcode" name="postcode"  value="{{old('postcode')}}">
-                          <option value="{{$customer->postcode}}">{{$customer->postcode}}</option>
-                      
-                        </select>
-                        <input type="text" placeholder="Town"  id="town" name="town"  value="{{$customer->town}}" class="form-control">
+                       
+                         <input type="text" placeholder="postcode"  id="postcode" name="postcode"  value="{{$customer->postcode}}" class="form-control postal_code">
+                        <input type="text" placeholder="Town"  id="town" name="town"  value="{{$customer->town}}" class="form-control city">
                     
                       </div>
                       <div class="form-group">
@@ -91,12 +90,7 @@
                           
                         ], $customer->status, array('class' => 'form-control')) !!}
                       </div>
-                    <div class="form-group">
-                        <label>Upload Photo</label>
-                        <div class="">
-                            <input type="file" name="photo" id="photo">
-                        </div>
-                    </div>
+               
 
                    
                 <div class="box-footer">
@@ -122,69 +116,102 @@
              modal.find('.dob_div').hide();
             modal.find('.business_div').show();
            }
+
+
+           var cache = {};
+    $(".postal_code")
+        // don't navigate away from the field on tab when selecting an item
+        .bind("keydown", function (event) {
+            if (event.keyCode === $.ui.keyCode.TAB &&
+                $(this).autocomplete("instance").menu.active) {
+                event.preventDefault();
+            }
+        })
+        .autocomplete({
+            minLength: 0,
+            source: function(request, response) {
+              requestURL =  appUrl+"postal/suggestions";
+                // var term = request.term;
+                // var token = '{{csrf_token()}}';
+                // if (term in cache) {
+                //     response(cache[ term ]);
+                //     return;
+                // }
+
+                // $.ajax({
+                //     url: appUrl+"postal/suggestions",
+                //     type: "get",
+                //     dataType: "json",
+                //     data: {'data': term,'_token':token},
+                //     success: function(data) {
+                //       alert(data);
+                      
+                //         cache[ term ] = data;
+                //         items1 = $.map(data, function(item) {
+
+                //             return   {label: item.postcode +' , ' +item.town ,
+                //                 value: item.postcode,
+                //                 town :item.town ,
+                //                 id: item.id}
+
+
+                //         });
+                //         response(items1);
+                //     }
+                // });
+
+    var term = request.term;
+                if (term in cache) {
+                    response(cache[term]);
+                    return;
+                }
+                $.getJSON(requestURL, {term: request.term}, function (data, status, xhr) {
+                   cache[ term ] = data;
+                         items1 = $.map(data, function(item) {
+
+                            return   {label: item.postcode +' , ' +item.town ,
+                                value: item.postcode,
+                                town :item.town ,
+                                id: item.id}
+
+
+                        });
+
+                        response(items1);
+                });
+            },
+             //appendTo: '#customer-modal-data',
+            search: function(event, ui) {
+               
+            },
+            response: function(event, ui) {
+               
+            },
+            create: function(event, ui) {
+            },
+            open: function(event, ui) {
+               
+            },
+            focus: function(event, ui) {
+
+            },
+            _resizeMenu: function() {
+                this.menu.element.outerWidth(200);
+            },
+            select: function(event, ui) {
+                
+                 var label = ui.item.town;
+                 
+                $('.city').val(label);
+ 
+
+                
+
+            }
+        });
          });
 
 
            </script>
 
-           <script type="text/javascript">
-             $(document).ready(function () {
-
-               var customerSelect = $(".js-example-basic-multiple");
-    customerSelect.select2({
-
-        ajax: {
-            url: appUrl + 'postal/suggestions',
-            dataType: 'json',
-            cache: false,
-            selectOnBlur: true,
-            data: function (params) {
-                return {
-                    postcode: params.term, // search term
-                    page: params.page
-                };
-            },
-            processResults: function (data) {
-
-                return {
-                    results: $.map(data, function (obj) {
-                        return {id: obj.text, text: obj.text};
-                    })
-                };
-            }
-        },
-        formatResult: FormatResult,
-        formatSelection: FormatSelection,
-        escapeMarkup: function (m) {
-            return m;
-        }
-    })
-     $(document.body).on("change",".js-example-basic-multiple",function(){
-
- var value = this.value;
- var test = value.split(','); 
-
- $('#town').val(test[1]);
- $('span #select2-postcode-container').text(test[0]);
-
-
- 
-});
-
-
-
-function FormatResult(item) {
-    var markup = "";
-    if (item.text !== undefined) {
-        markup += "<option value='" + item.text + "'>" + item.text + "</option>";
-    }
-    return markup;
-}
-
-function FormatSelection(item) {
-    console.log(item.text)
-    return item.text;
-}
-});
-
-</script>
+           

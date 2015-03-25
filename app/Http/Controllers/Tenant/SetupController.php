@@ -202,12 +202,13 @@ class SetupController extends BaseController {
     		 	$new['id'] = $d->id;
     		 	$new['postcode'] = $d->postcode;
     		 	$new['town'] = $d->legal_town;
-    		 	$new['value'] = $d->postcode.
+    		 	$new['value'] = $d->postcode;
     		 	array_push($newResult,$new);
+    		 	
     		 }
     	}
     	
-        return $newResult;
+        return \Response::json($newResult);  
     }
 
     // public function getPostalCode()
