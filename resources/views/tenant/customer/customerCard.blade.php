@@ -142,7 +142,7 @@ Customers
                 </div>
                 <div class="box-body">
                   <div class="row">
-                     <div class="col-md-2 col-sm-2">   
+                     <div class="col-md-12 col-sm-12">   
                         @if($customer->image) {{$customer->image}} @endif
                    </div>
               </div>

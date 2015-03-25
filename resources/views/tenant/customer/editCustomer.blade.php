@@ -129,7 +129,9 @@
 
            <script type="text/javascript">
              $(document).ready(function () {
-    $(".js-example-basic-multiple").select2({
+
+               var customerSelect = $(".js-example-basic-multiple");
+    customerSelect.select2({
 
         ajax: {
             url: appUrl + 'postal/suggestions',
