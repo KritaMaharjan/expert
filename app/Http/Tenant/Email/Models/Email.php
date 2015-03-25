@@ -86,6 +86,7 @@ class Email extends Model {
         $this->fromName = current_user()->display_name;
         $this->fromEmail = current_user()->smtp->email;
         // Send email
+
         $this->fire();
 
 

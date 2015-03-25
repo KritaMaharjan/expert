@@ -89,8 +89,7 @@ class TenantTable {
             Schema::create(self::TBL_PREFIX . 'profile', function (Blueprint $table) {
                 // $table->increments('id'); // autoincrement value of a profile
                 $table->integer('user_id')->unsign()->unique(); // user id from user table
-                $table->text('personal_email_setting')->nullable(); // serialized value of personal email setting
-                $table->text('support_email_setting')->nullable(); // serialized value of support email setting
+                $table->text('smtp')->nullable(); // serialized value of personal email setting
                 $table->integer('social_security_number')->nullable(); // social security number of a user
                 $table->bigInteger('phone')->nullable(); // phone number of a user
                 $table->string('address', 100)->nullable(); // address of a user
@@ -140,26 +139,7 @@ class TenantTable {
     }
 
 
-    /**
-     * Items table for inventory [Many to one relation with inventory table]
-     */
-    function products()
-    {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'products')) {
-            Schema::create(self::TBL_PREFIX . 'products', function (Blueprint $table) {
-                $table->increments('id'); // autoincrement value of a product
-                $table->integer('user_id')->unsign()->index(); //user id who added the product
-                $table->string('number', 25)->unique();  // product
-                $table->string('name', 100)->unique();  // name of an product
-                $table->float('vat'); // Vat percentage applied for the product
-                $table->decimal('selling_price', 11, 2); //price of an product
-                $table->decimal('purchase_cost', 11, 2); //price of an product
 
-                // created_at DATETIME
-                $table->timestamps();
-            });
-        }
-    }
 
     function emails()
     {
@@ -206,6 +186,26 @@ class TenantTable {
         }
     }
 
+    /**
+     * Items table for inventory [Many to one relation with inventory table]
+     */
+    function products()
+    {
+        if (!Schema::hasTable(self::TBL_PREFIX . 'products')) {
+            Schema::create(self::TBL_PREFIX . 'products', function (Blueprint $table) {
+                $table->increments('id'); // autoincrement value of a product
+                $table->integer('user_id')->unsign()->index(); //user id who added the product
+                $table->string('number', 25)->unique();  // product
+                $table->string('name', 100)->unique();  // name of an product
+                $table->float('vat'); // Vat percentage applied for the product
+                $table->decimal('selling_price', 11, 2); //price of an product
+                $table->decimal('purchase_cost', 11, 2); //price of an product
+
+                // created_at DATETIME
+                $table->timestamps();
+            });
+        }
+    }
 
     /**
      * Inventory Table (used to record all the inventory items)
@@ -228,6 +228,8 @@ class TenantTable {
             });
         }
     }
+
+
 
     /**
      * Table for Bills [Many to one relation with customer table]
@@ -261,13 +263,13 @@ class TenantTable {
      */
     function billProducts()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'bill_product')) {
-            Schema::create(self::TBL_PREFIX . 'bill_product', function ($table) {
+        if (!Schema::hasTable(self::TBL_PREFIX . 'bill_products')) {
+            Schema::create(self::TBL_PREFIX . 'bill_products', function ($table) {
                 $table->increments('id'); // autoincrement value
                 $table->integer('product_id')->index(); // product id
                 $table->integer('bill_id')->index(); // bill id
                 $table->integer('quantity');
-                $table->float('price');
+                $table->decimal('price',11,2);
                 $table->float('vat');
                 $table->string('currency', 10);
                 $table->float('total');

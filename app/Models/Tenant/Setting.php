@@ -12,7 +12,13 @@ class Setting extends Model {
     protected $primaryKey = "name";
 
     protected $connection = 'tenant';
-   
+
+
+    function get($name)
+    {
+        return $this->where('name', $name)->first();
+    }
+
     function scopeFix($query)
     {
         return $query->where('name', 'fix');
@@ -41,29 +47,35 @@ class Setting extends Model {
     function getCompany()
     {
         $company = $this->company()->first(['value']);
-       return isset($company->value) ? $company->value : null;
+
+        return isset($company->value) ? $company->value : null;
     }
 
-     function getSetting()
+    function getSetting()
     {
         $setting = $this->setting()->first(['value']);
-       return isset($setting->value) ? $setting->value : null;
+
+        return isset($setting->value) ? $setting->value : null;
     }
 
-    function getvacation(){
-          $vacation = $this->setting()->first(['value']);
-       return isset($vacation->value) ? $vacation->value : null;
+    function getvacation()
+    {
+        $vacation = $this->setting()->first(['value']);
+
+        return isset($vacation->value) ? $vacation->value : null;
     }
 
-     function getFix()
+    function getFix()
     {
         $fix = $this->fix()->first(['value']);
-       return isset($fix->value) ? $fix->value : null;
+
+        return isset($fix->value) ? $fix->value : null;
     }
 
     function getBusiness()
     {
         $business = $this->business()->first(['value']);
+
         return isset($business->value) ? $business->value : null;
     }
 
