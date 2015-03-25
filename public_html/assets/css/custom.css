@@ -804,3 +804,11 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
     display: table;
     width: 100%;
 }
+
+.f-width{
+    width: 60%;float: left;
+}
+.f-width .input-group.input-custom{
+    width: 88%;
+}
+

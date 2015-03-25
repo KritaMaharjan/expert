@@ -126,6 +126,13 @@
     .right-from .form-group label{
         text-align: left!important;
     }
+    .f-width {
+        width: 50%!important;
+    }
+    .f-width .input-group.input-custom {
+        margin-left: 10px !important;
+        width: 100% !important;
+    }
 
 }
 @media screen and (max-width:520px){
@@ -147,6 +154,18 @@
         margin-left: 0!important;
         width: 100%;
 
+    }
+    .comp-footer .btn.btn-default.pull-left.sm-mg-btn {
+        display: block;
+        float: none !important;
+    }
+    .f-width .input-group.input-custom {
+        margin-left: 0px !important;
+    }
+    .f-width {
+        display: inline-block;
+        float: none!important;
+        width: 65%!important;
     }
 }
 @media screen and (max-width:420px){

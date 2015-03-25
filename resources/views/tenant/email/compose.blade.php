@@ -50,26 +50,26 @@
                     </div>
 
 
-                    <div class="modal-footer clearfix text-align-left">
+                    <div class="modal-footer clearfix text-align-left comp-footer">
                         <button type="button" class="btn btn-default pull-left sm-mg-btn" data-dismiss="modal"><i
                                 class="fa fa-times"></i> Discard
                         </button>
-                            <div  class="form-group">
-
-                        <div class="input-group input-custom">
-                                <span class="input-group-addon">Action:</span>
-                                <?php
-                                 $status_list = [
-                                         '' => 'Select',
-                                         1 => 'Mark open',
-                                         2 => 'Mark closed',
-                                         3 => 'Mark pending',
-                                         5 => 'Add to-do list'
-                                     ];
-                                ?>
-                                 {!! Form::select('status', $status_list, null, ['id'=>'status','class'=>'form-control']) !!}
-                        </div>
+                        <div  class="form-group f-width">
+ 
+                            <div class="input-group input-custom">
+                                    <span class="input-group-addon">Action:</span>
+                                    <?php
+                                     $status_list = [
+                                             '' => 'Select',
+                                             1 => 'Mark open',
+                                             2 => 'Mark closed',
+                                             3 => 'Mark pending',
+                                             5 => 'Add to-do list'
+                                         ];
+                                    ?>
+                                     {!! Form::select('status', $status_list, null, ['id'=>'status','class'=>'form-control']) !!}
                             </div>
+                        </div>
 
                         <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-envelope"></i> Send
                             Message
