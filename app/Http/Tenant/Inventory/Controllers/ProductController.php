@@ -177,14 +177,4 @@ class ProductController extends BaseController {
 
         return $newResult;
     }
-
-/*    public function getProductDetails()
-    {
-        $product_id = $this->request->route('productId');
-        $product = Product::find($product_id);
-
-        return \Response::json(['success' => true, 'details' => $product]);
-    }*/
-
-
 }
