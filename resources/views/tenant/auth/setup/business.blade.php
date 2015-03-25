@@ -103,9 +103,6 @@
 
 			</section>
 		</div>
-
-
-<script>
 {{ FB::js('
 	 var cache = {};
     $(".postal_code")
