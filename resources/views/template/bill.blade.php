@@ -83,13 +83,16 @@
              <table class="border" cellpadding="2">
               <tbody>       
                <tr>
-                <td style="text-indent:15px;">{{ $data['customer_details']->name }}</td>
+                <td style="text-indent:15px;">{{ $data['customer_details']['name'] }}</td>
                </tr>
                <tr>
-                <td style="text-indent:15px;">{{ $data['customer_details']->street_number }}</td>
+                <td style="text-indent:15px;">{{ $data['customer_details']['street_number'] or '' }} {{ $data['customer_details']['street_address'] or '' }}</td>
                </tr>
                <tr>
-                <td style="text-indent:15px;">{{ $data['customer_details']->address }}</td>
+                <td style="text-indent:15px;">{{ $data['customer_details']['town'] or '' }}</td>
+               </tr>
+               <tr>
+                <td style="text-indent:15px;">{{ $data['customer_details']['address'] or ''}}</td>
                </tr>
               </tbody>
              </table>
@@ -102,10 +105,19 @@
                    </tr>
                    <tr>
                     <td style="text-indent:15px;">{{ $data['company_details']['postal_code'] }} {{ $data['company_details']['town'] }}</td>
-                   </tr>
+                    </tr>
                    <tr>
                     <td style="text-indent:15px;">{{ $data['company_details']['address'] }}</td>
-                   </tr>
+                    </tr>
+                   <tr>
+                    <td style="text-indent:15px;">{{ $data['company_details']['telephone'] }}</td>
+                    </tr>
+                   <tr>
+                    <td style="text-indent:15px;">Email: {{ $data['company_details']['service_email'] or 'Mangler informasjon, se instillinger' }}</td>
+                    </tr>
+                   <tr>
+                    <td style="text-indent:15px;">Website: {{ $data['company_details']['website'] or 'Mangler informasjon, se instillinger' }}</td>
+                    </tr>
                   </tbody>
                 </table>
             </td>

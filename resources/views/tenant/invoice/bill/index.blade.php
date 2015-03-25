@@ -11,7 +11,6 @@
     <li><i class="fa fa-money"></i> {{ ucfirst($type) }}</li>
 @stop
 
-
 @section('content')
 
 <div class="row">

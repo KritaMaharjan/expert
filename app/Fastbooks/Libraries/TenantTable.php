@@ -247,7 +247,7 @@ class TenantTable {
                 $table->float('paid')->default(0);
                 $table->float('remaining');
                 $table->boolean('status')->default(0); // 0: unpaid, 1: paid, 2: collection
-                $table->string('account_number', 20);
+                $table->string('customer_payment_number', 60)->nullable();
                 $table->boolean('is_offer')->default(0); // 0: no (bill), 1: yes (offer)
                 $table->datetime('due_date');
                 // created_at, updated_at DATETIME

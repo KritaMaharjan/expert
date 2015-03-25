@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\Tenant\Customer;
 
+use App\Http\Tenant\Invoice\Models\Bill;
 use App\Models\Tenant\Customer;
 use App\Http\Controllers\Tenant\BaseController;
 use Illuminate\Http\Request;
@@ -12,13 +13,14 @@ class CustomerController extends BaseController {
     protected $request;
     protected $customer;
 
-    public function __construct(Customer $customer, Request $request)
+    public function __construct(Customer $customer, Request $request, Bill $bill)
     {
         \FB::can('Customer');
 
         parent::__construct();
         $this->customer = $customer;
         $this->request = $request;
+        $this->bill = $bill;
     }
 
     /**
@@ -255,6 +257,8 @@ class CustomerController extends BaseController {
     {
         $customer_id = $this->request->route('customerId');
         $customer = Customer::find($customer_id);
+        $customer->paymentNo = $this->bill->getCustomerPayment($customer_id);
+
         return \Response::json(['success' => true, 'details' => $customer]);
     }
 }

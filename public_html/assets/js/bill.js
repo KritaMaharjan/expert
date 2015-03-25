@@ -60,7 +60,9 @@ $(function () {
         '<td colspan="5"><div class="clearfix">' +
         '<ul class="links-td">' +
         '<li><a href="'+appUrl+'invoice/'+thisUrl+'/'+d.id+'/download">Download</a></li>' +
-        '<li><a href="'+appUrl+'invoice/'+thisUrl+'/'+d.id+'/print">Print</a></li>' + conv +
+        '<li><a href="'+appUrl+'invoice/'+thisUrl+'/'+d.id+'/print">Print</a></li>'+
+        '<li><a href="'+appUrl+'invoice/bill/'+d.id+'/mail" class="send-mail">Send Mail</a></li>'
+        + conv +
         '</ul>' +
         '</div></td></tr>';
         return $hidden_child;
@@ -69,6 +71,48 @@ $(function () {
         'Salary: ' + d.due_date + '<br>' +
         'The child row can contain any data you wish, including links, images, inner tables etc.';
     }
+
+    $(document).on('click', '.send-mail', function (e) {
+        e.preventDefault();
+        var $this = $(this);
+        var parentTr = $this.closest('.temp_tr').parent();
+        var url = $this.attr('href');
+        var doing = false;
+
+        if (doing == false) {
+            doing = true;
+            parentTr.hide('slow');
+            parentTr.parent().prev('tr').removeClass('shown');
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                dataType: 'json'
+            })
+                .done(function (response) {
+                    if (response.status == 1) {
+                        $('.mainContainer .box-solid').before(notify('success', response.data.message));
+                        parentTr.parent().prev('tr').removeClass('shown');
+                        parentTr.hide();
+                    } else {
+                        parentTr.parent().prev('tr').addClass('shown');
+                        parentTr.show('fast');
+                        $('.mainContainer .box-solid').before(notify('error', response.data.message));
+                    }
+                    setTimeout(function () {
+                        $('.callout').remove()
+                    }, 2500);
+                })
+                .fail(function () {
+                    parentTr.show('fast');
+                    alert('Something went wrong');
+                })
+                .always(function () {
+                    doing = false;
+                });
+        }
+
+    });
 
     function format_bck(d) {
         $hidden_child = '<tr class="temp_tr">' +
