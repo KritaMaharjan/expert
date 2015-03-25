@@ -137,6 +137,7 @@
             url: appUrl + 'postal/suggestions',
             dataType: 'json',
             cache: false,
+            selectOnBlur: true,
             data: function (params) {
                 return {
                     postcode: params.term, // search term
