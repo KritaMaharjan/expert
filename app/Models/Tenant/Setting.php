@@ -74,10 +74,22 @@ class Setting extends Model {
         $setup->save();
     }
 
-    function addOrUpdate(array $data = array())
+    function addOrUpdate(array $data = array(),$group = NULL)
     {
         if (!empty($data)):
-            foreach ($data as $key => $value) {
+            if(is_null($group)){
+                foreach ($data as $key => $value) {
+
+                $setting = Setting::firstOrNew(['name' => $key]);
+              
+                    $setting->value = $value;
+                
+                $setting->save();
+            }
+
+            }else{
+                foreach ($data as $key => $value) {
+
                 $setting = Setting::firstOrNew(['name' => $group]);
                 if (is_array($value) || is_object($value)) {
                     $setting->value = serialize($value);
@@ -86,6 +98,13 @@ class Setting extends Model {
                 }
                 $setting->save();
             }
+
+            }
+           
+                
+
+            
+            
         endif;
     }
 

@@ -354,28 +354,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return $details;
     }
 
-    function addVacation($leave, $user_id, $type)
-    {
-        if ($type == 'vacation_days') {
-            $vacation = Vacation::create([
-                'user_id'       => $user_id,
-                'vacation_days' => $leave,
-                'sick_days'     => 0,
-            ]);
-
-
-        } elseif ($type == 'sick_days') {
-            $vacation = Vacation::create([
-                'user_id'       => $user_id,
-                'vacation_days' => 0,
-                'sick_days'     => $leave,
-
-            ]);
-
-
-        }
-
-
-    }
+    
 
 }

@@ -113,6 +113,7 @@ Template Settings
         CKEDITOR.replace('domain_setup');
         CKEDITOR.replace('forgot_password');
         CKEDITOR.replace('request_url');
+         CKEDITOR.replace('bill_email');
       });
     ")}}
 

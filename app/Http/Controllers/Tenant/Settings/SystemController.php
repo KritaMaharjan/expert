@@ -27,8 +27,11 @@ class SystemController extends BaseController {
     	$fixit = $this->setting->getfix();
         $vacationDays = \DB::table('fb_settings')->where('name', 'vacation')->first();
         $vacation = @unserialize($vacationDays->value);
+        $dateformat = \DB::table('fb_settings')->where('name', 'dateformate')->first();
+         $vat = \DB::table('fb_settings')->where('name', 'vat')->first();
+          $currency = \DB::table('fb_settings')->where('name', 'currency')->first();
     
-    	$data = array('countries' => \Config::get('tenant.countries'),'company'=>$company,'business'=>$business,'fix'=>$fixit,'vacation'=>$vacation);
+    	$data = array('countries' => \Config::get('tenant.countries'),'company'=>$company,'business'=>$business,'fix'=>$fixit,'vacation'=>$vacation,'dateformat'=>$dateformat,'vat'=>$vat,'currency'=>$currency);
     	return view('tenant.setting.system')->withPageTitle('System Controller')->with($data);
     }
 
@@ -142,6 +145,7 @@ class SystemController extends BaseController {
             if ($group != '') {
                 $this->setting->addOrUpdate([$group => $all], $group);
             } else {
+               // dd($all);
                 $this->setting->addOrUpdate($all);
             }
 
