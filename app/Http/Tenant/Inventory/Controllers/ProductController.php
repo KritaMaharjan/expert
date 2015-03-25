@@ -162,7 +162,7 @@ class ProductController extends BaseController {
     {
         if ($this->request->ajax()) {
             $name = $this->request->input('name');
-            $products = $this->product->select('id', 'name as text')->where('name', 'LIKE',  $name . '%')->get() - toJson();
+            $products = $this->product->select('id', 'name as text')->where('name', 'LIKE', $name . '%')->get()->toJson();
 
             return $products;
         }
