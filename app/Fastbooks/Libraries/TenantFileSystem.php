@@ -129,7 +129,7 @@ class TenantFileSystem {
     {
         $dir = trim($this->path(), '/');
         if (!is_dir($dir))
-            mkdir($dir, $this->filePermission, true);
+            mkdir($dir, 777, true);
 
         return true;
     }
