@@ -50,20 +50,42 @@
   });
 
    $("#from").datepicker({
-              'format': 'dd/mm/yyyy'
+              'format': 'dd/mm/yyyy',
+        onSelect: function(date) {
+          alert(date);
+            $('#from').val(date);
+            
+
+        },  
+        onClose: function( selectedDate ) {
+            $( "#to" ).datepicker( "option", "minDate", selectedDate );
+        } 
+
          });
  $("#to").datepicker({
-              'format': 'dd/mm/yyyy'
+            'format': 'dd/mm/yyyy',
+        onSelect: function(date) {
+            $('#to').val(date);
+            
+
+        },  
+        onClose: function( selectedDate ) {
+           
+        } 
          });
 
   $(document).on('click', '.saveVacation', function (e) {
         e.preventDefault();
 
-//         var date1 = $('#from_date').val();
-// var date2 =  $('#to_date').val();
-// var timeDiff = Math.abs(date2.getTime() - date1.getTime());
-// var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24)); 
-//       var days = diffDays;
+          var a = $('#from_date').val();
+          var date1 = new Date(a);
+          var b =  $('#to_date').val();
+          var date2 = new Date(b);
+          var timeDiff = Math.abs(date2.getTime() - date1.getTime());
+          var diffDays = Math.ceil(timeDiff / (1000 * 3600 * 24));
+      
+
+       var days = diffDays;
        var _token = $('#_token').val();
        var user_id = $('#user_id').val();
        var vacation_days = $('#vacationtotal').val();
@@ -76,7 +98,7 @@
             url: appUrl + 'user/addVacation',
             type: 'POST',
             dataType: 'json',
-            data: {'days':days,'_token':_token,'user_id':user_id,'vacation_days':vacation_days,'type':type},
+            data: {'days':days,'_token':_token,'user_id':user_id,'vacation_days':vacation_days,'type':type,'from':a,'to':b},
                 async: false,
                  success: function(response) {
                     if (response.status == true) {

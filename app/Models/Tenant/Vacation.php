@@ -53,7 +53,7 @@ class Vacation extends Model  {
         if ($type == 'vacation_days') {
             $vacation = Vacation::create([
                 'user_id'       => $request['user_id'],
-                'vacation_days' => $request['leave'],
+                'vacation_days' => 0,
                 'sick_days'     => 0,
                 'from'     =>  $request['from'],
                  'from'     =>  $request['to'],
@@ -64,7 +64,7 @@ class Vacation extends Model  {
             $vacation = Vacation::create([
                 'user_id'       =>  $request['user_id'],
                 'vacation_days' => 0,
-                'sick_days'     =>  $request['leave'],
+                'sick_days'     =>  0,
                  'from'     =>  $request['from'],
                  'from'     =>  $request['to'],
 
