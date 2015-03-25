@@ -80,6 +80,10 @@
           {!! Form::label('account_number', 'Account no') !!}
           <span class="border-bx block">{{ $company_details['account_no'] }}</span>
         </div>
+        <div class="form-group clearfix" style="text-align: left !important;">
+          {!! Form::label('Customer Payment Number') !!}
+          <span class="border-bx block cus-pay-no">{{ $bill->customer_payment_number or ''}}</span>
+        </div>
         <div class="form-group clearfix">
           {!! Form::label('currency', 'Currency') !!}
           {!! Form::select('currency', $currencies, null, array('class' => 'form-control')) !!}
@@ -191,7 +195,7 @@
         <div class="box-header">
             <h3 class="box-title">Add New Customer</h3>
         </div>
-        @include('tenant.customer.createCustomer')
+        {{--@include('tenant.customer.createCustomer')--}}
     </div><!-- /.box-body -->
 </div>
 

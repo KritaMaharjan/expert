@@ -62,7 +62,7 @@ class Pdf {
 
     }
 
-    function generate($filename = '', $view, array $data = array(), $download = false)
+    public function generate($filename = '', $view, array $data = array(), $download = false, $save = false)
     {
         // set some text to print
         $html = view($view, $data);
@@ -70,13 +70,20 @@ class Pdf {
         // print a block of text using Write()
         $this->pdf->writeHTML($html, true, false, true, false, '');
         // ---------------------------------------------------------
+        //save PDF
+        if ($save)
+        {
+            $this->pdf->Output($this->uploadPath . $filename . '.pdf', 'F');
+            return $this->uploadPath.$filename.'.pdf';
+        }
 
         //Close and output PDF document
         if ($download)
             $this->pdf->Output($filename . '.pdf', 'D');
+
         else
             $this->pdf->Output($this->uploadPath . $filename . '.pdf', 'I');
-
+        return true;
     }
 
 }

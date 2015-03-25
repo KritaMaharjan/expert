@@ -6,6 +6,7 @@ use App\Fastbooks\Libraries\Pdf;
 use App\Http\Controllers\Tenant\BaseController;
 use App\Http\Tenant\Invoice\Models\Bill;
 use App\Http\Tenant\Invoice\Models\BillProduct;
+use App\Models\Tenant\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Laracasts\Flash\Flash;
@@ -207,6 +208,22 @@ class BillController extends BaseController {
         $pdf->generate(time(), 'template.bill', compact('data'), false);
     }
 
+    function sendEmail(Pdf $pdf)
+    {
+        if ($this->request->ajax())
+        {
+            $id = $this->request->route('id');
+            $data = $this->getInfo($id);
+            $pdf_file[] = $pdf->generate(time(), 'template.bill', compact('data'), false, true);
+            $template = "Attached PDF file";
+            $mail = \FB::sendEmail($data['customer_details']['email'], $data['customer'], $template, $param = array(), $pdf_file);
+            if($mail) {
+                return $this->success(['message' => 'Email Sent Successfully!']);
+            }
+            return $this->fail(['message' => 'Something went wrong. Please try again later']);
+        }
+    }
+
     function printBill()
     {
         $id = $this->request->route('id');
@@ -222,10 +239,12 @@ class BillController extends BaseController {
         $bill_details = array(
             'id' => $bill->id,
             'amount' => $bill->total,
+            'currency' => $bill->currency,
             'invoice_number' => $bill->invoice_number,
             'invoice_date' => $bill->created_at,
+            'due_date' => $bill->due_date,
             'customer' => $bill->customer,
-            'customer_details' => $bill->customer_details,
+            'customer_details' => $bill->customer_details->toArray(),
             'company_details' => $company_details
         );
 

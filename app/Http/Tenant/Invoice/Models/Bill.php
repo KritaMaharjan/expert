@@ -21,7 +21,7 @@ class Bill extends Model {
      *
      * @var array
      */
-    protected $fillable = ['invoice_number', 'customer_id', 'currency', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'status', 'due_date', 'is_offer'];
+    protected $fillable = ['invoice_number', 'customer_id', 'currency', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'status', 'due_date', 'is_offer', 'customer_payment_number'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -70,10 +70,11 @@ class Bill extends Model {
 
             }
 
-            $bill->subtotal = $subtotal;
             $bill->invoice_number = $this->getPrecedingInvoiceNumber($bill->id);
+            $bill->subtotal = $subtotal;
             $bill->tax = $tax;
             $bill->total = $alltotal;
+            $bill->customer_payment_number = format_id($bill->customer_id).format_id($bill->id);
             $bill->save();
 
             DB::commit();
@@ -236,7 +237,6 @@ class Bill extends Model {
         if ($bill != null) {
             $customer = Customer::find($bill->customer_id);
             $bill->customer = $customer->name;
-
             $bill->customer_details = $customer;
 
             $bill_products = BillProduct::where('bill_id', $id)->get();
@@ -266,6 +266,17 @@ class Bill extends Model {
         }
 
         return $new_invoice_num;
+    }
+
+    function getCustomerPayment($id = null)
+    {
+        $latest = Bill::select('id')->orderBy('id', 'desc')->first();
+        if ($latest)
+            $new_cus_no = format_id($id, 3).sprintf("%03d", ($latest->id + 1));
+        else
+            $new_cus_no = format_id($id, 3) . '001';
+
+        return $new_cus_no;
     }
 
     function convertToBill($id)
