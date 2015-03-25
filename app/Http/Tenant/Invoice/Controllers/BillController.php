@@ -60,10 +60,13 @@ class BillController extends BaseController {
 
     public function add()
     {
+        $months = \Config::get('tenant.month');
+        $data = array('months' => $months, 'currencies' => \Config::get('tenant.currencies'));
+
         $company_details = $this->getCompanyDetails();
         $company_details['invoice_number'] = $this->bill->getPrecedingInvoiceNumber();
 
-        return view('tenant.invoice.bill.create', compact('company_details'))->with('pageTitle', 'Add new bill');
+        return view('tenant.invoice.bill.create', compact('company_details'))->with('pageTitle', 'Add new bill')->with($data);
     }
 
     function getCompanyDetails()
@@ -126,8 +129,10 @@ class BillController extends BaseController {
             show_404();
         }
         $company_details = $this->getCompanyDetails();
+        $months = \Config::get('tenant.month');
+        $data = array('months' => $months, 'currencies' => \Config::get('tenant.currencies'));
 
-        return view('tenant.invoice.bill.edit', compact('bill'))->with('pageTitle', 'Update Bill')->with('company_details', $company_details);
+        return view('tenant.invoice.bill.edit', compact('bill'))->with('pageTitle', 'Update Bill')->with('company_details', $company_details)->with($data);
     }
 
     /**  update bill detail
