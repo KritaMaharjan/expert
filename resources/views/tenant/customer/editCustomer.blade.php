@@ -118,7 +118,15 @@
            }
 
 
-           var cache = {};
+      });
+
+
+           </script>
+
+           <script type="text/javascript">
+$(function () {
+
+    var cache = {};
     $(".postal_code")
         // don't navigate away from the field on tab when selecting an item
         .bind("keydown", function (event) {
@@ -131,36 +139,8 @@
             minLength: 0,
             source: function(request, response) {
               requestURL =  appUrl+"postal/suggestions";
-                // var term = request.term;
-                // var token = '{{csrf_token()}}';
-                // if (term in cache) {
-                //     response(cache[ term ]);
-                //     return;
-                // }
-
-                // $.ajax({
-                //     url: appUrl+"postal/suggestions",
-                //     type: "get",
-                //     dataType: "json",
-                //     data: {'data': term,'_token':token},
-                //     success: function(data) {
-                //       alert(data);
-                      
-                //         cache[ term ] = data;
-                //         items1 = $.map(data, function(item) {
-
-                //             return   {label: item.postcode +' , ' +item.town ,
-                //                 value: item.postcode,
-                //                 town :item.town ,
-                //                 id: item.id}
-
-
-                //         });
-                //         response(items1);
-                //     }
-                // });
-
-    var term = request.term;
+                
+              var term = request.term;
                 if (term in cache) {
                     response(cache[term]);
                     return;
@@ -202,16 +182,17 @@
                 
                  var label = ui.item.town;
                  
-                $('.city').val(label);
- 
-
-                
+                $('.city').val(label);      
 
             }
         });
-         });
+      });
 
 
-           </script>
+</script>
+
+           
+
+           
 
            
