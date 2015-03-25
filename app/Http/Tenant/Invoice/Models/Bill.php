@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Tenant\Customer;
-use App\Http\Tenant\Invoice\Models\BillProduct;
+use App\Http\Tenant\Invoice\Models\BillProducts;
 use App\Http\Tenant\Inventory\Models\Product;
 use Illuminate\Support\Facades\DB;
 
@@ -36,9 +36,10 @@ class Bill extends Model {
         // Start transaction!
         DB::beginTransaction();
         try {
+            $customer_id = $request->input('customer');
             $bill = Bill::create([
-                'invoice_number' => $this->getPrecedingInvoiceNumber(),
-                'customer_id'    => $request->input('customer'),
+                'invoice_number' => $this->getPrecedingInvoiceNumber($customer_id),
+                'customer_id'    => $customer_id,
                 'due_date'       => $request->input('due_date'),
                 'currency'       => $request->input('currency'),
                 'is_offer'       => ($offer == true) ? 1 : 0
@@ -55,7 +56,7 @@ class Bill extends Model {
                 if (isset($quantity[$key]) && $quantity[$key] > 0 && $product > 0) {
                     $product_details = Product::find($product);
                     $total = ($product_details->selling_price + $product_details->vat * 0.01 * $product_details->selling_price) * $quantity[$key];
-                    $product_bill = BillProduct::create([
+                    $product_bill = BillProducts::create([
                         'product_id' => $product,
                         'bill_id'    => $bill->id,
                         'quantity'   => $quantity[$key],
@@ -70,7 +71,7 @@ class Bill extends Model {
 
             }
 
-            $bill->invoice_number = $this->getPrecedingInvoiceNumber($bill->id);
+            //$bill->invoice_number = $this->getPrecedingInvoiceNumber($bill->id);
             $bill->subtotal = $subtotal;
             $bill->tax = $tax;
             $bill->total = $alltotal;
@@ -112,7 +113,7 @@ class Bill extends Model {
                 if (isset($quantity[$key]) && $quantity[$key] > 0 && $product > 0) {
                     $product_details = Product::find($product);
                     $total = ($product_details->selling_price + $product_details->vat * 0.01 * $product_details->selling_price) * $quantity[$key];
-                    $product_bill = BillProduct::create([
+                    $product_bill = BillProducts::create([
                         'product_id' => $product,
                         'bill_id'    => $bill->id,
                         'quantity'   => $quantity[$key],
@@ -144,7 +145,7 @@ class Bill extends Model {
 
     function deleteBillProducts($id)
     {
-        $product_bills = BillProduct::where('bill_id', $id)->get();
+        $product_bills = BillProducts::where('bill_id', $id)->get();
         if (!empty($product_bills)) {
             foreach ($product_bills as $product_bill) {
                 $product_bill->delete();
@@ -239,7 +240,7 @@ class Bill extends Model {
             $bill->customer = $customer->name;
             $bill->customer_details = $customer;
 
-            $bill_products = BillProduct::where('bill_id', $id)->get();
+            $bill_products = BillProducts::where('bill_id', $id)->get();
             if ($bill_products) {
                 foreach ($bill_products as $bill_product) {
                     $bill_product->product_name = Product::find($bill_product->product_id)->name;
@@ -253,17 +254,15 @@ class Bill extends Model {
         return false;
     }
 
-    function getPrecedingInvoiceNumber($id = null)
+    function getPrecedingInvoiceNumber($customer_id)
     {
-        if ($id != null)
-            $new_invoice_num = date('my') . sprintf("%03d", $id);
-        else {
-            $latest = Bill::orderBy('id', 'desc')->first();
-            if ($latest)
-                $new_invoice_num = date('my') . sprintf("%03d", ($latest->id + 1));
-            else
-                $new_invoice_num = date('my') . '001';
-        }
+        $today = \Carbon::now()->format('Y-m-d');
+        $latest_count = Bill::select('id')->where('customer_id',$customer_id)->where('created_at', '>', $today)->count();
+        //$latest = Bill::select('id')->where('customer_id',$customer_id)->orderBy('id', 'desc')->first();
+        if ($latest_count)
+            $new_invoice_num = date('dmy') . format_id($customer_id).'-'.($latest_count + 1);
+        else
+            $new_invoice_num = date('dmy') . format_id($customer_id). '-1';
 
         return $new_invoice_num;
     }

@@ -4,7 +4,7 @@
     <div class="col-sm-5 invoice-col col-xs-6">
 
         <div class="form-group clearfix">
-          <label>Invoice Number: </label>{{ $company_details['invoice_number'] or $bill->invoice_number }}
+          <label>Invoice Number: </label><span class="invoice_number"> {{ $company_details['invoice_number'] or '' }} </span>
         </div>
         <div class="form-group clearfix sel-2 {{ ($errors->has('customer'))? 'has-error': '' }}">
          {!! Form::label('customer', 'Select customer') !!}

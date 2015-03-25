@@ -245,6 +245,7 @@ class CustomerController extends BaseController {
         $customer_id = $this->request->route('customerId');
         $customer = Customer::find($customer_id);
         $customer->paymentNo = $this->bill->getCustomerPayment($customer_id);
+        $customer->invoiceNo = $this->bill->getPrecedingInvoiceNumber($customer_id);
 
         return \Response::json(['success' => true, 'details' => $customer]);
     }
