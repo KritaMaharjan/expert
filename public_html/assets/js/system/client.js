@@ -46,7 +46,7 @@ function showActionbtn(row) {
     {
          return '<div class="box-tools">' +
    
-    '<a class="block" href="javascript:;" domain="'+row.domain+'" token="" link ="'+appUrl+'/system/block" code="'+row.guid+'">Block</a>' +
+    '<a class="block" href="javascript:;" domain="'+row.domain+'" token="" link ="'+appUrl+'/system/block" code="'+row.guid+'">Block</a> <a href="'+appUrl+'/system/deleteTenant/'+row.domain+'" link ="'+appUrl+'/system/deleteTenant" domain="'+row.domain+'" class="delete_tenant">Delete</a>' +
     '</div>';
 
     }
@@ -54,7 +54,7 @@ function showActionbtn(row) {
     {
         return '<div class="box-tools">' +
    
-    '<a class="block" href="javascript:;" domain="'+row.domain+'" token="" link ="'+appUrl+'/system/block" code="'+row.guid+'">Unblock</a>' + 
+    '<a class="block" href="javascript:;" domain="'+row.domain+'" token="" link ="'+appUrl+'/system/block" code="'+row.guid+'">Unblock</a> <a href="'+appUrl+'/system/deleteTenant/'+row.domain+'" link ="'+appUrl+'/system/deleteTenant" domain="'+row.domain+'" class="delete_tenant">Delete</a>' + 
     '</div>';
  
     }
@@ -94,6 +94,32 @@ $(document).on( 'click','.block', function() {
 
 
     });
+
+
+// $(document).on( 'click','.delete_tenant', function() {
+//         $this = $(this);
+       
+//         var domain = $this.attr('domain');
+//          var url = $this.attr('link');
+//         $.ajax({
+//             url: url,
+//             dataType: 'json',
+//             data: {'domain':domain},
+//             type: 'get',
+//             success: function(response) {
+              
+//                 if (response.status == 'true')
+//                 {
+                   
+//                    alert(done);
+                    
+//                 }
+                
+//             }
+//         });
+
+
+//     });
 
 
 })

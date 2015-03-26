@@ -1,13 +1,13 @@
   <aside class="main-sidebar">
         <section class="sidebar">          
           <ul class="sidebar-menu">
-            <li class="treeview <?php echo (strpos($current_path, 'desk') !==false)? 'active' : '';?>">
+            <li class="treeview <?php echo (strpos($current_path, 'desk') !==false || ($current_path =='tasks'))? 'active' : '';?>">
               <a href="#" title="My Desk">
                 <i class="fa fa-dashboard"></i> <span>My Desk</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
                 <li><a href="{{tenant_route('desk.email')}}" title="Emails"><i class="fa fa-circle-o"></i> Emails</a></li>
-                <li><a href="#" title="To-do lists"><i class="fa fa-circle-o"></i> To-do lists</a></li>
+                <li><a data-push="true" href="{{tenant_route('tenant.tasks.index')}}" title="Manage Tasks"><i class="fa fa-circle-o"></i>To-do lists</a></li>
               </ul>
             </li>
             @if(FB::can_view('Customer'))

@@ -59,8 +59,9 @@ class OfferController extends BaseController {
 
     public function add()
     {
+        $data = array('currencies' => \Config::get('tenant.currencies'));
         $company_details = $this->getCompanyDetails();
-        return view('tenant.invoice.bill.create', compact('company_details'))->with('pageTitle', 'Add new offer');
+        return view('tenant.invoice.bill.create', compact('company_details'))->with('pageTitle', 'Add new offer')->with($data);
     }
 
     function getCompanyDetails()
@@ -120,8 +121,9 @@ class OfferController extends BaseController {
             show_404();
         }
 
+        $data = array('currencies' => \Config::get('tenant.currencies'));
         $company_details = $this->getCompanyDetails();
-        return view('tenant.invoice.bill.edit', compact('bill'))->with('pageTitle', 'Update Offer')->with('company_details', $company_details);
+        return view('tenant.invoice.bill.edit', compact('bill'))->with('pageTitle', 'Update Offer')->with('company_details', $company_details)->with($data);
     }
 
     /**  update bill detail

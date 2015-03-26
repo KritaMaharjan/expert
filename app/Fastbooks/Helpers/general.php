@@ -63,7 +63,6 @@ function page_title()
 
 }
 
-
 function site_url()
 {
     return 'http://' . env('APP_DOMAIN');
@@ -84,9 +83,9 @@ function email_date($dateTime)
 
 function format_telephone($phone_number = null)
 {
-    if ($phone_number == null)
-        return "";
 
+    if ($phone_number == null || strlen($phone_number))
+        return $phone_number;
     $cleaned = preg_replace('/[^[:digit:]]/', '', $phone_number);
     preg_match('/(\d{3})(\d{3})(\d{4})/', $cleaned, $matches);
 

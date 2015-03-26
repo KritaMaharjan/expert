@@ -207,22 +207,38 @@ class UserController extends BaseController {
     }
 
     function addVacation(Request $request){
-        $leave = $this->request['days'];
+      
         $user_id = $this->request['user_id'];
         $type = $this->request['type'];
+        $vacation = $this->request['vacation_days'];
 
-     //dd($this->request['user_id']);
-         $result = $this->vacation->addVacation($request,$type);
 
-         $total_leave = $this->vacation->totalVacation($this->request['user_id'],$type);
+        $date1=date_create($this->request['from']);
+        $date2=date_create($this->request['to']);
+        $diff=date_diff($date1,$date2);
+        $leave = $diff->format('%d');
+        
+
+         $result = $this->vacation->addVacation($request,$type,$leave);
+
+         $total_leave = $this->vacation->totalVacation($this->request['user_id'],$type,$leave);
         // dd($total_leave);
 
-         $vacation = $this->request['vacation_days'];
-
+         
          $leave_left = $vacation - $total_leave;
 
-        return \Response::json(array('status' => true, 'vacation_days' => $leave_left,'vacation_used'=> $total_leave));
+        return \Response::json(array('status' => true, 'vacation_days' => $leave_left,'vacation_used'=> $total_leave,'leave_taken'=>$leave));
 
+    }
+
+    function deleteVacation(){
+        $id = $this->request['leave_id'];
+           
+            $vacation = Vacation::where('id', $id) ->first();
+           
+        return \Response::json(array('status' => true, 'message' => 'Leave deleted successfully'));
+       
+        
     }
 
 
