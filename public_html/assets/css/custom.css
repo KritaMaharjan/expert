@@ -592,7 +592,9 @@ small.color-blue {
 .pad-0 {
     padding: 0 !important;
 }
-
+.pad-4{
+    padding: 4px;
+}
 .fa-flag-no {
     background: url("../images/no.png") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
     height: 15px;

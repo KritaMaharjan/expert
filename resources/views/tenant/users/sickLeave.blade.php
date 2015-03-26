@@ -18,16 +18,12 @@
                   <!-- THE MESSAGES -->
                   <table class="table table-mailbox">
                     <tr>
-                      <td class="name">March 1</td>
-                      <td class="subject postion-relative">
+                      <td width="40%" class="name">March 1</td>
+                      <td width="60%" class="subject position-relative">
                         <div class="action-buttons">
-                          <a href="#" class="fa fa-close"></a>
+                          <a title="Delete" class="fa fa-close btn-danger pad-4" href="#"></a>                    
                         </div>
                         1 day</td>
-                    </tr>
-                    <tr>
-                      <td class="name">March 5-6</td>
-                      <td class="subject">2 day</td>
                     </tr>
                 </table>
               <p class="align-right">  
