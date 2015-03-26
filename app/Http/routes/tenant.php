@@ -129,6 +129,22 @@ Route::group($group_auth, function () {
         get('invoice/offer/{id}/convert', ['as' => 'tenant.invoice.offer.convert', 'uses' => 'OfferController@convertToBill']);
     });
 
+    /** Registered by Krita **/
+    Route::group(['namespace' => 'Tenant\Tasks\Controllers'], function () {
+
+        // bill routes
+        get('tasks', ['as' => 'tenant.tasks.index', 'uses' => 'TasksController@index']);
+        post('tasks', ['as' => 'tenant.tasks.post', 'uses' => 'TasksController@create']);
+        post('tasks/data', ['as' => 'tenant.tasks.data', 'uses' => 'TasksController@dataJson']);
+        get('tasks/{id}', ['as' => 'tenant.tasks.show', 'uses' => 'TasksController@show']);
+        get('tasks/{id}/edit', ['as' => 'tenant.tasks.edit', 'uses' => 'TasksController@edit']);
+        post('tasks/{id}/edit', ['as' => 'tenant.tasks.update', 'uses' => 'TasksController@update']);
+        get('tasks/{id}/delete', ['as' => 'tenant.tasks.delete', 'uses' => 'TasksController@delete']);
+        get('tasks/{id}/download', ['as' => 'tenant.tasks.download', 'uses' => 'TasksController@download']);
+        get('tasks/{id}/print', ['as' => 'tenant.tasks.download', 'uses' => 'TasksController@printBill']);
+        get('tasks/{id}/mail', ['as' => 'tenant.tasks.email', 'uses' => 'TasksController@sendEmail']);
+    });
+
 
     /*
      * Todo : don't register new routes under this group

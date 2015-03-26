@@ -87,7 +87,7 @@ function format_telephone($phone_number = null)
 {
     if($phone_number == null || strlen($phone_number))
         return $phone_number;
-    
+
     $cleaned = preg_replace('/[^[:digit:]]/', '', $phone_number);
     preg_match('/(\d{3})(\d{3})(\d{4})/', $cleaned, $matches);
     return "({$matches[1]}) {$matches[2]}-{$matches[3]}";
