@@ -20,7 +20,9 @@ Tasks
                   <i class="ion ion-clipboard"></i>
                   <h3 class="box-title">To Do List</h3>
                   <div class="box-tools pull-right">
-                    <button class="btn btn-primary pull-right"><i class="fa fa-plus"></i> Add item</button>
+                    <a class="btn btn-primary pull-right" data-toggle="modal" data-url="#task-modal-data" data-target="#fb-modal">
+                        <i class="fa fa-plus"></i> Add new task
+                    </a>
 
                   </div>
                 </div><!-- /.box-header -->

@@ -165,7 +165,6 @@ function showActionbtn(row) {
 
 }
 
-
 function getTemplate(data, type) {
 
     var html = '<td>' + data.id + '</td>' +
@@ -182,3 +181,4 @@ function getTemplate(data, type) {
     else
         return html;
 }
+
