@@ -10,9 +10,22 @@
         <input type="hidden" name="sicktotal" id="sicktotal" value="{{ $sick_leave_left }}">
 
            <div class="box-body">
+              <h3 class="mg-top-0">Sick leave this year</h3>
               <p>
-                Sick days left this year: <span id="sick_days"> {{ $sick_leave_left or '0'}} days </span> <span id="sick_used">{{ $sick_total or '0'}} used  </span> 
+                <strong>Leave taken:</strong> <span id="sick_days"> {{ $sick_leave_left or '0'}} days </span> <span id="sick_used">{{ $sick_total or '0'}} used  </span> 
               </p> 
+               <div class="table-responsive">
+                  <!-- THE MESSAGES -->
+                  <table class="table table-mailbox">
+                    <tr>
+                      <td width="40%" class="name">March 1</td>
+                      <td width="60%" class="subject position-relative">
+                        <div class="action-buttons">
+                          <a title="Delete" class="fa fa-close btn-danger pad-4" href="#"></a>                    
+                        </div>
+                        1 day</td>
+                    </tr>
+                </table>
               <p class="align-right">  
               <a href="javascript:;" id="add_sick_leave" class="btn btn-primary">Add Vacation </a>
             </p>
@@ -21,9 +34,9 @@
             </div><!-- /.box-body -->
 
           <div id="add_part" style="display:none">
-           <div class="form-group">
-              <label for="exampleInputEmail1">Sick leave</label>
-              <input class="form-control" name="vacation" id="leave" value="" placeholder="Sick leave">
+           <div class="form-group two-inputs">
+              <input class="form-control" name="vacation" id="leave" value="" placeholder="From">
+              <input class="form-control" name="vacation" id="leave" value="" placeholder="To">
             </div>
 
         <div class="box-footer clearfix">
