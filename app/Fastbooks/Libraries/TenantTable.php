@@ -280,6 +280,24 @@ class TenantTable {
         }
     }
 
+    /**
+     * Table for Tasks in to do list
+     */
+    function tasks()
+    {
+        if (!Schema::hasTable(self::TBL_PREFIX . 'tasks')) {
+            Schema::create(self::TBL_PREFIX . 'tasks', function ($table) {
+                $table->increments('id'); // autoincrement value of a tenant admin
+                $table->string('subject', 100);
+                $table->text('body'); // customer id
+                $table->datetime('due_date');
+                $table->boolean('is_complete')->default(0); // 0: not complete, 1: complete
+                $table->datetime('completion_date');
+                // created_at, updated_at DATETIME
+                $table->timestamps();
+            });
+        }
+    }
 
     function vacation()
     {

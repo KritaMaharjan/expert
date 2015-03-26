@@ -175,6 +175,7 @@ class Tenant {
         $this->createTable->inventory();
         $this->createTable->bill();
         $this->createTable->billProducts();
+        $this->createTable->tasks();
         $this->createTable->emails();
         $this->createTable->emailReceivers();
         $this->createTable->attachmentsEmail();
