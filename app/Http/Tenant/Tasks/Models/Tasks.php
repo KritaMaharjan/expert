@@ -1,13 +1,11 @@
-<?php namespace App\Http\Tenant\Invoice\Models;
+<?php namespace App\Http\Tenant\Tasks\Models;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Tenant\Customer;
-use App\Http\Tenant\Invoice\Models\BillProducts;
-use App\Http\Tenant\Inventory\Models\Product;
-use Illuminate\Support\Facades\DB;
 
-class Tasks extends Model {
+class Tasks extends Model
+{
 
     /**
      * The database table used by the model.
@@ -21,7 +19,7 @@ class Tasks extends Model {
      *
      * @var array
      */
-    protected $fillable = ['invoice_number', 'customer_id', 'currency', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'status', 'due_date', 'is_offer', 'customer_payment_number'];
+    protected $fillable = ['subject', 'body', 'due_date', 'is_complete', 'completion_date'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -31,134 +29,35 @@ class Tasks extends Model {
     protected $hidden = [];
 
 
-    function add(Request $request, $offer = false)
+    function add(Request $request)
     {
-        // Start transaction!
-        DB::beginTransaction();
-        try {
-            $customer_id = $request->input('customer');
-            $bill = Bill::create([
-                'invoice_number' => $this->getPrecedingInvoiceNumber($customer_id),
-                'customer_id'    => $customer_id,
-                'due_date'       => $request->input('due_date'),
-                'currency'       => $request->input('currency'),
-                'is_offer'       => ($offer == true) ? 1 : 0
-            ]);
-
-            $products = $request->input('product');
-            $quantity = $request->input('quantity');
-
-            $alltotal = 0;
-            $subtotal = 0;
-            $tax = 0;
-
-            foreach ($products as $key => $product) {
-                if (isset($quantity[$key]) && $quantity[$key] > 0 && $product > 0) {
-                    $product_details = Product::find($product);
-                    $total = ($product_details->selling_price + $product_details->vat * 0.01 * $product_details->selling_price) * $quantity[$key];
-                    $product_bill = BillProducts::create([
-                        'product_id' => $product,
-                        'bill_id'    => $bill->id,
-                        'quantity'   => $quantity[$key],
-                        'price'      => $product_details->selling_price,
-                        'vat'        => $product_details->vat,
-                        'total'      => $total
-                    ]);
-                    $alltotal += $total;
-                    $tax += $product_details->vat * 0.01 * $product_details->selling_price * $quantity[$key];
-                    $subtotal += $product_details->selling_price * $quantity[$key];
-                }
-
-            }
-
-            //$bill->invoice_number = $this->getPrecedingInvoiceNumber($bill->id);
-            $bill->subtotal = $subtotal;
-            $bill->tax = $tax;
-            $bill->total = $alltotal;
-            $bill->customer_payment_number = format_id($bill->customer_id).format_id($bill->id);
-            $bill->save();
-
-            DB::commit();
-
-            return array('bill_details' => $bill);
-
-        } catch (\Exception $e) {
-            DB::rollback();
-            throw $e;
-        }
+        $task = Tasks::create([
+            'subject' => $request->input('subject'),
+            'body' => $request->input('body'),
+            'due_date' => $request->input('due_date')
+        ]);
+        return $task->id;
     }
 
 
     function edit(Request $request, $id)
     {
-        // Start transaction!
-        DB::beginTransaction();
-        try {
-            $bill = Bill::find($id);
-            $bill->customer_id = $request->input('customer');
-            $bill->due_date = $request->input('due_date');
-            $bill->currency = $request->input('currency');
-            $bill->save();
-
-            $products = $request->input('product');
-            $quantity = $request->input('quantity');
-
-            $alltotal = 0;
-            $subtotal = 0;
-            $tax = 0;
-
-            $this->deleteBillProducts($id);
-
-            foreach ($products as $key => $product) {
-                if (isset($quantity[$key]) && $quantity[$key] > 0 && $product > 0) {
-                    $product_details = Product::find($product);
-                    $total = ($product_details->selling_price + $product_details->vat * 0.01 * $product_details->selling_price) * $quantity[$key];
-                    $product_bill = BillProducts::create([
-                        'product_id' => $product,
-                        'bill_id'    => $bill->id,
-                        'quantity'   => $quantity[$key],
-                        'price'      => $product_details->selling_price,
-                        'vat'        => $product_details->vat,
-                        'total'      => $total
-                    ]);
-                    $alltotal += $total;
-                    $tax += $product_details->vat * 0.01 * $product_details->selling_price * $quantity[$key];
-                    $subtotal += $product_details->selling_price * $quantity[$key];
-                }
-
-            }
-
-            $bill->subtotal = $subtotal;
-            $bill->tax = $tax;
-            $bill->total = $alltotal;
-            $bill->save();
-
-            DB::commit();
-
-            return array('bill_details' => $bill);
-
-        } catch (\Exception $e) {
-            DB::rollback();
-            throw $e;
-        }
+        $task = Tasks::find($id);
+        $task->subject = $request->input('subject');
+        $task->body = $request->input('body');
+        $task->due_date = $request->input('due_date');
+        $task->save();
     }
 
-    function deleteBillProducts($id)
+    function markComplete($id)
     {
-        $product_bills = BillProducts::where('bill_id', $id)->get();
-        if (!empty($product_bills)) {
-            foreach ($product_bills as $product_bill) {
-                $product_bill->delete();
-            }
-
-            return true;
-        }
-
-        return false;
+        $task = Tasks::find($id);
+        $task->is_complete = 1;
+        $task->completed_date = Carbon::now();
+        $task->save();
     }
 
-
-    function dataTablePagination(Request $request, array $select = array(), $is_offer = false)
+    function dataTablePagination(Request $request, array $select = array())
     {
         if ((is_array($select) AND count($select) < 1)) {
             $select = "*";
@@ -175,25 +74,17 @@ class Tasks extends Model {
         $orderColumn = $columns[$column_id]['data'];
         $orderdir = $order[0]['dir'];
 
-        $products = array();
+        $tasks = array();
         $query = $this->select($select);
 
-        if ($is_offer == true)
-            $query = $query->where('is_offer', 1);
-        else
-            $query = $query->where('is_offer', 0);
-
         if ($orderColumn != '' AND $orderdir != '') {
-            if ($orderColumn != 'invoice_date')
-                $query = $query->orderBy($orderColumn, $orderdir);
-            else
-                $query = $query->orderBy('created_at', $orderdir);
+            $query = $query->orderBy($orderColumn, $orderdir);
         }
 
         if ($search != '') {
-            $query = $query->where('invoice_number', 'LIKE', "%$search%");
+            $query = $query->where('subject', 'LIKE', "%$search%");
         }
-        $products['total'] = $query->count();
+        $tasks['total'] = $query->count();
 
 
         $query->skip($start)->take($take);
@@ -201,31 +92,24 @@ class Tasks extends Model {
         $data = $query->get();
 
         foreach ($data as $key => &$value) {
-            $value->invoice_number = '<a class="link" href="#">' . $value->invoice_number . '</a>';
-            $customer = Customer::find($value->customer_id);
-            if ($customer)
-                $value->customer = $customer->name;
-            else $value->customer = 'Undefined';
             $value->raw_status = $value->status;
-            if ($value->status == 1)
-                $value->status = '<span class="label label-success">Paid</span>';
-            elseif ($value->status == 2)
-                $value->status = '<span class="label label-warning">Collection</span>';
+            if ($value->is_complete == 1)
+                $value->is_complete = '<span class="label label-success">Complete</span>';
             else
-                $value->status = '<span class="label label-danger">Unpaid</span>';
+                $value->is_complete = '<span class="label label-danger">Incomplete</span>';
 
-            $value->invoice_date = date('d-M-Y  h:i:s A', strtotime($value->created_at));
+            $value->due_date = date('d-M-Y  h:i:s A', strtotime($value->due_date));
             //$value->created_at->format('d-M-Y  h:i:s A');
-            $value->DT_RowId = "row-" . $value->guid;
+            $value->DT_RowId = "row-" . $value->id;
         }
 
-        $products['data'] = $data->toArray();
+        $tasks['data'] = $data->toArray();
 
         $json = new \stdClass();
         $json->draw = ($request->input('draw') > 0) ? $request->input('draw') : 1;
-        $json->recordsTotal = $products['total'];
-        $json->recordsFiltered = $products['total'];
-        $json->data = $products['data'];
+        $json->recordsTotal = $tasks['total'];
+        $json->recordsFiltered = $tasks['total'];
+        $json->data = $tasks['data'];
 
         return $json;
     }
@@ -257,12 +141,12 @@ class Tasks extends Model {
     function getPrecedingInvoiceNumber($customer_id)
     {
         $today = \Carbon::now()->format('Y-m-d');
-        $latest_count = Bill::select('id')->where('customer_id',$customer_id)->where('created_at', '>', $today)->count();
+        $latest_count = Bill::select('id')->where('customer_id', $customer_id)->where('created_at', '>', $today)->count();
         //$latest = Bill::select('id')->where('customer_id',$customer_id)->orderBy('id', 'desc')->first();
         if ($latest_count)
-            $new_invoice_num = date('dmy') . format_id($customer_id).'-'.($latest_count + 1);
+            $new_invoice_num = date('dmy') . format_id($customer_id) . '-' . ($latest_count + 1);
         else
-            $new_invoice_num = date('dmy') . format_id($customer_id). '-1';
+            $new_invoice_num = date('dmy') . format_id($customer_id) . '-1';
 
         return $new_invoice_num;
     }
@@ -271,7 +155,7 @@ class Tasks extends Model {
     {
         $latest = Bill::select('id')->orderBy('id', 'desc')->first();
         if ($latest)
-            $new_cus_no = format_id($id, 3).sprintf("%03d", ($latest->id + 1));
+            $new_cus_no = format_id($id, 3) . sprintf("%03d", ($latest->id + 1));
         else
             $new_cus_no = format_id($id, 3) . '001';
 
