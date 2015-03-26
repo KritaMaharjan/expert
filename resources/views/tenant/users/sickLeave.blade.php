@@ -17,14 +17,21 @@
                <div class="table-responsive">
                   <!-- THE MESSAGES -->
                   <table class="table table-mailbox">
+                     @if($allVacation)
+                     @foreach($allVacation  as $vacation)
+                     @if($vacation->sick_days != 0)
                     <tr>
-                      <td width="40%" class="name">March 1</td>
+                      <td width="40%" class="name">{{$vacation->from}} - {{$vacation->to}}</td>
+                      
                       <td width="60%" class="subject position-relative">
                         <div class="action-buttons">
                           <a title="Delete" class="fa fa-close btn-danger pad-4" href="#"></a>                    
                         </div>
-                        1 day</td>
+                        {{$vacation->sick_days}} day</td>
                     </tr>
+                    @endif
+                    @endforeach
+                     @endif
                 </table>
               <p class="align-right">  
               <a href="javascript:;" id="add_sick_leave" class="btn btn-primary">Add Vacation </a>
@@ -35,8 +42,8 @@
 
           <div id="add_part" style="display:none">
            <div class="form-group two-inputs">
-              <input class="form-control" name="vacation" id="leave" value="" placeholder="From">
-              <input class="form-control" name="vacation" id="leave" value="" placeholder="To">
+              <input class="form-control" name="from" id="from" value="" placeholder="From">
+              <input class="form-control" name="to" id="to" value="" placeholder="To">
             </div>
 
         <div class="box-footer clearfix">
@@ -54,18 +61,40 @@
     $('#add_part').show();
   });
 
+
+  $("#from").datepicker({
+      'format': 'dd/mm/yyyy',
+        onSelect: function(date) {
+          alert(date);
+            $('#from').val(date);
+            
+
+        },  
+        onClose: function( selectedDate ) {
+            $( "#to" ).datepicker( "option", "minDate", selectedDate );
+        } 
+
+         });
+    $("#to").datepicker({
+        'format': 'dd/mm/yyyy',
+          onSelect: function(date) {
+            $('#to').val(date);
+          
+        },  
+        
+         });
+
   $(document).on('click', '.saveleave', function (e) {
         e.preventDefault();
 
-      var days = $('#leave').val();
+      
        var _token = $('#_token').val();
        var user_id = $('#user_id').val();
        var vacation_days = $('#sicktotal').val();
+        var from = $('#from').val();
+         var to = $('#to').val();
         var type = 'sick_days';
-        if(days > vacation_days){
-          $('#leave').after('<label class="error ">Vacation cannot be more than estimated</label>');
-
-        }else{
+       
            $.ajax({
             url: appUrl + 'user/addVacation',
             type: 'POST',
@@ -90,9 +119,6 @@
 
                  }
         });
-
-        }
-
             
     });
    
