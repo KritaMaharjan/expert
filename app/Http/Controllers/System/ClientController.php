@@ -151,17 +151,31 @@ class ClientController extends BaseController {
                 $tenant->$k = @unserialize($com->value);
             }
 
-            $table_customer = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'customer';
-            $tenant->customer = DB::table($table_profile . ' as customer')
-                ->select('customer.*')
-                ->where('user_id',$tenant->basic->id )// Admin profile / later weill join table get profile by guid
+            $table_customers = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'customers';
+            $tenant->customers = DB::table($table_customers . ' as customers')
+                ->select('customers.*')
+                ->where('user_id', 1)// Admin profile / later weill join table get profile by guid
                 ->count();
 
-            //      $table_bill = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'bill';
-            // $tenant->bill = DB::table($table_profile . ' as bill')
-            //     ->select('bill.*')
-            //     ->where('user_id',$tenant->basic->id )// Admin profile / later weill join table get profile by guid
-            //     ->count();
+                 $table_bill = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'bill';
+            $tenant->bill = DB::table($table_bill . ' as bill')
+                ->select('bill.*')
+               // ->where('user_id',1)// Admin profile / later weill join table get profile by guid
+                ->count();
+
+                   $table_inventory = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'inventory';
+            $tenant->inventory = DB::table($table_inventory . ' as inventory')
+                ->select('inventory.*')
+               // ->where('user_id',1)// Admin profile / later weill join table get profile by guid
+                ->count();
+
+
+                   $table_users = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'users';
+            $tenant->users = DB::table($table_users . ' as users')
+                ->select('users.*')
+               // ->where('user_id',1)// Admin profile / later weill join table get profile by guid
+                ->count();
+
 
 
         }
@@ -178,9 +192,65 @@ class ClientController extends BaseController {
         if($tenant->basic->activation_key =='')
         {
             $dbname = env('ROOT_DB_PREFIX') . $tenant->basic->domain;
+            $table_settings = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'settings';
+            $company = DB::table($table_settings . ' as setting')
+                ->select('setting.value','setting.name')
+                ->where('setting.name', 'folder')->first();
+
+            $company_folder = $company->value;
+            //\DB::statement('drop database '.$dbname.';');
+            $folder_path = public_path().'\files'.'\\' .$company_folder;
+            //dd($folder_path);
+
+            $this->rrmdir($folder_path);
+
+            $client = Tenant::where('id', $tenant->basic->id)->first();
+             $client->delete();
+
+            return redirect('system/client');
+               
         }
 
     }
+
+
+//    function deleteDir($dirPath) {
+//   // dd($dirPath);
+//     if (! is_dir($dirPath)) {
+//         dd('no');
+//     }
+//     if (substr($dirPath, strlen($dirPath) - 1, 1) != '/') {
+//         $dirPath .= '/';
+//     }
+//     $files = glob($dirPath . '*', GLOB_MARK);
+//     foreach ($files as $file) {
+//         if (is_dir($file)) {
+//             self::deleteDir($file);
+//         } else {
+//             unlink($file);
+//         }
+//     }
+//     rmdir($dirPath);
+// }
+
+
+function rrmdir($dir) {
+   // dd($dir);
+  if (is_dir($dir)) {
+
+    $objects = scandir($dir);
+    foreach ($objects as $object) {
+      if ($object != "." && $object != "..") {
+        if (filetype($dir."/".$object) == "dir") 
+           $this->rrmdir($dir."/".$object); 
+        else unlink   ($dir."/".$object);
+      }
+    }
+    reset($objects);
+    rmdir($dir);
+  }
+ }
+
 
 
 }

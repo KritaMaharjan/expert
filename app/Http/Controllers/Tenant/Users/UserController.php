@@ -235,6 +235,7 @@ class UserController extends BaseController {
         $id = $this->request['leave_id'];
            
             $vacation = Vacation::where('id', $id) ->first();
+             $vacation->delete();
            
         return \Response::json(array('status' => true, 'message' => 'Leave deleted successfully'));
        

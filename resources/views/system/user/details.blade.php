@@ -86,10 +86,28 @@ Client
 
                                          <tr>
                                             <td>Total Customer</td>
-                                            <td>{{$tenant->customer or ''}}</td>
+                                            <td>{{$tenant->customers or ''}}</td>
                                             
                                         </tr>
                                        
+
+                                         <tr>
+                                            <td>Total Bills</td>
+                                            <td>{{$tenant->bill or ''}}</td>
+                                            
+                                        </tr>
+
+                                         <tr>
+                                            <td>Total users</td>
+                                            <td>{{$tenant->users or ''}}</td>
+                                            
+                                        </tr>
+
+                                         <tr>
+                                            <td>Total inventory</td>
+                                            <td>{{$tenant->inventory or ''}}</td>
+                                            
+                                        </tr>
                                     </tbody></table>
                                
                             </div>

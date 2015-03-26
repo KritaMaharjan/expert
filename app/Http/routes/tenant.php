@@ -42,8 +42,6 @@ Route::group($group_guest, function () {
 
 
 Route::group($group_auth, function () {
-
-
     /*
      * New Modular Routing
      */

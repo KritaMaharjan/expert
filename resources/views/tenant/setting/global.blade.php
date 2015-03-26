@@ -1,7 +1,6 @@
 {!! Form::open(array('method'=>'POST', 'name'=>'global','files'=>true, 'class'=>'form-horizontal globalform')) !!}
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">    
     
-
       <div class="form-group no-mg">
       <label class="control-label" name="currency" value="">Currency</label>
       <div class="@if($errors->has('currency')) {{'has-error'}} @endif">
@@ -27,7 +26,7 @@
      <div class="form-group no-mg">
       <label class="control-label" name="dateformat" value="">Date Format</label>
       <div class="@if($errors->has('dateformat')) {{'has-error'}} @endif">
-        {!! Form::select('dateformat', [
+        {!! Form::select('dateformat',  [
                                         'mm/dd/yy' => 'mm/dd/yy',
                                         'yy-mm-dd' => 'yy-mm-dd',
                                         'd M, y' => 'd M, y',
