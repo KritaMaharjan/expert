@@ -1,8 +1,6 @@
 @extends('tenant.layouts.min')
 
 @section('content')
-<link href="http://manish1.mashbooks.no/assets/plugins/jquery-ui-1.11.4.custom/jquery-ui.css" rel="stylesheet" type="text/css" />
-<script src="http://manish1.mashbooks.no/assets/plugins/jquery-ui-1.11.4.custom/jquery-ui.js" type="text/javascript"></script>
 	<div class="signup-content">
 			<section class="signup-section col-md-8">
 
@@ -17,7 +15,6 @@
 
 				<div class="signup-form">
 					{!! Form::open(array('url' => tenant()->url('setup/business'), 'method'=>'POST', 'class'=>'form-horizontal')) !!}
-					<input type="hidden" name="_token" value="{{ csrf_token() }}">
 					    <div class="form-group">
 					      <label class="control-label col-sm-5">Entity Type</label>
 					      <div class="col-sm-7 @if($errors->has('entity_type')) {{'has-error'}} @endif">
