@@ -5,7 +5,7 @@
       <div class="form-group no-mg">
       <label class="control-label" name="currency" value="">Currency</label>
       <div class="@if($errors->has('currency')) {{'has-error'}} @endif">
-        {!! Form::select('currency', array(
+        {!! Form::select('currency', [
                                         'NOK' => 'NOK',
                                         'GBP' => 'GBP',
                                         'EUR' => 'EUR',
@@ -17,7 +17,7 @@
                                         'DKK' => 'DKK',
                                         'SEK' => 'SEK',
                                         'CNY' => 'CNY'
-                            ), null, array('class' => 'form-control')) !!}
+                            ], $currency->value, array('class' => 'form-control')) !!}
         @if($errors->has('currency'))
           {!! $errors->first('currency', '<label class="control-label" for="inputError">:message</label>') !!}
         @endif
@@ -27,7 +27,7 @@
      <div class="form-group no-mg">
       <label class="control-label" name="dateformat" value="">Date Format</label>
       <div class="@if($errors->has('dateformat')) {{'has-error'}} @endif">
-        {!! Form::select('dateformat', array(
+        {!! Form::select('dateformat', [
                                         'mm/dd/yy' => 'mm/dd/yy',
                                         'yy-mm-dd' => 'yy-mm-dd',
                                         'd M, y' => 'd M, y',
@@ -35,7 +35,7 @@
                                          'DD, d MM, yy' => 'DD, d MM, yy',
                                         
                                       
-                            ), null, array('class' => 'form-control')) !!}
+                            ], $dateformat->value, array('class' => 'form-control')) !!}
         @if($errors->has('dateformat'))
           {!! $errors->first('dateformat', '<label class="control-label" for="inputError">:message</label>') !!}
         @endif

@@ -33,6 +33,9 @@ Route::group(['prefix' => 'system', 'middleware' => ['preventSystem','auth.syste
     post('change-password', ['as' => 'system.auth.postUserPasswordChange', 'uses' => 'System\AuthController@postUserPasswordChange']);
     get('block', ['as' => 'system.client.block', 'uses' => 'System\ClientController@block']);
     post('client/data',['as'=>'system.client.data', 'uses'=>'System\ClientController@dataJson']);
+    get('deleteTenant/{domain}', ['as' => 'system.client.delete', 'uses' => 'System\ClientController@deleteTenant']);
+    get('confirmDelete/{domain}', ['as' => 'system.client.confirmDelete', 'uses' => 'System\ClientController@confirmDelete']);
+     
 });
 
 });

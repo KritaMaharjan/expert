@@ -25,7 +25,7 @@
                       
                       <td width="60%" class="subject position-relative">
                         <div class="action-buttons">
-                          <a title="Delete" class="fa fa-close btn-danger pad-4" href="#"></a>                    
+                          <a title="Delete" class="fa fa-close btn-danger pad-4 delete-leave" leave_id="{{$vacation->id}}" href="javascript:;"></a>                    
                         </div>
                         {{$vacation->sick_days}} day</td>
                     </tr>
@@ -63,10 +63,9 @@
 
 
   $("#from").datepicker({
-      'format': 'dd/mm/yyyy',
+              'format': 'yyyy-mm-dd',
         onSelect: function(date) {
-          alert(date);
-            $('#from').val(date);
+          
             
 
         },  
@@ -75,13 +74,16 @@
         } 
 
          });
-    $("#to").datepicker({
-        'format': 'dd/mm/yyyy',
-          onSelect: function(date) {
-            $('#to').val(date);
-          
+ $("#to").datepicker({
+            'format': 'yyyy-mm-dd',
+        onSelect: function(date) {
+           
+            
+
         },  
-        
+        onClose: function( selectedDate ) {
+           
+        } 
          });
 
   $(document).on('click', '.saveleave', function (e) {
@@ -94,18 +96,20 @@
         var from = $('#from').val();
          var to = $('#to').val();
         var type = 'sick_days';
+        
        
            $.ajax({
             url: appUrl + 'user/addVacation',
             type: 'POST',
             dataType: 'json',
-            data: {'days':days,'_token':_token,'user_id':user_id,'vacation_days':vacation_days,'type':type},
+            data: {'_token':_token,'user_id':user_id,'vacation_days':vacation_days,'type':type,'from':from,'to':to},
              async: false,
                  success: function(response) {
                     if (response.status == true) {
 
                   $('#sick_days').text(response.vacation_days+'days');
                    $('#sick_used').text(response.vacation_used+'days');
+                   $('.table-mailbox').append('<tr><td width="40%" class="name">'+from +'-'+ to +'</td><td width="60%" class="subject position-relative"><div class="action-buttons"><a title="Delete" class="fa fa-close btn-danger pad-4" href="#"></a></div> '+response.leave_taken+' day</td></tr>');
                     
                     
                     setTimeout(function () {
@@ -113,7 +117,7 @@
                     }, 2500);
                 }
                 else {
-
+                  $('.two-inputs').after('<label class="error">Leave cannot be more than estimated vacation</label');
                    
                 }
 
@@ -121,6 +125,35 @@
         });
             
     });
+
+
+$(document).on('click', '.delete-leave', function () {
+
+       $this = $(this);
+        var leave_id = $(this).attr('leave_id');
+        var answer = confirm("Do you sure want to delete this?")
+      if (answer){
+        $.ajax({
+            url: appUrl + 'user/deleteVacation',
+            type: 'POST',
+            dataType: 'json',
+            data: {'_token':_token,'leave_id':leave_id},
+             async: false,
+                 success: function(response) {
+                    if (response.status == true) {
+                       $this.parent('tr').remove();
+                    }
+                  }
+                })
+   
+    }
+    else{
+      alert("Thanks for sticking around!")
+    }
+
+
+         
+});
    
      
 
