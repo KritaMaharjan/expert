@@ -2,7 +2,6 @@
 
 namespace App\Http\Tenant\Tasks\Controllers;
 
-use App\Fastbooks\Libraries\Pdf;
 use App\Http\Controllers\Tenant\BaseController;
 use App\Http\Tenant\Tasks\Models\Tasks;
 use Illuminate\Http\Request;
@@ -41,7 +40,8 @@ class TasksController extends BaseController {
      */
     public function index()
     {
-        return view('tenant.tasks.index')->with('pageTitle', 'All Tasks');
+        $tasks = Tasks::all();
+        return view('tenant.tasks.index', compact('tasks'))->with('pageTitle', 'All Tasks');
     }
 
     public function dataJson()

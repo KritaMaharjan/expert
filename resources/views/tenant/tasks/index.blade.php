@@ -28,11 +28,13 @@ Tasks
                 </div><!-- /.box-header -->
                 <div class="box-body">
                   <ul class="todo-list">
+
+                    @foreach($tasks as $task)
                     <li>
                       <!-- checkbox -->
                       <input type="checkbox" value="" name=""/>
                       <!-- todo text -->
-                      <span class="text">Design a nice theme</span>
+                      <span class="text">{{ $task->subject }}</span>
                       <!-- Emphasis label -->
                       <small class="label label-danger"><i class="fa fa-clock-o"></i> 2 mins</small>
                       <!-- General tools such as edit or delete-->
@@ -41,6 +43,8 @@ Tasks
                         <i class="fa fa-trash-o"></i>
                       </div>
                     </li>
+                    @endforeach
+
                     <li>
 
                       <input type="checkbox" value="" name=""/>
