@@ -191,6 +191,7 @@ Route::group($group_auth, function () {
         post('user/data', ['as' => 'tenant.user.data', 'uses' => 'Tenant\Users\UserController@dataJson']);
         get('user/registerDays/{type}/{guid}', ['as' => 'user.registerDays', 'uses' => 'Tenant\Users\UserController@registerVacation']);
         post('user/addVacation', ['as' => 'user.addVacation', 'uses' => 'Tenant\Users\UserController@addVacation']);
+         post('user/deleteVacation', ['as' => 'user.deleteVacation', 'uses' => 'Tenant\Users\UserController@deleteVacation']);
 
 
         //registered by : Manish

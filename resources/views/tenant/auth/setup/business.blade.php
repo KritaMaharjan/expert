@@ -1,6 +1,7 @@
 @extends('tenant.layouts.min')
 
 @section('content')
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
 
 	<div class="signup-content">
 			<section class="signup-section col-md-8">
@@ -104,84 +105,81 @@
 			</section>
 		</div>
 
-
+{{FB::js('assets/js/postal.js')}}
 		<script>
-$(function() {
-	 var cache = {};
-    $(".postal_code")
-        // don't navigate away from the field on tab when selecting an item
-        .bind("keydown", function (event) {
-            if (event.keyCode === $.ui.keyCode.TAB &&
-                $(this).autocomplete("instance").menu.active) {
-                event.preventDefault();
-            }
-        })
-        .autocomplete({
-            minLength: 0,
-            source: function(request, response) {
-              requestURL =  appUrl+"postal/suggestions";
+// $(function() {
+// 	 var cache = {};
+//     $(".postal_code")
+//         // don't navigate away from the field on tab when selecting an item
+//         .bind("keydown", function (event) {
+//             if (event.keyCode === $.ui.keyCode.TAB &&
+//                 $(this).autocomplete("instance").menu.active) {
+//                 event.preventDefault();
+//             }
+//         })
+//         .autocomplete({
+//             minLength: 0,
+//             source: function(request, response) {
+//               requestURL =  appUrl+"postal/suggestions";
                 
-              var term = request.term;
-                if (term in cache) {
-                    response(cache[term]);
-                    return;
-                }
-                $.getJSON(requestURL, {term: request.term}, function (data, status, xhr) {
-                   cache[ term ] = data;
-                         items1 = $.map(data, function(item) {
+//               var term = request.term;
+//                 if (term in cache) {
+//                     response(cache[term]);
+//                     return;
+//                 }
+//                 $.getJSON(requestURL, {term: request.term}, function (data, status, xhr) {
+//                    cache[ term ] = data;
+//                          items1 = $.map(data, function(item) {
 
-                            return   {label: item.postcode +' , ' +item.town ,
-                                value: item.postcode,
-                                town :item.town ,
-                                id: item.id}
+//                             return   {label: item.postcode +' , ' +item.town ,
+//                                 value: item.postcode,
+//                                 town :item.town ,
+//                                 id: item.id}
 
 
-                        });
+//                         });
 
-                        response(items1);
-                });
-            },
-             //appendTo: '#customer-modal-data',
-            search: function(event, ui) {
+//                         response(items1);
+//                 });
+//             },
+//              //appendTo: '#customer-modal-data',
+//             search: function(event, ui) {
                
-            },
-            response: function(event, ui) {
+//             },
+//             response: function(event, ui) {
                
-            },
-            create: function(event, ui) {
-            },
-            open: function(event, ui) {
+//             },
+//             create: function(event, ui) {
+//             },
+//             open: function(event, ui) {
                
-            },
-            focus: function(event, ui) {
+//             },
+//             focus: function(event, ui) {
 
-            },
-            _resizeMenu: function() {
-                this.menu.element.outerWidth(200);
-            },
-            select: function(event, ui) {
+//             },
+//             _resizeMenu: function() {
+//                 this.menu.element.outerWidth(200);
+//             },
+//             select: function(event, ui) {
                 
-                 var label = ui.item.town;
+//                  var label = ui.item.town;
                  
-                $('.city').val(label);
+//                 $('.city').val(label);
  
 
                 
 
-            }
-        });
+//             }
+//         });
 
 
 
 
  
 
-});
+// });
 </script>
 
-<?php //FB::js("jquery-ui.js"); ?>
-<?php //FB::js("postal.js"); ?>
-<?php //FB::js("autocomplete.js"); ?>
-<link rel="stylesheet" href="//code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+
 	
 @endsection

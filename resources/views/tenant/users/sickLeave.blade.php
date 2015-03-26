@@ -17,14 +17,21 @@
                <div class="table-responsive">
                   <!-- THE MESSAGES -->
                   <table class="table table-mailbox">
+                     @if($allVacation)
+                     @foreach($allVacation  as $vacation)
+                     @if($vacation->sick_days != 0)
                     <tr>
-                      <td width="40%" class="name">March 1</td>
+                      <td width="40%" class="name">{{$vacation->from}} - {{$vacation->to}}</td>
+                      
                       <td width="60%" class="subject position-relative">
                         <div class="action-buttons">
-                          <a title="Delete" class="fa fa-close btn-danger pad-4" href="#"></a>                    
+                          <a title="Delete" class="fa fa-close btn-danger pad-4 delete-leave" leave_id="{{$vacation->id}}" href="javascript:;"></a>                    
                         </div>
-                        1 day</td>
+                        {{$vacation->sick_days}} day</td>
                     </tr>
+                    @endif
+                    @endforeach
+                     @endif
                 </table>
               <p class="align-right">  
               <a href="javascript:;" id="add_sick_leave" class="btn btn-primary">Add Vacation </a>
@@ -35,8 +42,8 @@
 
           <div id="add_part" style="display:none">
            <div class="form-group two-inputs">
-              <input class="form-control" name="vacation" id="leave" value="" placeholder="From">
-              <input class="form-control" name="vacation" id="leave" value="" placeholder="To">
+              <input class="form-control" name="from" id="from" value="" placeholder="From">
+              <input class="form-control" name="to" id="to" value="" placeholder="To">
             </div>
 
         <div class="box-footer clearfix">
@@ -54,29 +61,55 @@
     $('#add_part').show();
   });
 
+
+  $("#from").datepicker({
+              'format': 'yyyy-mm-dd',
+        onSelect: function(date) {
+          
+            
+
+        },  
+        onClose: function( selectedDate ) {
+            $( "#to" ).datepicker( "option", "minDate", selectedDate );
+        } 
+
+         });
+ $("#to").datepicker({
+            'format': 'yyyy-mm-dd',
+        onSelect: function(date) {
+           
+            
+
+        },  
+        onClose: function( selectedDate ) {
+           
+        } 
+         });
+
   $(document).on('click', '.saveleave', function (e) {
         e.preventDefault();
 
-      var days = $('#leave').val();
+      
        var _token = $('#_token').val();
        var user_id = $('#user_id').val();
        var vacation_days = $('#sicktotal').val();
+        var from = $('#from').val();
+         var to = $('#to').val();
         var type = 'sick_days';
-        if(days > vacation_days){
-          $('#leave').after('<label class="error ">Vacation cannot be more than estimated</label>');
-
-        }else{
+        
+       
            $.ajax({
             url: appUrl + 'user/addVacation',
             type: 'POST',
             dataType: 'json',
-            data: {'days':days,'_token':_token,'user_id':user_id,'vacation_days':vacation_days,'type':type},
+            data: {'_token':_token,'user_id':user_id,'vacation_days':vacation_days,'type':type,'from':from,'to':to},
              async: false,
                  success: function(response) {
                     if (response.status == true) {
 
                   $('#sick_days').text(response.vacation_days+'days');
                    $('#sick_used').text(response.vacation_used+'days');
+                   $('.table-mailbox').append('<tr><td width="40%" class="name">'+from +'-'+ to +'</td><td width="60%" class="subject position-relative"><div class="action-buttons"><a title="Delete" class="fa fa-close btn-danger pad-4" href="#"></a></div> '+response.leave_taken+' day</td></tr>');
                     
                     
                     setTimeout(function () {
@@ -84,17 +117,43 @@
                     }, 2500);
                 }
                 else {
-
+                  $('.two-inputs').after('<label class="error">Leave cannot be more than estimated vacation</label');
                    
                 }
 
                  }
         });
-
-        }
-
             
     });
+
+
+$(document).on('click', '.delete-leave', function () {
+
+       $this = $(this);
+        var leave_id = $(this).attr('leave_id');
+        var answer = confirm("Do you sure want to delete this?")
+      if (answer){
+        $.ajax({
+            url: appUrl + 'user/deleteVacation',
+            type: 'POST',
+            dataType: 'json',
+            data: {'_token':_token,'leave_id':leave_id},
+             async: false,
+                 success: function(response) {
+                    if (response.status == true) {
+                       $this.parent('tr').remove();
+                    }
+                  }
+                })
+   
+    }
+    else{
+      alert("Thanks for sticking around!")
+    }
+
+
+         
+});
    
      
 

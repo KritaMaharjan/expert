@@ -11,6 +11,7 @@
 	      	@endif
 	      </div>
 	    </div>
+	    
 	    <div class="form-group no-mg">
 	      <label class="control-label">Company Number</label>
 	      <div class="@if($errors->has('company_number')) {{'has-error'}} @endif">

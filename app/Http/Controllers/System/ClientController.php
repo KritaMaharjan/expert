@@ -124,5 +124,63 @@ class ClientController extends BaseController {
 
     }
 
+    function deleteTenant(){
+        $domain = $this->request->route('domain'); 
+        $tenant = new stdclass;
+          $tenant->basic  = Tenant::where('domain',$domain)->first();
+
+       
+        if($tenant->basic->activation_key =='')
+        {
+            $dbname = env('ROOT_DB_PREFIX') . $tenant->basic->domain;
+            $table_profile = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'profile';
+            $tenant->profile = DB::table($table_profile . ' as profile')
+                ->select('profile.*')
+                ->where('user_id', 1)// Admin profile / later weill join table get profile by guid
+                ->first();
+            $table_settings = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'settings';
+            $company = DB::table($table_settings . ' as setting')
+                ->select('setting.value','setting.name')
+                ->where('setting.name', 'company')
+                ->orWhere('setting.name', 'business')
+                ->get();
+
+
+            foreach ($company as $key => $com) {
+                $k = $com->name;
+                $tenant->$k = @unserialize($com->value);
+            }
+
+            $table_customer = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'customer';
+            $tenant->customer = DB::table($table_profile . ' as customer')
+                ->select('customer.*')
+                ->where('user_id',$tenant->basic->id )// Admin profile / later weill join table get profile by guid
+                ->count();
+
+            //      $table_bill = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'bill';
+            // $tenant->bill = DB::table($table_profile . ' as bill')
+            //     ->select('bill.*')
+            //     ->where('user_id',$tenant->basic->id )// Admin profile / later weill join table get profile by guid
+            //     ->count();
+
+
+        }
+
+        return view('system.user.details', compact('tenant'));
+    }
+
+    function confirmDelete(){
+        $domain = $this->request->route('domain'); 
+        $tenant = new stdclass;
+          $tenant->basic  = Tenant::where('domain',$domain)->first();
+
+       
+        if($tenant->basic->activation_key =='')
+        {
+            $dbname = env('ROOT_DB_PREFIX') . $tenant->basic->domain;
+        }
+
+    }
+
 
 }

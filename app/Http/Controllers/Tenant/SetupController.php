@@ -97,7 +97,7 @@ class SetupController extends BaseController {
 		    	'account_no' => 'required|between:2,15',
 		    	'address' => 'required|between:2,50',
 		    	'postal_code' => 'required|size:4',
-		    	'town' => 'alpha|between:2,50',
+		    	'town' => 'between:2,50',
 		    	'country' => 'required|between:2,50'
 
 	    	)
