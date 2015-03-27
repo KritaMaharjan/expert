@@ -23,15 +23,15 @@ Print Invoice
                       </div>
                       <div class="col-md-3 col-sm-3 col-xs-3">
                         <label>Belop</label>
-                        <input type="text" value="{{ $data['currency'] }}">
+                        <span class="block-f-width">&nbsp;{{ $data['currency'] }}</span>
                       </div>
                       <div class="col-md-3 col-sm-3 pad-0 col-xs-3">
                         <label>Betalerens kontonummer</label>
-                        <input type="text" class="full-width">
+                        <span class="block-f-width">&nbsp;</span>                        
                       </div>
                       <div class="col-md-3 col-sm-3 pad-right-0 col-xs-3">
                         <label>Blankettnr</label>
-                        <input type="text">
+                        <span class="block-f-width">&nbsp;</span>                        
                       </div>
 
                     </div>
@@ -105,23 +105,25 @@ Print Invoice
                 <section class="clearfix">
                   <div class="col-md-8 col-sm-8 col-xs-8">
                     <label>Belast Konto</label>
-                    <div class="input-boxes">
-                      <input type="text" class="small-input">
-                      <input type="text" class="small-input">
-                      <input type="text" class="small-input">
-                      <input type="text" class="small-input">
-                      <input type="text" class="small-input">
-                      <input type="text" class="small-input">
-                      <input type="text" class="small-input">
-                      <input type="text" class="small-input">
-                      <input type="text" class="small-input">
-                      <input type="text" class="small-input">
-                      <input type="text" class="small-input">
+                    <div class="input-boxes">                      
+                      <span class="block-f-width width-30"></span>
+                      <span class="block-f-width width-30"></span>
+                      <span class="block-f-width width-30"></span>
+                      <span class="block-f-width width-30"></span>
+                      <span class="block-f-width width-30"></span>
+                      <span class="block-f-width width-30"></span>
+                      <span class="block-f-width width-30"></span>
+                      <span class="block-f-width width-30"></span>
+                      <span class="block-f-width width-30"></span>
+                      <span class="block-f-width width-30"></span>
+                      <span class="block-f-width width-30"></span>
+
                     </div>
                   </div>
                   <div class="col-md-4 align-right col-sm-4 col-xs-4">
                     <label>Kvittering tilbake</label>
-                    <input type="text" class="small-input">
+                    <span class="block-f-width width-30"></span>
+                    
                   </div>
                 </section>
                 </div>
