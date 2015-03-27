@@ -2,7 +2,6 @@
 
 namespace APP\Http\Tenant\Email\Controllers;
 
-use App\Fastbooks\Libraries\Mailbox\EmailReader;
 use App\Http\Controllers\Tenant\BaseController;
 use App\Http\Tenant\Email\Models\Attachment;
 use App\Http\Tenant\Email\Models\Receiver;

@@ -9,23 +9,26 @@
 */
 
 if (env('APP_ENV') == 'live') {
-    $group_superadmin = ['domain' => '{account}.mashbooks.no', 'namespace' => 'Controllers'];
+    $group_cron = ['domain' => '{account}.mashbooks.no'];
     $group_guest = ['domain' => '{account}.mashbooks.no', 'namespace' => 'Controllers', 'middleware' => 'guest.tenant'];
     $group_auth = ['domain' => '{account}.mashbooks.no', 'middleware' => 'auth.tenant'];
 } elseif (env('APP_ENV') == 'dev') {
-    $group_superadmin = ['domain' => '{account}.mashbooks.app', 'namespace' => 'Controllers'];
+    $group_cron = ['domain' => '{account}.mashbooks.app'];
     $group_guest = ['domain' => '{account}.mashbooks.app', 'namespace' => 'Controllers', 'middleware' => 'guest.tenant'];
     $group_auth = ['domain' => '{account}.mashbooks.app', 'middleware' => 'auth.tenant'];
-} else {
-    $domain = env('MY_TENANT', 'manish_co');
-    $group_superadmin = ['prefix' => $domain];
-    $group_guest = ['prefix' => $domain, 'namespace' => 'Controllers', 'middleware' => 'guest.tenant'];
-    $group_auth = ['prefix' => $domain, 'middleware' => ['auth.tenant']];
 }
 
+/*
+ * For Cron
+ *
+ */
 
-Route::group($group_superadmin, function () {
-    get('block/account', 'Tenant\AuthController@blockAccount');
+Route::group($group_cron, function () {
+    /*
+     * @todo Change block/account to post request and ensure that only superadmin can block/unblock account
+     */
+    get('block/account', 'Controllers\Tenant\AuthController@blockAccount');
+    get('cron/email/run', ['as' => 'cron.email', 'middleware' => 'guest.tenant', 'uses' => 'Tenant\Email\Controllers\CronController@run']);
 });
 
 
@@ -43,13 +46,10 @@ Route::group($group_guest, function () {
 
 Route::group($group_auth, function () {
 
-
-    /*
+   /*
      * New Modular Routing
      */
     Route::group(['prefix' => 'desk', 'namespace' => 'Tenant\Email\Controllers'], function () {
-
-
         get('email', ['as' => 'desk.email', 'uses' => 'EmailController@index']);
         post('email/upload/data', ['as' => 'desk.email.upload', 'uses' => 'EmailController@attach']);
         post('email/send', ['as' => 'desk.email.send', 'uses' => 'EmailController@send']);
@@ -62,8 +62,6 @@ Route::group($group_auth, function () {
         get('email/{id}/show', ['as' => 'tenant.email.show', 'uses' => 'EmailController@show']);
         get('email/{id}/get', ['as' => 'tenant.email.get', 'uses' => 'EmailController@get']);
         get('email/delete/attach', ['as' => 'tenant.email.attach.delete', 'uses' => 'EmailController@deleteAttachment']);
-
-
     });
 
     Route::group(['prefix' => 'invoice', 'namespace' => 'Tenant'], function () {
@@ -191,7 +189,7 @@ Route::group($group_auth, function () {
         post('user/data', ['as' => 'tenant.user.data', 'uses' => 'Tenant\Users\UserController@dataJson']);
         get('user/registerDays/{type}/{guid}', ['as' => 'user.registerDays', 'uses' => 'Tenant\Users\UserController@registerVacation']);
         post('user/addVacation', ['as' => 'user.addVacation', 'uses' => 'Tenant\Users\UserController@addVacation']);
-         post('user/deleteVacation', ['as' => 'user.deleteVacation', 'uses' => 'Tenant\Users\UserController@deleteVacation']);
+        post('user/deleteVacation', ['as' => 'user.deleteVacation', 'uses' => 'Tenant\Users\UserController@deleteVacation']);
 
 
         //registered by : Manish
