@@ -16,7 +16,7 @@
                                         'DKK' => 'DKK',
                                         'SEK' => 'SEK',
                                         'CNY' => 'CNY'
-                            ], $currency->value, array('class' => 'form-control')) !!}
+                            ], null, array('class' => 'form-control')) !!}
         @if($errors->has('currency'))
           {!! $errors->first('currency', '<label class="control-label" for="inputError">:message</label>') !!}
         @endif
@@ -34,7 +34,7 @@
                                          'DD, d MM, yy' => 'DD, d MM, yy',
                                         
                                       
-                            ], $dateformat->value, array('class' => 'form-control')) !!}
+                            ], null, array('class' => 'form-control')) !!}
         @if($errors->has('dateformat'))
           {!! $errors->first('dateformat', '<label class="control-label" for="inputError">:message</label>') !!}
         @endif

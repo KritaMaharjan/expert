@@ -6,14 +6,18 @@ use App\Models\Tenant\Customer;
 use App\Http\Controllers\Tenant\BaseController;
 use Illuminate\Http\Request;
 use Input;
+use App\Http\Tenant\Email\Models\Email;
+use App\Http\Tenant\Email\Models\Attachment;
+
 
 class CustomerController extends BaseController {
 
 
     protected $request;
     protected $customer;
+    protected $email;
 
-    public function __construct(Customer $customer, Request $request, Bill $bill)
+    public function __construct(Customer $customer, Request $request, Bill $bill,Email $email)
     {
         \FB::can('Customer');
 
@@ -21,6 +25,7 @@ class CustomerController extends BaseController {
         $this->customer = $customer;
         $this->request = $request;
         $this->bill = $bill;
+        $this->email = $email;
     }
 
     /**
@@ -137,6 +142,18 @@ class CustomerController extends BaseController {
         return \Response::json(array('success' => true, 'data' => $customers['data'], 'template' => $customers['template'], 'show_url' => $customers['show_url'], 'edit_url' => $customers['edit_url'], 'redirect_url' => $redirect_url));
     }
 
+    function invoices(){
+        if ($this->request->ajax()) {
+            $select = ['id', 'total', 'due_date', 'status'];
+
+            $json = $this->bill->dataTablePaginationCustomer($this->request, $select,$_SESSION['customer_id']);
+            unset($_SESSION['customer_id']);
+            echo json_encode($json, JSON_PRETTY_PRINT);
+        } else {
+            show_404();
+        }
+
+    }
     /**
      * Store a newly created resource in storage.
      *
@@ -160,8 +177,15 @@ class CustomerController extends BaseController {
         $user_id = $this->request->route('id');
 
         $customer = $this->customer->where('id', '=', $user_id)->first();
+        $_SESSION['customer_id'] = $user_id;
+       
+        $invoices = $this->bill->getCustomerBill($user_id);
 
-        return view('tenant.customer.customerCard', compact('customer'))->withPageTitle('Customer');
+        $mails = $this->email->getCustomerEmail($user_id);
+        dd($mails);
+
+
+        return view('tenant.customer.customerCard', compact('customer','invoices'))->withPageTitle('Customer');
     }
 
     public function deleteCustomer()
@@ -177,6 +201,8 @@ class CustomerController extends BaseController {
         return $this->fail(['message' => 'Something went wrong. Please try again later']);
 
     }
+
+
 
     public function changeStatus()
     {
@@ -249,4 +275,6 @@ class CustomerController extends BaseController {
 
         return \Response::json(['success' => true, 'details' => $customer]);
     }
+
+
 }

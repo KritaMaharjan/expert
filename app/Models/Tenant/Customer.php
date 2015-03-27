@@ -67,6 +67,8 @@ class Customer extends Model {
         return $json;
     }
 
+
+
     function toData()
     {
         $this->show_url = tenant()->url('customer/' . $this->id);

@@ -963,6 +963,7 @@ div.dataTables_length select {
 
 .mg-adj a {
     white-space: nowrap;
+    cursor: pointer;
 }
 
 .position-r input {
@@ -976,7 +977,10 @@ div.dataTables_length select {
 .fix-height {
     height: 435px;
 }
-
+.no-record {
+    color: #777;
+    padding: 10px;
+}
 .payment-info label {
     width: 100%;
 }
@@ -1006,14 +1010,6 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
 
 .grey {
     color: #bbb !important;
-}
-
-.orange, .red, .green {
-    padding: 5px;
-}
-
-.orange, .red, .green {
-    padding: 5px;
 }
 
 .table-blk {
@@ -1080,4 +1076,19 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
 .todos-box label{
     width: 14%;
     font-weight: 600;
+}
+.mg-l-1{
+    margin-left: 1px;
+}
+#note-box{
+    display: none;
+}
+.table-mailbox tr {
+    background: none repeat scroll 0 0 #fff;
+}
+.btn-block-small{
+    padding: 2px!important;
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
 }

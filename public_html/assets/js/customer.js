@@ -54,6 +54,44 @@ $(function () {
 
     });
 
+     var InvoiceDatatable = $("#table-invoices").dataTable({
+        "dom": '<"top"f>rt<"bottom"lip><"clear">',
+
+        //custom processing message
+        "oLanguage": {
+            "sProcessing": "<i class = 'fa fa-spinner'></i>  Processing..."
+        },
+
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": appUrl + 'customer/invoices',
+            "type": "POST"
+        },
+        "columnDefs": [{
+            "orderable": false,
+            "targets": 4,
+            "render": function (data, type, row) {
+                console.log(data);
+                //return showActionbtn(row);
+            }
+        }],
+        "columns": [
+            {"data": "id"},
+            {"data": "total"},
+            {"data": "due_date"},
+            {"data": "status"}
+        ],
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+
+            $('td:eq(1)', nRow).html('<a href="'+appUrl+'/system/client/'+aData.id+'"> </a>');
+            return nRow;
+
+        }
+
+    });
+
+
 
     $(document).on('click', '.btn-delete-customer', function (e) {
         e.preventDefault();
