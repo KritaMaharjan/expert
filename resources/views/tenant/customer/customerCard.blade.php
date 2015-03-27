@@ -17,6 +17,29 @@ Customers
 
 
 @section('content')
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<link href="{{ asset('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}" rel="stylesheet" type="text/css" /> 
+
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="//cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
+<script src="{{ asset('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js')}}" type="text/javascript"></script>
+{{FB::js('assets/plugins/plupload/js/plupload.full.min.js')}}
+
+
+<?php
+$successCallback ="
+  var response = JSON.parse(object.response);
+  var wrap = $('#'+file.id);
+  wrap.append('<input type=\"hidden\" class=\"attachment\" name=\"attach[]\" value=\"'+response.data.fileName+'\" />');
+  wrap.append('<a href=\"#\" data-action=\"compose\" data-url=\"'+response.data.fileName+'\" class=\"cancel_upload\" ><i class=\"fa fa-times\"></i></a>');
+";
+?>
+<script type="text/javascript">
+$(function(){
+    {!! plupload()->button('attachment')->maxSize('2mb')->mimeTypes('image')->url(url('/desk/email/upload/data'))->autoStart(true)->success($successCallback)->init() !!}
+});
+</script>
+
 
         <div class="row">  
             <div class="col-md-4">
@@ -136,38 +159,32 @@ Customers
                             <div class="table-responsive">
                               <!-- THE MESSAGES -->
                              <table class="table table-mailbox no-mg-btm">
-    <tbody>
-          @foreach($mails as $mail)
-          <tr class="e{{$mail->id}}">
-            <td class="small-col"><!-- <i class="fa fa-reply"></i> -->
-              @if($mail->status == 1)  {!!'<i class="fa fa-circle green"></i>'!!} @endif
-               @if($mail->status == 2)  {!!'<i class="fa fa-circle red"></i>'!!} @endif
-                @if($mail->status == 3)  {!!'<i class="fa fa-circle orange"></i>'!!} @endif
+                                <tbody>
+                                   @foreach($mails as $mail)
+                                   <tr class="e{{$mail->id}}">
+                                      <td class="small-col"><!-- <i class="fa fa-reply"></i> -->
+                                            @if($mail->status == 1)  {!!'<i class="fa fa-circle green"></i>'!!} @endif
+                                            @if($mail->status == 2)  {!!'<i class="fa fa-circle red"></i>'!!} @endif
+                                            @if($mail->status == 3)  {!!'<i class="fa fa-circle orange"></i>'!!} @endif
                {{--   @if($mail->status == 4)  {!!'<i class="fa fa-circle"></i>'!!} @endif --}}
-            </td>
-            <td class="name">
-             <?php $receiver = $mail->receivers;?>
-              <a style="display: block" href="#" data-id="{{$mail->id}}" >
-                  @foreach($receiver as $to)
-                        @if($to->type ==1)
-                           {{ str_limit($to->email,30)}};
-                        @endif
-                     @endforeach
+                                    </td>
+                                <td class="name">
+           
+                                  <a style="display: block" href="#" data-id="{{$mail->id}}" >
+                                    revieiver
+                                  <small class="subject">{{str_limit($mail->subject,40)}}</small>
+                                  </a> 
+                                </td>
+                                <td></td>
 
-                    
-                <small class="subject">{{str_limit($mail->subject,40)}}</small>
-              </a> 
-            </td>
-            <td> @if(!empty($mail['attachments']->file)) {!!'<i class="fa fa-paperclip grey"></i>'!!} @endif</td>
-
-            <td class="time"><small>{{email_date($mail->created_at)}}</small></td>
-          </tr>
-          @endforeach
-    </tbody>
-</table>
-@if(empty($mails))
-    <p class="no-record">There is no email to show</p>
-@endif
+                                <td class="time"><small>{{email_date($mail->created_at)}}</small></td>
+                              </tr>
+                              @endforeach
+                        </tbody>
+                    </table>
+                @if(empty($mails))
+                    <p class="no-record">There is no email to show</p>
+                @endif
                             </div><!-- /.table-responsive -->
                           </div><!-- /.col (RIGHT) -->
                     </div>
@@ -176,45 +193,18 @@ Customers
                   </div><!-- /.box -->
                 </div><!-- bg-white -->
                 </div>
-                <div class="col-md-7 bg-white">
-                  <div class="box box-solid">
-                    <div class="box-header block-header">
-                      <h3 class="box-title"><strong>Aspergers syn...</strong>
-                      </h3>
-                      <p><small class="color-blue">Sent: </small> Mon 3/2/2015 3:52 AM</p>
-                      <p><small class="color-blue">To: </small> John@abc.com</p>
-                      <div class="link-reply">
-                        <button data-toggle="dropdown" class="btn btn-default btn-sm btn-flat dropdown-toggle" type="button">
-                          Action <span class="caret"></span>
-                        </button>
-                        <ul role="menu" class="dropdown-menu">
-                          <li><a href="#"><small class="color-grey"><i class="fa fa-reply"></i></small> Reply</a></li>
-                          <li><a href="#"><small class="color-grey"><i class="fa fa-mail-forward"></i></small> Forward</a></li>
-                          <li><a href="#"><small class="color-grey"><i class="fa fa-close"></i></small> Delete</a></li>
-                          
-                        </ul>
-                      </div>
-                      <hr>
-                    </div><!-- /.box-header -->
-                    <div class="box-body">
-                      <p>Hello John,<br>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum egestas pellentesque quam, lobortis ultrices felis. Praesent venenatis vulputate leo. Donec efficitur libero vel lectus finibus sollicitudin. Pellentesque pharetra eleifend viverra. Nulla in volutpat turpis. Ut dolor tellus, aliquam ut tristique id, suscipit quis libero. In tristique id lacus vel ornare. Quisque mauris leo, hendrerit ultrices dolor ac, suscipit tristique nunc. 
-
-
-                    </p></div>
-
-
-                  </div><!-- /.box -->
+                <div id="email-single" class="col-md-7 bg-white">
+        
                 </div><!-- bg-white -->
 
               </div>
               
             </div>
             <div id="customer-modal-data" class="hide">
-      <div class="box box-solid">
-          <div class="box-header">
-              <h3 class="box-title">Update Customer</h3>
-          </div>
+            <div class="box box-solid">
+              <div class="box-header">
+                <h3 class="box-title">Update Customer</h3>
+            </div>
           <div class="">
            
           </div>
@@ -223,72 +213,100 @@ Customers
 
 
      <!-- COMPOSE MESSAGE MODAL -->
-    <div class="modal modal-right fade" id="compose-modal" data-backdrop="static" data-keyboard="false" tabindex="-1"  role="dialog" aria-hidden="ture">
-      <div class="modal-dialog">
+<div class="modal modal-right fade" id="compose-modal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+     role="dialog" aria-hidden="ture">
+    <div class="modal-dialog">
         <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title"><i class="fa fa-envelope-o"></i> Compose New Message</h4>
-          </div>
-          <form action="#" method="post">
-            <div class="modal-body">
-              <div class="form-group disply-inline">
-                <div class="input-group">
-                  <span class="input-group-addon">TO:</span>
-                  <input name="email_to" type="email" class="form-control" placeholder="Email TO">
-                </div>
-              </div>
-              <div class="form-group disply-inline">
-                <div class="input-group">
-                  <span class="input-group-addon">CC:</span>
-                  <input name="email_to" type="email" class="form-control" placeholder="Email CC">
-                </div>
-              </div>
-              <div class="form-group clearfix">
-                <div class="input-group">
-                  <span class="input-group-addon">BCC:</span>
-                  <input name="email_to" type="email" class="form-control" placeholder="Email BCC">
-                </div>
-              </div>
-              <div class="form-group">
-                <div class="input-group">
-                  <span class="input-group-addon">Subject:</span>
-                  <input name="" type="text" class="form-control" placeholder="">
-                </div>
-              </div>
-              <div class="form-group">
-                <textarea name="message" id="email_message" class="form-control" placeholder="Message" style="height: 120px;"></textarea>
-              </div>
-              <div class="form-group">
-                <div class="btn btn-success btn-file">
-                  <i class="fa fa-paperclip"></i> Attachment
-                  <input type="file" name="attachment"/>
-                </div>
-                <p class="help-block">Max. 32MB</p>
-              </div>
-              
-
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title"><i class="fa fa-envelope-o"></i> <span>Compose New Message</span></h4>
             </div>
-            <div class="modal-footer clearfix text-align-left">
+                <div class="modal-body">
+                 {!!Form::open(['url'=>url('desk/email/send'), 'id'=>'compose-form'])!!}
+                    <div class="table-blk">
+                        <div class="form-group disply-inline">
+                        <div class="input-group">
+                            <span class="input-group-addon">TO:</span>
+                             {!! Form::text('email_to', null, ['id'=>'email_to','class'=>'form-control', 'placeholder'=>'Email To', 'autocomplete'=>'off']) !!}
+                        </div>
+                    </div>
+                    <div class="form-group disply-inline">
+                        <div class="input-group">
+                            <span class="input-group-addon">CC:</span>
+                           {!! Form::text('email_cc', null, ['id'=>'email_cc', 'class'=>'form-control', 'placeholder'=>'Email CC']) !!}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="form-group clearfix">
+                        <div class="input-group">
+                            <span class="input-group-addon">Subject:</span>
+                              {!! Form::text('subject', null, ['id'=>'subject','class'=>'form-control', 'placeholder'=>'']) !!}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                         <div class="input-group" style="width: 100%">
+                           {!! Form::textarea('message', null, ['id'=>'message', 'class'=>'form-control textarea', 'placeholder'=>'Message', 'style'=>'height: 250px;']) !!}
+                        </div>
+                    </div>
+                    <p class="align-right">
+                        <a href="javascript:;" id="note-link"><i class="fa fa-plus"></i> Add note</a>
+                    </p>
+                    <div id="note-box" class="form-group">
+                        <div class="input-group" style="width: 100%">
+                          {!! Form::textarea('note', null, ['id'=>'note','class'=>'form-control', 'placeholder'=>'Note', 'style'=>'height: 70px;background: #FDFCBC;border: 1px solid #F8F7B6;box-shadow: 0 2px 1px rgba(0,0,0,.2);']) !!}
+                        </div>
+                    </div>
 
-              <button type="button" class="btn btn-danger pull-left sm-mg-btn" data-dismiss="modal"><i class="fa fa-times"></i> Discard</button>
-              <div class="input-group input-custom">
-                  <span class="input-group-addon">Action:</span>
-                  <select class="form-control">
-                    <option>Mark open</option>
-                    <option>Mark closed</option>
-                    <option>Mark pending</option>
-                    <option>Select from list of coworkers</option>
-                    <option>Add to-do list</option>
-                  </select>
-                  </div>
-              <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-envelope"></i> Send Message</button>
-            </div>
-          </form>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+                    <div class="form-group">
+                        <div id="container">
+                            <a id="attachment" href="javascript:;" class="btn btn-success btn-file">
+                                Attachment
+                            </a>
+                        </div>
+                        <p class="help-block">Max. 2MB</p>
+                         <div id='filelist'>Your browser doesn't have Flash, Silverlight or HTML5 support.</div>
+                    </div>
+
+
+                    <div class="modal-footer clearfix text-align-left comp-footer">
+                        <button type="button" class="btn btn-default pull-left sm-mg-btn" data-dismiss="modal"><i
+                                class="fa fa-times"></i> Discard
+                        </button>
+                        <div  class="form-group f-width">
  
+                            <div class="input-group input-custom">
+                                    <span class="input-group-addon">Action:</span>
+                                    <?php
+                                     $status_list = [
+                                             '' => 'Select',
+                                             1 => 'Mark open',
+                                             2 => 'Mark closed',
+                                             3 => 'Mark pending',
+                                             5 => 'Add to-do list'
+                                         ];
+                                    ?>
+                                     {!! Form::select('status', $status_list, null, ['id'=>'status','class'=>'form-control']) !!}
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-email-submit pull-right"><i class="fa fa-envelope"></i> Send
+                            Message
+                        </button>
+                     </div>
+
+            {!! Form::close() !!}
+
+           
+<script type="text/javascript">
+//     $(function(){
+//         $('#note-link').click(function(){
+//             $('#note-box').slideToggle('fast');
+//         });
+
+//         $(".textarea").wysihtml5();
+
+//     });
+ </script>
 
           </div>
 

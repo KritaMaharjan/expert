@@ -186,7 +186,8 @@ class CustomerController extends BaseController {
         $invoices = $this->bill->getCustomerBill($user_id);
 
      
-       $mails = $this->receiver->customer($user_id)->with('attachments', 'receivers');
+       //$mails = $this->receiver->customer($user_id)->with('attachments', 'receivers');
+        $mails = $this->email->getCustomerEmail($user_id);
        //dd($mails);
      
 

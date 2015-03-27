@@ -41,27 +41,7 @@ class Receiver extends Model {
         return $this->belongsTo('App\Http\Tenant\Email\Models\Email');
     }
 
-    public function attachments()
-    {
-        return $this->hasMany('App\Http\Tenant\Email\Models\Attachment');
-    }
-
-    public function receivers()
-    {
-        return $this->hasMany('App\Http\Tenant\Email\Models\Receiver');
-    }
-
-
-
-    function scopeCustomer($query,$customer_id)
-    {
-         
-       $query->where('customer_id',$customer_id );
-
-       
-    }
-
-
+    
     public function add($email_id, $to, $cc)
     {
         $emails = $to;

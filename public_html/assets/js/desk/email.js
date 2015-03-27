@@ -148,6 +148,7 @@ $(function () {
         var type = button.data('type');
 
        //@pooja
+      
         if(action =='reply')
         {
            $('.modal-title span').html('Reply to Message');
@@ -248,6 +249,7 @@ $(function () {
     $(document).on('click', '.table-mailbox a', function (e) {
         e.preventDefault();
         var id = $(this).attr('data-id');
+
         if (!$('#email-single').hasClass('email-' + id)) {
             $('#email-single').load(appUrl + 'desk/email/' + id + '/show');
             $('#email-single').removeClass(function (index, css) {

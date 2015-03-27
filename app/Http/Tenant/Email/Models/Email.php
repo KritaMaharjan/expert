@@ -236,12 +236,13 @@ class Email extends Model {
         $details = DB::table('fb_email_receivers')
             ->join('fb_emails', 'fb_email_receivers.email_id', '=', 'fb_emails.id')
             ->where('fb_email_receivers.customer_id', $user_id)
+            ->take(10)
             ->get();
 
-            $emails = array();
-            $emails['mails'] = $details;
+           
+           
 
-           return $emails;
+           return $details;
 
     }
 
