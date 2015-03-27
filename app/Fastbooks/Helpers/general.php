@@ -105,3 +105,60 @@ function format_id($id = 0, $zeros = 3)
 
     return $id;
 }
+
+function calculate_time_span($date){
+
+    $seconds  = strtotime($date) - strtotime(date('Y-m-d H:i:s'));
+
+    $months = floor($seconds / (3600*24*30));
+    $day = floor($seconds / (3600*24));
+    $hours = floor($seconds / 3600);
+    $mins = floor(($seconds - ($hours*3600)) / 60);
+    $secs = floor($seconds % 60);
+
+    if($seconds < 60)
+        $time = $secs." seconds";
+    else if($seconds < 60*60 )
+        $time = $mins." min";
+    else if($seconds < 24*60*60)
+        $time = $hours." hours";
+    else if($seconds > 24*60*60 && $seconds < 24*60*60*30)
+        $time = $day." days";
+    else
+        $time = $months." months";
+
+    return $time;
+}
+
+function calculate_todo_time($date, $completed = false) {
+    $actual_difference = strtotime($date) - strtotime(date('Y-m-d H:i:s'));
+    $seconds = abs($actual_difference);
+
+    $months = floor($seconds / (3600*24*30));
+    $day = floor($seconds / (3600*24));
+    $hours = floor($seconds / 3600);
+    $mins = floor(($seconds - ($hours*3600)) / 60);
+    $secs = floor($seconds % 60);
+
+    if($seconds < 60)
+        $time = $secs." seconds";
+    else if($seconds < 60*60 )
+        $time = $mins." min";
+    else if($seconds < 24*60*60)
+        $time = $hours." hours";
+    else if($seconds > 24*60*60 && $seconds < 24*60*60*30)
+        $time = $day." days";
+    else
+        $time = $months." months";
+
+    if($completed == true)
+        return '<small class="label label-success"><i class="fa fa-clock-o"></i> '.$time.' ago</small>';
+    elseif($actual_difference < 0)
+        return '<small class="label label-danger"><i class="fa fa-warning"></i> '.$time.'</small>';
+    elseif($seconds < 24*60*60)
+        return '<small class="label label-warning"><i class="fa fa-clock-o"></i> '.$time.'</small>';
+    else if($seconds > 24*60*60 && $seconds < 24*60*60*30)
+        return '<small class="label label-info"><i class="fa fa-clock-o"></i> '.$time.'</small>';
+    else
+        return '<small class="label label-default"><i class="fa fa-clock-o"></i> '.$time.'</small>';
+}

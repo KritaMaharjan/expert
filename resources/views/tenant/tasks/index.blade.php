@@ -18,7 +18,7 @@ Tasks
               <div class="box box-solid">
                 <div class="box-header">
                   <i class="ion ion-clipboard"></i>
-                  <h3 class="box-title">To Do List</h3>
+                  <h3 class="box-title">Upcoming Tasks</h3>
                   <div class="box-tools pull-right">
                     <a class="btn btn-primary pull-right" data-toggle="modal" data-url="#task-modal-data" data-target="#fb-modal">
                         <i class="fa fa-plus"></i> Add new task
@@ -29,72 +29,32 @@ Tasks
                 <div class="box-body">
                   <ul class="todo-list">
 
-                    @foreach($tasks as $task)
+                    @foreach($tasks['upcoming_tasks'] as $task)
                     <li>
                       <!-- checkbox -->
                       <input type="checkbox" value="" name=""/>
                       <!-- todo text -->
                       <span class="text">{{ $task->subject }}</span>
                       <!-- Emphasis label -->
-                      <small class="label label-danger"><i class="fa fa-clock-o"></i> 2 mins</small>
+                      {!! calculate_todo_time($task->due_date) !!}
                       <!-- General tools such as edit or delete-->
                       <div class="tools">
                         <i class="fa fa-edit"></i>
                         <i class="fa fa-trash-o"></i>
                       </div>
+                      <div class="todos-box pad-lr-29">
+                        <div>
+                          <label>Added date:</label>
+                          <span>3/27/2015</span>
+                        </div>
+                        <div>
+                          <label>Due date:</label>
+                          <span>3/30/2015</span>
+                        </div>
+                        <p>Body goes here..</p>
+                      </div>
                     </li>
                     @endforeach
-
-                    <li>
-
-                      <input type="checkbox" value="" name=""/>
-                      <span class="text">Make the theme responsive</span>
-                      <small class="label label-info"><i class="fa fa-clock-o"></i> 4 hours</small>
-                      <div class="tools">
-                        <i class="fa fa-edit"></i>
-                        <i class="fa fa-trash-o"></i>
-                      </div>
-                    </li>
-                    <li>
-
-                      <input type="checkbox" value="" name=""/>
-                      <span class="text">Let theme shine like a star</span>
-                      <small class="label label-warning"><i class="fa fa-clock-o"></i> 1 day</small>
-                      <div class="tools">
-                        <i class="fa fa-edit"></i>
-                        <i class="fa fa-trash-o"></i>
-                      </div>
-                    </li>
-                    <li>
-
-                      <input type="checkbox" value="" name=""/>
-                      <span class="text">Let theme shine like a star</span>
-                      <small class="label label-success"><i class="fa fa-clock-o"></i> 3 days</small>
-                      <div class="tools">
-                        <i class="fa fa-edit"></i>
-                        <i class="fa fa-trash-o"></i>
-                      </div>
-                    </li>
-                    <li>
-
-                      <input type="checkbox" value="" name=""/>
-                      <span class="text">Check your messages and notifications</span>
-                      <small class="label label-primary"><i class="fa fa-clock-o"></i> 1 week</small>
-                      <div class="tools">
-                        <i class="fa fa-edit"></i>
-                        <i class="fa fa-trash-o"></i>
-                      </div>
-                    </li>
-                    <li>
-
-                      <input type="checkbox" value="" name=""/>
-                      <span class="text">Let theme shine like a star</span>
-                      <small class="label label-default"><i class="fa fa-clock-o"></i> 1 month</small>
-                      <div class="tools">
-                        <i class="fa fa-edit"></i>
-                        <i class="fa fa-trash-o"></i>
-                      </div>
-                    </li>
                   </ul>
                 </div><!-- /.box-body -->
                 <div class="box-footer clearfix no-border">
@@ -121,72 +81,27 @@ Tasks
                 <h3 class="box-title">Completed List</h3>
               </div><!-- /.box-header -->
               <div class="box-body">
-                <ul class="todo-list">
-                  <li>
-
-                    <!-- checkbox -->
-                    <input type="checkbox" value="" name=""/>
-                    <!-- todo text -->
-                    <span class="text">Design a nice theme</span>
-                    <!-- Emphasis label -->
-                    <small class="label label-danger"><i class="fa fa-clock-o"></i> 2 mins</small>
-                    <!-- General tools such as edit or delete-->
-                    <div class="tools">
-                      <i class="fa fa-edit"></i>
-                      <i class="fa fa-trash-o"></i>
-                    </div>
-                  </li>
-                  <li>
-
-                    <input type="checkbox" value="" name=""/>
-                    <span class="text">Make the theme responsive</span>
-                    <small class="label label-info"><i class="fa fa-clock-o"></i> 4 hours</small>
-                    <div class="tools">
-                      <i class="fa fa-edit"></i>
-                      <i class="fa fa-trash-o"></i>
-                    </div>
-                  </li>
-                  <li>
-
-                    <input type="checkbox" value="" name=""/>
-                    <span class="text">Let theme shine like a star</span>
-                    <small class="label label-warning"><i class="fa fa-clock-o"></i> 1 day</small>
-                    <div class="tools">
-                      <i class="fa fa-edit"></i>
-                      <i class="fa fa-trash-o"></i>
-                    </div>
-                  </li>
-                  <li>
-
-                    <input type="checkbox" value="" name=""/>
-                    <span class="text">Let theme shine like a star</span>
-                    <small class="label label-success"><i class="fa fa-clock-o"></i> 3 days</small>
-                    <div class="tools">
-                      <i class="fa fa-edit"></i>
-                      <i class="fa fa-trash-o"></i>
-                    </div>
-                  </li>
-                  <li>
-
-                    <input type="checkbox" value="" name=""/>
-                    <span class="text">Check your messages and notifications</span>
-                    <small class="label label-primary"><i class="fa fa-clock-o"></i> 1 week</small>
-                    <div class="tools">
-                      <i class="fa fa-edit"></i>
-                      <i class="fa fa-trash-o"></i>
-                    </div>
-                  </li>
-                  <li>
-
-                    <input type="checkbox" value="" name=""/>
-                    <span class="text">Let theme shine like a star</span>
-                    <small class="label label-default"><i class="fa fa-clock-o"></i> 1 month</small>
-                    <div class="tools">
-                      <i class="fa fa-edit"></i>
-                      <i class="fa fa-trash-o"></i>
-                    </div>
-                  </li>
-                </ul>
+                @if(count($tasks['completed_tasks']) == 0)
+                    <p>No completed tasks</p>
+                @else
+                    <ul class="todo-list">
+                        @foreach($tasks['completed_tasks'] as $task)
+                            <li>
+                              <!-- checkbox -->
+                              <input type="checkbox" value="" name=""/>
+                              <!-- todo text -->
+                              <span class="text">{{ $task->subject }}</span>
+                              <!-- Emphasis label -->
+                              {!! calculate_todo_time($task->completion_date, true) !!}
+                              <!-- General tools such as edit or delete-->
+                              <div class="tools">
+                                <i class="fa fa-edit"></i>
+                                <i class="fa fa-trash-o"></i>
+                              </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endif
               </div><!-- /.box-body -->
               <div class="box-footer clearfix no-border">
                 <ul class="pagination pagination-sm inline pull-right">
@@ -210,5 +125,33 @@ Tasks
     {{--Load JS--}}
     {{ FB::registerModal() }}
     {{ FB::js('assets/js/tasks.js') }}
+
+<script type="text/javascript">
+  $(function(){
+    $('.text').click(function(){
+      $(this).parent().find('.todos-box').slideToggle('fast');
+
+    })
+  });
+</script>
+
+<div class="container">
+<div class="row">
+<div class='col-sm-6'>
+<div class="form-group">
+<div class='input-group date' id='datetimepicker1'>
+<input type='text' class="form-control" />
+<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+</span>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+$(function () {
+$('#datetimepicker1').datetimepicker();
+});
+</script>
+</div>
+</div>
 
 @stop

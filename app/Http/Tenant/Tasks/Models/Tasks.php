@@ -57,6 +57,17 @@ class Tasks extends Model
         $task->save();
     }
 
+    function getTasks()
+    {
+        $today = \Carbon::now()->format('Y-m-d H:i:s');
+        $tasks = array();
+        /*$tasks['upcoming_tasks'] = Tasks::where('due_date', '>', $today)->get();
+        $tasks['overdue_tasks'] = Tasks::where('due_date', '<=', $today)->get();*/
+        $tasks['upcoming_tasks'] = Tasks::where('is_complete', 0)->get();
+        $tasks['completed_tasks'] = Tasks::where('is_complete', 1)->get();
+        return $tasks;
+    }
+
     function dataTablePagination(Request $request, array $select = array())
     {
         if ((is_array($select) AND count($select) < 1)) {

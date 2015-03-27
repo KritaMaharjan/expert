@@ -963,6 +963,7 @@ div.dataTables_length select {
 
 .mg-adj a {
     white-space: nowrap;
+    cursor: pointer;
 }
 
 .position-r input {
@@ -976,7 +977,10 @@ div.dataTables_length select {
 .fix-height {
     height: 435px;
 }
-
+.no-record {
+    color: #777;
+    padding: 10px;
+}
 .payment-info label {
     width: 100%;
 }
@@ -1070,4 +1074,17 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
 .btn-primary {
   color: #fff!important;
 }
-
+.todo-list li span.text {
+    cursor: pointer;
+}
+.todos-box{display: none;}
+.pad-lr-29{
+    padding: 10px 29px 0;
+}
+.todos-box label{
+    width: 14%;
+    font-weight: 600;
+}
+#note-box{
+    display: none;
+}

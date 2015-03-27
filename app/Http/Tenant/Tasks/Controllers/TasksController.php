@@ -40,7 +40,7 @@ class TasksController extends BaseController {
      */
     public function index()
     {
-        $tasks = Tasks::all();
+        $tasks = $this->task->getTasks();
         return view('tenant.tasks.index', compact('tasks'))->with('pageTitle', 'All Tasks');
     }
 
