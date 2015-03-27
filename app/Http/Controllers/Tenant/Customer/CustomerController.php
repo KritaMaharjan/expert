@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Input;
 use App\Http\Tenant\Email\Models\Email;
 use App\Http\Tenant\Email\Models\Attachment;
+use App\Http\Tenant\Email\Models\Receiver;
 use Session;
 
 
@@ -19,7 +20,7 @@ class CustomerController extends BaseController {
     protected $customer;
     protected $email;
 
-    public function __construct(Customer $customer, Request $request, Bill $bill,Email $email)
+    public function __construct(Customer $customer, Request $request, Bill $bill,Email $email,Receiver $receiver)
     {
         \FB::can('Customer');
 
@@ -28,6 +29,7 @@ class CustomerController extends BaseController {
         $this->request = $request;
         $this->bill = $bill;
         $this->email = $email;
+        $this->receiver = $receiver;
     }
 
     /**
@@ -183,8 +185,10 @@ class CustomerController extends BaseController {
        
         $invoices = $this->bill->getCustomerBill($user_id);
 
-       $mails = $this->email->customer($user_id)->latest()->with('attachments', 'receivers');
+     
+       $mails = $this->receiver->customer($user_id)->with('attachments', 'receivers');
        //dd($mails);
+     
 
 
         return view('tenant.customer.customerCard', compact('customer','invoices','mails'))->withPageTitle('Customer');

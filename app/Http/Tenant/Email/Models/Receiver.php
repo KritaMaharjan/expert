@@ -2,8 +2,12 @@
 
 namespace App\Http\Tenant\Email\Models;
 
-
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
+use App\Http\Tenant\Email\Models\Email;
+use App\Http\Tenant\Email\Models\Attachment;
+
 
 class Receiver extends Model {
 
@@ -35,6 +39,26 @@ class Receiver extends Model {
     public function email()
     {
         return $this->belongsTo('App\Http\Tenant\Email\Models\Email');
+    }
+
+    public function attachments()
+    {
+        return $this->hasMany('App\Http\Tenant\Email\Models\Attachment');
+    }
+
+    public function receivers()
+    {
+        return $this->hasMany('App\Http\Tenant\Email\Models\Receiver');
+    }
+
+
+
+    function scopeCustomer($query,$customer_id)
+    {
+         
+       $query->where('customer_id',$customer_id );
+
+       
     }
 
 

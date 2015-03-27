@@ -154,7 +154,7 @@ class EmailController extends BaseController {
         $type = $this->request->input('type');
         $data['type'] = $type = ($type == 1) ? $type : 0;
         $data['per_page'] = $per_page = 5;
-        $data['mails'] = $this->email->user()->type($type)->latest()->with('attachments', 'receivers')->paginate($per_page);
+        $data['mails'] = $this->email->user()->type($type)->with('attachments', 'receivers')->paginate($per_page);
 
 
         return view('tenant.email.list', $data);

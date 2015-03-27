@@ -84,8 +84,7 @@ $(function () {
         ],
         "fnRowCallback": function (nRow, aData, iDisplayIndex) {
 
-            // $('td:eq(1)', nRow).html('<a href="'+appUrl+'/system/client/'+aData.id+'"> </a>');
-            // return nRow;
+           
 
         }
 

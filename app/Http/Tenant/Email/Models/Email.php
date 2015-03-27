@@ -61,12 +61,7 @@ class Email extends Model {
     }
 
 
-    function scopeCustomer($query)
-    {
-         
-        $query->where('customer_id','1' );
-    }
-
+    
 
     function scopeType($query, $type=0)
     {
@@ -243,7 +238,10 @@ class Email extends Model {
             ->where('fb_email_receivers.customer_id', $user_id)
             ->get();
 
-            return $details;
+            $emails = array();
+            $emails['mails'] = $details;
+
+           return $emails;
 
     }
 

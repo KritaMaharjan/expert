@@ -1,6 +1,7 @@
 {{--Load JS--}}
 {{FB::registerModal()}}
 {{FB::js('assets/js/customer.js')}}
+{{FB::js('assets/js/desk/email.js')}}
 
 @extends('tenant.layouts.main')
 
@@ -87,15 +88,7 @@ Customers
                                 <th>Status</th>
                               </tr>
                             </thead>
-                            {{-- <tbody>
-                              <tr>
-                                <td><a href="#" class="link">14105</a></td>
-                                <td>1600,-</td>
-                                <td>15-01-14</td>
-                                <td>Collection</td>
-                              </tr>
-                              
-                            </tbody> --}}
+                           
                           </table>
                           <div class="total-block">
                             <span>Total Offers: <strong>{{$invoices['totaloffers']}}</strong></span>
