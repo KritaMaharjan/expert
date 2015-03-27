@@ -84,8 +84,8 @@ $(function () {
         ],
         "fnRowCallback": function (nRow, aData, iDisplayIndex) {
 
-            // $(nRow).attr('id', 'customer-' + aData.id);
-            // return nRow;
+            $(nRow).attr('id', 'invoices-' + aData.id);
+            return nRow;
         }
 
     });
