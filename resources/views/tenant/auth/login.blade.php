@@ -4,7 +4,7 @@
     <div class="login-page">
     <div class="login-box">
       <div class="login-logo">
-        <a href="{{url('/')}}"><b>Fast</b>Books</a>
+        <a href="{{site_url()}}"><b>Fast</b>Books</a>
       </div><!-- /.login-logo -->
       <div class="login-box-body">
         <p class="login-box-msg">Sign in</p>
@@ -55,7 +55,7 @@
 
 
         <a href="{{tenant_route('tenant.forgetPassword')}}"><small>I forgot my password</small></a><br>
-        <a href="{{ url('/') }}" class="text-center"><small>Register a new account</small></a>
+        <a href="{{ site_url() }}" class="text-center"><small>Register a new account</small></a>
 
       </div><!-- /.login-box-body -->
       <div class="login-box-footer">
