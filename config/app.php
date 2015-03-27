@@ -135,10 +135,9 @@ return [
         'Illuminate\Translation\TranslationServiceProvider',
         'Illuminate\Validation\ValidationServiceProvider',
         'Illuminate\View\ViewServiceProvider',
-       // 'Barryvdh\Debugbar\ServiceProvider',
+        'Barryvdh\Debugbar\ServiceProvider',
         'Illuminate\Html\HtmlServiceProvider',
         'Laracasts\Flash\FlashServiceProvider',
-       // 'anlutro\cURL\Laravel\cURLServiceProvider',
        'Clockwork\Support\Laravel\ClockworkServiceProvider',
 
         /*
@@ -150,8 +149,7 @@ return [
         'App\Providers\EventServiceProvider',
         'App\Providers\RouteServiceProvider',
         'App\Providers\HelperServiceProvider',
-        //'Elibyy\TCPDF\ServiceProvider',
-        'Laracasts\Generators\GeneratorsServiceProvider'
+        'Elibyy\TCPDF\ServiceProvider',
 
     ],
 

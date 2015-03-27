@@ -65,11 +65,16 @@ class EmailReader {
     }
 
 
-    function read()
+    function read($date = null)
     {
+
         ini_set('max_execution_time', 300);
 
-        $messages = $this->messageSince('2015-03-26');
+        if($date ==null)
+        {
+            $date = date('Y-m-d');
+        }
+        $messages = $this->messageSince($date);
         $inbox = array();
         foreach ($messages as $message) {
             $m = new \stdClass();
