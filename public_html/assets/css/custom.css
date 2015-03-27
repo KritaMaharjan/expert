@@ -919,6 +919,14 @@ fieldset.wrapper-box legend {
         margin-top: -20px;
         margin-left: -275px;
     }
+    #print .header-wrap {
+        background: none repeat scroll 0 0 #fff34d;
+        padding: 10px 20px;
+    }
+    .section-wrap-yellow {
+        background: none repeat scroll 0 0 #fff34d;
+        padding: 5px 2% 5px 0;
+    }
 
     .main-footer {
         display: none
