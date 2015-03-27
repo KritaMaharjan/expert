@@ -12,7 +12,7 @@
 <link href="{{ asset('assets/css/_all-skins.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/css/select2.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/plugins/datatables/dataTables.bootstrap.css')}}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('assets/css/bootstrap-datetimepicker.min.css')}}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/css/bootstrap-datetimepicker.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/plugins/datepicker/datepicker3.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/plugins/jquery-ui-1.11.4.custom/jquery-ui.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/plugins/iCheck/flat/blue.css')}}" rel="stylesheet" type="text/css" />
