@@ -218,8 +218,8 @@ class UserController extends BaseController {
         $diff=date_diff($date1,$date2);
         $leave = $diff->format('%d');
         
-
-         $result = $this->vacation->addVacation($request,$type,$leave);
+        if($leave < $this->request['total']){
+            $result = $this->vacation->addVacation($request,$type,$leave);
 
          $total_leave = $this->vacation->totalVacation($this->request['user_id'],$type,$leave);
         // dd($total_leave);
@@ -227,7 +227,13 @@ class UserController extends BaseController {
          
          $leave_left = $vacation - $total_leave;
 
-        return \Response::json(array('status' => true, 'vacation_days' => $leave_left,'vacation_used'=> $total_leave,'leave_taken'=>$leave));
+        return \Response::json(array('status' => true, 'vacation_days' => $leave_left,'vacation_used'=> $total_leave,'leave_taken'=>$leave,'leave_left'=>$leave_left));
+
+        }else{
+             return \Response::json(array('status' => false, 'message' => 'exceed time'));
+
+        }
+         
 
     }
 

@@ -231,6 +231,75 @@ class Bill extends Model {
     }
 
 
+    function dataTablePaginationCustomer(Request $request, array $select = array(), $customer_id)
+    {
+        if ((is_array($select) AND count($select) < 1)) {
+            $select = "*";
+        }
+
+        $take = ($request->input('length') > 0) ? $request->input('length') : 15;
+        $start = ($request->input('start') > 0) ? $request->input('start') : 0;
+
+        $search = $request->input('search');
+        $search = $search['value'];
+        $order = $request->input('order');
+        $column_id = $order[0]['column'];
+        $columns = $request->input('columns');
+        $orderColumn = $columns[$column_id]['data'];
+        $orderdir = $order[0]['dir'];
+
+        $invoices = array();
+        $query = $this->select($select);
+
+        // if ($is_offer == true)
+        //     $query = $query->where('is_offer', 1);
+        // else
+        //     $query = $query->where('is_offer', 0);
+
+        if ($orderColumn != '' AND $orderdir != '') {
+            if ($orderColumn != 'invoice_date')
+                $query = $query->orderBy($orderColumn, $orderdir);
+            else
+                $query = $query->orderBy('created_at', $orderdir);
+        }
+
+        if ($search != '') {
+            $query = $query->where('invoice_number', 'LIKE', "%$search%");
+        }
+        $invoices['total'] = $query->where('customer_id', $customer_id)->count();
+
+
+        $query->skip($start)->take($take);
+
+        $data = $query->where('customer_id', $customer_id)->get();
+
+        foreach ($data as $key => &$value) {
+         
+            $value->raw_status = $value->status;
+            if ($value->status == 1)
+                $value->status = '<span class="label label-success">Paid</span>';
+            elseif ($value->status == 2)
+                $value->status = '<span class="label label-warning">Collection</span>';
+            else
+                $value->status = '<span class="label label-danger">Unpaid</span>';
+
+            $value->invoice_date = date('d-M-Y  h:i:s A', strtotime($value->created_at));
+            
+            $value->DT_RowId = "row-" . $value->guid;
+        }
+
+        $invoices['data'] = $data->toArray();
+
+        $json = new \stdClass();
+        $json->draw = ($request->input('draw') > 0) ? $request->input('draw') : 1;
+        $json->recordsTotal = $invoices['total'];
+        $json->recordsFiltered = $invoices['total'];
+        $json->data = $invoices['data'];
+
+        return $json;
+    }
+
+
     function billDetails($id = '')
     {
         $bill = Bill::find($id);
@@ -288,5 +357,27 @@ class Bill extends Model {
             return $bill;
         } else
             return false;
+    }
+
+    function getCustomerBill($customer_id){
+       $bills =  Bill::where('customer_id', $customer_id)->get();
+     $invoices = array();
+     $totalbills = 0;
+     $totaloffers = 0;
+     foreach ($bills as $key => $value) {
+       if($value->is_offer == 0){
+            $totalbills +=  $value->total;
+       }
+        else if($value->is_offer == 1){
+            $totaloffers +=  $value->total;
+        }
+     }
+
+     $invoices['bills'] = $bills;
+     $invoices['totalbills'] = $totalbills;
+     $invoices['totaloffers'] = $totaloffers;
+
+     return $invoices;
+
     }
 }

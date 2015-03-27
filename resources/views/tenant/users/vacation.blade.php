@@ -7,7 +7,7 @@
       
         <input type="hidden" name="user_id" id="user_id" value="{{ $User->id }}">
          <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
-        <input type="hidden" name="vacationtotal" id="vacationtotal" value="{{ $vacation_leave_left }}">
+        <input type="hidden" name="total" id="total" value="{{ $vacation_leave_left }}">
 
            <div class="box-body">
               <h3 class="mg-top-0">Vacation leave this year</h3>
@@ -92,7 +92,7 @@
       
        var _token = $('#_token').val();
        var user_id = $('#user_id').val();
-       var vacation_days = $('#vacationtotal').val();
+       var vacation_days = $('#total').val();
         var from = $('#from').val();
          var to = $('#to').val();
         var type = 'vacation_days';
@@ -111,6 +111,9 @@
                    $('#vacation_used').text(response.vacation_used+'days');
                    $('.table-mailbox').append('<tr><td width="40%" class="name">'+from +'-'+ to +'</td><td width="60%" class="subject position-relative"><div class="action-buttons"><a title="Delete" class="fa fa-close btn-danger pad-4 delete-leave" href="javascript:;"></a></div> '+response.leave_taken+' day</td></tr>');
                     
+                    $('#add_part').hide();
+                    $('#from').val('');
+                    $('#to').val('');
                     
                     setTimeout(function () {
                         $('.callout').remove()
