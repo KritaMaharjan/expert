@@ -138,8 +138,9 @@ Customers
                                 </form>
                               </div>
                             </div><!-- /.row -->
+                             @include('tenant.email.list')
 
-                            <div class="table-responsive">
+                {{--             <div class="table-responsive">
                               <!-- THE MESSAGES -->
                               <table class="table table-mailbox">
                                 <tbody><tr class="unread">
@@ -171,7 +172,7 @@ Customers
                                 </tr>
                                 
                               </tbody></table>
-                            </div><!-- /.table-responsive -->
+                            </div><!-- /.table-responsive --> --}}
                           </div><!-- /.col (RIGHT) -->
                     </div>
 

@@ -181,6 +181,9 @@ class CustomerController extends BaseController {
        
         $invoices = $this->bill->getCustomerBill($user_id);
 
+        $mails = $this->email->getCustomerEmail($user_id);
+        dd($mails);
+
 
         return view('tenant.customer.customerCard', compact('customer','invoices'))->withPageTitle('Customer');
     }

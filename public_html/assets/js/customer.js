@@ -54,7 +54,7 @@ $(function () {
 
     });
 
-     var customerDatatable1 = $("#table-invoices").dataTable({
+     var InvoiceDatatable = $("#table-invoices").dataTable({
         "dom": '<"top"f>rt<"bottom"lip><"clear">',
 
         //custom processing message
@@ -84,8 +84,9 @@ $(function () {
         ],
         "fnRowCallback": function (nRow, aData, iDisplayIndex) {
 
-            $(nRow).attr('id', 'invoices-' + aData.id);
+            $('td:eq(1)', nRow).html('<a href="'+appUrl+'/system/client/'+aData.id+'"> </a>');
             return nRow;
+
         }
 
     });

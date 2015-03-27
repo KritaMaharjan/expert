@@ -229,6 +229,16 @@ class Email extends Model {
 
     }
 
+    function getCustomerEmail($user_id){
+        $details = DB::table('fb_email_receivers')
+            ->join('fb_emails', 'fb_email_receivers.email_id', '=', 'fb_emails.id')
+            ->where('fb_email_receivers.customer_id', $user_id)
+            ->get();
+
+            return $details;
+
+    }
+
 }
 
 ?>
