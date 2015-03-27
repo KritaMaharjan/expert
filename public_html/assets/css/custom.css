@@ -1092,3 +1092,35 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
     width: 100%;
     margin-bottom: 10px;
 }
+.border-btm{
+    border-bottom: 1px solid #00a65a;
+}
+#tab-header a.inbox-active{
+    border-left: 1px solid #00a65a; 
+    border-right: 1px solid #00a65a; 
+    border-bottom: 1px solid #fff; 
+    border-top: 1px solid #00a65a;
+    background: #fff;
+    color: #00a65a;    
+}
+#tab-header a{
+    background: none repeat scroll 0 0 #ddf9ec;
+    border-color: #00a65a;
+    border-style: solid;
+    border-width: 1px;
+    color: #444;
+    margin-bottom: -1px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+.note-box-yellow{
+     background: none repeat scroll 0 0 #fdfcbc;
+    border: 1px solid #f8f7b6;
+    box-shadow: 0 2px 1px rgba(0, 0, 0, 0.2);
+    height: 70px;
+    padding: 10px;
+}
+.pos-right{
+    right: 0!important;
+    left:unset!important;
+}
