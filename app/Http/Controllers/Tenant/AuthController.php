@@ -146,8 +146,8 @@ class AuthController extends BaseController {
 
 
         $subuser = $this->activateSubUser($subuser);
-
-        return tenant($subuser->domain)->redirect('/');
+        return tenant()->redirect();
+        //return tenant($subuser->domain)->redirect('/');
     }
 
     /**

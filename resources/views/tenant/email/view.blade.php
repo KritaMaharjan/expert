@@ -35,7 +35,7 @@
       <button data-toggle="dropdown" class="btn btn-default btn-sm btn-flat dropdown-toggle" type="button">
         Action <span class="caret"></span>
       </button>
-      <ul role="menu" class="dropdown-menu">
+      <ul role="menu" class="dropdown-menu pos-right">
          <li>
             <a href="#" data-type="<?php echo  $mail->type ? 'support' : 'personal' ;?>" title="Reply Email" data-original-title="Reply Email" data-toggle="modal" data-action="reply" data-id="<?php echo $mail->id;?>" data-target="#compose-modal"><small class="color-grey"><i class="fa fa-reply"></i></small> Reply</a>
          </li>
@@ -60,8 +60,10 @@
   <div class="box-body">
         <?php echo nl2br($mail->message);?>
       <hr/>
-       <p>Note :</p>
-       <?php echo nl2br($mail->note);?>
+       <label>Note :</label>
+       <div class="note-box-yellow">
+        <?php echo nl2br($mail->note);?>
+        </div>
   </div>
 </div><!-- /.box -->
 

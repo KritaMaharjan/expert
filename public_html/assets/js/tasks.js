@@ -68,11 +68,11 @@ $(function () {
                     $('#fb-modal').modal('hide');
                     var tbody = $('.box-body table tbody');
                     if (requestType == 'Add') {
-                        $('.mainContainer .box-solid').before(notify('success', 'Task added Successfully'));
+                        $('.mainContainer .main-box-solid').before(notify('success', 'Task added Successfully'));
                         tbody.prepend(getTemplate(response.data, false));
                     }
                     else {
-                        $('.mainContainer .box-solid').before(notify('success', 'Task updated Successfully'));
+                        $('.mainContainer .main-box-solid').before(notify('success', 'Task updated Successfully'));
                         tbody.find('#tasks-' + response.data.id).html(getTemplate(response.data, true));
                     }
                     setTimeout(function () {
@@ -107,10 +107,10 @@ $(function () {
 });
 
 
-$(document).on('click', '.btn-delete-tasks', function (e) {
+$(document).on('click', '.btn-delete-task', function (e) {
     e.preventDefault();
     var $this = $(this);
-    var parentTr = $this.parent().parent().parent();
+    var parentLi = $this.parent().parent();
     var id = $this.attr('data-id');
     var doing = false;
 
@@ -120,7 +120,7 @@ $(document).on('click', '.btn-delete-tasks', function (e) {
 
     if (id != '' && doing == false) {
         doing = true;
-        parentTr.hide('slow');
+        parentLi.hide('slow');
 
         $.ajax({
             url: appUrl + 'tasks/' + id + '/delete',
@@ -129,18 +129,18 @@ $(document).on('click', '.btn-delete-tasks', function (e) {
         })
             .done(function (response) {
                 if (response.status === 1) {
-                    $('.mainContainer .box-solid').before(notify('success', response.data.message));
-                    parentTr.remove();
+                    $('.mainContainer .main-box-solid').before(notify('success', response.data.message));
+                    parentLi.remove();
                 } else {
-                    $('.mainContainer .box-solid').before(notify('error', response.data.message));
-                    parentTr.show('fast');
+                    $('.mainContainer .main-box-solid').before(notify('error', response.data.message));
+                    parentLi.show('fast');
                 }
                 setTimeout(function () {
                     $('.callout').remove()
                 }, 2500);
             })
             .fail(function () {
-                parentTr.show('fast');
+                parentLi.show('fast');
                 alert('something went wrong');
             })
             .always(function () {
@@ -149,7 +149,6 @@ $(document).on('click', '.btn-delete-tasks', function (e) {
     }
 
 });
-
 
 function notify(type, text) {
     return '<div class="callout callout-' + type + '"><p>' + text + '</p></div>';

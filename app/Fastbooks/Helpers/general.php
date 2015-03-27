@@ -95,7 +95,12 @@ function format_telephone($phone_number = null)
 function format_date($date)
 {
     $formatted_date = date('d-m-y', strtotime($date));
+    return $formatted_date;
+}
 
+function format_datetime($date)
+{
+    $formatted_date = date('M d, Y h:i a', strtotime($date));
     return $formatted_date;
 }
 

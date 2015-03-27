@@ -1,5 +1,6 @@
 <?php
 
+use Laracasts\TestDummy\Factory;
 class ExampleTest extends TestCase {
 
 	/**
@@ -9,9 +10,8 @@ class ExampleTest extends TestCase {
 	 */
 	public function testBasicExample()
 	{
-		$response = $this->call('GET', '/');
-
-		$this->assertEquals(200, $response->getStatusCode());
+		$thread = Factory::create('App\Thread');
+        dd($thread->toArray());
 	}
 
 }
