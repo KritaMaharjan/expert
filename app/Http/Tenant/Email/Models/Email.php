@@ -60,6 +60,14 @@ class Email extends Model {
         $query->where('sender_id', current_user()->id);
     }
 
+
+    function scopeCustomer($query)
+    {
+         
+        $query->where('customer_id','1' );
+    }
+
+
     function scopeType($query, $type=0)
     {
         $query->where('type', $type);

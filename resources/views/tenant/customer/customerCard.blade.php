@@ -78,7 +78,7 @@ Customers
                   <div class="row">
                     <div class="col-md-12 col-sm-12">                 
                         <div class="table-responsive">
-                          <table id="table-invoices" class="table table-striped">
+                          <table  id ="table-invoices" class="table table-striped">
                             <thead>
                               <tr>
                                 <th>No.</th>
@@ -138,41 +138,44 @@ Customers
                                 </form>
                               </div>
                             </div><!-- /.row -->
-                             @include('tenant.email.list')
+                       
 
-                {{--             <div class="table-responsive">
+                            <div class="table-responsive">
                               <!-- THE MESSAGES -->
-                              <table class="table table-mailbox">
-                                <tbody><tr class="unread">
-                                  <td class="small-col"><div class="icheckbox_minimal-blue" style="position: relative;" aria-checked="false" aria-disabled="false"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: none repeat scroll 0% 0% rgb(255, 255, 255); border: 0px none; opacity: 0;"></ins></div></td>
-                                  <td class="small-col"><i class="fa fa-envelope"></i></td>
-                                  <td class="name">
-                                    <a href="#">John Doe
-                                      <small class="subject">Aspergers syn...</small>
-                                    </a>
-                                  </td>
-                                  <td class="time">12:30 PM</td>
-                                </tr>
-                                <tr>
-                                  <td class="small-col"><div class="icheckbox_minimal-blue" style="position: relative;" aria-checked="false" aria-disabled="false"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: none repeat scroll 0% 0% rgb(255, 255, 255); border: 0px none; opacity: 0;"></ins></div></td>
-                                  <td class="small-col"><i class="fa fa-location-arrow"></i></td>
-                                  <td class="name"><a href="#">Ron Johnson
-                                    <small class="subject">Welcome to...</small>
-                                    </a>
-                                  </td>
-                                  <td class="time">15-12-14</td>
-                                </tr>
-                                <tr>
-                                  <td class="small-col"><div class="icheckbox_minimal-blue" style="position: relative;" aria-checked="false" aria-disabled="false"><input type="checkbox" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: none repeat scroll 0% 0% rgb(255, 255, 255); border: 0px none; opacity: 0;"></ins></div></td>
-                                  <td class="small-col"><i class="fa fa-reply"></i></td>
-                                  <td class="name"><a href="#">John Doe</a>
-                                  <small class="subject"><strong>RE:</strong> Urgent! Please read</small>
-                                  </td>
-                                  <td class="time">15-12-14</td>
-                                </tr>
-                                
-                              </tbody></table>
-                            </div><!-- /.table-responsive --> --}}
+                             <table class="table table-mailbox no-mg-btm">
+    <tbody>
+          @foreach($mails as $mail)
+          <tr class="e{{$mail->id}}">
+            <td class="small-col"><!-- <i class="fa fa-reply"></i> -->
+              @if($mail->status == 1)  {!!'<i class="fa fa-circle green"></i>'!!} @endif
+               @if($mail->status == 2)  {!!'<i class="fa fa-circle red"></i>'!!} @endif
+                @if($mail->status == 3)  {!!'<i class="fa fa-circle orange"></i>'!!} @endif
+               {{--   @if($mail->status == 4)  {!!'<i class="fa fa-circle"></i>'!!} @endif --}}
+            </td>
+            <td class="name">
+             <?php $receiver = $mail->receivers;?>
+              <a style="display: block" href="#" data-id="{{$mail->id}}" >
+                  @foreach($receiver as $to)
+                        @if($to->type ==1)
+                           {{ str_limit($to->email,30)}};
+                        @endif
+                     @endforeach
+
+                    
+                <small class="subject">{{str_limit($mail->subject,40)}}</small>
+              </a> 
+            </td>
+            <td> @if(!empty($mail['attachments']->file)) {!!'<i class="fa fa-paperclip grey"></i>'!!} @endif</td>
+
+            <td class="time"><small>{{email_date($mail->created_at)}}</small></td>
+          </tr>
+          @endforeach
+    </tbody>
+</table>
+@if(empty($mails))
+    <p class="no-record">There is no email to show</p>
+@endif
+                            </div><!-- /.table-responsive -->
                           </div><!-- /.col (RIGHT) -->
                     </div>
 
