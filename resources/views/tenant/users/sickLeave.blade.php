@@ -7,7 +7,7 @@
       
         <input type="hidden" name="user_id" id="user_id" value="{{ $User->id }}">
          <input type="hidden" name="_token" id="_token" value="{{ csrf_token() }}">
-        <input type="hidden" name="sicktotal" id="sicktotal" value="{{ $sick_leave_left }}">
+        <input type="hidden" name="total" id="total" value="{{ $sick_leave_left }}">
 
            <div class="box-body">
               <h3 class="mg-top-0">Sick leave this year</h3>
@@ -92,7 +92,7 @@
       
        var _token = $('#_token').val();
        var user_id = $('#user_id').val();
-       var vacation_days = $('#sicktotal').val();
+       var vacation_days = $('#total').val();
         var from = $('#from').val();
          var to = $('#to').val();
         var type = 'sick_days';
@@ -109,12 +109,18 @@
 
                   $('#sick_days').text(response.vacation_days+'days');
                    $('#sick_used').text(response.vacation_used+'days');
-                   $('.table-mailbox').append('<tr><td width="40%" class="name">'+from +'-'+ to +'</td><td width="60%" class="subject position-relative"><div class="action-buttons"><a title="Delete" class="fa fa-close btn-danger pad-4" href="#"></a></div> '+response.leave_taken+' day</td></tr>');
+                   $('.table-mailbox').append('<tr><td width="40%" class="name">'+from +'-'+ to +'</td><td width="60%" class="subject position-relative"><div class="action-buttons"><a title="Delete" class="fa fa-close btn-danger pad-4 delete-leave" href="javascript:;"></a></div> '+response.leave_taken+' day</td></tr>');
+
+                    $('#add_part').hide();
+                    $('#from').val('');
+                    $('#to').val('');
                     
                     
                     setTimeout(function () {
                         $('.callout').remove()
                     }, 2500);
+
+
                 }
                 else {
                   $('.two-inputs').after('<label class="error">Leave cannot be more than estimated vacation</label');
@@ -128,33 +134,28 @@
 
 
 $(document).on('click', '.delete-leave', function () {
-
-       $this = $(this);
-        var leave_id = $(this).attr('leave_id');
-        var answer = confirm("Do you sure want to delete this?")
+    $('#add_part').show();
+     var leave_id = $(this).attr('leave_id');
+       var _token = $('#_token').val();
+        $this = $(this);
+        var answer = confirm("Do you sure want to delete this?");
       if (answer){
-        $.ajax({
-            url: appUrl + 'user/deleteVacation',
+         $.ajax({
+           url: appUrl + 'user/deleteVacation',
             type: 'POST',
             dataType: 'json',
             data: {'_token':_token,'leave_id':leave_id},
              async: false,
                  success: function(response) {
-                    if (response.status == true) {
-                       $this.parent('tr').remove();
+                  if (response.status == true) {
+                       $this.closest('tr').remove();
                     }
-                  }
-                })
-   
-    }
-    else{
-      alert("Thanks for sticking around!")
-    }
+                 }
+         });
+      }else{
 
-
-         
-});
-   
+      }
+  });
      
 
   </script>

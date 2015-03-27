@@ -68,9 +68,9 @@ Customers
                 <div class="box-header">
                   <h3 class="box-title">Invoices/Offers</h3>
                   <div class="btn-top-ryt">
-                    <a href="#" class="btn btn-primary btn-block btn-flat">New Offer
+                    <a href="{{tenant()->url('invoice/offer/add')}}" class="btn btn-primary btn-block btn-flat">New Offer
                     </a>
-                    <a href="#" class="btn btn-primary btn-block btn-flat">New Bill
+                    <a href="{{tenant()->url('invoice/bill/add')}}" class="btn btn-primary btn-block btn-flat">New Bill
                     </a>
                   </div>
                 </div>
@@ -78,7 +78,7 @@ Customers
                   <div class="row">
                     <div class="col-md-12 col-sm-12">                 
                         <div class="table-responsive">
-                          <table class="table table-striped">
+                          <table id="table-invoices" class="table table-striped">
                             <thead>
                               <tr>
                                 <th>No.</th>
@@ -87,42 +87,19 @@ Customers
                                 <th>Status</th>
                               </tr>
                             </thead>
-                            <tbody>
+                            {{-- <tbody>
                               <tr>
                                 <td><a href="#" class="link">14105</a></td>
                                 <td>1600,-</td>
                                 <td>15-01-14</td>
                                 <td>Collection</td>
                               </tr>
-                              <tr>
-                                <td><a href="#" class="link2">14106</a></td>
-                                <td>499,-</td>
-                                <td>31-02-14</td>
-                                <td>Overdue</td>
-                              </tr>
-                              <tr>
-                                <td><a href="#" class="link">14108</a></td>
-                                <td>458.87</td>
-                                <td>15-03-14</td>
-                                <td>Paid</td>
-                              </tr>
-                              <tr>
-                                <td><a href="#" class="link2">14109</a></td>
-                                <td>455</td>
-                                <td>15-03-14</td>
-                                <td>Unpaid</td>
-                              </tr>
-                              <tr>
-                                <td><a href="#" class="link">14250</a></td>
-                                <td>399</td>
-                                <td>15-03-14</td>
-                                <td>Offer</td>
-                              </tr>
-                            </tbody>
+                              
+                            </tbody> --}}
                           </table>
                           <div class="total-block">
-                            <span>Total Offers: <strong>399</strong></span>
-                            <span>Total Bills: <strong>3012.47</strong></span>
+                            <span>Total Offers: <strong>{{$invoices['totaloffers']}}</strong></span>
+                            <span>Total Bills: <strong>{{$invoices['totalbills']}}</strong></span>
                           </div>
                         </div><!-- /.col -->
                     </div>
@@ -134,22 +111,7 @@ Customers
              
              
           </div>
-           <div class="col-md-2">
-             <div class="box box-solid">
-                   <div class="box-header">
-                  <h3 class="box-title">Attachments</h3>
-                  
-                </div>
-                <div class="box-body">
-                  <div class="row">
-                     <div class="col-md-12 col-sm-12">   
-                        @if($customer->image) {{$customer->image}} @endif
-                   </div>
-              </div>
-            </div>
-
-             </div>
-           </div>
+     
           </div> 
 
           <div class="row">

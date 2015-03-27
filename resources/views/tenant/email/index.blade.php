@@ -38,14 +38,31 @@ $(function(){
                 <div class="row">
                   <div class="col-md-12">
                     <div class="mail-wrap-section clearfix">
-                      <div class="col-md-4 bg-white">
+                      <div class="col-md-2">
+                      <div class="box-header">
+                        <i class="fa fa-inbox"></i>
+                        <h3 class="box-title">INBOX</h3>
+                      </div>
+                        <a class="btn btn-block-small btn-primary btn-small" data-toggle="modal" data-target="#compose-modal"><i class="fa fa-pencil"></i> New Email</a>
+                        <a class="btn btn-block-small btn-default btn-small" data-toggle="modal" data-target="#compose-modal"><i class="fa fa-pencil"></i> New Ticket</a>
+                        <div class="box box-solid">                          
+                          <div>
+                              <ul class="nav nav-pills nav-stacked">
+                                <li class="header">Folders</li>
+                                <li class="active"><a href="#"><i class="fa fa-inbox"></i> Inbox</a></li>
+                                <li><a href="#"><i class="fa fa-mail-forward"></i> Sent</a></li>
+                              </ul>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-3 bg-white">
                         <div class="box box-solid">
                           <div class="box-body">
 
                           <div class="row mailbox" >
                             <div class="col-md-12 col-sm-12">
                                 <div class="row pad pad-top-0 pad-btm-0">
-                                  <div class="col-md-12 pad-6">
+                                  <div class="col-md-12 pad-5 mg-l-1">
 
 
                                     <a href="javascript:;" id="personal" class="inbox btn btn-default  btn-flat btn-small btn-primary">Personal Inbox</a>
@@ -64,7 +81,7 @@ $(function(){
                           </div><!-- /.box -->
                       </div><!-- bg-white -->
                       </div>
-                      <div id="email-single" class="col-md-8 bg-white">
+                      <div id="email-single" class="col-md-7 bg-white">
 
                       </div><!-- bg-white -->
 

@@ -1,7 +1,6 @@
 {!! Form::open(array('method'=>'POST', 'name'=>'global','files'=>true, 'class'=>'form-horizontal globalform')) !!}
 			<input type="hidden" name="_token" value="{{ csrf_token() }}">    
     
-
       <div class="form-group no-mg">
       <label class="control-label" name="currency" value="">Currency</label>
       <div class="@if($errors->has('currency')) {{'has-error'}} @endif">
@@ -17,7 +16,7 @@
                                         'DKK' => 'DKK',
                                         'SEK' => 'SEK',
                                         'CNY' => 'CNY'
-                            ], $currency->value, array('class' => 'form-control')) !!}
+                            ], null, array('class' => 'form-control')) !!}
         @if($errors->has('currency'))
           {!! $errors->first('currency', '<label class="control-label" for="inputError">:message</label>') !!}
         @endif
@@ -27,7 +26,7 @@
      <div class="form-group no-mg">
       <label class="control-label" name="dateformat" value="">Date Format</label>
       <div class="@if($errors->has('dateformat')) {{'has-error'}} @endif">
-        {!! Form::select('dateformat', [
+        {!! Form::select('dateformat',  [
                                         'mm/dd/yy' => 'mm/dd/yy',
                                         'yy-mm-dd' => 'yy-mm-dd',
                                         'd M, y' => 'd M, y',
@@ -35,7 +34,7 @@
                                          'DD, d MM, yy' => 'DD, d MM, yy',
                                         
                                       
-                            ], $dateformat->value, array('class' => 'form-control')) !!}
+                            ], null, array('class' => 'form-control')) !!}
         @if($errors->has('dateformat'))
           {!! $errors->first('dateformat', '<label class="control-label" for="inputError">:message</label>') !!}
         @endif

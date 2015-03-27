@@ -14,11 +14,16 @@
     var add_btn = $('.add-btn');
 
 
+          
+
     add_btn.on('click', function () {
-        var html_product = '<tr class="position-r"><td><div class="action-buttons"><div class="delete"><a href="#" class="invoice-delete fa fa-close btn-danger" title="Delete line"></a></div></div><select name="product[]" class="select-product form-control" tabindex="-1" style="display: none;"><option selected="selected" value="">Select Product</option></select></td><td><input type="number" name="quantity[]" required="required" id="quantity"  readonly="readonly"  class="form-control quantity add-quantity"></td>' +
-            '<td><span class="border-bx block price"> </span></td>' +
-            '<td><span class="border-bx block vat"> </span></td>' +
-            '<td><span class="border-bx block total"> </span></td></tr>';
+        var html_product = '<tr class="position-r"><td><select name="product[]" class="select-product form-control"><option value="">Select Product</option></select></td>'+
+'<td><input type="number" name="quantity[]" class="add-quantity quantity form-control" id="quantity" required="required" readonly="readonly"/>'+
+'<td><span class="border-bx block price"> </span></td>'+
+'<td><span class="border-bx block vat"> </span></td>'+
+'<td class="position-relative">'+
+'<div class="action-buttons"><a title="Delete" class="invoice-delete fa fa-close btn-danger delete" href="javascript:;"></a></div>'+
+'<span class="border-bx block total"> </span></td></tr>';
        // invoice_tr.after(invoice_tr_html_wrap);
        $('.product-table tr:last').after(html_product);
 

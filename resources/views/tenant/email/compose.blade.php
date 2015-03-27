@@ -38,7 +38,7 @@
                     <p class="align-right">
                         <a href="javascript:;" id="note-link"><i class="fa fa-plus"></i> Add note</a>
                     </p>
-                    <div id="note-box" class="form-group hidden">
+                    <div id="note-box" class="form-group">
                         <div class="input-group" style="width: 100%">
                           {!! Form::textarea('note', null, ['id'=>'note','class'=>'form-control', 'placeholder'=>'Note', 'style'=>'height: 70px;background: #FDFCBC;border: 1px solid #F8F7B6;box-shadow: 0 2px 1px rgba(0,0,0,.2);']) !!}
                         </div>
@@ -95,7 +95,7 @@
 <script type="text/javascript">
     $(function(){
         $('#note-link').click(function(){
-            $('#note-box').toggleClass('hidden');
+            $('#note-box').slideToggle('fast');
         });
 
         $(".textarea").wysihtml5();
