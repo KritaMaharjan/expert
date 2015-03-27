@@ -92,9 +92,7 @@ class TasksController extends BaseController {
         if ($this->request->ajax()) {
             return $this->success($task->toArray());
         }
-
         return view('tenant.product.show', compact('product'));
-
     }
 
 
@@ -106,15 +104,11 @@ class TasksController extends BaseController {
     {
         $id = $this->request->route('id');
 
-        $task = $this->task->taskDetails($id);
+        $task = Tasks::find($id);
         if ($task == null || empty($task)) {
             show_404();
         }
-        $company_details = $this->getCompanyDetails();
-        $months = \Config::get('tenant.month');
-        $data = array('months' => $months, 'currencies' => \Config::get('tenant.currencies'));
-
-        return view('tenant.tasks.edit', compact('task'))->with('pageTitle', 'Update Bill')->with('company_details', $company_details)->with($data);
+        return view('tenant.tasks.edit', compact('task'));
     }
 
     /**  update task detail
@@ -122,22 +116,11 @@ class TasksController extends BaseController {
      */
     function update()
     {
-        $id = $this->request->route('id');
-
-        $task = $this->task->find($id);
-        if (empty($task))
-            show_404();
-
-        $validator = Validator::make($this->request->all(), $this->rules);
-
-        if ($validator->fails())
-            return redirect()->back()->withErrors($validator)->withInput();
-
-        $this->task->edit($this->request, $id);
-
-        Flash::success('Bill updated successfully!');
-
-        return tenant()->route('tenant.invoice.tasks.index');
+        if($this->request->ajax()) {
+            $id = $this->request->route('id');
+            $result = $this->task->edit($this->request, $id);
+            return ($result) ? $this->success($result) : $this->fail(['errors' => 'something went wrong']);
+        }
     }
 
 
@@ -145,19 +128,12 @@ class TasksController extends BaseController {
     {
         $id = $this->request->route('id');
 
-        $task = Bill::find($id);
+        $task = Tasks::find($id);
         if (!empty($task)) {
             if ($task->delete()) {
-                $product_tasks = BillProducts::where('task_id', $id)->get();
-                if (!empty($product_tasks)) {
-                    foreach ($product_tasks as $product_task) {
-                        $product_task->delete();
-                    }
-
-                    return $this->success(['message' => 'Bill deleted Successfully']);
+                    return $this->success(['message' => 'Task deleted Successfully']);
                 }
             }
-        }
 
         return $this->fail(['message' => 'Something went wrong. Please try again later']);
     }

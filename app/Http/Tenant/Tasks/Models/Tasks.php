@@ -47,6 +47,8 @@ class Tasks extends Model
         $task->body = $request->input('body');
         $task->due_date = $request->input('due_date');
         $task->save();
+
+        return $task->toArray();
     }
 
     function markComplete($id)
@@ -63,8 +65,8 @@ class Tasks extends Model
         $tasks = array();
         /*$tasks['upcoming_tasks'] = Tasks::where('due_date', '>', $today)->get();
         $tasks['overdue_tasks'] = Tasks::where('due_date', '<=', $today)->get();*/
-        $tasks['upcoming_tasks'] = Tasks::where('is_complete', 0)->get();
-        $tasks['completed_tasks'] = Tasks::where('is_complete', 1)->get();
+        $tasks['upcoming_tasks'] = Tasks::where('is_complete', 0)->orderBy('due_date', 'asc')->get();
+        $tasks['completed_tasks'] = Tasks::where('is_complete', 1)->orderBy('completion_date', 'asc')->get();;
         return $tasks;
     }
 
