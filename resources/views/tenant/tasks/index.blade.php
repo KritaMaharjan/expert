@@ -42,6 +42,17 @@ Tasks
                         <i class="fa fa-edit"></i>
                         <i class="fa fa-trash-o"></i>
                       </div>
+                      <div class="todos-box pad-lr-29">
+                        <div>
+                          <label>Added date:</label>
+                          <span>3/27/2015</span>
+                        </div>
+                        <div>
+                          <label>Due date:</label>
+                          <span>3/30/2015</span>
+                        </div>
+                        <p>Body goes here..</p>
+                      </div>
                     </li>
                     @endforeach
                   </ul>
@@ -114,5 +125,33 @@ Tasks
     {{--Load JS--}}
     {{ FB::registerModal() }}
     {{ FB::js('assets/js/tasks.js') }}
+
+<script type="text/javascript">
+  $(function(){
+    $('.text').click(function(){
+      $(this).parent().find('.todos-box').slideToggle('fast');
+
+    })
+  });
+</script>
+
+<div class="container">
+<div class="row">
+<div class='col-sm-6'>
+<div class="form-group">
+<div class='input-group date' id='datetimepicker1'>
+<input type='text' class="form-control" />
+<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+</span>
+</div>
+</div>
+</div>
+<script type="text/javascript">
+$(function () {
+$('#datetimepicker1').datetimepicker();
+});
+</script>
+</div>
+</div>
 
 @stop

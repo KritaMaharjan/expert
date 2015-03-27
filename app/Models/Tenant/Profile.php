@@ -38,7 +38,7 @@ class Profile extends Model {
 
     }
 
-    function getPersonalEmailSettingAttribute($value)
+    function getSmtpAttribute($value)
     {
         $data = @unserialize($value);
         if ($data !== false) {
@@ -60,14 +60,5 @@ class Profile extends Model {
     }
 
 
-     public function getSupportSetting()
-    {
-         $profile = \DB::table('fb_settings')->where('name', 'support_smtp')->first();
 
-
-        $data = @unserialize($profile->value);
-        if ($data !== false) {
-            return $data;
-        }
-    }
 }

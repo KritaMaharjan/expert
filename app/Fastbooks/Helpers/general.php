@@ -34,14 +34,8 @@ function current_user()
     $user = \Auth::user();
     $user->profile = \App\Models\Tenant\Profile::firstOrCreate(['user_id' => $user->id]);
     $user->display_name = $user->fullname;
-    $setting = $user->profile->personal_email_setting;
-
-    $smtp = new stdClass();
-    $smtp->email = (isset($setting['email_username'])) ? $setting['email_username'] : $user->email;
-    $smtp->password = (isset($setting['email_password'])) ? $setting['email_password'] : '';
-    $smtp->incoming_server = (isset($setting['incoming_server'])) ? $setting['incoming_server'] : '';
-    $smtp->outgoing_server = (isset($setting['outgoing_server'])) ? $setting['outgoing_server'] : '';
-    $user->smtp = $smtp;
+    $user->smtp = (object)$user->profile->smtp;
+    $user->smtp->email = (isset($user->smtp->email)) ? $user->smtp->email : $user->email;
 
     return $user;
 }
@@ -69,6 +63,10 @@ function page_title()
 
 }
 
+function site_url()
+{
+    return 'http://' . env('APP_DOMAIN');
+}
 
 function email_date($dateTime)
 {
@@ -85,23 +83,26 @@ function email_date($dateTime)
 
 function format_telephone($phone_number = null)
 {
-    if($phone_number == null || strlen($phone_number))
-        return $phone_number;
 
+    if ($phone_number == null || strlen($phone_number))
+        return $phone_number;
     $cleaned = preg_replace('/[^[:digit:]]/', '', $phone_number);
     preg_match('/(\d{3})(\d{3})(\d{4})/', $cleaned, $matches);
+
     return "({$matches[1]}) {$matches[2]}-{$matches[3]}";
 }
 
 function format_date($date)
 {
     $formatted_date = date('d-m-y', strtotime($date));
+
     return $formatted_date;
 }
 
 function format_id($id = 0, $zeros = 3)
 {
-    $id = sprintf("%0".$zeros."d", $id);
+    $id = sprintf("%0" . $zeros . "d", $id);
+
     return $id;
 }
 

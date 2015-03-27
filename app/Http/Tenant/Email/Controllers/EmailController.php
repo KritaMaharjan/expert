@@ -2,6 +2,7 @@
 
 namespace APP\Http\Tenant\Email\Controllers;
 
+use App\Fastbooks\Libraries\Mailbox\EmailReader;
 use App\Http\Controllers\Tenant\BaseController;
 use App\Http\Tenant\Email\Models\Attachment;
 use App\Http\Tenant\Email\Models\Receiver;
@@ -115,19 +116,22 @@ class EmailController extends BaseController {
         $email = current_user()->smtp->email;
 
         $message = "
+<br/>
+<br/>
+<br/>
+<br/>
 
-
--------------------------------------------------------------------------------
-From: " . $display_name . "[mailto:" . $email . "]
-Sent: " . date('D, F d, Y, h:i A') . "
-To: " . $mail['to'];
+<hr/>
+<strong>From:</strong> " . $display_name . "[mailto:" . $email . "]<br/>
+<strong>Sent:</strong> " . date('D, F d, Y, h:i A') . "<br/>
+<strong>To:</strong> " . $mail['to'] . "<br/>";
 
         if ($mail['cc'] != '')
             $message .= "
-Cc: " . $mail['to'];
+<strong>Cc:</strong> " . $mail['to'];
 
         $message .= "
-Subject: " . $mail['subject'] . "
+<strong>Subject:</strong> " . $mail['subject'] . "
 
 " . $mail['message'];
 

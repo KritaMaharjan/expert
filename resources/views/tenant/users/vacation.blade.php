@@ -57,7 +57,7 @@
   </div>
 
   <script type="text/javascript">
-  $(document).on('click', '#add_vacation_leave', function (e) {
+  $(document).on('click', '#add_vacation_leave', function () {
     $('#add_part').show();
   });
 
@@ -109,7 +109,7 @@
 
                   $('#vacation_days').text(response.vacation_days+'days');
                    $('#vacation_used').text(response.vacation_used+'days');
-                   $('.table-mailbox').append('<tr><td width="40%" class="name">'+from +'-'+ to +'</td><td width="60%" class="subject position-relative"><div class="action-buttons"><a title="Delete" class="fa fa-close btn-danger pad-4" href="#"></a></div> '+response.leave_taken+' day</td></tr>');
+                   $('.table-mailbox').append('<tr><td width="40%" class="name">'+from +'-'+ to +'</td><td width="60%" class="subject position-relative"><div class="action-buttons"><a title="Delete" class="fa fa-close btn-danger pad-4 delete-leave" href="javascript:;"></a></div> '+response.leave_taken+' day</td></tr>');
                     
                     
                     setTimeout(function () {
@@ -126,33 +126,32 @@
             
     });
 
-$(document).on('click', '.delete-leave', function () {
 
-       $this = $(this);
-        var leave_id = $(this).attr('leave_id');
-        var answer = confirm("Do you sure want to delete this?")
+$(document).on('click', '.delete-leave', function () {
+    $('#add_part').show();
+     var leave_id = $(this).attr('leave_id');
+       var _token = $('#_token').val();
+        $this = $(this);
+        var answer = confirm("Do you sure want to delete this?");
       if (answer){
-        $.ajax({
-            url: appUrl + 'user/deleteVacation',
+         $.ajax({
+           url: appUrl + 'user/deleteVacation',
             type: 'POST',
             dataType: 'json',
             data: {'_token':_token,'leave_id':leave_id},
              async: false,
                  success: function(response) {
-                    if (response.status == true) {
-                       $this.parent('tr').remove();
+                  if (response.status == true) {
+                       $this.closest('tr').remove();
                     }
-                  }
-                })
-   
-    }
-    else{
-      alert("Thanks for sticking around!")
-    }
+                 }
+         });
+      }else{
+
+      }
+  });
 
 
-         
-});
-     
+
 
   </script>

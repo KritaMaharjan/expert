@@ -1070,4 +1070,14 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
 .btn-primary {
   color: #fff!important;
 }
-
+.todo-list li span.text {
+    cursor: pointer;
+}
+.todos-box{display: none;}
+.pad-lr-29{
+    padding: 10px 29px 0;
+}
+.todos-box label{
+    width: 14%;
+    font-weight: 600;
+}
