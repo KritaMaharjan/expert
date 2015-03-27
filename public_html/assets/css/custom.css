@@ -1012,14 +1012,6 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
     color: #bbb !important;
 }
 
-.orange, .red, .green {
-    padding: 5px;
-}
-
-.orange, .red, .green {
-    padding: 5px;
-}
-
 .table-blk {
     display: table;
     width: 100%;
@@ -1085,6 +1077,18 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
     width: 14%;
     font-weight: 600;
 }
+.mg-l-1{
+    margin-left: 1px;
+}
 #note-box{
     display: none;
+}
+.table-mailbox tr {
+    background: none repeat scroll 0 0 #fff;
+}
+.btn-block-small{
+    padding: 2px!important;
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
 }

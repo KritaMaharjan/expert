@@ -25,7 +25,6 @@
             </td>
             <td> @if(!empty($mail['attachments']->file)) {!!'<i class="fa fa-paperclip grey"></i>'!!} @endif</td>
 
-            <td><small class="grey">Sent</small></td>
             <td class="time"><small>{{email_date($mail->created_at)}}</small></td>
           </tr>
           @endforeach
