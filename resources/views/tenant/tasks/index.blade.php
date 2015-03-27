@@ -42,6 +42,17 @@ Tasks
                         <i class="fa fa-edit"></i>
                         <i class="fa fa-trash-o"></i>
                       </div>
+                      <div class="todos-box pad-lr-29">
+                        <div>
+                          <label>Added date:</label>
+                          <span>3/27/2015</span>
+                        </div>
+                        <div>
+                          <label>Due date:</label>
+                          <span>3/30/2015</span>
+                        </div>
+                        <p>Body goes here..</p>
+                      </div>
                     </li>
                     @endforeach
 
@@ -210,5 +221,15 @@ Tasks
     {{--Load JS--}}
     {{ FB::registerModal() }}
     {{ FB::js('assets/js/tasks.js') }}
+
+<script type="text/javascript">
+  $(function(){
+    $('.text').click(function(){
+      $(this).parent().find('.todos-box').slideToggle('fast');
+
+    })
+  });
+</script>
+
 
 @stop
