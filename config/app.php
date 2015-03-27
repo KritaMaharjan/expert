@@ -151,7 +151,7 @@ return [
         'App\Providers\RouteServiceProvider',
         'App\Providers\HelperServiceProvider',
         //'Elibyy\TCPDF\ServiceProvider',
-
+        'Laracasts\Generators\GeneratorsServiceProvider'
 
     ],
 
