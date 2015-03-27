@@ -35,16 +35,20 @@ $(function(){
 </script>
            <div class="box box-solid">
               <div class="box-body">
-                <div class="row">
-                  <div class="col-md-12">
+                <div class="">
+                  <div class="col-md-12 pad-5">
+                    <div id="tab-header" class="col-md-12 pad-5 mg-l-1 border-btm">
+                        <a href="javascript:;" id="personal" class="inbox-active inbox btn btn-flat">Personal Inbox</a>
+                        <a href="javascript:;" id="support" class="inbox btn btn-flat">Support Inbox</a>
+                      </div>
+                    </div><!-- /.row -->
                     <div class="mail-wrap-section clearfix">
                       <div class="col-md-2">
                       <div class="box-header">
-                        <i class="fa fa-inbox"></i>
-                        <h3 class="box-title">INBOX</h3>
+                        
                       </div>
-                        <a class="btn btn-block-small btn-primary btn-small" data-toggle="modal" data-target="#compose-modal"><i class="fa fa-pencil"></i> New Email</a>
-                        <a class="btn btn-block-small btn-default btn-small" data-toggle="modal" data-target="#compose-modal"><i class="fa fa-pencil"></i> New Ticket</a>
+                        <a href="#" title="New Email" data-original-title="New Email" class="btn btn-block-small btn-primary btn-small" data-toggle="modal" data-type="personal"  data-target="#compose-modal"><i class="fa fa-pencil"></i> New Email</a>
+                        <a href="#" title="New Ticket" data-original-title="New Ticket" class="btn btn-block-small btn-default btn-small" data-toggle="modal" data-type="support" data-target="#compose-modal"><i class="fa fa-pencil"></i> New Ticket</a>
                         <div class="box box-solid">                          
                           <div>
                               <ul class="nav nav-pills nav-stacked">
@@ -55,33 +59,19 @@ $(function(){
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-3 bg-white">
+                      <div class="col-md-4 bg-white">
                         <div class="box box-solid">
                           <div class="box-body">
 
                           <div class="row mailbox" >
                             <div class="col-md-12 col-sm-12">
-                                <div class="row pad pad-top-0 pad-btm-0">
-                                  <div class="col-md-12 pad-5 mg-l-1">
-
-
-                                    <a href="javascript:;" id="personal" class="inbox btn btn-default  btn-flat btn-small btn-primary">Personal Inbox</a>
-                                    <a href="javascript:;" id="support" class="inbox btn btn-default btn-flat btn-small">Support Inbox</a>
-                                  </div>
-                                </div><!-- /.row -->
-
-                                <div id="email-list" style="height: 485px;"></div>
-
-                               <div class="col-md-12 pad-top-only align-right">
-                                   <a href="#" title="New Email" data-original-title="New Email" class="btn btn-primary btn-flat btn-small"  data-toggle="modal" data-type="personal"  data-target="#compose-modal">New Email</a>
-                                   <a href="#" title="New Ticket" data-original-title="New Ticket" class="btn btn-default btn-flat btn-small"  data-toggle="modal" data-type="support" data-target="#compose-modal">New Ticket</a>
-                                  </div>
-                                </div><!-- /.col (RIGHT) -->
-                            </div>
-                          </div><!-- /.box -->
+                              <div id="email-list" style="height: 485px;"></div>
+                            </div><!-- /.col (RIGHT) -->
+                          </div>
+                        </div><!-- /.box -->
                       </div><!-- bg-white -->
                       </div>
-                      <div id="email-single" class="col-md-7 bg-white">
+                      <div id="email-single" class="col-md-6 bg-white">
 
                       </div><!-- bg-white -->
 

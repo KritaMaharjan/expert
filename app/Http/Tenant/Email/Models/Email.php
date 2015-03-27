@@ -59,6 +59,7 @@ class Email extends Model {
         $query->where('sender_id', current_user()->id);
     }
 
+
     function scopeType($query, $type = 0)
     {
         $query->where('type', $type);
@@ -234,6 +235,7 @@ class Email extends Model {
         $details = DB::table('fb_email_receivers')
             ->join('fb_emails', 'fb_email_receivers.email_id', '=', 'fb_emails.id')
             ->where('fb_email_receivers.customer_id', $user_id)
+            ->take(10)
             ->get();
 
         return $details;

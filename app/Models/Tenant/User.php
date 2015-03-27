@@ -347,12 +347,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return ($this->role == 2) ? true : false;
     }
 
-    function getUserVacation($user_id)
-    {
-        $details = DB::table('fb_vacation')->where('user_id', $user_id)->get();
-
-        return $details;
-    }
+    
 
     function withProfile($select = ['u.id', 'u.fullname', 'p.smtp'])
     {

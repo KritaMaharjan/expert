@@ -65,17 +65,17 @@ $(function () {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": appUrl + 'customer/invoices',
+            "url": appUrl + 'customer/invoices/data',
             "type": "POST"
         },
-        "columnDefs": [{
+         "columnDefs": [{
             "orderable": false,
-            "targets": 4,
+           
             "render": function (data, type, row) {
-                console.log(data);
-                //return showActionbtn(row);
+               // return showActionbtn(row);
             }
         }],
+        
         "columns": [
             {"data": "id"},
             {"data": "total"},
@@ -84,8 +84,7 @@ $(function () {
         ],
         "fnRowCallback": function (nRow, aData, iDisplayIndex) {
 
-            $('td:eq(1)', nRow).html('<a href="'+appUrl+'/system/client/'+aData.id+'"> </a>');
-            return nRow;
+           
 
         }
 

@@ -29,6 +29,7 @@ class Vacation extends Model  {
   
      protected $primaryKey = "id";
 
+    
      function totalVacation($user_id,$type)
      {
           $details = \DB::table('fb_vacation')->where('user_id', $user_id)->get();

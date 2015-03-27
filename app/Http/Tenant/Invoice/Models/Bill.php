@@ -275,6 +275,8 @@ class Bill extends Model {
 
         foreach ($data as $key => &$value) {
          
+             $value->total = $value->total;
+
             $value->raw_status = $value->status;
             if ($value->status == 1)
                 $value->status = '<span class="label label-success">Paid</span>';

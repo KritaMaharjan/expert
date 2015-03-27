@@ -175,7 +175,7 @@ class UserController extends BaseController {
         $vacationDays = \DB::table('fb_settings')->where('name', 'vacation')->first();
         $vacationDetails = @unserialize($vacationDays->value);
 
-        $leaves = $this->user->getUserVacation($User->id);
+        $leaves = $this->vacation->getUserVacation($User->id);
          $sick_total = 0;
             $vacation_total = 0;
 

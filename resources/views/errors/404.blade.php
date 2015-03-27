@@ -34,7 +34,7 @@
                         Sorry, an error has occured, Requested page not found!
                     </div>
                     <div class="error-actions">
-                        <a class="btn btn-primary btn-lg" href="{{ url('/') }}">
+                        <a class="btn btn-primary btn-lg" href="{{ site_url() }}">
                             Take Me Home
                     	 </a>
                     </div>
