@@ -28,7 +28,6 @@ Route::group($group_cron, function () {
      * @todo Change block/account to post request and ensure that only superadmin can block/unblock account
      */
     get('block/account', 'Controllers\Tenant\AuthController@blockAccount');
-    get('cron/email/run', ['as' => 'cron.email', 'middleware' => 'guest.tenant', 'uses' => 'Tenant\Email\Controllers\CronController@run']);
 });
 
 
@@ -61,6 +60,8 @@ Route::group($group_auth, function () {
         get('email/{id}/show', ['as' => 'tenant.email.show', 'uses' => 'EmailController@show']);
         get('email/{id}/get', ['as' => 'tenant.email.get', 'uses' => 'EmailController@get']);
         get('email/delete/attach', ['as' => 'tenant.email.attach.delete', 'uses' => 'EmailController@deleteAttachment']);
+        get('email/inbox', ['as' => 'tenant.email.inbox', 'uses' => 'IncomingEmailController@inbox']);
+
     });
 
     Route::group(['prefix' => 'invoice', 'namespace' => 'Tenant'], function () {
@@ -209,7 +210,7 @@ Route::group($group_auth, function () {
         get('customer/suggestions', ['as' => 'tenant.customer.suggestions', 'uses' => 'Tenant\Customer\CustomerController@getCustomerSuggestions']);
         get('customer/details/{customerId}', ['as' => 'tenant.customer.details', 'uses' => 'Tenant\Customer\CustomerController@getCustomerDetails']);
         post('test/upload', ['as' => 'test.upload', 'uses' => 'Tenant\Customer\CustomerController@testUpload']);
-         post('customer/invoices', ['as' => 'tenant.inventory.customer.data', 'uses' => 'CustomerController@invoices']);
+         post('customer/invoices/data', ['as' => 'tenant.inventory.customer.data', 'uses' => 'Tenant\Customer\CustomerController@invoices']);
 
 
     });

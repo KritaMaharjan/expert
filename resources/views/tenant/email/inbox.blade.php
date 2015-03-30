@@ -12,14 +12,15 @@ Email
 
 @section('content')
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
-<link href="{{ asset('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}" rel="stylesheet" type="text/css" /> 
-
+<link href="{{ asset('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}" rel="stylesheet" type="text/css" />
 <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
 <script src="//cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
 <script src="{{ asset('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js')}}" type="text/javascript"></script>
 {{FB::js('assets/plugins/plupload/js/plupload.full.min.js')}}
 {{FB::registerModal()}}
-{{FB::js('assets/js/desk/email.js')}}
+{{FB::js('assets/js/desk/composer.js')}}
+{{FB::js('assets/js/desk/inbox.js')}}
+
 <?php
 $successCallback ="
   var response = JSON.parse(object.response);
@@ -45,11 +46,11 @@ $(function(){
                     <div class="mail-wrap-section clearfix">
                       <div class="col-md-2">
                       <div class="box-header">
-                        
+
                       </div>
                         <a href="#" title="New Email" data-original-title="New Email" class="btn btn-block-small btn-primary btn-small" data-toggle="modal" data-type="personal"  data-target="#compose-modal"><i class="fa fa-pencil"></i> New Email</a>
                         <a href="#" title="New Ticket" data-original-title="New Ticket" class="btn btn-block-small btn-default btn-small" data-toggle="modal" data-type="support" data-target="#compose-modal"><i class="fa fa-pencil"></i> New Ticket</a>
-                        <div class="box box-solid">                          
+                        <div class="box box-solid">
                           <div>
                               <ul class="nav nav-pills nav-stacked">
                                 <li class="header">Folders</li>
@@ -76,7 +77,7 @@ $(function(){
                       </div><!-- bg-white -->
 
                     </div>
-                    
+
                   </div>
                 </div>
               </div><!-- /.box-body -->

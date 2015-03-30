@@ -43,7 +43,6 @@ class Email extends Model {
     protected $fromEmail;
 
 
-
     public function attachments()
     {
         return $this->hasMany('App\Http\Tenant\Email\Models\Attachment');
@@ -60,7 +59,8 @@ class Email extends Model {
         $query->where('sender_id', current_user()->id);
     }
 
-    function scopeType($query, $type=0)
+
+    function scopeType($query, $type = 0)
     {
         $query->where('type', $type);
     }
@@ -130,8 +130,9 @@ class Email extends Model {
         DB::commit();
 
 
-        $email['to'] =Request::input('email_to');
+        $email['to'] = Request::input('email_to');
         $email['created_at'] = email_date($email['created_at']);
+
         return $email;
     }
 
@@ -229,14 +230,24 @@ class Email extends Model {
 
     }
 
-    function getCustomerEmail($user_id){
+    function getCustomerEmail($user_id)
+    {
         $details = DB::table('fb_email_receivers')
             ->join('fb_emails', 'fb_email_receivers.email_id', '=', 'fb_emails.id')
             ->where('fb_email_receivers.customer_id', $user_id)
+            ->orderBy('fb_email_receivers.id', 'desc')
+            ->take(10)
+
             ->get();
 
-            return $details;
+        foreach ($details as $key => &$value) {
+            $attachment = \DB::table('fb_attachments_email')->where('email_id', $value->email_id)->get();
+            $receiver = \DB::table('fb_email_receivers')->where('email_id', $value->email_id)->get();
+            $value->attachment = $attachment;
+            $value->receiver = $receiver;
+        }
 
+        return $details;
     }
 
 }

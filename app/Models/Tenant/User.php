@@ -101,8 +101,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 
         $details->permissions = ($details->permissions != '') ? @unserialize($details->permissions) : '';
 
-        if ($details->personal_email_setting != null) {
-            $personal_email_setting = @json_decode($details->personal_email_setting);
+        if ($details->smtp != null) {
+            $personal_email_setting = @json_decode($details->smtp);
             $details->incoming_server = $personal_email_setting->incoming_server;
             $details->outgoing_server = $personal_email_setting->outgoing_server;
             $details->email_username = $personal_email_setting->email_username;
@@ -347,13 +347,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return ($this->role == 2) ? true : false;
     }
 
-    function getUserVacation($user_id)
+    function withProfile($select = ['u.id', 'u.fullname', 'p.smtp', 'p.email_sync_at'])
     {
-        $details = DB::table('fb_vacation')->where('user_id', $user_id)->get();
-
-        return $details;
+        return \DB::table('fb_users as u')
+            ->join('fb_profile as p', 'u.id', '=', 'p.user_id')
+            ->where('u.status',1)
+            ->select($select)
+            ->get();
     }
 
-    
 
 }

@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Input;
 use App\Http\Tenant\Email\Models\Email;
 use App\Http\Tenant\Email\Models\Attachment;
+use App\Http\Tenant\Email\Models\Receiver;
+use Session;
+
 
 
 class CustomerController extends BaseController {
@@ -17,7 +20,7 @@ class CustomerController extends BaseController {
     protected $customer;
     protected $email;
 
-    public function __construct(Customer $customer, Request $request, Bill $bill,Email $email)
+    public function __construct(Customer $customer, Request $request, Bill $bill,Email $email,Receiver $receiver)
     {
         \FB::can('Customer');
 
@@ -26,6 +29,7 @@ class CustomerController extends BaseController {
         $this->request = $request;
         $this->bill = $bill;
         $this->email = $email;
+        $this->receiver = $receiver;
     }
 
     /**
@@ -62,7 +66,7 @@ class CustomerController extends BaseController {
                 'mobile'        => 'numeric',
 
 
-                //'postcode'      => 'required',
+                'postcode'      => 'required|numeric',
                 'town'          => 'alpha|between:2,50',
 
             )
@@ -125,7 +129,7 @@ class CustomerController extends BaseController {
                 'telephone'     => 'numeric',
                 'mobile'        => 'numeric',
 
-                //'postcode'      => 'required',
+                'postcode'      => 'required|numeric',
                 'town'          => 'between:2,50',
                 
             )
@@ -145,9 +149,9 @@ class CustomerController extends BaseController {
     function invoices(){
         if ($this->request->ajax()) {
             $select = ['id', 'total', 'due_date', 'status'];
-
-            $json = $this->bill->dataTablePaginationCustomer($this->request, $select,$_SESSION['customer_id']);
-            unset($_SESSION['customer_id']);
+            $customer_id = Session::get('customer_id');
+            $json = $this->bill->dataTablePaginationCustomer($this->request, $select,$customer_id);
+           Session::forget('customer_id');
             echo json_encode($json, JSON_PRETTY_PRINT);
         } else {
             show_404();
@@ -177,15 +181,18 @@ class CustomerController extends BaseController {
         $user_id = $this->request->route('id');
 
         $customer = $this->customer->where('id', '=', $user_id)->first();
-        $_SESSION['customer_id'] = $user_id;
+        Session::put('customer_id', $user_id);
        
         $invoices = $this->bill->getCustomerBill($user_id);
 
-        $mails = $this->email->getCustomerEmail($user_id);
-        dd($mails);
+        $perpage = 10;
+       //$mails = $this->receiver->customer($user_id)->with('attachments', 'receivers');
+        $mails = $this->email->getCustomerEmail($user_id,$perpage);
+       //dd($mails);
+     
 
 
-        return view('tenant.customer.customerCard', compact('customer','invoices'))->withPageTitle('Customer');
+        return view('tenant.customer.customerCard', compact('customer','invoices','mails'))->withPageTitle('Customer');
     }
 
     public function deleteCustomer()

@@ -119,7 +119,6 @@ class EmailController extends BaseController {
 <br/>
 <br/>
 <br/>
-
 <hr/>
 <strong>From:</strong> " . $display_name . "[mailto:" . $email . "]<br/>
 <strong>Sent:</strong> " . date('D, F d, Y, h:i A') . "<br/>
@@ -154,7 +153,7 @@ class EmailController extends BaseController {
         $type = $this->request->input('type');
         $data['type'] = $type = ($type == 1) ? $type : 0;
         $data['per_page'] = $per_page = 5;
-        $data['mails'] = $this->email->user()->type($type)->latest()->with('attachments', 'receivers')->paginate($per_page);
+        $data['mails'] = $this->email->user()->orderBy('created_at', 'DESC')->type($type)->with('attachments', 'receivers')->paginate($per_page);
 
 
         return view('tenant.email.list', $data);

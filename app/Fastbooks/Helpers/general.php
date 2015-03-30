@@ -32,10 +32,17 @@ function plupload()
 function current_user()
 {
     $user = \Auth::user();
-    $user->profile = \App\Models\Tenant\Profile::firstOrCreate(['user_id' => $user->id]);
+
+    // cache for 5 min.
+    $user->profile = \Cache::remember('users', 5, function () use ($user) {
+        return \App\Models\Tenant\Profile::firstOrCreate(['user_id' => $user->id]);
+    });
+
     $user->display_name = $user->fullname;
     $user->smtp = (object)$user->profile->smtp;
     $user->smtp->email = (isset($user->smtp->email)) ? $user->smtp->email : $user->email;
+    $user->isAdmin = ($user->role == 1);
+    $user->isUser = ($user->role == 2);
 
     return $user;
 }
@@ -83,7 +90,6 @@ function email_date($dateTime)
 
 function format_telephone($phone_number = null)
 {
-
     if ($phone_number == null || strlen($phone_number))
         return $phone_number;
     $cleaned = preg_replace('/[^[:digit:]]/', '', $phone_number);
@@ -95,12 +101,14 @@ function format_telephone($phone_number = null)
 function format_date($date)
 {
     $formatted_date = date('d-m-y', strtotime($date));
+
     return $formatted_date;
 }
 
 function format_datetime($date)
 {
     $formatted_date = date('M d, Y h:i a', strtotime($date));
+
     return $formatted_date;
 }
 
@@ -111,35 +119,47 @@ function format_id($id = 0, $zeros = 3)
     return $id;
 }
 
-function calculate_todo_time($date, $completed = false) {
+function data_decode($data)
+{
+    return unserialize($data);
+}
+
+function data_encode($data)
+{
+    return serialize($data);
+}
+
+
+function calculate_todo_time($date, $completed = false)
+{
     $actual_difference = strtotime($date) - strtotime(date('Y-m-d H:i:s'));
     $seconds = abs($actual_difference);
 
-    $months = floor($seconds / (3600*24*30));
-    $day = floor($seconds / (3600*24));
+    $months = floor($seconds / (3600 * 24 * 30));
+    $day = floor($seconds / (3600 * 24));
     $hours = floor($seconds / 3600);
-    $mins = floor(($seconds - ($hours*3600)) / 60);
+    $mins = floor(($seconds - ($hours * 3600)) / 60);
     $secs = floor($seconds % 60);
 
-    if($seconds < 60)
-        $time = $secs." seconds";
-    else if($seconds < 60*60 )
-        $time = $mins." min";
-    else if($seconds < 24*60*60)
-        $time = $hours." hours";
-    else if($seconds > 24*60*60 && $seconds < 24*60*60*30)
-        $time = $day." days";
+    if ($seconds < 60)
+        $time = $secs . " seconds";
+    else if ($seconds < 60 * 60)
+        $time = $mins . " min";
+    else if ($seconds < 24 * 60 * 60)
+        $time = $hours . " hours";
+    else if ($seconds > 24 * 60 * 60 && $seconds < 24 * 60 * 60 * 30)
+        $time = $day . " days";
     else
-        $time = $months." months";
+        $time = $months . " months";
 
-    if($completed == true)
-        return '<small class="label label-success"><i class="fa fa-clock-o"></i> '.$time.' ago</small>';
-    elseif($actual_difference < 0)
-        return '<small class="label label-danger"><i class="fa fa-warning"></i> '.$time.'</small>';
-    elseif($seconds < 24*60*60)
-        return '<small class="label label-warning"><i class="fa fa-clock-o"></i> '.$time.'</small>';
-    else if($seconds > 24*60*60 && $seconds < 24*60*60*30)
-        return '<small class="label label-info"><i class="fa fa-clock-o"></i> '.$time.'</small>';
+    if ($completed == true)
+        return '<small class="label label-success"><i class="fa fa-clock-o"></i> ' . $time . ' ago</small>';
+    elseif ($actual_difference < 0)
+        return '<small class="label label-danger"><i class="fa fa-warning"></i> ' . $time . '</small>';
+    elseif ($seconds < 24 * 60 * 60)
+        return '<small class="label label-warning"><i class="fa fa-clock-o"></i> ' . $time . '</small>';
+    else if ($seconds > 24 * 60 * 60 && $seconds < 24 * 60 * 60 * 30)
+        return '<small class="label label-info"><i class="fa fa-clock-o"></i> ' . $time . '</small>';
     else
-        return '<small class="label label-default"><i class="fa fa-clock-o"></i> '.$time.'</small>';
+        return '<small class="label label-default"><i class="fa fa-clock-o"></i> ' . $time . '</small>';
 }

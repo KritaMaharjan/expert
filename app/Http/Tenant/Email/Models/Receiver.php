@@ -2,8 +2,12 @@
 
 namespace App\Http\Tenant\Email\Models;
 
-
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Request;
+use App\Http\Tenant\Email\Models\Email;
+use App\Http\Tenant\Email\Models\Attachment;
+
 
 class Receiver extends Model {
 
@@ -37,7 +41,7 @@ class Receiver extends Model {
         return $this->belongsTo('App\Http\Tenant\Email\Models\Email');
     }
 
-
+    
     public function add($email_id, $to, $cc)
     {
         $emails = $to;
