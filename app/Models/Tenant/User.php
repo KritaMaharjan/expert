@@ -347,9 +347,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         return ($this->role == 2) ? true : false;
     }
 
-    
-
-    function withProfile($select = ['u.id', 'u.fullname', 'p.smtp'])
+    function withProfile($select = ['u.id', 'u.fullname', 'p.smtp', 'p.email_sync_at'])
     {
         return \DB::table('fb_users as u')
             ->join('fb_profile as p', 'u.id', '=', 'p.user_id')
