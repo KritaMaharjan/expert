@@ -238,6 +238,13 @@ class Email extends Model {
             ->take(10)
             ->get();
 
+        foreach ($details as $key => &$value) {
+            $attachment = \DB::table('fb_attachments_email')->where('email_id', $value->email_id)->get();
+            $receiver = \DB::table('fb_email_receivers')->where('email_id', $value->email_id)->get();
+            $value->attachment = $attachment;
+            $value->receiver = $receiver;
+        }
+
         return $details;
     }
 

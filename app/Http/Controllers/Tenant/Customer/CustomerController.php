@@ -66,7 +66,7 @@ class CustomerController extends BaseController {
                 'mobile'        => 'numeric',
 
 
-                //'postcode'      => 'required',
+                'postcode'      => 'required|numeric',
                 'town'          => 'alpha|between:2,50',
 
             )
@@ -129,7 +129,7 @@ class CustomerController extends BaseController {
                 'telephone'     => 'numeric',
                 'mobile'        => 'numeric',
 
-                //'postcode'      => 'required',
+                'postcode'      => 'required|numeric',
                 'town'          => 'between:2,50',
                 
             )

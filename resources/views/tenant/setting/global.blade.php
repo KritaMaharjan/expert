@@ -16,7 +16,7 @@
                                         'DKK' => 'DKK',
                                         'SEK' => 'SEK',
                                         'CNY' => 'CNY'
-                            ], $currency->value, array('class' => 'form-control')) !!}
+                            ], isset($currency->value) ? $currency->value : '' ,array('class' => 'form-control')) !!}
         @if($errors->has('currency'))
           {!! $errors->first('currency', '<label class="control-label" for="inputError">:message</label>') !!}
         @endif
@@ -34,7 +34,7 @@
                                          'DD, d MM, yy' => 'DD, d MM, yy',
                                         
                                       
-                            ], $dateformat['value'], array('class' => 'form-control')) !!}
+                            ],isset($dateformat['value']) ? $dateformat['value'] : '',  array('class' => 'form-control')) !!}
         @if($errors->has('dateformat'))
           {!! $errors->first('dateformat', '<label class="control-label" for="inputError">:message</label>') !!}
         @endif
@@ -47,7 +47,7 @@
     <div class="form-group no-mg">
       <label class="control-label" name="vat" value="">Vat</label>
       <div class="@if($errors->has('vat')) {{'has-error'}} @endif">
-      	{!!Form::text('vat',$vat->value,array('class' => 'form-control','id' => 'dateformat'))!!}  
+      	{!!Form::text('vat',isset($vat->value) ? $vat->value : '',array('class' => 'form-control','id' => 'dateformat'))!!}  
       	@if($errors->has('vat'))
        		{!! $errors->first('vat', '<label class="control-label" for="inputError">:message</label>') !!}
       	@endif
