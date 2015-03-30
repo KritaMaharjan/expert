@@ -181,13 +181,13 @@ class CustomerController extends BaseController {
         $user_id = $this->request->route('id');
 
         $customer = $this->customer->where('id', '=', $user_id)->first();
-      Session::put('customer_id', $user_id);
+        Session::put('customer_id', $user_id);
        
         $invoices = $this->bill->getCustomerBill($user_id);
 
-     
+        $perpage = 10;
        //$mails = $this->receiver->customer($user_id)->with('attachments', 'receivers');
-        $mails = $this->email->getCustomerEmail($user_id);
+        $mails = $this->email->getCustomerEmail($user_id,$perpage);
        //dd($mails);
      
 

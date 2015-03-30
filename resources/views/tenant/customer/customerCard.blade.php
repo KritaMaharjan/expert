@@ -242,11 +242,12 @@ $(function(){
             </div>
                 <div class="modal-body">
                  {!!Form::open(['url'=>url('desk/email/send'), 'id'=>'compose-form'])!!}
+                 <input type="hidden" name="type" value="0" />
                     <div class="table-blk">
                         <div class="form-group disply-inline">
                         <div class="input-group">
                             <span class="input-group-addon">TO:</span>
-                             {!! Form::text('email_to', null, ['id'=>'email_to','class'=>'form-control', 'placeholder'=>'Email To', 'autocomplete'=>'off']) !!}
+                             {!! Form::text('email_to',$customer->email, ['id'=>'email_to','class'=>'form-control', 'placeholder'=>'Email To', 'autocomplete'=>'off']) !!}
                         </div>
                     </div>
                     <div class="form-group disply-inline">
@@ -317,14 +318,14 @@ $(function(){
 
            
 <script type="text/javascript">
-//     $(function(){
-//         $('#note-link').click(function(){
-//             $('#note-box').slideToggle('fast');
-//         });
+    $(function(){
+        $('#note-link').click(function(){
+            $('#note-box').slideToggle('fast');
+        });
 
-//         $(".textarea").wysihtml5();
+        $(".textarea").wysihtml5();
 
-//     });
+    });
  </script>
 
           </div>
