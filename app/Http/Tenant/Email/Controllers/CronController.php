@@ -18,7 +18,7 @@ class CronController extends BaseController {
 
     function run(User $user)
     {
-
+       $user =  $user->withProfile();
         dd($user);
     }
 
