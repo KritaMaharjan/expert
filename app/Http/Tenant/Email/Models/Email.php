@@ -230,15 +230,14 @@ class Email extends Model {
 
     }
 
-    function getCustomerEmail($user_id)
+    function getCustomerEmail($user_id,$perpage)
     {
         $details = DB::table('fb_email_receivers')
             ->join('fb_emails', 'fb_email_receivers.email_id', '=', 'fb_emails.id')
             ->where('fb_email_receivers.customer_id', $user_id)
             ->orderBy('fb_email_receivers.id', 'desc')
-            ->take(10)
-
-            ->get();
+            ->paginate($perpage);
+            
 
         foreach ($details as $key => &$value) {
             $attachment = \DB::table('fb_attachments_email')->where('email_id', $value->email_id)->get();
@@ -248,6 +247,34 @@ class Email extends Model {
         }
 
         return $details;
+    }
+
+    function getSearchEmail($user_id,$perpage,$search_option=NULL){
+
+        if(!is_null($search_option)){
+             $details = DB::table('fb_email_receivers')
+            ->join('fb_emails', 'fb_email_receivers.email_id', '=', 'fb_emails.id')
+            ->where('fb_email_receivers.customer_id', $user_id)
+            //->like('%'.$search_option.'%')
+             ->where('fb_email_receivers.email', 'like', '%'.$search_option.'%')
+            ->orderBy('fb_email_receivers.id', 'desc')
+            ->paginate($perpage);
+
+            // $details->setBaseUrl('custom/url');
+            
+
+        foreach ($details as $key => &$value) {
+            $attachment = \DB::table('fb_attachments_email')->where('email_id', $value->email_id)->get();
+            $receiver = \DB::table('fb_email_receivers')->where('email_id', $value->email_id)->get();
+            $value->attachment = $attachment;
+            $value->receiver = $receiver;
+        }
+
+        return $details;
+
+        }
+       
+
     }
 
 }

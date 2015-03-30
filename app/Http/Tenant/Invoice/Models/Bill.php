@@ -257,10 +257,7 @@ class Bill extends Model {
         //     $query = $query->where('is_offer', 0);
 
         if ($orderColumn != '' AND $orderdir != '') {
-            if ($orderColumn != 'invoice_date')
-                $query = $query->orderBy($orderColumn, $orderdir);
-            else
-                $query = $query->orderBy('created_at', $orderdir);
+            $query = $query->orderBy($orderColumn, $orderdir);
         }
 
         if ($search != '') {

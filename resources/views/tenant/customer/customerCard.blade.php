@@ -92,9 +92,9 @@ $(function(){
                 <div class="box-header">
                   <h3 class="box-title">Invoices/Offers</h3>
                   <div class="btn-top-ryt">
-                    <a href="{{tenant()->url('invoice/offer/add')}}" class="btn btn-primary btn-block btn-flat">New Offer
+                    <a href="{{tenant()->url('invoice/offer/add?id=')}}{{$customer->id}}" class="btn btn-primary btn-block btn-flat">New Offer
                     </a>
-                    <a href="{{tenant()->url('invoice/bill/add')}}" class="btn btn-primary btn-block btn-flat">New Bill
+                    <a href="{{tenant()->url('invoice/bill/add?id=')}}{{$customer->id}}" class="btn btn-primary btn-block btn-flat">New Bill
                     </a>
                   </div>
                 </div>
@@ -146,9 +146,10 @@ $(function(){
                               <div class="col-sm-12 search-form pad-5">
                                 <form class="text-right" action="#">
                                   <div class="input-group">
-                                    <input type="text" placeholder="Search" class="form-control input-sm">
+                                     <input type="hidden" id="user_id" class="form-control input-sm " value="{{$customer->id}}">
+                                    <input type="text" placeholder="Search" id="search_option" class="form-control input-sm">
                                     <div class="input-group-btn">
-                                      <button class="btn btn-sm btn-primary" name="q" type="submit"><i class="fa fa-search"></i></button>
+                                      <button class="btn btn-sm btn-primary" id="search-email" name="q" ><i class="fa fa-search"></i></button>
                                     </div>
                                   </div>
                                 </form>
@@ -156,9 +157,8 @@ $(function(){
                             </div><!-- /.row -->
                        
 
-                            <div class="table-responsive">
+                            <div class="table-responsive" id="email-list">
                               <!-- THE MESSAGES -->
-
                              <table class="table table-mailbox no-mg-btm">
                                 <tbody>
                                    @foreach($mails as $mail)
@@ -206,6 +206,8 @@ $(function(){
                 @endif
                             </div><!-- /.table-responsive -->
                           </div><!-- /.col (RIGHT) -->
+                         
+
                     </div>
 
 

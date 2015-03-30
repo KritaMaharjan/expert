@@ -28,6 +28,7 @@
   </div>
 
   {!! Form::open(array('method'=>'POST')) !!}
+  <input type="hidden" name="customer_id" value="{{$customer_id}}" id="customer_id"/>
     @include('tenant.invoice.bill.form')
   <div class="row no-print">
     <div class="col-xs-12">
@@ -41,10 +42,12 @@
 </div><!-- /.content -->
 </div>
 <div class="clearfix"></div>
+
     {{FB::js('assets/plugins/slimScroll/jquery.slimScroll.min.js')}}
     {{FB::js('assets/plugins/fastclick/fastclick.min.js')}}
     {{FB::js('assets/js/select2.js')}}
     {{FB::js('assets/js/create-bill.js')}}
+
 @stop
 
 

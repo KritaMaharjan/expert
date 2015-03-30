@@ -186,14 +186,19 @@ class CustomerController extends BaseController {
         $invoices = $this->bill->getCustomerBill($user_id);
 
         $perpage = 10;
+
+
        //$mails = $this->receiver->customer($user_id)->with('attachments', 'receivers');
         $mails = $this->email->getCustomerEmail($user_id,$perpage);
+      
        //dd($mails);
      
 
 
         return view('tenant.customer.customerCard', compact('customer','invoices','mails'))->withPageTitle('Customer');
     }
+
+
 
     public function deleteCustomer()
     {
