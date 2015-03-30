@@ -236,7 +236,9 @@ class Email extends Model {
         $details = DB::table('fb_email_receivers')
             ->join('fb_emails', 'fb_email_receivers.email_id', '=', 'fb_emails.id')
             ->where('fb_email_receivers.customer_id', $user_id)
+            ->orderBy('fb_email_receivers.id', 'desc')
             ->take(10)
+
             ->get();
 
             $attachment = array();
