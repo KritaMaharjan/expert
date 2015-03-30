@@ -24,15 +24,19 @@ Tasks
                         <i class="fa fa-plus"></i> Add new task
                     </a>
 
+                    <a class="btn btn-primary pull-right" data-toggle="modal" data-url="#todo-modal-data" data-target="#fb-modal">
+                        <i class="fa fa-tasks"></i> To Do List
+                    </a>
+
                   </div>
                 </div><!-- /.box-header -->
                 <div class="box-body">
-                  <ul class="todo-list">
+                  <ul class="todo-list upcoming-tasks">
 
                     @foreach($tasks['upcoming_tasks'] as $task)
-                    <li>
+                    <li id = {{$task->id}}>
                       <!-- checkbox -->
-                      <input type="checkbox" value="" name=""/>
+                      <input type="checkbox" value="" name="" class="icheck"/>
                       <!-- todo text -->
                       <span class="text">{{ $task->subject }}</span>
                       <!-- Emphasis label -->
@@ -84,27 +88,42 @@ Tasks
                 <h3 class="box-title">Completed List</h3>
               </div><!-- /.box-header -->
               <div class="box-body">
-                @if(count($tasks['completed_tasks']) == 0)
-                    <p>No completed tasks</p>
-                @else
-                    <ul class="todo-list">
+              <ul class="todo-list completed-tasks">
+                    @if(count($tasks['completed_tasks']) == 0)
+                        <p class="no-results">No completed tasks</p>
+                    @else
+
                         @foreach($tasks['completed_tasks'] as $task)
-                            <li>
+                            <li id = {{$task->id}}>
                               <!-- checkbox -->
-                              <input type="checkbox" value="" name=""/>
+                              <input type="checkbox" value="" name="" class="icheck" checked="checked"/>
                               <!-- todo text -->
                               <span class="text">{{ $task->subject }}</span>
                               <!-- Emphasis label -->
                               {!! calculate_todo_time($task->completion_date, true) !!}
                               <!-- General tools such as edit or delete-->
                               <div class="tools">
-                                <i class="fa fa-edit"></i>
-                                <i class="fa fa-trash-o"></i>
+                                <i class="fa fa-trash-o btn-delete-task" data-id="{{ $task->id }}"></i>
+                              </div>
+                              <div class="todos-box pad-lr-29">
+                                  <div>
+                                    <label>Added date:</label>
+                                    <span>{{ format_datetime($task->created_at) }}</span>
+                                  </div>
+                                  <div>
+                                    <label>Due date:</label>
+                                    <span>{{ format_datetime($task->due_date) }}</span>
+                                  </div>
+                                  <div>
+                                      <label>Completed date:</label>
+                                      <span>{{ format_datetime($task->completion_date) }}</span>
+                                  </div>
+                                  <p>{{ $task->body }}</p>
                               </div>
                             </li>
                         @endforeach
-                    </ul>
-                @endif
+                    @endif
+                </ul>
               </div><!-- /.box-body -->
               <div class="box-footer clearfix no-border">
                 <ul class="pagination pagination-sm inline pull-right">
@@ -126,13 +145,20 @@ Tasks
      </div>
  </div>
 
+ <div id="todo-modal-data" class="hide">
+     <div class="box box-solid">
+        @include('tenant.tasks.todo')
+     </div>
+ </div>
+
     {{--Load JS--}}
     {{ FB::registerModal() }}
     {{ FB::js('assets/js/tasks.js') }}
 
 <script type="text/javascript">
   $(function(){
-    $('.text').click(function(){
+    $(document).on('click', '.text', function (e) {
+    //$('.text').click(function(){
       $(this).parent().find('.todos-box').slideToggle('fast');
 
     })

@@ -43,7 +43,7 @@ $(function () {
     });
 
 
-    $(document).on('submit', '#task-form', function (e) {
+$(document).on('submit', '#task-form', function (e) {
         e.preventDefault();
         var form = $(this);
         var formAction = form.attr('action');
@@ -66,14 +66,14 @@ $(function () {
             .done(function (response) {
                 if (response.status === 1) {
                     $('#fb-modal').modal('hide');
-                    var tbody = $('.box-body table tbody');
+                    var ul = $('.box-body ul');
                     if (requestType == 'Add') {
                         $('.mainContainer .main-box-solid').before(notify('success', 'Task added Successfully'));
-                        tbody.prepend(getTemplate(response.data, false));
+                        $('.upcoming-tasks').prepend(response.data.template);
                     }
                     else {
                         $('.mainContainer .main-box-solid').before(notify('success', 'Task updated Successfully'));
-                        tbody.find('#tasks-' + response.data.id).html(getTemplate(response.data, true));
+                        ul.find('#' + response.data.id).html(response.data.template);
                     }
                     setTimeout(function () {
                         $('.callout').remove()
@@ -101,6 +101,10 @@ $(function () {
             .always(function () {
                 form.find('.task-submit').removeAttr('disabled');
                 form.find('.task-submit').val(requestType);
+                $('input[type="checkbox"]').iCheck({
+                    checkboxClass: 'icheckbox_flat-blue',
+                    radioClass: 'iradio_flat-blue'
+                });
             });
     });
     return false;
@@ -150,6 +154,14 @@ $(document).on('click', '.btn-delete-task', function (e) {
 
 });
 
+$('#todo-check').on('ifChanged', function(event){
+    alert(event.type + ' callback');
+});
+
+$(document).on('change', '.box-body ul input:checkbox', function (e) {
+    $(this).parent().parent().find('.text').toggleClass('strike');
+});
+
 function notify(type, text) {
     return '<div class="callout callout-' + type + '"><p>' + text + '</p></div>';
 }
@@ -164,20 +176,60 @@ function showActionbtn(row) {
 
 }
 
-function getTemplate(data, type) {
+/* Mark complete merge these two later */
+$(document).on('ifChecked', '.upcoming-tasks .icheck', function (e) {
+//$('.icheck').on('ifChecked', function(event){
+    //alert(event.type + ' callback');
+    var parentLi = $(this).parent().parent();
+    parentLi.find('.text').toggleClass('strike');
 
-    var html = '<td>' + data.id + '</td>' +
-        '<td>' + data.number + '</td>' +
-        '<td>' + '<a href="#" data-toggle="modal" data-url="' + data.show_url + '" data-target="#fb-modal">' +
-        data.name + '</a>' + '</td>' +
-        '<td>' + data.purchase_cost + '</td>' +
-        '<td>' + data.selling_price + '</td>' +
-        '<td>' + data.vat + '</td>' +
-        '<td>' + showActionbtn(data) + '</td>';
+    var html = parentLi.clone();
+    parentLi.hide('slow', function(){
+        parentLi.remove();
+    });
+    var completedUl = $('.completed-tasks');
+    completedUl.find('.no-results').remove();
+    //completedUl.prepend(html);
+    var taskId = parentLi.attr('id');
 
-    if (type == false)
-        return '<tr class="tasks-' + data.id + '">' + html + '</tr>';
-    else
-        return html;
-}
+    $.ajax({
+     url: appUrl + 'tasks/'+taskId+'/complete',
+     type: 'GET',
+     dataType: 'json'
+     }).done(function (response) {
+         completedUl.prepend(response.data.template);
+         $('.icheck').iCheck({
+             checkboxClass: 'icheckbox_flat-blue',
+             radioClass: 'iradio_flat-blue',
+             tap: true
+         });
+     });
+});
 
+/* Undo complete */
+$(document).on('ifUnchecked', '.completed-tasks .icheck', function (e) {
+    var parentLi = $(this).parent().parent();
+    parentLi.find('.text').toggleClass('strike');
+
+    var html = parentLi.clone();
+    parentLi.hide('slow', function(){
+        parentLi.remove();
+    });
+
+    var todoUl = $('.upcoming-tasks');
+    todoUl.find('.no-results').remove();
+    var taskId = parentLi.attr('id');
+
+    $.ajax({
+        url: appUrl + 'tasks/'+taskId+'/redo',
+        type: 'GET',
+        dataType: 'json'
+    }).done(function (response) {
+        todoUl.prepend(response.data.template);
+        $('.icheck').iCheck({
+            checkboxClass: 'icheckbox_flat-blue',
+            radioClass: 'iradio_flat-blue',
+            tap: true
+        });
+    });
+});
