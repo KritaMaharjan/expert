@@ -16,13 +16,12 @@ class EmailReader {
     private $connection;
     private $error;
 
-    function __construct($host, $email, $password, $port=993)
+    function __construct($host, $email, $password, $port = 993)
     {
         $this->host = $host;
         $this->email = $email;
         $this->password = $password;
-        $this->port = $port;
-
+        $this->port = (empty($port)) ? 993 : $port;
     }
 
     function connect()
@@ -70,8 +69,7 @@ class EmailReader {
 
         ini_set('max_execution_time', 300);
 
-        if($date ==null)
-        {
+        if ($date == null) {
             $date = date('Y-m-d');
         }
         $messages = $this->messageSince($date);

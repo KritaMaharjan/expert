@@ -1,5 +1,3 @@
-
-
 <div class="modal modal-right fade" id="compose-modal" data-backdrop="static" data-keyboard="false" tabindex="-1"
      role="dialog" aria-hidden="ture">
     <div class="modal-dialog">
@@ -97,8 +95,6 @@
         $('#note-link').click(function(){
             $('#note-box').slideToggle('fast');
         });
-
         $(".textarea").wysihtml5();
-
     });
 </script>
