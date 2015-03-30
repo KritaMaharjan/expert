@@ -60,12 +60,12 @@ Route::group($group_auth, function () {
         get('email/{id}/show', ['as' => 'tenant.email.show', 'uses' => 'EmailController@show']);
         get('email/{id}/get', ['as' => 'tenant.email.get', 'uses' => 'EmailController@get']);
         get('email/delete/attach', ['as' => 'tenant.email.attach.delete', 'uses' => 'EmailController@deleteAttachment']);
-<<<<<<< HEAD
+
          get('email/search_emails', ['as' => 'tenant.email.search', 'uses' => 'EmailController@search_email']);
-=======
+
         get('email/inbox', ['as' => 'tenant.email.inbox', 'uses' => 'IncomingEmailController@inbox']);
 
->>>>>>> af43d804deff3fd471e613075781b4045db16c2d
+
     });
 
     Route::group(['prefix' => 'invoice', 'namespace' => 'Tenant'], function () {
