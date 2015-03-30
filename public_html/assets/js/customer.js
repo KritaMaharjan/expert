@@ -137,10 +137,30 @@ $(function () {
     });
 
 
-    $(document).on('submit', '#customer-form', function (e) {
+$(document).on('click', '#search-email', function (e) {
         e.preventDefault();
-        var form = $(this);
-        var formAction = form.attr('action');
+        var $this = $(this);
+
+        var search_option = $('#search_option').val();
+        var user_id = $('#user_id').val();
+       
+        var doing = false;
+
+        if (doing == false) {
+            doing = true;
+          
+ $('#email-list').load(appUrl + 'desk/email/search_emails/?user_id=' + user_id + '&search_option=' + search_option);
+            
+        }
+
+    });
+
+
+
+    $(document).on('click', '#customer-submit', function (e) {
+        e.preventDefault();
+        var form = $('#customer-form');
+        var formAction = appUrl + 'customer';
         //var formData = form.serialize();
 
         var formData = new FormData(form[0]);

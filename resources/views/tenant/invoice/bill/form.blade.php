@@ -10,6 +10,8 @@
          {!! Form::label('customer', 'Select customer') !!}
          @if(isset($bill) && !empty($bill->customer))
             {!! Form::select('customer', array($bill->customer_id => $bill->customer), $bill->customer_id, array('class' => 'select-customer form-control', 'required' => 'required')) !!}
+         @elseif(isset($customer_id) && !empty($customer_details))
+           {!! Form::select('customer', array($customer_details->id => $customer_details->name), $customer_details->id, array('class' => 'select-customer form-control', 'required' => 'required')) !!}
          @else
             {!! Form::select('customer', array('' => 'Select Customer'), null, array('class' => 'select-customer form-control', 'required' => 'required')) !!}
          @endif
@@ -33,6 +35,13 @@
             Phone: {{ $bill->customer_details->telephone  }} <br>
             Email: {{ $bill->customer_details->email }}
         @endif
+         @if(isset($customer_details))
+         <strong>{{ $customer_details->name }} </strong><br>
+            {{ $customer_details->street_name  }} {{ $customer_details->street_number  }} <br>
+            {{ $customer_details->town  }} <br>
+            Phone: {{ $customer_details->telephone  }} <br>
+            Email: {{ $customer_details->email }}
+         @endif
       </address>
     </div><!-- /.col -->
      <div class="col-sm-7 invoice-col col-xs-6">
@@ -195,10 +204,11 @@
         <div class="box-header">
             <h3 class="box-title">Add New Customer</h3>
         </div>
-        {{--@include('tenant.customer.createCustomer')--}}
+        @include('tenant.customer.createCustomer')
     </div><!-- /.box-body -->
 </div>
 
 {{--Load JS--}}
 {{FB::registerModal()}}
 {{FB::js('assets/js/customer.js')}}
+
