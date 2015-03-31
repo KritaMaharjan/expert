@@ -23,12 +23,14 @@ if (env('APP_ENV') == 'live') {
  *
  */
 
-Route::group($group_cron, function () {
-    /*
-     * @todo Change block/account to post request and ensure that only superadmin can block/unblock account
-     */
-    get('block/account', 'Controllers\Tenant\AuthController@blockAccount');
-});
+if(isset($group_cron)) {
+    Route::group($group_cron, function () {
+        /*
+         * @todo Change block/account to post request and ensure that only superadmin can block/unblock account
+         */
+        get('block/account', 'Controllers\Tenant\AuthController@blockAccount');
+    });
+}
 
 
 Route::group($group_guest, function () {
@@ -72,6 +74,21 @@ Route::group($group_auth, function () {
         get('bill', 'Email\Controllers\BillController@index');
         get('offer', 'Email\Controllers\OfferController@index');
     });
+
+
+    Route::group(['prefix' => 'accounting', 'namespace' => 'Tenant\Accounting\Controllers'], function () {
+        get('expense', 'AccountingController@expense');
+        get('payroll', 'AccountingController@payroll');
+        get('open', 'AccountingController@open');
+        get('close', 'AccountingController@close');
+        get('vat', 'AccountingController@vat');
+        get('lists', 'AccountingController@lists');
+        get('setup', 'AccountingController@setup');
+        get('new-business', 'AccountingController@newBusiness');
+
+    });
+
+
 
 
     Route::group(['namespace' => 'Tenant\Inventory\Controllers'], function () {

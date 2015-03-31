@@ -54,7 +54,7 @@ $(function () {
 
     });
 
-     var InvoiceDatatable = $("#table-invoices").dataTable({
+    var InvoiceDatatable = $("#table-invoices").dataTable({
         "dom": '<"top"f>rt<"bottom"lip><"clear">',
 
         //custom processing message
@@ -68,14 +68,14 @@ $(function () {
             "url": appUrl + 'customer/invoices/data',
             "type": "POST"
         },
-         "columnDefs": [{
+        "columnDefs": [{
             "orderable": false,
-           
+
             "render": function (data, type, row) {
-               // return showActionbtn(row);
+                // return showActionbtn(row);
             }
         }],
-        
+
         "columns": [
             {"data": "id"},
             {"data": "total"},
@@ -84,12 +84,10 @@ $(function () {
         ],
         "fnRowCallback": function (nRow, aData, iDisplayIndex) {
 
-           
 
         }
 
     });
-
 
 
     $(document).on('click', '.btn-delete-customer', function (e) {
@@ -137,24 +135,21 @@ $(function () {
     });
 
 
-$(document).on('click', '#search-email', function (e) {
+    $(document).on('click', '#search-email', function (e) {
         e.preventDefault();
-        var $this = $(this);
 
         var search_option = $('#search_option').val();
         var user_id = $('#user_id').val();
-       
+
         var doing = false;
 
         if (doing == false) {
             doing = true;
-          
- $('#email-list').load(appUrl + 'desk/email/search_emails/?user_id=' + user_id + '&search_option=' + search_option);
-            
+            $('#email-list').load(appUrl + 'desk/email/search_emails/?user_id=' + user_id + '&search_option=' + search_option);
+
         }
 
     });
-
 
 
     $(document).on('click', '#customer-submit', function (e) {
@@ -164,8 +159,6 @@ $(document).on('click', '#search-email', function (e) {
         var formAction = appUrl + 'customer';
         //var formData = form.serialize();
 
-        var formData = new FormData(form[0]);
-//        formData.append('photo', $('#customer-form input[type=file]')[0].files[0]);
 
         var requestType = form.find('.customer-submit').val();
 
@@ -189,6 +182,7 @@ $(document).on('click', '#search-email', function (e) {
         })
             .done(function (response) {
                 if (response.success == true || response.status == 1) {
+                    $('.error').remove();
 
                     $('#fb-modal').modal('hide');
                     var tbody = $('.box-body table tbody');
@@ -208,6 +202,7 @@ $(document).on('click', '#search-email', function (e) {
                 }
                 else {
                     if (response.status == 'fail') {
+                        $('.error').remove();
                         $.each(response.errors, function (i, v) {
                             // form.closest('form').find('input[name='+i+']').after('<label class="error ">'+v+'</label>');
                             $('.modal-body #' + i).parent().addClass('has-error')

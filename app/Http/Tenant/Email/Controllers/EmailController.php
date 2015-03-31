@@ -9,6 +9,7 @@ use App\Models\Tenant\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Tenant\Email\Models\Email;
+use App\Http\Tenant\Email\Models\IncomingEmail;
 
 
 class EmailController extends BaseController {
@@ -20,7 +21,7 @@ class EmailController extends BaseController {
     protected $upload_path = './assets/uploads/';
 
 
-    function __construct(Request $request, Email $email, Attachment $attachment, Receiver $receiver)
+    function __construct(Request $request, Email $email, Attachment $attachment, Receiver $receiver, IncomingEmail $incomingEmail)
     {
 
         parent::__construct();
@@ -28,7 +29,7 @@ class EmailController extends BaseController {
         $this->email = $email;
         $this->attachment = $attachment;
         $this->receiver = $receiver;
-
+        $this->incomingEmail = $incomingEmail;
     }
 
     function index()
@@ -152,10 +153,9 @@ class EmailController extends BaseController {
     {
         $type = $this->request->input('type');
         $data['type'] = $type = ($type == 1) ? $type : 0;
-        $data['per_page'] = $per_page = 5;
-        $data['mails'] = $this->email->user()->orderBy('created_at', 'DESC')->type($type)->with('attachments', 'receivers')->paginate($per_page);
-
-
+        $data['per_page'] = $per_page = 10;
+        //$data['mails'] = $this->email->user()->orderBy('created_at', 'DESC')->type($type)->with('attachments', 'receivers')->paginate($per_page);
+        $data['mails'] = $this->incomingEmail->user()->orderBy('created_at', 'DESC')->type($type)->paginate($per_page);
         return view('tenant.email.list', $data);
     }
 
@@ -197,15 +197,10 @@ class EmailController extends BaseController {
         
         $search_option = $this->request->input('search_option');
         $user_id = $this->request->input('user_id');
-         $perpage = 10;
-          $mails = $this->email->getSearchEmail($user_id,$search_option);
+        $perpage = 10;
+        $mails = $this->email->getSearchEmail($user_id,$search_option);
          
-         return view('tenant.customer.emailList', compact('mails'));
-         
-
-
-
-    }
-
+        return view('tenant.customer.emailList', compact('mails'));
+     }
 
 }
