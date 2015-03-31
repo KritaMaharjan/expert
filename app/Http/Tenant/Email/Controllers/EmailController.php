@@ -69,7 +69,6 @@ class EmailController extends BaseController {
         }
 
         return $this->fail(['error' => 'Could not send email at this moment. Please try again later']);
-
     }
 
 
@@ -144,9 +143,13 @@ class EmailController extends BaseController {
     function show()
     {
         $id = $this->request->route('id');
-        $mail = $this->email->with('attachments', 'receivers')->where('id', $id)->user()->first();
+        $folder = $this->request->input('folder');
 
-        return view('tenant.email.view', compact('mail'));
+        if($folder == 0)
+            $mail = $this->email->with('attachments', 'receivers')->where('id', $id)->user()->first();
+        else
+            $mail = $this->incomingEmail->where('id', $id)->user()->first();
+        return view('tenant.email.view', compact('mail'))->with('folder', $folder);
     }
 
     function listing()
@@ -154,8 +157,13 @@ class EmailController extends BaseController {
         $type = $this->request->input('type');
         $data['type'] = $type = ($type == 1) ? $type : 0;
         $data['per_page'] = $per_page = 10;
-        //$data['mails'] = $this->email->user()->orderBy('created_at', 'DESC')->type($type)->with('attachments', 'receivers')->paginate($per_page);
-        $data['mails'] = $this->incomingEmail->user()->orderBy('created_at', 'DESC')->type($type)->paginate($per_page);
+        $folder = $this->request->input('folder');
+        $data['folder'] = $folder;
+
+        if($folder == 0)
+            $data['mails'] = $this->email->user()->orderBy('created_at', 'DESC')->type($type)->with('attachments', 'receivers')->paginate($per_page);
+        else
+            $data['mails'] = $this->incomingEmail->user()->orderBy('created_at', 'DESC')->type($type)->paginate($per_page);
         return view('tenant.email.list', $data);
     }
 

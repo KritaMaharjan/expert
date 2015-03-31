@@ -4,22 +4,27 @@
     <tbody>
           @foreach($mails as $mail)
           <tr class="e{{$mail->id}}">
+            @if(isset($mail->status))
             <td class="small-col"><!-- <i class="fa fa-reply"></i> -->
               @if($mail->status == 1)  {!!'<i class="fa fa-circle green"></i>'!!} @endif
                @if($mail->status == 2)  {!!'<i class="fa fa-circle red"></i>'!!} @endif
                 @if($mail->status == 3)  {!!'<i class="fa fa-circle orange"></i>'!!} @endif
                {{--   @if($mail->status == 4)  {!!'<i class="fa fa-circle"></i>'!!} @endif --}}
             </td>
+            @endif
             <td class="name">
               <?php $receiver = $mail->receivers;?>
-              <a style="display: block" href="#" data-id="{{$mail->id}}" >
-                  {{--@foreach($receiver as $to)
-                    @if($to->type ==1)
-                       {{ str_limit($to->email,30)}};
-                    @endif
-                  @endforeach--}}
-
-                <small class="subject">{{str_limit($mail->subject,40)}}</small>
+              <a style="display: block" href="#" data-id="{{$mail->id}}" folder="{{ $folder }}" >
+                @if(isset($mail->from_email))
+                    {{$mail->from_email}}
+                @else
+                    @foreach($receiver as $to)
+                        @if($to->type ==1)
+                           {{ str_limit($to->email,30)}};
+                        @endif
+                    @endforeach
+                @endif
+                <small class="subject">{{str_limit($mail->subject,20)}}</small>
               </a>
             </td>
             <td> @if(!empty($mail['attachments']->file)) {!!'<i class="fa fa-paperclip grey"></i>'!!} @endif</td>

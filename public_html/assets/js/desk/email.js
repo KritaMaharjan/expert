@@ -1,4 +1,5 @@
 var personal_type = 0, support_type = 1;
+var sent = 0, inbox = 1;
 
 $(function () {
     var requestURL = appUrl + 'desk/email/customer/search'
@@ -90,7 +91,7 @@ $(function () {
                     $('#compose-modal').modal('hide');
                     var tbody = $('.table-mailbox');
                     $('.content').prepend(notify('success', 'Message sent'));
-                    tbody.prepend(getTemplate(response.data));
+                    //tbody.prepend(getTemplate(response.data));
                     setTimeout(function () {
                         $('.callout').remove()
                     }, 4000);
@@ -191,7 +192,7 @@ $(function () {
                     //    $('#note').val(mail.note);
 
                     if (mail.attachments.length > 0) {
-                        $('#filelist').append(getTemplateFields(mail.attachments));
+                        //$('#filelist').append(getTemplateFields(mail.attachments));
                     }
 
                 })
@@ -226,21 +227,41 @@ $(function () {
 // load emails
 $(function () {
 
-    loadEmailList(0, 1);
+    loadEmailList(0, 1, 1);
 
-    $('.inbox').on('click', function () {
+    $('.type').on('click', function () {
 
         if (!$(this).hasClass('btn-primary')) {
-            $('.inbox').removeClass('btn-primary');
-
+            $('.type').removeClass('btn-primary');
             $(this).addClass('btn-primary');
 
             var type = $(this).attr('id');
+            var folder = $(this).attr('folder');
             if (type == "personal") {
-                loadEmailList(personal_type, 1);
+                loadEmailList(personal_type, 1, folder);
             }
             else {
-                loadEmailList(support_type, 1);
+                loadEmailList(support_type, 1, folder);
+            }
+        }
+
+    });
+
+    $('.folder').on('click', function () {
+
+        if (!$(this).parent().hasClass('active')) {
+            $('.folder').parent().removeClass('active');
+
+            $(this).parent().addClass('active');
+
+            var type = $(this).attr('id');
+            if (type == "sent") {
+                $('.type').attr('folder', 0);
+                loadEmailList(personal_type, 1, sent);
+            }
+            else {
+                $('.type').attr('folder', 1);
+                loadEmailList(personal_type, 1, inbox);
             }
         }
 
@@ -249,9 +270,10 @@ $(function () {
     $(document).on('click', '.table-mailbox a', function (e) {
         e.preventDefault();
         var id = $(this).attr('data-id');
+        var folder = $(this).attr('folder');
 
         if (!$('#email-single').hasClass('email-' + id)) {
-            $('#email-single').load(appUrl + 'desk/email/' + id + '/show');
+            $('#email-single').load(appUrl + 'desk/email/' + id + '/show?folder='+folder);
             $('#email-single').removeClass(function (index, css) {
                 return (css.match(/(^|\s)email-\S+/g) || []).join(' ');
             });
@@ -271,7 +293,7 @@ $(function () {
         $.ajax({
             url: appUrl + 'desk/email/' + id + '/delete',
             type: 'GET',
-            dataType: 'json',
+            dataType: 'json'
         })
             .done(function (response) {
                 if (response.status == 1) {
@@ -291,21 +313,24 @@ $(function () {
             })
     });
 
-    function loadEmailList(type, page) {
+    function loadEmailList(type, page, folder) {
         if (type != 0 && type != 1)
-            type = 0
+            type = 0;
 
-        if (typeof page != 'undefine' && page < 0)
-            page = 1
+        if (folder != 0 && folder != 1)
+            folder = 1; //1 : inbox, 0 : sent
 
-        $('#email-list').load(appUrl + 'desk/email/list?type=' + type + '&page=' + page);
+        if (typeof page != 'undefined' && page < 0)
+            page = 1;
+
+        $('#email-list').load(appUrl + 'desk/email/list?type=' + type + '&page=' + page + '&folder=' + folder);
     }
 
     $(document).on('click', '.mail-next,.mail-previous', function (e) {
         e.preventDefault();
         var href = $(this).attr('href');
         var page = href.replace('#', '');
-        loadEmailList(0, page);
+        loadEmailList(0, page, 1);
     });
 
     $(document).on('click', '.cancel_upload', function (e) {
