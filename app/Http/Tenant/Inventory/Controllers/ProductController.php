@@ -43,6 +43,18 @@ class ProductController extends BaseController {
         return view('tenant.inventory.product.index');
     }
 
+    public function stock()
+    {
+        $product_list = $this->product->get_product();
+       
+        if ($this->request->ajax()) {
+             return view('tenant.inventory.stock.list',compact('product_list'));
+        }else{
+             return view('tenant.inventory.stock.index',compact('product_list'));
+        }
+       
+    }
+
     public function dataJson()
     {
         if ($this->request->ajax()) {

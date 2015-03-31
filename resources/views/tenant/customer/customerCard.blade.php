@@ -213,8 +213,8 @@ $(function(){
 
                   </div><!-- /.box -->
                 </div><!-- bg-white -->
-                @if($mails->total() > 1)
-                
+@if($mails->total() > 1)
+
 <p class="align-right">
 <?php
 $items = count($mails->items());

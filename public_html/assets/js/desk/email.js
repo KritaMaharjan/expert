@@ -231,9 +231,9 @@ $(function () {
     $('.inbox').on('click', function () {
 
         if (!$(this).hasClass('btn-primary')) {
-            $('.inbox').removeClass('btn-primary');
+            $('.inbox').removeClass('inbox-active');
 
-            $(this).addClass('btn-primary');
+            $(this).addClass('inbox-active');
 
             var type = $(this).attr('id');
             if (type == "personal") {

@@ -101,6 +101,8 @@ Route::group($group_auth, function () {
         get('inventory/product/{id}/edit', ['as' => 'tenant.inventory.product.edit', 'uses' => 'ProductController@edit']);
         post('inventory/product/{id}/edit', ['as' => 'tenant.inventory.product.update', 'uses' => 'ProductController@update']);
         get('inventory/product/{id}/delete', ['as' => 'tenant.inventory.product.delete', 'uses' => 'ProductController@delete']);
+          get('inventory/stock', ['as' => 'tenant.inventory.stock', 'uses' => 'ProductController@stock']);
+
 
         // Registered By Krita
         get('product/suggestions', ['as' => 'tenant.product.suggestions', 'uses' => 'ProductController@getSuggestions']);
@@ -113,6 +115,9 @@ Route::group($group_auth, function () {
         post('inventory/{id}/edit', ['as' => 'tenant.inventory.update', 'uses' => 'InventoryController@update']);
         get('inventory/{id}/edit', ['as' => 'tenant.inventory.edit', 'uses' => 'InventoryController@edit']);
         get('inventory/{id}/delete', ['as' => 'tenant.inventory.delete', 'uses' => 'InventoryController@delete']);
+
+        // Registered By Pooja
+         //get('inventory/stock', ['as' => 'tenant.inventory.stock', 'uses' => 'InventoryController@index']);
     });
 
     /** Registered by Krita **/

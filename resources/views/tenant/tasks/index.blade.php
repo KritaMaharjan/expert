@@ -30,7 +30,7 @@ Tasks
 
                   </div>
                 </div><!-- /.box-header -->
-                <div class="box-body">
+                <div class="box-body task-list" id="task-list">
                   <ul class="todo-list upcoming-tasks">
 
                     @foreach($tasks['upcoming_tasks'] as $task)
@@ -65,13 +65,33 @@ Tasks
                   </ul>
                 </div><!-- /.box-body -->
                 <div class="box-footer clearfix no-border">
-                  <ul class="pagination pagination-sm inline pull-right">
+                  @if($tasks['upcoming_tasks']->total() > 1)
+
+<p class="align-right">
+<?php
+$items = count($tasks['upcoming_tasks']->items());
+$to = ($tasks['upcoming_tasks']->currentPage()-1) * $tasks['upcoming_tasks']->perPage() + $items;
+if($items >= $tasks['upcoming_tasks']->perPage())
+$from =  $to - $tasks['upcoming_tasks']->perPage()+1;
+else
+$from =  $to - $tasks['upcoming_tasks']->perPage()+1+($tasks['upcoming_tasks']->perPage()-$items);
+?>
+<span class="color-grey">{{$from}}-{{$to}} of {{$tasks['upcoming_tasks']->total()}}</span>
+    @if($from !=1)
+      <a href="#{{$tasks['upcoming_tasks']->currentPage()-1}}" data class="mg-lr-5 mail-previous color-grey"><i class="fa  fa-chevron-left"></i></a>
+    @endif
+    @if($to != $tasks['upcoming_tasks']->total())
+      <a href="#{{$tasks['upcoming_tasks']->currentPage()+1}}"  class="color-grey mail-next"><i class="fa  fa-chevron-right"></i></a>
+    @endif
+</p>
+@endif
+                  {{-- <ul class="pagination pagination-sm inline pull-right">
                     <li><a href="#">&laquo;</a></li>
                     <li><a href="#">1</a></li>
                     <li><a href="#">2</a></li>
                     <li><a href="#">3</a></li>
                     <li><a href="#">&raquo;</a></li>
-                  </ul>
+                  </ul> --}}
                 </div>
               </div><!-- /.box -->
 
@@ -87,7 +107,7 @@ Tasks
                 <i class="ion ion-clipboard"></i>
                 <h3 class="box-title">Completed List</h3>
               </div><!-- /.box-header -->
-              <div class="box-body">
+              <div class="box-body" id="completed-list">
               <ul class="todo-list completed-tasks">
                     @if(count($tasks['completed_tasks']) == 0)
                         <p class="no-results">No completed tasks</p>
@@ -126,13 +146,33 @@ Tasks
                 </ul>
               </div><!-- /.box-body -->
               <div class="box-footer clearfix no-border">
-                <ul class="pagination pagination-sm inline pull-right">
+                {{-- <ul class="pagination pagination-sm inline pull-right">
                   <li><a href="#">&laquo;</a></li>
                   <li><a href="#">1</a></li>
                   <li><a href="#">2</a></li>
                   <li><a href="#">3</a></li>
                   <li><a href="#">&raquo;</a></li>
-                </ul>
+                </ul> --}}
+                 @if($tasks['completed_tasks']->total() > 1)
+
+<p class="align-right">
+<?php
+$items1 = count($tasks['completed_tasks']->items());
+$to1 = ($tasks['completed_tasks']->currentPage()-1) * $tasks['completed_tasks']->perPage() + $items1;
+if($items1 >= $tasks['completed_tasks']->perPage())
+$from1 =  $to1 - $tasks['completed_tasks']->perPage()+1;
+else
+$from1 =  $to1 - $tasks['completed_tasks']->perPage()+1+($tasks['completed_tasks']->perPage()-$items1);
+?>
+<span class="color-grey">{{$from1}}-{{$to1}} of {{$tasks['completed_tasks']->total()}}</span>
+    @if($from1 !=1)
+      <a href="#{{$tasks['completed_tasks']->currentPage()-1}}" data class="mg-lr-5 mail-previous1 color-grey"><i class="fa  fa-chevron-left"></i></a>
+    @endif
+    @if($to1 != $tasks['upcoming_tasks']->total())
+      <a href="#{{$tasks['completed_tasks']->currentPage()+1}}"  class="color-grey mail-next1"><i class="fa  fa-chevron-right"></i></a>
+    @endif
+</p>
+@endif
               </div>
             </div><!-- /.box -->
 
