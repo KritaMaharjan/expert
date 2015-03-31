@@ -76,6 +76,21 @@ Route::group($group_auth, function () {
     });
 
 
+    Route::group(['prefix' => 'accounting', 'namespace' => 'Tenant\Accounting\Controllers'], function () {
+        get('expense', 'AccountingController@expense');
+        get('payroll', 'AccountingController@payroll');
+        get('open', 'AccountingController@open');
+        get('close', 'AccountingController@close');
+        get('vat', 'AccountingController@vat');
+        get('lists', 'AccountingController@lists');
+        get('setup', 'AccountingController@setup');
+        get('new-business', 'AccountingController@newBusiness');
+
+    });
+
+
+
+
     Route::group(['namespace' => 'Tenant\Inventory\Controllers'], function () {
 
         // product routes

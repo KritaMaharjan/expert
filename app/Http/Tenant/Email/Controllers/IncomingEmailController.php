@@ -36,7 +36,7 @@ class IncomingEmailController extends BaseController {
         $type = $this->request->input('type');
         $data['type'] = $type = ($type == 1) ? $type : 0;
         $data['per_page'] = $per_page = 5;
-        $data['mails'] = $this->incomingEmail->orderBy('received_at', 'DESC')->type($type)->with('attachments', 'receivers')->paginate($per_page);
+        $data['mails'] = $this->incomingEmail->orderBy('received_at', 'DESC')->type($type)->paginate($per_page);
 
         return view('tenant.email.list', $data);
     }
@@ -44,6 +44,8 @@ class IncomingEmailController extends BaseController {
 
     function readUserEmail()
     {
+
+
         $user = current_user();
         $smtp = (object)$user->profile->smtp;
         $validSmtp = $this->validateSmtp($smtp);
@@ -64,6 +66,7 @@ class IncomingEmailController extends BaseController {
 
     private function recordEmail($data)
     {
+
         return $this->success(array('mail' => $data));
     }
 
