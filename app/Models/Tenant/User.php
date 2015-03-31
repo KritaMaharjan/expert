@@ -322,7 +322,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
                 $value->status = '<span class="label label-warning">Pending</span>';
 
             $value->created = $value->created_at->format('d-M-Y  h:i:s A');
-            $value->days = '<a href="#" title="Register vacation" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' . tenant()->url('user/registerDays/vacation') . "/" . $value->guid . '" data-target="#fb-modal">vacation</a><a href="#" title="Register Sick days" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' . tenant()->url('user/registerDays/sick') . "/" . $value->guid . '" data-target="#fb-modal">Sick</a>';
+            $value->days = '<a href="#" title="Register vacation" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' . tenant()->url('user/registerDays/vacation') . "/" . $value->guid . '" data-target="#fb-modal">Vacation</a><a href="#" title="Register Sick days" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' . tenant()->url('user/registerDays/sick') . "/" . $value->guid . '" data-target="#fb-modal">Sick</a>';
             $value->DT_RowId = "row-" . $value->guid;
         }
 
