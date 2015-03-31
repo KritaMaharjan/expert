@@ -6,27 +6,32 @@
     <p><small class="color-blue">Sent: </small> <?php echo $mail->created_at->format('D m/d/Y h:i A');?></p>
      <?php $receiver = $mail->receivers;?>
      <p><small class="color-blue"> To: </small>
-        @foreach($receiver as $to)
-            @if($to->type ==1)
-               {{ $to->email}};
-            @endif
-         @endforeach
+        @if($folder == 0)
+            @foreach($receiver as $to)
+                @if($to->type ==1)
+                   {{ $to->email}};
+                @endif
+             @endforeach
+         @else
+            {{ $mail->from_email}};
+         @endif
      </p>
 
-     <?php
-     $has_cc = false;
-      foreach($receiver as $cc):
-          if($cc->type ==2):
-            $has_cc = true;
-            break;
-          endif;
-       endforeach;
-     ?>
+     <?php $has_cc = false; ?>
+     @if($folder == 0)
+         @foreach($receiver as $cc)
+            @if($cc->type ==2)
+              <?php $has_cc = true; ?>
+              @break
+            @endif
+         @endforeach
+      @endif
+
        @if($has_cc)
        <p><small class="color-blue"> CC: </small>
          @foreach($receiver as $cc)
              @if($cc->type ==2)
-                {{ $cc->email  }};
+                {{ $cc->email  }}
              @endif
           @endforeach
           </p>
@@ -58,6 +63,11 @@
     @endif
   </div><!-- /.box-header -->
   <div class="box-body">
+        @if($folder == 0)
+            {!! nl2br($mail->message) !!}
+        @else
+            {!! $mail->body_html !!}
+        @endif
         <?php echo nl2br($mail->message);?>
       <hr/>
       @if($mail->note)
