@@ -60,7 +60,11 @@ Route::group($group_auth, function () {
         get('email/{id}/show', ['as' => 'tenant.email.show', 'uses' => 'EmailController@show']);
         get('email/{id}/get', ['as' => 'tenant.email.get', 'uses' => 'EmailController@get']);
         get('email/delete/attach', ['as' => 'tenant.email.attach.delete', 'uses' => 'EmailController@deleteAttachment']);
+
+         get('email/search_emails', ['as' => 'tenant.email.search', 'uses' => 'EmailController@search_email']);
+
         get('email/inbox', ['as' => 'tenant.email.inbox', 'uses' => 'IncomingEmailController@inbox']);
+
 
     });
 
@@ -153,9 +157,8 @@ Route::group($group_auth, function () {
         get('tasks/{id}/edit', ['as' => 'tenant.tasks.edit', 'uses' => 'TasksController@edit']);
         post('tasks/{id}/edit', ['as' => 'tenant.tasks.update', 'uses' => 'TasksController@update']);
         get('tasks/{id}/delete', ['as' => 'tenant.tasks.delete', 'uses' => 'TasksController@delete']);
-        get('tasks/{id}/download', ['as' => 'tenant.tasks.download', 'uses' => 'TasksController@download']);
-        get('tasks/{id}/print', ['as' => 'tenant.tasks.download', 'uses' => 'TasksController@printBill']);
-        get('tasks/{id}/mail', ['as' => 'tenant.tasks.email', 'uses' => 'TasksController@sendEmail']);
+        get('tasks/{id}/complete', ['as' => 'tenant.tasks.complete', 'uses' => 'TasksController@complete']);
+        get('tasks/{id}/redo', ['as' => 'tenant.tasks.redo', 'uses' => 'TasksController@complete']);
     });
 
 

@@ -62,10 +62,20 @@ class BillController extends BaseController {
     public function add()
     {
         $months = \Config::get('tenant.month');
+         $c_id = $this->request->input('id');
+        if(!empty($c_id)){
+               $customer_id = $c_id;
+               $customer_details =  \DB::table('fb_customers')->where('id', $c_id)->first();
+        }
+         
+        else
+            $customer_id ='';
+         
+        $currencies = \Config::get('tenant.currencies');
         $data = array('months' => $months, 'currencies' => \Config::get('tenant.currencies'));
         $company_details = $this->getCompanyDetails();
 
-        return view('tenant.invoice.bill.create', compact('company_details'))->with('pageTitle', 'Add new bill')->with($data);
+        return view('tenant.invoice.bill.create', compact('company_details','months','currencies','customer_details','customer_id'))->with('pageTitle', 'Add new bill')->with($data);
     }
 
     function getCompanyDetails()

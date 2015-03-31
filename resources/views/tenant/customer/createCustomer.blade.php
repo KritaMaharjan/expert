@@ -1,4 +1,5 @@
 {!!Form::open(['id'=>'customer-form', 'enctype'=>'multipart/form-data','files'=>true])!!}
+
                     <div class="box-body">
                       <div class="form-group">
                         <label for="">Name</label>
@@ -91,7 +92,7 @@
                    
                     <div class="box-footer">
                         <button type="button" class="btn sm-mg-btn" data-dismiss="modal"><i class="fa fa-times"></i> Abort</button>
-                        <input type="submit" class="btn btn-primary customer-submit" value="Add" />
+                        <input type="submit" class="btn btn-primary customer-submit" id="customer-submit" value="Add" />
                     </div>
                    
            {!! Form::close() !!}
@@ -163,10 +164,6 @@ $(function () {
 
 
 </script>
-
-           
-
-           
 
 
 

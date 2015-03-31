@@ -6,7 +6,6 @@ use App\Http\Controllers\Tenant\BaseController;
 use App\Http\Tenant\Tasks\Models\Tasks;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Laracasts\Flash\Flash;
 
 class TasksController extends BaseController {
 
@@ -72,27 +71,8 @@ class TasksController extends BaseController {
             return $this->fail(['errors' => $validator->getMessageBag()]);
 
         $result = $this->task->add($this->request);
-        return ($result) ? $this->success(['result' => $result]) : $this->fail(['errors' => 'Something went wrong!']);
+        return ($result) ? $this->success($result) : $this->fail(['errors' => 'Something went wrong!']);
 
-    }
-
-
-    /**
-     * Display product detail
-     * @return string
-     */
-    function show()
-    {
-        $id = $this->request->route('id');
-        $task = $this->task->find($id);
-        if ($task == null) {
-            show_404();
-        }
-
-        if ($this->request->ajax()) {
-            return $this->success($task->toArray());
-        }
-        return view('tenant.product.show', compact('product'));
     }
 
 
@@ -120,9 +100,21 @@ class TasksController extends BaseController {
             $id = $this->request->route('id');
             $result = $this->task->edit($this->request, $id);
             return ($result) ? $this->success($result) : $this->fail(['errors' => 'something went wrong']);
-        }
+        };
+        return false;
     }
 
+    function complete()
+    {
+        if($this->request->ajax()) {
+            $id = $this->request->route('id');
+            $task = Tasks::find($id)->toArray();
+            //$result = $this->task->getTemplate($task);
+            $result = $this->task->markComplete($id);
+            return ($result) ? $this->success($result) : $this->fail(['errors' => 'something went wrong']);
+        };
+        return false;
+    }
 
     function delete()
     {

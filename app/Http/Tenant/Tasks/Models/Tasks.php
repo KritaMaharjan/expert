@@ -36,7 +36,10 @@ class Tasks extends Model
             'body' => $request->input('body'),
             'due_date' => $request->input('due_date')
         ]);
-        return $task->id;
+
+        $task = $task->toArray();
+        $task['template'] = $this->getTemplate($task);
+        return $task;
     }
 
 
@@ -47,26 +50,73 @@ class Tasks extends Model
         $task->body = $request->input('body');
         $task->due_date = $request->input('due_date');
         $task->save();
+        $task = $task->toArray();
+        $task['template'] = $this->getTemplate($task, true);
+        return $task;
+    }
 
-        return $task->toArray();
+    /* *
+     * Get template to display after add or update
+     * */
+    function getTemplate(array $task = array(), $update = false)
+    {
+        $complete = ($task['is_complete'] == 1)? 'checked="checked"' : '';
+        $edit = ($task['is_complete'] == 0)? '<a href="#" title="Edit" data-original-title="Edit" class="btn btn-box-tool"  data-toggle="modal" data-url="'.tenant()->url('tasks/' . $task['id'] . '/edit').'" data-target="#fb-modal" data-url="" >
+                            <i class="fa fa-edit"></i>
+                        </a>' : '';
+        $completed_date = ($task['is_complete'] == 1)? '<div>
+                          <label>Completed date:</label>
+                          <span>'.format_datetime($task['completion_date']).'</span>
+                        </div>' : '';
+        $template = '<input type="checkbox" value="" name="" class="icheck"'.$complete.' />
+                      <span class="text">'.$task['subject'].'</span>
+                      '.calculate_todo_time($task['due_date']).'
+                      <div class="tools">
+                        '.$edit.'
+                        <i class="fa fa-trash-o btn-delete-task" data-id="'.$task['id'].'"></i>
+                      </div>
+                      <div class="todos-box pad-lr-29">
+                        <div>
+                          <label>Added date:</label>
+                          <span>'.format_datetime($task['created_at']).'</span>
+                        </div>
+                        <div>
+                          <label>Due date:</label>
+                          <span>'.format_datetime($task['due_date']).'</span>
+                        </div>'.$completed_date.'
+                        <p>'.$task['body'].'</p>
+                      </div>';
+        if($update == false)
+            return "<li id='".$task['id']."'>".$template."</li>";
+        return $template;
     }
 
     function markComplete($id)
     {
         $task = Tasks::find($id);
-        $task->is_complete = 1;
-        $task->completed_date = Carbon::now();
+        if($task->is_complete == 0) {
+            $task->is_complete = 1;
+            $task->completion_date = Carbon::now();
+        }
+        else
+            $task->is_complete = 0;
+
         $task->save();
+        $task = $task->toArray();
+        $task['template'] = $this->getTemplate($task);
+        return $task;
     }
 
     function getTasks()
     {
-        $today = \Carbon::now()->format('Y-m-d H:i:s');
+        $today = \Carbon::now()->format('Y-m-d');
+        $tomorrow = \Carbon::now()->addDay()->format('Y-m-d');
         $tasks = array();
         /*$tasks['upcoming_tasks'] = Tasks::where('due_date', '>', $today)->get();
         $tasks['overdue_tasks'] = Tasks::where('due_date', '<=', $today)->get();*/
         $tasks['upcoming_tasks'] = Tasks::where('is_complete', 0)->orderBy('due_date', 'asc')->get();
-        $tasks['completed_tasks'] = Tasks::where('is_complete', 1)->orderBy('completion_date', 'asc')->get();;
+        $tasks['completed_tasks'] = Tasks::where('is_complete', 1)->orderBy('completion_date', 'asc')->get();
+        $tasks['todo_tasks'] = Tasks::where('is_complete', 0)->where('due_date', '>=', $today)->where('due_date', '<', $tomorrow)->orderBy('due_date', 'asc')->get();
         return $tasks;
     }
 

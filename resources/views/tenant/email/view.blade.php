@@ -60,10 +60,12 @@
   <div class="box-body">
         <?php echo nl2br($mail->message);?>
       <hr/>
+      @if($mail->note)
        <label>Note :</label>
        <div class="note-box-yellow">
         <?php echo nl2br($mail->note);?>
         </div>
+        @endif
   </div>
 </div><!-- /.box -->
 
