@@ -159,6 +159,7 @@ $(document).on('click', '#search-email', function (e) {
 
     $(document).on('click', '#customer-submit', function (e) {
         e.preventDefault();
+        $('.erroring').remove();
         var form = $('#customer-form');
         var formAction = appUrl + 'customer';
         //var formData = form.serialize();
@@ -210,7 +211,7 @@ $(document).on('click', '#search-email', function (e) {
                         $.each(response.errors, function (i, v) {
                             // form.closest('form').find('input[name='+i+']').after('<label class="error ">'+v+'</label>');
                             $('.modal-body #' + i).parent().addClass('has-error')
-                            $('.modal-body #' + i).after('<label class="error error-' + i + '">' + v + '<label>');
+                            $('.modal-body #' + i).after('<label class="error erroring error-' + i + '">' + v + '<label>');
                         });
                     }
 
