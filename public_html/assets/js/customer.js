@@ -139,12 +139,11 @@ $(function () {
 
     $(document).on('submit', '#customer-form', function (e) {
         e.preventDefault();
+        $('label.error').remove();
         var form = $(this);
         var formAction = form.attr('action');
-        //var formData = form.serialize();
+        var formData = form.serialize();
 
-        var formData = new FormData(form[0]);
-//        formData.append('photo', $('#customer-form input[type=file]')[0].files[0]);
 
         var requestType = form.find('.customer-submit').val();
 
@@ -154,6 +153,7 @@ $(function () {
         form.find('.has-error').removeClass('has-error');
         form.find('label.error').remove();
         form.find('.callout').remove();
+
 
 
         $.ajax({
@@ -168,6 +168,7 @@ $(function () {
         })
             .done(function (response) {
                 if (response.success == true || response.status == 1) {
+                    $('.error').remove();
 
                     $('#fb-modal').modal('hide');
                     var tbody = $('.box-body table tbody');
@@ -187,6 +188,7 @@ $(function () {
                 }
                 else {
                     if (response.status == 'fail') {
+                        $('.error').remove();
                         $.each(response.errors, function (i, v) {
                             // form.closest('form').find('input[name='+i+']').after('<label class="error ">'+v+'</label>');
                             $('.modal-body #' + i).parent().addClass('has-error')

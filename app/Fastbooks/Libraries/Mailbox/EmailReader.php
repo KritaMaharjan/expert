@@ -5,6 +5,15 @@ use Ddeboer\Imap\Search\Date\After;
 use Ddeboer\Imap\SearchExpression;
 use Ddeboer\Imap\Server;
 
+
+/*
+ * Example
+ * host: alucio.com   / imap.gmail.com
+ * email : krita@alucio.com / krita@gmail.com
+ * password : @1uc!0 /asdfasdf
+ * port : 25 /993
+ * */
+
 class EmailReader {
 
     public $folder = 'INBOX';
@@ -82,6 +91,8 @@ class EmailReader {
             $m->getDate = $message->getDate();
             $m->isSeen = $message->isSeen();
             $m->body = $message->keepUnseen()->getBodyHtml();
+            $m->body = $message->keepUnseen()->getBodyText();
+
             $inbox[] = $m;
         }
 

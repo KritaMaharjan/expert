@@ -27,10 +27,13 @@ class IncomingEmail extends Model {
      * @var array
      */
 
-    protected $timestamps = false;
+    public $timestamps = false;
 
 
 
+    function incomingEmails($type, $per_page)
+    {
+    }
 
     public static function boot()
     {
