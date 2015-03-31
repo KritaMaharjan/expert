@@ -1157,3 +1157,13 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
     display: inline-block!important;
     text-align: center;
 }
+
+.btns-box {
+    background: none repeat scroll 0 0 #ececec;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    text-align: center;
+}
+.btns-box a {
+    margin: 0 10px;
+}
