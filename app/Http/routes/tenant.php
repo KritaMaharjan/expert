@@ -23,12 +23,14 @@ if (env('APP_ENV') == 'live') {
  *
  */
 
-Route::group($group_cron, function () {
-    /*
-     * @todo Change block/account to post request and ensure that only superadmin can block/unblock account
-     */
-    get('block/account', 'Controllers\Tenant\AuthController@blockAccount');
-});
+if(isset($group_cron)) {
+    Route::group($group_cron, function () {
+        /*
+         * @todo Change block/account to post request and ensure that only superadmin can block/unblock account
+         */
+        get('block/account', 'Controllers\Tenant\AuthController@blockAccount');
+    });
+}
 
 
 Route::group($group_guest, function () {

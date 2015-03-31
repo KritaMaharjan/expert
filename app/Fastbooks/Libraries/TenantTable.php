@@ -138,9 +138,6 @@ class TenantTable {
         }
     }
 
-
-
-
     function emails()
     {
         if (!Schema::hasTable(self::TBL_PREFIX . 'emails')) {
@@ -175,7 +172,7 @@ class TenantTable {
     }
 
 
-    function AttachmentsEmail()
+    function attachmentsEmail()
     {
         if (!Schema::hasTable(self::TBL_PREFIX . 'attachments_email')) {
             Schema::create(self::TBL_PREFIX . 'attachments_email', function (Blueprint $table) {
@@ -315,5 +312,27 @@ class TenantTable {
         }
     }
 
+    function incomingEmails()
+    {
+        if (!Schema::hasTable(self::TBL_PREFIX . 'incoming_emails')) {
+            Schema::create(self::TBL_PREFIX . 'incoming_emails', function ($table) {
+                $table->increments('id'); // autoincrement value of a vacation
+                $table->integer('msid')->unsign()->index();
+                $table->integer('user_id')->unsign()->index()->nullable();
+                $table->string('from_email, 100');
+                $table->text('attachments')->nullable();
+                $table->string('from_name, 100');
+                $table->string('subject, 255');
+                $table->text('body_html');
+                $table->text('body_text');
+                $table->boolean('is_seen')->default(0);
+                $table->boolean('type')->default(0); // 0 : personal, 1 : support
+                $table->datetime('received_at'); // 0 : personal, 1 : support
+
+                // created_at, updated_at DATETIME
+                $table->timestamps();
+            });
+        }
+    }
 
 }

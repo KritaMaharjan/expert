@@ -18,7 +18,7 @@
                        {{ str_limit($to->email,30)}};
                     @endif
                   @endforeach--}}
-                
+
                 <small class="subject">{{str_limit($mail->subject,40)}}</small>
               </a>
             </td>

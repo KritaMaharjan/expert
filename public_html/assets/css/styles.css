@@ -1652,7 +1652,7 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 .nav.nav-pills.nav-stacked > li.active > a, .nav.nav-pills.nav-stacked > li.active > a:hover {
     background-color: #f6f6f6;
-    border-left-color: #3c8dbc;
+    border-left-color: #00a65a;
     color: #444;
 }
 .nav.nav-pills.nav-stacked > li.header {

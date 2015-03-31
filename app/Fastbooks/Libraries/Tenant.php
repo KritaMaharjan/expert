@@ -179,6 +179,7 @@ class Tenant {
         $this->createTable->emails();
         $this->createTable->emailReceivers();
         $this->createTable->attachmentsEmail();
+        $this->createTable->incomingEmails();
     }
 
 

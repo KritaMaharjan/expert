@@ -19,7 +19,7 @@ class IncomingEmail extends Model {
      *
      * @var array
      */
-    protected $fillable = ['id', 'user_id', 'msid', 'from_email', 'from_name', 'subject', 'body_html', 'body_text', 'is_seen', 'received_at', 'created_at'];
+    protected $fillable = ['id', 'user_id', 'msid', 'from_email', 'from_name', 'subject', 'body_html', 'body_text', 'is_seen', 'type', 'received_at', 'created_at'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -27,10 +27,17 @@ class IncomingEmail extends Model {
      * @var array
      */
 
-    protected $timestamps = false;
+    public $timestamps = false;
 
+    function scopeUser($query)
+    {
+        $query->where('user_id', current_user()->id);
+    }
 
-
+    function scopeType($query, $type = 0)
+    {
+        $query->where('type', $type);
+    }
 
     public static function boot()
     {
@@ -42,7 +49,5 @@ class IncomingEmail extends Model {
 
             return true;
         });
-
-
     }
 }
