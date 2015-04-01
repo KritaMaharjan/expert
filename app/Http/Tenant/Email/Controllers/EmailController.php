@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Tenant\Email\Models\Email;
 use App\Http\Tenant\Email\Models\IncomingEmail;
-
+use App\Fastbooks\Libraries\Mailbox\EmailReader;
 
 class EmailController extends BaseController {
 
@@ -19,7 +19,10 @@ class EmailController extends BaseController {
     protected $attachment;
     protected $receiver;
     protected $upload_path = './assets/uploads/';
-
+    protected $host = 'alucio.com';
+    protected $host_email = 'krita@alucio.com';
+    protected $password = '@1uc!0';
+    protected $port = 25;
 
     function __construct(Request $request, Email $email, Attachment $attachment, Receiver $receiver, IncomingEmail $incomingEmail)
     {
@@ -35,7 +38,6 @@ class EmailController extends BaseController {
     function index()
     {
         $action = 'add';
-
         return view('tenant.email.index', compact('action'));
     }
 
@@ -162,8 +164,10 @@ class EmailController extends BaseController {
 
         if($folder == 0)
             $data['mails'] = $this->email->user()->orderBy('created_at', 'DESC')->type($type)->with('attachments', 'receivers')->paginate($per_page);
-        else
+        else {
+            $this->readUserEmail();
             $data['mails'] = $this->incomingEmail->user()->orderBy('created_at', 'DESC')->type($type)->paginate($per_page);
+        }
         return view('tenant.email.list', $data);
     }
 
@@ -211,4 +215,54 @@ class EmailController extends BaseController {
         return view('tenant.customer.emailList', compact('mails'));
      }
 
+
+    function readUserEmail()
+    {
+        $user = current_user();
+        $smtp = (object)$user->profile->smtp;
+        $validSmtp = $this->validateSmtp($smtp);
+        $validSmtp = true;
+        if ($validSmtp === true) {
+            //$mailbox = new EmailReader($user->smtp->incoming_server, $user->smtp->email, $user->smtp->password, $user->smtp->port);
+            $mailbox = new EmailReader($this->host, $this->host_email, $this->password, 993);
+
+            if ($mailbox->connect()) {
+                $data = $mailbox->read($user->profile->email_sync_at);
+                $this->recordEmail($data);
+            } else {
+                return $this->fail(array('error' => $mailbox->error()));
+            }
+        }
+        return $this->fail(array('error' => $validSmtp));
+    }
+
+    private function recordEmail($data)
+    {
+        if($data)
+            $this->incomingEmail->saveEmail($data);
+    }
+
+    private function validateSmtp($smtp)
+    {
+        if (empty($smtp)) {
+            return lang('Please configure SMTP.');
+        }
+        if (!isset($smtp->email) || $smtp->email == '') {
+            return lang('Email is missing');
+        }
+
+        if (!isset($smtp->incoming_server) || $smtp->incoming_server == '') {
+            return lang('Incoming Server is missing');
+        }
+
+        if (!isset($smtp->password) || $smtp->password == '') {
+            return lang('Password is missing');
+        }
+
+        if (!isset($smtp->port) || $smtp->port == '') {
+            return lang('Port is missing');
+        }
+
+        return true;
+    }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Tenant\Email\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Tenant\Profile;
 
 class IncomingEmail extends Model {
 
@@ -37,6 +38,32 @@ class IncomingEmail extends Model {
     function scopeType($query, $type = 0)
     {
         $query->where('type', $type);
+    }
+
+    function saveEmail($mails)
+    {
+        foreach ($mails as $mail) {
+            $exists = IncomingEmail::select('msid')->where('msid', 600)->where('user_id', current_user()->id)->exists();
+            if(!$exists) {
+                IncomingEmail::create([
+                    'msid' => $mail->msid,
+                    'user_id' => current_user()->id,
+                    'from_email' => $mail->fromEmail,
+                    'attachments' => NULL,
+                    'from_name' => $mail->fromName,
+                    'subject' => $mail->subject,
+                    'body_html' => $mail->body,
+                    'body_text' => $mail->body_text,
+                    'is_seen' => $mail->isSeen,
+                    'type' => 0,
+                    'received_at' => $mail->receivedDate
+                ]);
+            }
+        }
+
+        $profile = Profile::where('user_id', current_user()->id)->first();
+        $profile->email_sync_at = Carbon::now();
+        $profile->save();
     }
 
     public static function boot()
