@@ -1085,7 +1085,7 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
 .todo-list li span.text {
     cursor: pointer;
 }
-.todos-box{display: none;}
+.todos-box,#after-paid{display: none;}
 .pad-lr-29{
     padding: 10px 29px 0;
 }
@@ -1166,4 +1166,20 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
 }
 .btns-box a {
     margin: 0 10px;
+}
+.width-sm{
+    width: 12%;
+}
+.half-width2{
+    width: 40%;
+}
+.image-section {
+    border: 1px solid #dbdbdb;
+    padding: 0;
+}
+.image-section img{
+    width: 100%;
+}
+.mg-btm-40{
+    margin-bottom: 40px;
 }
