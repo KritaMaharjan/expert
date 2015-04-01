@@ -34,3 +34,25 @@
                         @endforeach
                     @endif
                 </ul>
+
+
+                 @if($tasks['completed_tasks']->total() > 1)
+
+<p class="align-right">
+<?php
+$items1 = count($tasks['completed_tasks']->items());
+$to1 = ($tasks['completed_tasks']->currentPage()-1) * $tasks['completed_tasks']->perPage() + $items1;
+if($items1 >= $tasks['completed_tasks']->perPage())
+$from1 =  $to1 - $tasks['completed_tasks']->perPage()+1;
+else
+$from1 =  $to1 - $tasks['completed_tasks']->perPage()+1+($tasks['completed_tasks']->perPage()-$items1);
+?>
+<span class="color-grey">{{$from1}}-{{$to1}} of {{$tasks['completed_tasks']->total()}}</span>
+    @if($from1 != 1)
+      <a href="#{{$tasks['completed_tasks']->currentPage()-1}}" data class="mg-lr-5 mail-previous1 color-grey"><i class="fa  fa-chevron-left"></i></a>
+    @endif
+    @if($to1 != $tasks['completed_tasks']->total())
+      <a href="#{{$tasks['completed_tasks']->currentPage()+1}}"  class="color-grey mail-next1"><i class="fa  fa-chevron-right"></i></a>
+    @endif
+</p>
+@endif

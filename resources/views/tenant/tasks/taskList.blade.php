@@ -30,3 +30,24 @@
                     </li>
                     @endforeach
                   </ul>
+
+                    @if($tasks['upcoming_tasks']->total() > 1)
+
+<p class="align-right">
+<?php
+$items = count($tasks['upcoming_tasks']->items());
+$to = ($tasks['upcoming_tasks']->currentPage()-1) * $tasks['upcoming_tasks']->perPage() + $items;
+if($items >= $tasks['upcoming_tasks']->perPage())
+$from =  $to - $tasks['upcoming_tasks']->perPage()+1;
+else
+$from =  $to - $tasks['upcoming_tasks']->perPage()+1+($tasks['upcoming_tasks']->perPage()-$items);
+?>
+<span class="color-grey">{{$from}}-{{$to}} of {{$tasks['upcoming_tasks']->total()}}</span>
+    @if($from !=1)
+      <a href="#{{$tasks['upcoming_tasks']->currentPage()-1}}" data class="mg-lr-5 mail-previous color-grey"><i class="fa  fa-chevron-left"></i></a>
+    @endif
+    @if($to != $tasks['upcoming_tasks']->total())
+      <a href="#{{$tasks['upcoming_tasks']->currentPage()+1}}"  class="color-grey mail-next"><i class="fa  fa-chevron-right"></i></a>
+    @endif
+</p>
+@endif
