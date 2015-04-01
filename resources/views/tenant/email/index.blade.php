@@ -43,7 +43,7 @@ $(function(){
                       </div>
                     </div><!-- /.row -->
                     <div class="mail-wrap-section clearfix">
-                      <div class="col-md-2">
+                      <div class="col-md-2 width-sm">
                       <div class="box-header">
                         
                       </div>
