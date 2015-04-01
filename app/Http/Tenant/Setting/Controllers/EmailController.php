@@ -10,7 +10,7 @@ use App\Models\Tenant\Setting;
 class EmailController extends BaseController {
 
 	protected $profile;
-	public function _construct(Profile $profile=NULL)
+	public function _construct(Profile $profile)
 	{
         \FB::can('Settings');
 		parent::_construct();
@@ -20,9 +20,9 @@ class EmailController extends BaseController {
 
     public function index()
     {
-        $profile = new Profile;
-    	$personal_email_setting = $profile->getPersonalSetting($this->current_user->id);
-    	$support_email_setting = $profile->getSupportSetting($this->current_user->id);
+        //$profile = new Profile;
+    	$personal_email_setting = $this->profile->getPersonalSetting($this->current_user->id);
+    	$support_email_setting = $this->profile->getSupportSetting($this->current_user->id);
     	$data = array('page_title' => 'Email Controller','personal'=>$personal_email_setting,'support'=>$support_email_setting);
     	return view('tenant.setting.email')->with($data);
     	//return view('tenant.setting.email');

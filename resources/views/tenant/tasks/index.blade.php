@@ -152,7 +152,7 @@ $from =  $to - $tasks['upcoming_tasks']->perPage()+1+($tasks['upcoming_tasks']->
                   <li><a href="#">2</a></li>
                   <li><a href="#">3</a></li>
                   <li><a href="#">&raquo;</a></li>
-                </ul> --}}
+                </ul> --}}  
                  @if($tasks['completed_tasks']->total() > 1)
 
 <p class="align-right">
@@ -165,10 +165,10 @@ else
 $from1 =  $to1 - $tasks['completed_tasks']->perPage()+1+($tasks['completed_tasks']->perPage()-$items1);
 ?>
 <span class="color-grey">{{$from1}}-{{$to1}} of {{$tasks['completed_tasks']->total()}}</span>
-    @if($from1 !=1)
+    @if($from1 != 1)
       <a href="#{{$tasks['completed_tasks']->currentPage()-1}}" data class="mg-lr-5 mail-previous1 color-grey"><i class="fa  fa-chevron-left"></i></a>
     @endif
-    @if($to1 != $tasks['upcoming_tasks']->total())
+    @if($to1 != $tasks['completed_tasks']->total())
       <a href="#{{$tasks['completed_tasks']->currentPage()+1}}"  class="color-grey mail-next1"><i class="fa  fa-chevron-right"></i></a>
     @endif
 </p>

@@ -63,7 +63,7 @@ function loadTaskList(type,page) {
 
     function loadCompletedList(type,page) {
         if (type != 0 && type != 1)
-            type = 0
+            type = 1
        
         if (typeof page != 'undefine' && page < 0)
             page = 1
