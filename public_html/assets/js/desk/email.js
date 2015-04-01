@@ -232,8 +232,12 @@ $(function () {
     $('.type').on('click', function () {
 
         if (!$(this).hasClass('btn-primary')) {
-            $('.type').removeClass('btn-primary');
-            $(this).addClass('btn-primary');
+
+            $('.inbox').removeClass('inbox-active');
+
+            $(this).addClass('inbox-active');
+  $('.type').removeClass('btn-primary');
+           
 
             var type = $(this).attr('id');
             var folder = $(this).attr('folder');

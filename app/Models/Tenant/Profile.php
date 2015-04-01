@@ -51,6 +51,7 @@ class Profile extends Model {
     public function getPersonalSetting($user_id = '')
     {
         $profile = Profile::firstOrCreate(['user_id' => $user_id]);
+
         $data = data_decode($profile->smtp);
         if ($data !== false) {
             return $data;

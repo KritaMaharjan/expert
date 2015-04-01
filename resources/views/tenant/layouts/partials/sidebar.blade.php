@@ -54,6 +54,7 @@
                  <ul class="treeview-menu">
                   <li><a data-push="true" href="{{tenant_route('tenant.inventory.index')}}" title="Manage Inventory"><i class="fa fa-circle-o"></i>Inventory</a></li>
                   <li><a data-push="true" href="{{tenant_route('tenant.inventory.product.index')}}" title="Add Product"><i class="fa fa-circle-o"></i>Product</a></li>
+                  <li><a data-push="true" href="{{tenant_route('tenant.inventory.stock')}}" title="Stock"><i class="fa fa-circle-o"></i>Stock</a></li>
                 </ul>
             </li> 
             @endif

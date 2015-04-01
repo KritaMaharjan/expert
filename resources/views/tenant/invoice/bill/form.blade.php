@@ -204,7 +204,9 @@
         <div class="box-header">
             <h3 class="box-title">Add New Customer</h3>
         </div>
+       
         @include('tenant.customer.createCustomer')
+       
     </div><!-- /.box-body -->
 </div>
 

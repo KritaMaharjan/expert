@@ -36,6 +36,7 @@ Product
                       <th>Action</th>
                     </tr>
                 </thead>
+               
               </table>
             </div><!-- /.box-body -->
           </div><!-- /.box -->
