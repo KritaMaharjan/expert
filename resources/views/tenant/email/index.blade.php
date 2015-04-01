@@ -38,8 +38,8 @@ $(function(){
                 <div class="">
                   <div class="col-md-12 pad-5">
                     <div id="tab-header" class="col-md-12 pad-5 mg-l-1 border-btm">
-                        <a href="javascript:;" id="personal" class="inbox-active inbox btn btn-flat">Personal Inbox</a>
-                        <a href="javascript:;" id="support" class="inbox btn btn-flat">Support Inbox</a>
+                        <a href="javascript:;" id="personal" class="type inbox-active btn btn-flat" folder=1>Personal</a>
+                        <a href="javascript:;" id="support" class="type btn btn-flat" folder=1>Support</a>
                       </div>
                     </div><!-- /.row -->
                     <div class="mail-wrap-section clearfix">
@@ -53,8 +53,12 @@ $(function(){
                           <div>
                               <ul class="nav nav-pills nav-stacked">
                                 <li class="header">Folders</li>
-                                <li class="active"><a href="#"><i class="fa fa-inbox"></i> Inbox</a></li>
-                                <li><a href="#"><i class="fa fa-mail-forward"></i> Sent</a></li>
+                                <li class="active">
+                                    <a href="javascript:;" id="inbox" class="folder"><i class="fa fa-inbox"></i> Inbox</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" id="sent" class="folder"><i class="fa fa-mail-forward"></i> Sent</a>
+                                </li>
                               </ul>
                           </div>
                         </div>
