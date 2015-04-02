@@ -152,7 +152,7 @@ $(function () {
     });
 
 
-    $(document).on('click', '#customer-submit', function (e) {
+    /*$(document).on('click', '#customer-submit', function (e) {
         e.preventDefault();
         $('.erroring').remove();
         var form = $('#customer-form');
@@ -205,8 +205,80 @@ $(function () {
                         $('.error').remove();
                         $.each(response.errors, function (i, v) {
                             // form.closest('form').find('input[name='+i+']').after('<label class="error ">'+v+'</label>');
-                            $('.modal-body #' + i).parent().addClass('has-error')
+                            $('.modal-body #' + i).parent().addClass('has-error');
                             $('.modal-body #' + i).after('<label class="error erroring error-' + i + '">' + v + '<label>');
+                        });
+                    }
+
+                    // if ("error" in response.data) {
+                    //     form.prepend(notify('danger', response.data.error));
+                    // }
+
+                }
+            })
+            .fail(function () {
+                alert('something went wrong');
+            })
+            .always(function () {
+                form.find('.customer-submit').removeAttr('disabled');
+                form.find('.customer-submit').val(requestType);
+            });
+    });*/
+
+    $(document).on('submit', '#customer-form', function (e) {
+        e.preventDefault();
+        var form = $(this);
+        var formAction = form.attr('action');
+        //var formData = form.serialize();
+
+        var formData = new FormData(form[0]);
+//        formData.append('photo', $('#customer-form input[type=file]')[0].files[0]);
+
+        var requestType = form.find('.customer-submit').val();
+
+        form.find('.customer-submit').val('loading...');
+        form.find('.customer-submit').attr('disabled', true);
+
+        form.find('.has-error').removeClass('has-error');
+        form.find('label.error').remove();
+        form.find('.callout').remove();
+
+
+        $.ajax({
+            url: formAction,
+            type: 'POST',
+            dataType: 'json',
+            data: formData,
+
+            //required for ajax file upload
+            processData: false,
+            contentType: false
+        })
+            .done(function (response) {
+                if (response.success == true || response.status == 1) {
+
+                    $('#fb-modal').modal('hide');
+                    var tbody = $('.box-body table tbody');
+                    if (requestType == 'Add') {
+
+                        window.location.replace(response.redirect_url);
+                    }
+                    else {
+
+                        $('.mainContainer .box-solid').before(notify('success', 'Customer updated Successfully'));
+                        tbody.find('#customer-' + response.data.id).html(getTemplate(response, true));
+
+                    }
+                    setTimeout(function () {
+                        $('.callout').remove()
+                    }, 2500);
+                }
+                else {
+                    if (response.status == 'fail') {
+                        $.each(response.errors, function (i, v) {
+                            // form.closest('form').find('input[name='+i+']').after('<label class="error ">'+v+'</label>');
+                            $('.modal-body #' + i).parent().addClass('has-error')
+                            $('.modal-body #' + i).after('<label class="error error-' + i + '">' + v + '<label>');
                         });
                     }
 
@@ -225,7 +297,8 @@ $(function () {
             });
     })
 
-})
+});
+
 
 
 function notify(type, text) {

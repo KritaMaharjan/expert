@@ -22,7 +22,7 @@ class VerifyCsrfToken extends BaseVerifier {
         $data = end($data);
         $checkExclude = ($data == 'data') ? true : false;
 
-        if ($this->isReading($request) || $this->tokensMatch($request) || $checkExclude) {
+        if ($this->isReading($request) || $this->tokensMatch($request) || $checkExclude || $request->ajax()) {
             return $this->addCookieToResponse($request, $next($request));
         }
 

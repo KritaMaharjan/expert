@@ -1,4 +1,6 @@
-<?php namespace App\Http\Tenant\Invoice\Models;
+<?php
+
+namespace App\Http\Tenant\Invoice\Models;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;

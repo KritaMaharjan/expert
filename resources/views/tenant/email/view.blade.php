@@ -42,13 +42,13 @@
       </button>
       <ul role="menu" class="dropdown-menu pos-right">
          <li>
-            <a href="#" data-type="<?php echo  $mail->type ? 'support' : 'personal' ;?>" title="Reply Email" data-original-title="Reply Email" data-toggle="modal" data-action="reply" data-id="<?php echo $mail->id;?>" data-target="#compose-modal"><small class="color-grey"><i class="fa fa-reply"></i></small> Reply</a>
+            <a href="#" data-type="<?php echo  $mail->type ? 'support' : 'personal' ;?>" title="Reply Email" data-original-title="Reply Email" data-toggle="modal" data-action="reply" data-id="{{ $mail->id }}" data-target="#compose-modal" folder="{{ $folder }}"><small class="color-grey"><i class="fa fa-reply"></i></small> Reply</a>
          </li>
          <li>
-            <a href="#" data-type="<?php echo  $mail->type ? 'support' : 'personal' ;?>" title="Forward Email" data-original-title="Forward Email"  data-toggle="modal" data-action="forward" data-id="<?php echo $mail->id;?>" data-target="#compose-modal"><small class="color-grey"><i class="fa fa-mail-forward"></i></small> Forward</a>
+            <a href="#" data-type="<?php echo  $mail->type ? 'support' : 'personal' ;?>" title="Forward Email" data-original-title="Forward Email"  data-toggle="modal" data-action="forward" data-id="<?php echo $mail->id;?>" data-target="#compose-modal" folder="{{ $folder }}"><small class="color-grey"><i class="fa fa-mail-forward"></i></small> Forward</a>
          </li>
          <li>
-            <a href="#" title="Delete Email" class="email-delete" data-id="<?php echo $mail->id; ?>"><small class="color-grey"><i class="fa fa-close"></i></small> Delete</a>
+            <a href="#" folder = "{{$folder}}" title="Delete Email" class="email-delete" data-id="<?php echo $mail->id; ?>"><small class="color-grey"><i class="fa fa-close"></i></small> Delete</a>
          </li>
       </ul>
     </div>

@@ -77,45 +77,45 @@ $(function () {
         form.find('.has-error').removeClass('has-error');
         var sending = false;
 
-        if(!sending){
+        if (!sending) {
             sending = true
-        $.ajax({
-            url: action,
-            type: 'POST',
-            dataType: 'json',
-            data: form.serialize()
-        })
-            .done(function (response) {
+            $.ajax({
+                url: action,
+                type: 'POST',
+                dataType: 'json',
+                data: form.serialize()
+            })
+                .done(function (response) {
 
-                if (response.status == '1') {
-                    $('#compose-modal').modal('hide');
-                    var tbody = $('.table-mailbox');
-                    $('.content').prepend(notify('success', 'Message sent'));
-                    //tbody.prepend(getTemplate(response.data));
-                    setTimeout(function () {
-                        $('.callout').remove()
-                    }, 4000);
-                }
-                else {
-                    if ("errors" in response.data) {
-                        $.each(response.data.errors, function (id, error) {
-                            form.find('#' + id).parent().parent().addClass('has-error')
-                            form.find('#' + id).parent().parent().append('<label class="error error-' + id + '">' + error[0] + '<label>');
-                        })
+                    if (response.status == '1') {
+                        $('#compose-modal').modal('hide');
+                        var tbody = $('.table-mailbox');
+                        $('.content').prepend(notify('success', 'Message sent'));
+                        //tbody.prepend(getTemplate(response.data));
+                        setTimeout(function () {
+                            $('.callout').remove()
+                        }, 4000);
                     }
+                    else {
+                        if ("errors" in response.data) {
+                            $.each(response.data.errors, function (id, error) {
+                                form.find('#' + id).parent().parent().addClass('has-error')
+                                form.find('#' + id).parent().parent().append('<label class="error error-' + id + '">' + error[0] + '<label>');
+                            })
+                        }
 
-                    if ("error" in response.data) {
-                        form.prepend(notify('danger', response.data.error));
+                        if ("error" in response.data) {
+                            form.prepend(notify('danger', response.data.error));
+                        }
                     }
-                }
-            })
-            .fail(function () {
-               console.log("Connect Error!");
-            })
-            .done(function(){
-                sending = false;
-                form.find('.btn-email-submit').removeAttr('disabled');
-            })
+                })
+                .fail(function () {
+                    console.log("Connect Error!");
+                })
+                .done(function () {
+                    sending = false;
+                    form.find('.btn-email-submit').removeAttr('disabled');
+                })
 
         }
 
@@ -148,12 +148,11 @@ $(function () {
         var action = button.data('action');
         var type = button.data('type');
 
-       //@pooja
+        //@pooja
 
-        if(action =='reply')
-        {
-           $('.modal-title span').html('Reply to Message');
-        }else if(action == 'forward'){
+        if (action == 'reply') {
+            $('.modal-title span').html('Reply to Message');
+        } else if (action == 'forward') {
             $('.modal-title span').html('Forward Message');
         }
 
@@ -171,15 +170,15 @@ $(function () {
 
         if (typeof action != 'undefined') {
             var id = button.data('id');
+            var folder = button.attr('folder');
             $.ajax({
-                url: appUrl + 'desk/email/' + id + '/get',
+                url: appUrl + 'desk/email/' + id + '/get?folder='+folder,
                 type: 'GET',
                 dataType: 'json'
             })
                 .done(function (response) {
                     var mail = response.data.mail;
-                    if (action == 'reply')
-                    {
+                    if (action == 'reply') {
                         $('#email_to').val(mail.to);
                         $('#email_cc').val(mail.cc);
                         $('#subject').val('RE: ' + mail.subject);
@@ -191,7 +190,7 @@ $(function () {
                     $('iframe').contents().find('body').html(mail.message);
                     //    $('#note').val(mail.note);
 
-                    if (mail.attachments.length > 0) {
+                    if (typeof(mail.attachments) != "undefined" && mail.attachments !== null && mail.attachments.length > 0) {
                         //$('#filelist').append(getTemplateFields(mail.attachments));
                     }
 
@@ -233,11 +232,9 @@ $(function () {
 
         if (!$(this).hasClass('btn-primary')) {
 
-            $('.inbox').removeClass('inbox-active');
-
+            $('.type').removeClass('inbox-active');
             $(this).addClass('inbox-active');
-  $('.type').removeClass('btn-primary');
-           
+            $('.type').removeClass('btn-primary');
 
             var type = $(this).attr('id');
             var folder = $(this).attr('folder');
@@ -251,6 +248,7 @@ $(function () {
 
     });
 
+    // Change Folder
     $('.folder').on('click', function () {
 
         if (!$(this).parent().hasClass('active')) {
@@ -271,13 +269,14 @@ $(function () {
 
     });
 
+    // Show Mail Details
     $(document).on('click', '.table-mailbox a', function (e) {
         e.preventDefault();
         var id = $(this).attr('data-id');
         var folder = $(this).attr('folder');
 
         if (!$('#email-single').hasClass('email-' + id)) {
-            $('#email-single').load(appUrl + 'desk/email/' + id + '/show?folder='+folder);
+            $('#email-single').load(appUrl + 'desk/email/' + id + '/show?folder=' + folder);
             $('#email-single').removeClass(function (index, css) {
                 return (css.match(/(^|\s)email-\S+/g) || []).join(' ');
             });
@@ -285,17 +284,16 @@ $(function () {
         }
     });
 
-
     // Delete Email
-
     $(document).on('click', '.email-delete', function (e) {
         e.preventDefault();
 
         if (!confirm('Are you sure, you want to delete email permanently?')) return false;
 
         var id = $(this).data('id');
+        var folder = $(this).attr('folder');
         $.ajax({
-            url: appUrl + 'desk/email/' + id + '/delete',
+            url: appUrl + 'desk/email/' + id + '/delete?folder=' + folder,
             type: 'GET',
             dataType: 'json'
         })
@@ -313,7 +311,7 @@ $(function () {
                 }
             })
             .fail(function () {
-                alert("Connect error!");
+                alert("Connection error!");
             })
     });
 
@@ -368,9 +366,11 @@ $(function () {
             wrap.remove();
         }
 
-
     });
 
+    function notify(type, text) {
+        return '<div class="callout callout-' + type + '"><p>' + text + '</p></div>';
+    }
 
 });
 
