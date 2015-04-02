@@ -62,8 +62,7 @@ Route::group($group_auth, function () {
         get('email/{id}/show', ['as' => 'tenant.email.show', 'uses' => 'EmailController@show']);
         get('email/{id}/get', ['as' => 'tenant.email.get', 'uses' => 'EmailController@get']);
         get('email/delete/attach', ['as' => 'tenant.email.attach.delete', 'uses' => 'EmailController@deleteAttachment']);
-
-         get('email/search_emails', ['as' => 'tenant.email.search', 'uses' => 'EmailController@search_email']);
+        get('email/search_emails', ['as' => 'tenant.email.search', 'uses' => 'EmailController@search_email']);
 
         get('email/inbox', ['as' => 'tenant.email.inbox', 'uses' => 'IncomingEmailController@inbox']);
 
@@ -85,11 +84,17 @@ Route::group($group_auth, function () {
         get('lists', 'AccountingController@lists');
         get('setup', 'AccountingController@setup');
         get('new-business', 'AccountingController@newBusiness');
-
     });
 
+    // Registered by Krita
+    Route::group(['namespace' => 'Tenant\Statistics\Controllers'], function () {
+        get('statistics', 'StatisticsController@index');
+    });
 
-
+    // Registered by Krita
+    Route::group(['namespace' => 'Tenant\Report\Controllers'], function () {
+        get('report', 'ReportController@index');
+    });
 
     Route::group(['namespace' => 'Tenant\Inventory\Controllers'], function () {
 
@@ -101,7 +106,7 @@ Route::group($group_auth, function () {
         get('inventory/product/{id}/edit', ['as' => 'tenant.inventory.product.edit', 'uses' => 'ProductController@edit']);
         post('inventory/product/{id}/edit', ['as' => 'tenant.inventory.product.update', 'uses' => 'ProductController@update']);
         get('inventory/product/{id}/delete', ['as' => 'tenant.inventory.product.delete', 'uses' => 'ProductController@delete']);
-          get('inventory/stock', ['as' => 'tenant.inventory.stock', 'uses' => 'ProductController@stock']);
+        get('inventory/stock', ['as' => 'tenant.inventory.stock', 'uses' => 'ProductController@stock']);
 
 
         // Registered By Krita
@@ -135,6 +140,7 @@ Route::group($group_auth, function () {
         get('invoice/bill/{id}/download', ['as' => 'tenant.invoice.bill.download', 'uses' => 'BillController@download']);
         get('invoice/bill/{id}/print', ['as' => 'tenant.invoice.bill.download', 'uses' => 'BillController@printBill']);
         get('invoice/bill/{id}/mail', ['as' => 'tenant.invoice.bill.email', 'uses' => 'BillController@sendEmail']);
+        post('invoice/bill/{id}/payment', ['as' => 'tenant.invoice.bill.payment', 'uses' => 'BillController@payment']);
 
         // invoice routes
         get('invoice', ['as' => 'tenant.invoice.index', 'uses' => 'InvoiceController@index']);
@@ -236,8 +242,7 @@ Route::group($group_auth, function () {
         get('customer/suggestions', ['as' => 'tenant.customer.suggestions', 'uses' => 'Tenant\Customer\CustomerController@getCustomerSuggestions']);
         get('customer/details/{customerId}', ['as' => 'tenant.customer.details', 'uses' => 'Tenant\Customer\CustomerController@getCustomerDetails']);
         post('test/upload', ['as' => 'test.upload', 'uses' => 'Tenant\Customer\CustomerController@testUpload']);
-         post('customer/invoices/data', ['as' => 'tenant.inventory.customer.data', 'uses' => 'Tenant\Customer\CustomerController@invoices']);
-
+        post('customer/invoices/data', ['as' => 'tenant.inventory.customer.data', 'uses' => 'Tenant\Customer\CustomerController@invoices']);
 
     });
 

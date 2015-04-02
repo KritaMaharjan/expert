@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Laracasts\Flash\Flash;
 use App\Models\Tenant\Setting;
+use App\Http\Tenant\Invoice\Models\Payment;
 
 class BillController extends BaseController {
 
@@ -26,12 +27,6 @@ class BillController extends BaseController {
         $this->request = $request;
         $this->setting = $setting;
     }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
 
     protected $rules = [
         'customer' => 'required',
@@ -238,6 +233,23 @@ class BillController extends BaseController {
         return view('template.print', compact('data'));
     }
 
+    function payment(Payment $payment)
+    {
+        if($this->request->ajax()) {
+            $payment_rules = [
+                'payment_date' => 'required|date',
+                'paid_amount' => 'required'
+            ];
+
+            $validator = Validator::make($this->request->all(), $payment_rules);
+            if ($validator->fails())
+                return $this->fail(['errors' => $validator->getMessageBag()]);
+
+            $id = $this->request->route('id');
+            $pay_details = $payment->add($this->request, $id);
+            return ($pay_details) ? $this->success($pay_details) : $this->fail(['errors' => 'Something went wrong!']);
+        }
+    }
 
     function getInfo($id)
     {
