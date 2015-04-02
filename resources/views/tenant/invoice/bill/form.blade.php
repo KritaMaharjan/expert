@@ -158,7 +158,7 @@
               <td><span class="border-bx block vat"> </span></td>
               <td class="position-relative">
                 <div class="action-buttons">
-                    <a title="Delete" class="invoice-delete fa fa-close btn-danger" href="#"></a>
+                    <a title="Delete" class="invoice-delete fa fa-close btn-danger" href="javascript:;"></a>
                 </div>
                 <span class="border-bx block total"> </span>
               </td>

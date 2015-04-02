@@ -53,6 +53,12 @@ $(function(){
                           <div>
                               <ul class="nav nav-pills nav-stacked">
                                 <li class="header">Folders</li>
+                                {{--<li class="active">
+                                    <a href="javascript:;" id="inbox" class="folder"><i class="fa fa-inbox"></i> Inbox</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" id="sent" class="folder"><i class="fa fa-mail-forward"></i> Sent</a>
+                                </li>--}}
                                 <li class="active">
                                     <a href="javascript:;" id="inbox" class="folder"><i class="fa fa-inbox"></i> Inbox</a>
                                 </li>

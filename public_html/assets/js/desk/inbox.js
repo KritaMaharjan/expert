@@ -48,7 +48,7 @@ $(function () {
         $.ajax({
             url: appUrl + 'desk/email/inbox/' + id + '/delete',
             type: 'GET',
-            dataType: 'json',
+            dataType: 'json'
         })
             .done(function (response) {
                 if (response.status == 1) {
