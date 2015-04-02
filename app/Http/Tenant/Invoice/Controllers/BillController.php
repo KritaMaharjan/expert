@@ -54,6 +54,7 @@ class BillController extends BaseController {
         }
     }
 
+
     public function add()
     {
         $months = \Config::get('tenant.month');
@@ -98,25 +99,14 @@ class BillController extends BaseController {
         return tenant()->route('tenant.invoice.bill.index');
     }
 
-
-    /**
-     * Display product detail
-     * @return string
-     */
-    function show()
+    function view()
     {
         $id = $this->request->route('id');
-        $bill = $this->bill->find($id);
+        $bill = $this->bill->with('payments')->find($id);
         if ($bill == null) {
             show_404();
         }
-
-        if ($this->request->ajax()) {
-            return $this->success($bill->toArray());
-        }
-
-        return view('tenant.inventory.product.show', compact('product'));
-
+        return view('tenant.invoice.bill.view', compact('bill'));
     }
 
 
@@ -161,7 +151,6 @@ class BillController extends BaseController {
 
         return tenant()->route('tenant.invoice.bill.index');
     }
-
 
     function delete()
     {

@@ -6,6 +6,7 @@ use App\Http\Controllers\Tenant\BaseController;
 use App\Http\Tenant\Email\Models\Attachment;
 use App\Http\Tenant\Email\Models\Receiver;
 use App\Models\Tenant\Customer;
+use App\Models\Tenant\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Tenant\Email\Models\Email;
@@ -24,7 +25,7 @@ class EmailController extends BaseController {
     protected $password = '@1uc!0';
     protected $port = 25;
 
-    function __construct(Request $request, Email $email, Attachment $attachment, Receiver $receiver, IncomingEmail $incomingEmail)
+    function __construct(Request $request, Email $email, Attachment $attachment, Receiver $receiver, IncomingEmail $incomingEmail, Setting $setting)
     {
 
         parent::__construct();
@@ -33,6 +34,7 @@ class EmailController extends BaseController {
         $this->attachment = $attachment;
         $this->receiver = $receiver;
         $this->incomingEmail = $incomingEmail;
+        $this->setting = $setting;
     }
 
     function index()
@@ -173,7 +175,7 @@ class EmailController extends BaseController {
         if($folder == 0)
             $data['mails'] = $this->email->user()->orderBy('created_at', 'DESC')->type($type)->with('attachments', 'receivers')->paginate($per_page);
         else {
-            $this->readUserEmail();
+            $this->readUserEmail($type);
             $data['mails'] = $this->incomingEmail->user()->orderBy('created_at', 'DESC')->type($type)->paginate($per_page);
         }
         return view('tenant.email.list', $data);
@@ -235,10 +237,15 @@ class EmailController extends BaseController {
      }
 
 
-    function readUserEmail()
+    function readUserEmail($type = 0)
     {
-        $user = current_user();
-        $smtp = (object)$user->profile->smtp;
+        if($type == 0) {
+            $user = current_user();
+            $smtp = (object)$user->profile->smtp;
+        }
+        else {
+            $smtp = (object)$this->setting->getSupportSetting;
+        }
         $validSmtp = $this->validateSmtp($smtp);
         //$validSmtp = true;
         if ($validSmtp === true) {
@@ -247,7 +254,7 @@ class EmailController extends BaseController {
 
             if ($mailbox->connect()) {
                 $data = $mailbox->read($user->profile->email_sync_at);
-                $this->recordEmail($data);
+                $this->recordEmail($data, $type);
             } else {
                 return $this->fail(array('error' => $mailbox->error()));
             }
@@ -255,10 +262,10 @@ class EmailController extends BaseController {
         return $this->fail(array('error' => $validSmtp));
     }
 
-    private function recordEmail($data)
+    private function recordEmail($data, $type)
     {
         if($data)
-            $this->incomingEmail->saveEmail($data);
+            $this->incomingEmail->saveEmail($data, $type);
     }
 
     private function validateSmtp($smtp)

@@ -208,6 +208,9 @@ $(function () {
 
     function showActionbtn(row) {
         return '<div class="box-tools"> ' +
+        '<a href="#" title="View Payments" data-original-title="View" class="btn btn-box-tool" data-toggle="modal" data-url="' + row.view_url + '" data-target="#fb-modal">' +
+        '<i class="fa fa-eye"></i>' +
+        '</a>' +
         '<a href="' + appUrl + 'invoice/'+thisUrl+'/' + row.id + '/edit" title="Edit" class="btn btn-box-tool">' +
         '<i class="fa fa-edit"></i>' +
         '</a>' +

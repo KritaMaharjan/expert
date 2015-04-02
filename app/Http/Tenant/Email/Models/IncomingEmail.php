@@ -40,7 +40,7 @@ class IncomingEmail extends Model {
         $query->where('type', $type);
     }
 
-    function saveEmail($mails)
+    function saveEmail($mails, $type = 0)
     {
         foreach ($mails as $mail) {
             $exists = IncomingEmail::select('msid')->where('msid', 600)->where('user_id', current_user()->id)->exists();
@@ -55,7 +55,7 @@ class IncomingEmail extends Model {
                     'body_html' => $mail->body,
                     'body_text' => $mail->body_text,
                     'is_seen' => $mail->isSeen,
-                    'type' => 0,
+                    'type' => $type,
                     'received_at' => $mail->receivedDate
                 ]);
             }
