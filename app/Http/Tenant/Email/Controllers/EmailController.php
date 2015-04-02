@@ -239,17 +239,17 @@ class EmailController extends BaseController {
 
     function readUserEmail($type = 0)
     {
+        $user = current_user();
         if($type == 0) {
-            $user = current_user();
             $smtp = (object)$user->profile->smtp;
         }
         else {
-            $smtp = (object)$this->setting->getSupportSetting;
+            $smtp = (object)$this->setting->getSupportSetting();
         }
         $validSmtp = $this->validateSmtp($smtp);
         //$validSmtp = true;
         if ($validSmtp === true) {
-            $mailbox = new EmailReader($user->smtp->incoming_server, $user->smtp->email, $user->smtp->password, $user->smtp->port);
+            $mailbox = new EmailReader($smtp->incoming_server, $smtp->email, $smtp->password, $smtp->port);
             //$mailbox = new EmailReader($this->host, $this->host_email, $this->password, 993);
 
             if ($mailbox->connect()) {
