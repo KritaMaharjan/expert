@@ -47,10 +47,14 @@ $(function () {
 
     $(document).on('submit', '#product-form', function (e) {
         e.preventDefault();
+        alert('c');
         var form = $(this);
         var formAction = form.attr('action');
         var formData = form.serialize();
         var requestType = form.find('.product-submit').val();
+        var sp = $('#selling_price').val();
+        var cp = $('#purchase_cost').val();
+        var vat = $('#vat').val();
 
         form.find('.product-submit').val('loading...');
         form.find('.product-submit').attr('disabled', 'disabled');
@@ -58,6 +62,14 @@ $(function () {
         form.find('.has-error').removeClass('has-error');
         form.find('label.error').remove();
         form.find('.callout').remove();
+       
+       if(parseInt(sp) > parseInt(cp)){
+            $('.modal-body #purchase_cost').parent().addClass('has-error')
+            $('.modal-body #purchase_cost').after('<label class="error error-purchase_cost">Selling cost must be greater than purchased cost.<label>');
+             form.find('.product-submit').removeAttr('disabled');
+            form.find('.product-submit').val('Add');
+            
+       }else{
 
         $.ajax({
             url: formAction,
@@ -104,6 +116,10 @@ $(function () {
                 form.find('.product-submit').removeAttr('disabled');
                 form.find('.product-submit').val(requestType);
             });
+
+       }
+
+
     })
     return false;
 })

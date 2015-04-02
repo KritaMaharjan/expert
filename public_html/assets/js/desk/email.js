@@ -229,14 +229,17 @@ $(function () {
 
     loadEmailList(0, 1, 1);
 
+   
+
     $('.type').on('click', function () {
+        $('.type').removeClass('inbox-active');
+
 
         if (!$(this).hasClass('btn-primary')) {
 
-            $('.inbox').removeClass('inbox-active');
-
+            
             $(this).addClass('inbox-active');
-  $('.type').removeClass('btn-primary');
+            
            
 
             var type = $(this).attr('id');
