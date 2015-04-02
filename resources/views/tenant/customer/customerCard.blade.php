@@ -36,7 +36,7 @@ $successCallback ="
 ?>
 <script type="text/javascript">
 $(function(){
-    {!! plupload()->button('attachment')->maxSize('2mb')->mimeTypes('image')->url(url('/desk/email/upload/data'))->autoStart(true)->success($successCallback)->init() !!}
+    {!! plupload()->button('attachment')->maxSize('20mb')->mimeTypes('image')->url(url('/desk/email/upload/data'))->autoStart(true)->success($successCallback)->init() !!}
 });
 </script>
 
@@ -307,7 +307,7 @@ $from =  $to - $mails->perPage()+1+($mails->perPage()-$items);
                                 Attachment
                             </a>
                         </div>
-                        <p class="help-block">Max. 2MB</p>
+                        <p class="help-block">Max. 20MB</p>
                          <div id='filelist'>Your browser doesn't have Flash, Silverlight or HTML5 support.</div>
                     </div>
 

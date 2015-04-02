@@ -304,6 +304,8 @@ class TenantTable {
                 $table->integer('user_id')->unsign()->index();
                 $table->integer('vacation_days')->unsign()->index();
                 $table->integer('sick_days')->unsign()->index();
+                 $table->date('from');
+                  $table->date('to');
 
 
                 // created_at, updated_at DATETIME
