@@ -234,18 +234,12 @@ $(function () {
         $('.type').removeClass('inbox-active');
 
 
-<<<<<<< HEAD
+
         if (!$(this).hasClass('btn-primary')) {
 
             
             $(this).addClass('inbox-active');
-            
-           
-=======
-            $('.type').removeClass('inbox-active');
-            $(this).addClass('inbox-active');
-            $('.type').removeClass('btn-primary');
->>>>>>> 98588e55deca1d008aded354387ad24f3eb2320e
+
 
             var type = $(this).attr('id');
             var folder = $(this).attr('folder');
