@@ -13,7 +13,7 @@ Accounting Setup
 	                	<a href="#" class="btn btn-primary">
 	                		Migration from previous accounts
 	                	</a>
-	                	<a href="#" class="btn btn-warning">
+	                	<a href="http://demo.mashbooks.app/accounting/new-business" class="btn btn-warning">
 	                		This is a new business - I have no previous accounts
 	                	</a>
 	                </div>
