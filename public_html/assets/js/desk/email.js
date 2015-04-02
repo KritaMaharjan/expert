@@ -228,7 +228,7 @@ $(function () {
 
     loadEmailList(0, 1, 1);
 
-   
+
 
     $('.type').on('click', function () {
         $('.type').removeClass('inbox-active');
@@ -250,6 +250,7 @@ $(function () {
                 loadEmailList(support_type, 1, folder);
             }
         }
+        
 
     });
 
