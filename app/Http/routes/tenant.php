@@ -86,10 +86,15 @@ Route::group($group_auth, function () {
         get('new-business', 'AccountingController@newBusiness');
     });
 
+    // Registered by Krita
     Route::group(['namespace' => 'Tenant\Statistics\Controllers'], function () {
         get('statistics', 'StatisticsController@index');
     });
 
+    // Registered by Krita
+    Route::group(['namespace' => 'Tenant\Report\Controllers'], function () {
+        get('report', 'ReportController@index');
+    });
 
     Route::group(['namespace' => 'Tenant\Inventory\Controllers'], function () {
 
