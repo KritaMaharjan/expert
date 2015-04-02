@@ -41,7 +41,7 @@ VAT
             		<p><strong>Based on the year and term above display information as such:</strong></p>
             	</div>
 	        	<div class="col-md-12 table-responsive">
-	        		<table class="table product-table">	        			
+	        		<table class="table table-striped product-table">	        			
 	        			<tbody>
 	        				<tr>
 	        					<td>Post 1</td>

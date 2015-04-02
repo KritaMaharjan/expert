@@ -20,11 +20,11 @@ Tasks
                   <i class="ion ion-clipboard"></i>
                   <h3 class="box-title">Upcoming Tasks</h3>
                   <div class="box-tools pull-right">
-                    <a class="btn btn-primary pull-right" data-toggle="modal" data-url="#task-modal-data" data-target="#fb-modal">
+                    <a class="btn btn-primary" data-toggle="modal" data-url="#task-modal-data" data-target="#fb-modal">
                         <i class="fa fa-plus"></i> Add new task
                     </a>
 
-                    <a class="btn btn-primary pull-right" data-toggle="modal" data-url="#todo-modal-data" data-target="#fb-modal">
+                    <a class="btn btn-primary" data-toggle="modal" data-url="#todo-modal-data" data-target="#fb-modal">
                         <i class="fa fa-tasks"></i> To Do List
                     </a>
 
