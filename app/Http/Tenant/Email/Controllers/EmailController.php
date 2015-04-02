@@ -240,10 +240,10 @@ class EmailController extends BaseController {
         $user = current_user();
         $smtp = (object)$user->profile->smtp;
         $validSmtp = $this->validateSmtp($smtp);
-        $validSmtp = true;
+        //$validSmtp = true;
         if ($validSmtp === true) {
-            //$mailbox = new EmailReader($user->smtp->incoming_server, $user->smtp->email, $user->smtp->password, $user->smtp->port);
-            $mailbox = new EmailReader($this->host, $this->host_email, $this->password, 993);
+            $mailbox = new EmailReader($user->smtp->incoming_server, $user->smtp->email, $user->smtp->password, $user->smtp->port);
+            //$mailbox = new EmailReader($this->host, $this->host_email, $this->password, 993);
 
             if ($mailbox->connect()) {
                 $data = $mailbox->read($user->profile->email_sync_at);

@@ -127,7 +127,9 @@ class Setting extends Model {
 
     public function getSupportSetting() {
         $support_smtp = Setting::where('name', 'support_smtp')->first();
-        return isset($support_smtp) ? @unserialize($support_smtp) : null;
+        //$abc = ($support_smtp) ? $support_smtp->value : null;
+        //dd($abc);
+        return ($support_smtp) ? ($support_smtp->value) : null;
     }
 
 }
