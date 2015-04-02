@@ -228,13 +228,18 @@ $(function () {
 
     loadEmailList(0, 1, 1);
 
+
+
     $('.type').on('click', function () {
+        $('.type').removeClass('inbox-active');
+
+
 
         if (!$(this).hasClass('btn-primary')) {
 
-            $('.type').removeClass('inbox-active');
+            
             $(this).addClass('inbox-active');
-            $('.type').removeClass('btn-primary');
+
 
             var type = $(this).attr('id');
             var folder = $(this).attr('folder');
@@ -245,6 +250,7 @@ $(function () {
                 loadEmailList(support_type, 1, folder);
             }
         }
+        
 
     });
 

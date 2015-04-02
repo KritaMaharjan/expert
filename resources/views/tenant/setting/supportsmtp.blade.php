@@ -45,8 +45,7 @@
         <div class="form-group no-mg">
             <label class="control-label">Password</label>
             <div class="@if($errors->has('password')) {{'has-error'}} @endif">
-            {!!Form::password('password', array('class' => 'form-control', 'id' => 'password'))!!}
-
+             <input type="password" name="password"  class="form-control" value="<?php echo isset($support_smtp['password'])?$support_smtp['password']:'';?>">  
             @if($errors->has('password'))
                 {!! $errors->first('password', '<label class="control-label" for="inputError">:message</label>') !!}
             @endif

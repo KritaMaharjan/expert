@@ -252,12 +252,14 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             $details->status = '<span class="label label-warning">Pending</span>';
 
         $details->created = $details->created_at->format('d-M-Y h:i:s A');
+          $details->days = '<a href="#" title="Register vacation" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' . tenant()->url('user/registerDays/vacation') . "/" . $details->guid . '" data-target="#fb-modal">Vacation</a><a href="#" title="Register Sick days" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' . tenant()->url('user/registerDays/sick') . "/" . $details->guid . '" data-target="#fb-modal">Sick</a>';
 
 
         $template = "<td>" . $details->fullname . "</td>
                      <td>" . $details->created . "</td>
                      <td>" . $details->email . "</td>
-                     <td>" . $details->status . "</td>";
+                     <td>" . $details->status . "</td>
+                     <td>" . $details->days . "</td>";
 
         return $template;
     }
