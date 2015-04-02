@@ -245,7 +245,7 @@ class General {
         $user = Auth::user();
         if($user)
         {
-            $permissions = ($user->permissions!='') ? @unserialize($user->permissions) : '';
+            $permissions = ($user->permissions!='') ? @unserialize($user->permissions) : array();
             if ($user->role == 1 || in_array($access, $permissions)) {
                 return true;
             } else {

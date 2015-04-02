@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Http\Controllers\Tenant\Settings;
 use App\Http\Controllers\Tenant\BaseController;
 use Illuminate\Support\Facades\Validator;
@@ -36,16 +36,16 @@ class EmailController extends BaseController {
                                             'outgoing_server' => 'required',
                                             'username' => 'required',
                                             'password' => 'required',
-                                           
-                                
+
+
                                             )
                                         );
 
         if ($validator->fails())
         {
             return \Response::json(array('status' => 'false', 'errors' => $validator->getMessageBag()->toArray()));
-        } 
-        else 
+        }
+        else
         {
     	$details = serialize([
         						'incoming_server'=>$all['incoming_server'],
@@ -57,8 +57,8 @@ class EmailController extends BaseController {
 
     	$profile = new Profile;
         $user_id = $this->current_user->id;
-       
-        
+
+
 
     	$profile->updateprofile($user_id,$details,$flied);
 

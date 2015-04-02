@@ -225,12 +225,12 @@ class EmailController extends BaseController {
 
 
      function search_email(){
-        
+
         $search_option = $this->request->input('search_option');
         $user_id = $this->request->input('user_id');
         $perpage = 10;
         $mails = $this->email->getSearchEmail($user_id,$search_option);
-         
+
         return view('tenant.customer.emailList', compact('mails'));
      }
 

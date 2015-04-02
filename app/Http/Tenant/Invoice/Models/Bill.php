@@ -77,6 +77,7 @@ class Bill extends Model {
             $bill->subtotal = $subtotal;
             $bill->tax = $tax;
             $bill->total = $alltotal;
+            $bill->remaining = $alltotal;
             $bill->customer_payment_number = format_id($bill->customer_id).format_id($bill->id);
             $bill->save();
 
