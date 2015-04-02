@@ -21,7 +21,7 @@ Tasks
                   <h3 class="box-title">Upcoming Tasks</h3>
                   <div class="box-tools pull-right">
                     <a class="btn btn-primary" data-toggle="modal" data-url="#task-modal-data" data-target="#fb-modal">
-                        <i class="fa fa-plus"></i> Add new task
+                        <i class="fa fa-plus"></i> Add New Task
                     </a>
 
                     <a class="btn btn-primary" data-toggle="modal" data-url="#todo-modal-data" data-target="#fb-modal">
