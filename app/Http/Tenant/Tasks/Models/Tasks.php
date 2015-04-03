@@ -34,7 +34,8 @@ class Tasks extends Model
         $task = Tasks::create([
             'subject' => $request->input('subject'),
             'body' => $request->input('body'),
-            'due_date' => $request->input('due_date')
+            'due_date' => $request->input('due_date'),
+            'is_complete' => 0
         ]);
 
         $task = $task->toArray();
@@ -109,7 +110,7 @@ class Tasks extends Model
 
     function getTasks()
     {
-         $per_page = 1;
+         $per_page = 10;
         $today = \Carbon::now()->format('Y-m-d');
         $tomorrow = \Carbon::now()->addDay()->format('Y-m-d');
         $tasks = array();

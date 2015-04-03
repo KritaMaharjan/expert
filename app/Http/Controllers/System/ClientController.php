@@ -209,6 +209,8 @@ class ClientController extends BaseController {
 
             return redirect('system/client');
                
+        }else{
+             show_404();
         }
 
     }

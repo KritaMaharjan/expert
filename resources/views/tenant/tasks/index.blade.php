@@ -23,11 +23,10 @@ Tasks
                     <a class="btn btn-primary" data-toggle="modal" data-url="#task-modal-data" data-target="#fb-modal">
                         <i class="fa fa-plus"></i> Add New Task
                     </a>
-
-                    <a class="btn btn-primary" data-toggle="modal" data-url="#todo-modal-data" data-target="#fb-modal">
+                    {{--<a class="btn btn-primary" data-toggle="modal" data-url="#todo-modal-data" data-target="#fb-modal">
                         <i class="fa fa-tasks"></i> To Do List
                     </a>
-
+--}}
                   </div>
                 </div><!-- /.box-header -->
                 <div class="box-body task-list" id="task-list">
@@ -100,19 +99,5 @@ Tasks
     })
   });
 </script>
-
-<div class="container">
-<div class="row">
-<div class='col-sm-6'>
-<div class="form-group">
-<div class='input-group date' id='datetimepicker1'>
-<input type='text' class="form-control" />
-<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-</span>
-</div>
-</div>
-</div>
-</div>
-</div>
 
 @stop

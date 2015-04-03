@@ -54,7 +54,6 @@ Route::group($group_auth, function () {
         post('email/upload/data', ['as' => 'desk.email.upload', 'uses' => 'EmailController@attach']);
         post('email/send', ['as' => 'desk.email.send', 'uses' => 'EmailController@send']);
         get('email/customer/search', ['as' => 'tenant.email.customer.search', 'uses' => 'EmailController@customerSearch']);
-        post('email/send', ['as' => 'desk.email.send', 'uses' => 'EmailController@send']);
         get('email/{id}/delete', ['as' => 'tenant.email.delete', 'uses' => 'EmailController@delete']);
         get('email/{id}/reply', ['as' => 'tenant.email.reply', 'uses' => 'EmailController@reply']);
         get('email/{id}/forward', ['as' => 'tenant.email.forward', 'uses' => 'EmailController@forward']);

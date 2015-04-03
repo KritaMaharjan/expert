@@ -73,8 +73,15 @@ class Product extends Model {
         $this->purchase_cost = $this->purchase_cost();
         $this->selling_price = $this->selling_price();
         $this->vat = $this->vat();
+        $this->is_inventory = $this->in_inventory($this->id);
 
         return $this->toArray();
+    }
+
+    function in_inventory($product_id){
+        $inventory = \DB::table('fb_inventory')->where('product_id', $product_id)->first();
+        return $inventory;
+
     }
 
 
@@ -143,7 +150,7 @@ class Product extends Model {
 
 
             }
-            $bill = \DB::table('fb_bill_product')->where('product_id',$value->id)->get();
+            $bill = \DB::table('fb_bill_products')->where('product_id',$value->id)->get();
              foreach ($bill as $key => $pro) {
                 $total_bill += $pro->quantity;
 
