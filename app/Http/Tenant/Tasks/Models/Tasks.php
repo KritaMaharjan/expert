@@ -110,7 +110,7 @@ class Tasks extends Model
 
     function getTasks()
     {
-         $per_page = 1;
+         $per_page = 10;
         $today = \Carbon::now()->format('Y-m-d');
         $tomorrow = \Carbon::now()->addDay()->format('Y-m-d');
         $tasks = array();
