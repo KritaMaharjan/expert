@@ -64,7 +64,7 @@
   </div><!-- /.box-header -->
   <div class="box-body">
         @if($folder == 0)
-            {!! nl2br($mail->message) !!}
+            {!! $mail->message !!}
         @else
             {!! $mail->body_html !!}
         @endif
