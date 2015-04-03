@@ -56,3 +56,11 @@ $from1 =  $to1 - $tasks['completed_tasks']->perPage()+1+($tasks['completed_tasks
     @endif
 </p>
 @endif
+
+<script src="{{ asset('assets/plugins/iCheck/icheck.min.js')}}" type="text/javascript"></script>
+<script>
+    $('input[type="checkbox"]').iCheck({
+        checkboxClass: 'icheckbox_flat-blue',
+        radioClass: 'iradio_flat-blue'
+    });
+</script>
