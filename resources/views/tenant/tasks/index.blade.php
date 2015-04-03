@@ -17,7 +17,7 @@ Tasks
             <!-- TO DO List -->
               <div class="box box-solid">
                 <div class="box-header">
-                  <i class="ion ion-clipboard"></i>
+                  <i class="fa fa-clipboard"></i>
                   <h3 class="box-title">Upcoming Tasks</h3>
                   <div class="box-tools pull-right">
                     <a class="btn btn-primary" data-toggle="modal" data-url="#task-modal-data" data-target="#fb-modal">
@@ -52,7 +52,7 @@ Tasks
           <!-- TO DO List -->
             <div class="box box-solid">
               <div class="box-header">
-                <i class="ion ion-clipboard"></i>
+                <i class="fa fa-clipboard"></i>
                 <h3 class="box-title">Completed List</h3>
               </div><!-- /.box-header -->
               <div class="box-body" id="completed-list">

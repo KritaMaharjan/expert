@@ -80,7 +80,6 @@ class Pdf {
         //Close and output PDF document
         if ($download)
             $this->pdf->Output($filename . '.pdf', 'D');
-
         else
             $this->pdf->Output($this->uploadPath . $filename . '.pdf', 'I');
         return true;
