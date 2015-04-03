@@ -47,7 +47,7 @@ $(function () {
 
     $(document).on('submit', '#product-form', function (e) {
         e.preventDefault();
-        alert('c');
+        
         var form = $(this);
         var formAction = form.attr('action');
         var formData = form.serialize();

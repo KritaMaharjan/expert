@@ -42,8 +42,20 @@
 
           <div id="add_part" style="display:none">
            <div class="form-group two-inputs">
-              <input class="form-control" name="from" id="from" value="" placeholder="From">
-              <input class="form-control" name="to" id="to" value="" placeholder="To">
+             <div class='input-group date' id='datetimepicker6'>
+                <input class="form-control" name="from" id="from" value="" placeholder="From">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+            <div class='input-group date' id='datetimepicker7'>
+                <input class="form-control" name="to" id="to" value="" placeholder="To">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+             
+             
             </div>
 
         <div class="box-footer clearfix">
@@ -61,26 +73,18 @@
     $('#add_part').show();
   });
 
-   $("#from").datepicker({
-                 numberOfMonths: 1,
-                 minDate: "+1D",
-                 dateFormat: "yyyy-mm-dd",
-                 onSelect: function(selected) {
-                 $("#to").datepicker("option", "minDate", selected);
-                 },
-                 onClose: function(selected) {
-                    $( "#to" ).datepicker( "option", "minDate", selected );
-       
-                  }
-             });
-           $("#to").datepicker({
-                 numberOfMonths: 1,
-                 minDate: "+1D",
-                  dateFormat: "yyyy-mm-dd",
-                 onSelect: function(selected) {
-                  $("#from").datepicker("option", "maxDate", selected);
-                 }
-             });
+    $(function () {
+        $('#datetimepicker6').datepicker();
+        $('#datetimepicker7').datepicker();
+        $("#datetimepicker6").on("dp.hide", function (e) {
+            $('#datetimepicker7').data("DatePicker").minDate(e.date);
+        });
+        $("#datetimepicker7").on("dp.change", function (e) {
+            $('#datetimepicker6').data("DatePicker").maxDate(e.date);
+        });
+    });
+
+  
 
 
   
