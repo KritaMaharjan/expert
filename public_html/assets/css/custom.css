@@ -990,8 +990,8 @@ div.dataTables_length select {
     width: 100% !important;
 }
 
-.fix-height {
-    height: 435px;
+#email-list,.fix-height {
+    max-height: 543px!important;
 }
 .no-record {
     color: #777;
@@ -1136,7 +1136,6 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
      background: none repeat scroll 0 0 #fdfcbc;
     border: 1px solid #f8f7b6;
     box-shadow: 0 2px 1px rgba(0, 0, 0, 0.2);
-    height: 70px;
     padding: 10px;
 }
 .pos-right{
@@ -1185,4 +1184,8 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
 }
 .uppercase{
     text-transform: uppercase;
+}
+
+#email-single .box-title {
+    width: 85%;
 }

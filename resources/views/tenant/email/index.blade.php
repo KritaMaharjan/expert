@@ -75,7 +75,7 @@ $(function(){
 
                           <div class="row mailbox" >
                             <div class="col-md-12 col-sm-12">
-                              <div id="email-list" style="height: 485px;"></div>
+                              <div id="email-list"></div>
                             </div><!-- /.col (RIGHT) -->
                           </div>
                         </div><!-- /.box -->

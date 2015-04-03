@@ -64,11 +64,10 @@
   </div><!-- /.box-header -->
   <div class="box-body">
         @if($folder == 0)
-            {!! nl2br($mail->message) !!}
+            {!! $mail->message !!}
         @else
             {!! $mail->body_html !!}
         @endif
-        <?php echo nl2br($mail->message);?>
       <hr/>
       @if($mail->note)
        <label>Note :</label>
