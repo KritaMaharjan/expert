@@ -51,3 +51,4 @@ $from =  $to - $tasks['upcoming_tasks']->perPage()+1+($tasks['upcoming_tasks']->
     @endif
 </p>
 @endif
+

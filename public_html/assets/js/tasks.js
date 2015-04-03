@@ -42,15 +42,16 @@ $(function () {
 
     });
 
-function loadTaskList(type,page) {
+    function loadTaskList(type,page) {
 
         if (type != 0 && type != 1)
-            type = 0
+            type = 0;
        
         if (typeof page != 'undefine' && page < 0)
-            page = 1
+            {page = 1;
 
-        $('#task-list').load(appUrl + 'tasks?type=' + type + '&page=' + page);
+        $('#task-list').load(appUrl + 'tasks?type=' + type + '&page=' + page);}
+        $('input[type="checkbox"]').addClass('ac');
     }
 
     $(document).on('click', '.mail-next,.mail-previous', function (e) {
@@ -63,12 +64,10 @@ function loadTaskList(type,page) {
 
     function loadCompletedList(type,page) {
         if (type != 0 && type != 1)
-            type = 1
+            type = 1;
        
         if (typeof page != 'undefine' && page < 0)
-            page = 1
-
-       
+            page = 1;
 
         $('#completed-list').load(appUrl + 'tasks?type=' + type + '&page=' + page);
     }
@@ -78,6 +77,10 @@ function loadTaskList(type,page) {
         var href = $(this).attr('href');
         var page = href.replace('#', '');
         loadCompletedList(1,page);
+        $('input[type="checkbox"]').iCheck({
+            checkboxClass: 'icheckbox_flat-blue',
+            radioClass: 'iradio_flat-blue'
+        });
     });
 
 
