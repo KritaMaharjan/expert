@@ -217,8 +217,8 @@ class UserController extends BaseController {
         $date2=date_create($this->request['to']);
         $diff=date_diff($date1,$date2);
         $leave = $diff->format('%d');
-        
-        if($leave < $this->request['total']){
+        //dd($leave.'toal'.$this->request['vacation_days']);
+        if($leave < $this->request['vacation_days']){
             $result = $this->vacation->addVacation($request,$type,$leave);
 
          $total_leave = $this->vacation->totalVacation($this->request['user_id'],$type,$leave);

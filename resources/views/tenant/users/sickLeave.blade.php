@@ -97,7 +97,9 @@
          var to = $('#to').val();
         var type = 'sick_days';
         
-       
+        if(from == '' || to == ''){
+             $('.two-inputs').after('<label class="error">All fields are required.</label');
+       }else{
            $.ajax({
             url: appUrl + 'user/addVacation',
             type: 'POST',
@@ -129,12 +131,13 @@
 
                  }
         });
+    }
             
     });
 
 
 $(document).on('click', '.delete-leave', function () {
-    $('#add_part').show();
+   
      var leave_id = $(this).attr('leave_id');
        var _token = $('#_token').val();
         $this = $(this);

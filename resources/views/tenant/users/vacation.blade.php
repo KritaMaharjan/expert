@@ -61,35 +61,34 @@
     $('#add_part').show();
   });
 
+   $("#from").datepicker({
+                 numberOfMonths: 1,
+                 minDate: "+1D",
+                 dateFormat: "yyyy-mm-dd",
+                 onSelect: function(selected) {
+                 $("#to").datepicker("option", "minDate", selected);
+                 },
+                 onClose: function(selected) {
+                    $( "#to" ).datepicker( "option", "minDate", selected );
+       
+                  }
+             });
+           $("#to").datepicker({
+                 numberOfMonths: 1,
+                 minDate: "+1D",
+                  dateFormat: "yyyy-mm-dd",
+                 onSelect: function(selected) {
+                  $("#from").datepicker("option", "maxDate", selected);
+                 }
+             });
 
-  $("#from").datepicker({
-              'format': 'yyyy-mm-dd',
-        onSelect: function(date) {
-          
-            
 
-        },  
-        onClose: function( selectedDate ) {
-            $( "#to" ).datepicker( "option", "minDate", selectedDate );
-        } 
-
-         });
- $("#to").datepicker({
-            'format': 'yyyy-mm-dd',
-        onSelect: function(date) {
-           
-            
-
-        },  
-        onClose: function( selectedDate ) {
-           
-        } 
-         });
+  
 
   $(document).on('click', '.saveleave', function (e) {
         e.preventDefault();
 
-      
+      $('.error').remove();
        var _token = $('#_token').val();
        var user_id = $('#user_id').val();
        var vacation_days = $('#total').val();
@@ -97,8 +96,10 @@
          var to = $('#to').val();
         var type = 'vacation_days';
         
-       
-           $.ajax({
+       if(from == '' || to == ''){
+             $('.two-inputs').after('<label class="error">All fields are required.</label');
+       }else{
+          $.ajax({
             url: appUrl + 'user/addVacation',
             type: 'POST',
             dataType: 'json',
@@ -126,12 +127,15 @@
 
                  }
         });
+
+       }
+
             
     });
 
 
 $(document).on('click', '.delete-leave', function () {
-    $('#add_part').show();
+   
      var leave_id = $(this).attr('leave_id');
        var _token = $('#_token').val();
         $this = $(this);
