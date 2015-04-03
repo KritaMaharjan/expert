@@ -42,18 +42,18 @@
 
           <div id="add_part" style="display:none">
            <div class="form-group two-inputs">
-             <div class='input-group date' id='datetimepicker6'>
+             
                 <input class="form-control" name="from" id="from" value="" placeholder="From">
-                <span class="input-group-addon">
+                {{-- <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-            </div>
-            <div class='input-group date' id='datetimepicker7'>
+                </span> --}}
+           
+           
                 <input class="form-control" name="to" id="to" value="" placeholder="To">
-                <span class="input-group-addon">
+                {{-- <span class="input-group-addon">
                     <span class="glyphicon glyphicon-calendar"></span>
-                </span>
-            </div>
+                </span> --}}
+            
              
              
             </div>
@@ -74,15 +74,45 @@
   });
 
     $(function () {
-        $('#datetimepicker6').datepicker();
-        $('#datetimepicker7').datepicker();
-        $("#datetimepicker6").on("dp.hide", function (e) {
-            $('#datetimepicker7').data("DatePicker").minDate(e.date);
-        });
-        $("#datetimepicker7").on("dp.change", function (e) {
-            $('#datetimepicker6').data("DatePicker").maxDate(e.date);
-        });
+       var startDate = new Date('2012-01-01');
+var FromEndDate = new Date();
+var ToEndDate = new Date();
+
+ToEndDate.setDate(ToEndDate.getDate()+365);
+
+$('#from').datepicker({
+    
+    weekStart: 1,
+    startDate: '01/01/2012',
+    //endDate: FromEndDate, 
+     format: 'yyyy-mm-dd',
+    autoclose: true
+})
+    .on('changeDate', function(selected){
+        startDate = new Date(selected.date.valueOf());
+        startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())));
+        $('#to').datepicker('setStartDate', startDate);
+    }); 
+$('#to').datepicker({
+        
+        weekStart: 1,
+        startDate: startDate,
+        endDate: ToEndDate,
+        autoclose: true,
+         format: 'yyyy-mm-dd'
+    })
+    .on('changeDate', function(selected){
+        FromEndDate = new Date(selected.date.valueOf());
+        FromEndDate.setDate(FromEndDate.getDate(new Date(selected.date.valueOf())));
+        $('#from').datepicker('setEndDate', FromEndDate);
     });
+
+  
+  
+  
+  
+});
+   
 
   
 

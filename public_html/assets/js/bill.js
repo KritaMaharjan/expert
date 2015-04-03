@@ -45,10 +45,12 @@ $(function () {
         else {
             // Open this row
             row.child(format(row.data())).show();
-            $('.datepicker').datepicker({'format': 'yyyy-mm-dd'});
+            $('.datepicker').datepicker({format: 'yyyy-mm-dd',endDate:new Date()});
             tr.addClass('shown');
         }
     });
+
+    
 
     function format(d) {
 
@@ -85,7 +87,7 @@ $(function () {
         'The child row can contain any data you wish, including links, images, inner tables etc.';
     }
 
-    $( "#payment_date" ).datepicker({  maxDate: new Date() });
+    
 
     $(document).on('click', '#payment-submit', function (e) {
         e.preventDefault();
