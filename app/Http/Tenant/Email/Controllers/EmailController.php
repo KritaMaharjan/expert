@@ -67,11 +67,9 @@ class EmailController extends BaseController {
         if ($validator->fails()) {
             return $this->fail(['errors' => $validator->messages()]);
         }
-
         if ($email = $this->email->send()) {
             return $this->success($email);
         }
-
         return $this->fail(['error' => 'Could not send email at this moment. Please try again later']);
     }
 

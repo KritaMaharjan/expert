@@ -68,7 +68,6 @@
         @else
             {!! $mail->body_html !!}
         @endif
-        <?php echo nl2br($mail->message);?>
       <hr/>
       @if($mail->note)
        <label>Note :</label>
