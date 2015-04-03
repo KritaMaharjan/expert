@@ -85,6 +85,8 @@ $(function () {
         'The child row can contain any data you wish, including links, images, inner tables etc.';
     }
 
+    $( "#payment_date" ).datepicker({  maxDate: new Date() });
+
     $(document).on('click', '#payment-submit', function (e) {
         e.preventDefault();
         $('.erroring').remove();

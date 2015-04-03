@@ -192,17 +192,22 @@ class ClientController extends BaseController {
         if($tenant->basic->activation_key =='')
         {
             $dbname = env('ROOT_DB_PREFIX') . $tenant->basic->domain;
-            $table_settings = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'settings';
-            $company = DB::table($table_settings . ' as setting')
-                ->select('setting.value','setting.name')
-                ->where('setting.name', 'folder')->first();
+           
+                 $table_settings = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'settings';
 
-            $company_folder = $company->value;
-            //\DB::statement('drop database '.$dbname.';');
-            $folder_path = public_path().'\files'.'\\' .$company_folder;
-            //dd($folder_path);
+                $company = DB::table($table_settings . ' as setting')
+                    ->select('setting.value','setting.name')
+                    ->where('setting.name', 'folder')->first();
 
-            $this->rrmdir($folder_path);
+                $company_folder = $company->value;
+                \DB::statement('drop database '.$dbname.';');
+                $folder_path = public_path().'\files'.'\\' .$company_folder;
+                //dd($folder_path);
+
+                $this->rrmdir($folder_path);
+
+           
+           
 
             $client = Tenant::where('id', $tenant->basic->id)->first();
              $client->delete();
@@ -210,7 +215,9 @@ class ClientController extends BaseController {
             return redirect('system/client');
                
         }else{
-             show_404();
+             $client = Tenant::where('id', $tenant->basic->id)->first();
+             $client->delete();
+             return redirect('system/client');
         }
 
     }
@@ -250,7 +257,10 @@ function rrmdir($dir) {
     }
     reset($objects);
     rmdir($dir);
+  }else{
+    return true;
   }
+  
  }
 
 
