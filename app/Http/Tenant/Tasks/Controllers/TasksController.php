@@ -14,7 +14,6 @@ class TasksController extends BaseController {
 
     public function __construct(Tasks $task, Request $request)
     {
-        \FB::can('Invoice');
         parent::__construct();
         $this->task = $task;
         $this->request = $request;

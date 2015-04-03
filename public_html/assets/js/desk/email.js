@@ -14,7 +14,7 @@ $( document ).ready(function() {
 
 $(function () {
 
-    var requestURL = appUrl + 'desk/email/customer/search'
+    var requestURL = appUrl + 'desk/email/customer/search';
 
     function split(val) {
         if (val.length > 0 && val.charAt(val.length - 1) == ';') {
