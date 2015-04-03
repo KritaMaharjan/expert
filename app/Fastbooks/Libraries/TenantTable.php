@@ -11,7 +11,8 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 
-class TenantTable {
+class TenantTable
+{
 
     /**
      * Constant for table prefix
@@ -227,7 +228,6 @@ class TenantTable {
     }
 
 
-
     /**
      * Table for Bills [Many to one relation with customer table]
      */
@@ -266,7 +266,7 @@ class TenantTable {
                 $table->integer('product_id')->index(); // product id
                 $table->integer('bill_id')->index(); // bill id
                 $table->integer('quantity');
-                $table->decimal('price',11,2);
+                $table->decimal('price', 11, 2);
                 $table->float('vat');
                 $table->string('currency', 10);
                 $table->float('total');
@@ -285,6 +285,7 @@ class TenantTable {
         if (!Schema::hasTable(self::TBL_PREFIX . 'tasks')) {
             Schema::create(self::TBL_PREFIX . 'tasks', function ($table) {
                 $table->increments('id'); // autoincrement value of a tenant admin
+                $table->integer('user_id'); // autoincrement value of a tenant admin
                 $table->string('subject', 100);
                 $table->text('body'); // customer id
                 $table->datetime('due_date');
@@ -304,9 +305,8 @@ class TenantTable {
                 $table->integer('user_id')->unsign()->index();
                 $table->integer('vacation_days')->unsign()->index();
                 $table->integer('sick_days')->unsign()->index();
-                 $table->date('from');
-                  $table->date('to');
-
+                $table->date('from');
+                $table->date('to');
 
                 // created_at, updated_at DATETIME
                 $table->timestamps();

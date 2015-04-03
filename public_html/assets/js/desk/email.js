@@ -1,8 +1,20 @@
 var personal_type = 0, support_type = 1;
 var sent = 0, inbox = 1;
 
+$( document ).ready(function() {
+    $.ajaxSetup({
+        beforeSend: function(xhr) {
+            $('.email-loader').show();
+        },
+        complete: function() {
+            $('.email-loader').hide();
+        }
+    });
+});
+
 $(function () {
-    var requestURL = appUrl + 'desk/email/customer/search'
+
+    var requestURL = appUrl + 'desk/email/customer/search';
 
     function split(val) {
         if (val.length > 0 && val.charAt(val.length - 1) == ';') {
@@ -225,10 +237,7 @@ $(function () {
 
 // load emails
 $(function () {
-
     loadEmailList(0, 1, 1);
-
-
 
     $('.type').on('click', function () {
         $('.type').removeClass('inbox-active');
