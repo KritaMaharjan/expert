@@ -35,7 +35,8 @@ class Tasks extends Model
             'subject' => $request->input('subject'),
             'body' => $request->input('body'),
             'due_date' => $request->input('due_date'),
-            'is_complete' => 0
+            'is_complete' => 0,
+            'user_id' => current_user()->id,
         ]);
 
         $task = $task->toArray();
@@ -116,9 +117,9 @@ class Tasks extends Model
         $tasks = array();
         /*$tasks['upcoming_tasks'] = Tasks::where('due_date', '>', $today)->get();
         $tasks['overdue_tasks'] = Tasks::where('due_date', '<=', $today)->get();*/
-        $tasks['upcoming_tasks'] = Tasks::where('is_complete', 0)->orderBy('due_date', 'asc')->paginate($per_page);
-        $tasks['completed_tasks'] = Tasks::where('is_complete', 1)->orderBy('completion_date', 'asc')->paginate($per_page);
-        $tasks['todo_tasks'] = Tasks::where('is_complete', 0)->where('due_date', '>=', $today)->where('due_date', '<', $tomorrow)->orderBy('due_date', 'asc')->paginate($per_page);
+        $tasks['upcoming_tasks'] = Tasks::where('is_complete', 0)->where('user_id', current_user()->id)->orderBy('due_date', 'asc')->paginate($per_page);
+        $tasks['completed_tasks'] = Tasks::where('is_complete', 1)->where('user_id', current_user()->id)->orderBy('completion_date', 'asc')->paginate($per_page);
+        $tasks['todo_tasks'] = Tasks::where('is_complete', 0)->where('user_id', current_user()->id)->where('due_date', '>=', $today)->where('due_date', '<', $tomorrow)->orderBy('due_date', 'asc')->paginate($per_page);
         return $tasks;
     }
 

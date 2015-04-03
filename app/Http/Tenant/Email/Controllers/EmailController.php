@@ -125,21 +125,19 @@ class EmailController extends BaseController {
         $email = current_user()->smtp->email;
 
         $message = "
-<br/>
-<br/>
-<br/>
+
 <br/>
 <hr/>
 <strong>From:</strong> " . $display_name . "[mailto:" . $email . "]<br/>
-<strong>Sent:</strong> " . date('D, F d, Y, h:i A') . "<br/>
-<strong>To:</strong> " . $mail['to'] . "<br/>";
+<strong>Sent:</strong> " . date('D, F d, Y, h:i A') ."<br/>
+<strong>To:</strong> " . $mail['to']."<br/>";
 
         if ($mail['cc'] != '')
             $message .= "
-<strong>Cc:</strong> " . $mail['to'];
+<strong>Cc:</strong> " . $mail['to']."<br/>"; 
 
         $message .= "
-<strong>Subject:</strong> " . $mail['subject'] . "
+<strong>Subject:</strong> " . $mail['subject'] . "<br/>
 
 " . $mail['message'];
 
