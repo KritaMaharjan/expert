@@ -9,6 +9,9 @@
 <link href="{{ asset('assets/css/fonts-awesome.min.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/css/styles.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/css/custom.css')}}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('assets/plugins/jvectormap/jquery-jvectormap-1.2.2.css')}}" rel="stylesheet" type="text/css" />
+
 <link href="{{ asset('assets/css/_all-skins.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/css/select2.css')}}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/plugins/datatables/dataTables.bootstrap.css')}}" rel="stylesheet" type="text/css" />
