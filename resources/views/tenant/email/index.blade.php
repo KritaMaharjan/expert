@@ -74,7 +74,7 @@ $(function(){
                                 
                             </div>
 
-                          <div class="col-md-4 bg-white">
+                          <div class="col-md-5 bg-white">
                             <div class="box box-solid">
                               <div class="box-body">
 
@@ -86,7 +86,7 @@ $(function(){
                             </div><!-- /.box -->
                           </div><!-- bg-white -->
                           </div>
-                          <div id="email-single" class="col-md-6 bg-white">
+                          <div id="email-single" class="col-md-7 bg-white">
 
                           </div><!-- bg-white -->
                       </div>

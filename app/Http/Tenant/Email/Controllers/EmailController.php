@@ -126,7 +126,7 @@ class EmailController extends BaseController {
 
         $message = "
 
-<br/>
+<br/><br/>
 <hr/>
 <strong>From:</strong> " . $display_name . "[mailto:" . $email . "]<br/>
 <strong>Sent:</strong> " . date('D, F d, Y, h:i A') ."<br/>

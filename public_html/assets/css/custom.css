@@ -1198,3 +1198,17 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
     background: url("../images/loader.gif") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
     z-index: 999;
 }
+.stat-info label{
+    width: 60%;
+}
+.left-block{
+    display: inline-block;
+    width: 37%;
+}
+.stat-info .left-block span{
+    display: block;
+}
+.form-group > span {
+    display: inline-block;
+    width: 37%;
+}
