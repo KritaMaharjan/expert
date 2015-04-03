@@ -43,6 +43,7 @@
        var thisUrl = "{{ $type }}";
     </script>
     {{--Load JS--}}
+    {{FB::registerModal()}}
     {{FB::js('assets/js/bill.js')}}
 
 @stop

@@ -60,7 +60,7 @@
                         <div  class="form-group f-width">
  
                             <div class="input-group input-custom">
-                                    <span class="input-group-addon">Action:</span>
+                                    <span class="input-group-addon">Send as</span>
                                     <?php
                                      $status_list = [
                                              '' => 'Select',

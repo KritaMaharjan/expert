@@ -33,6 +33,11 @@ class Bill extends Model {
     protected $hidden = [];
 
 
+    function payments()
+    {
+        return $this->hasMany('App\Http\Tenant\Invoice\Models\Payment');
+    }
+
     function add(Request $request, $offer = false)
     {
         // Start transaction!
@@ -218,6 +223,7 @@ class Bill extends Model {
                 $value->status = '<span class="label label-danger">Unpaid</span>';
 
             $value->invoice_date = date('d-M-Y  h:i:s A', strtotime($value->created_at));
+            $value->view_url = tenant()->url('invoice/bill/' . $value->id);
             //$value->created_at->format('d-M-Y  h:i:s A');
             $value->DT_RowId = "row-" . $value->guid;
         }
