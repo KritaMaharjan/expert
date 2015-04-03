@@ -1189,3 +1189,12 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
 #email-single .box-title {
     width: 85%;
 } 
+.email-loader{
+    left: 50%;
+    position: absolute;
+    top: 50% !important;
+    width: 50px;
+    height: 50px;
+    background: url("../images/loader.gif") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    z-index: 999;
+}

@@ -69,9 +69,9 @@ $(function(){
                           </div>
                         </div>
                       </div>
-                      <div>
+                      <div class="col-md-10 position-relative">
                             <div class="email-loader" style="display: none">
-                                Loading...
+                                
                             </div>
 
                           <div class="col-md-4 bg-white">
