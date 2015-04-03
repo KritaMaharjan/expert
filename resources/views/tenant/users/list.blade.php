@@ -26,6 +26,7 @@ All Users
         <i class="fa fa-plus"></i> Add new user
       </a>
     </p>
+   
   <div class="box-body">
 
     <div class="grid-wrap">
@@ -49,6 +50,7 @@ All Users
   </div>
 
   @include('tenant.users.create')
+  
 @stop
 
 
