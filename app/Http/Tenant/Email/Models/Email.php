@@ -204,7 +204,9 @@ class Email extends Model {
         Tasks::create([
             'subject' => $this->email_subject,
             'body' => $this->email_message,
-            'due_date' => Carbon::tomorrow()
+            'due_date' => Carbon::tomorrow(),
+            'is_complete' => 0,
+            'user_id' => current_user()->id
         ]);
     }
 

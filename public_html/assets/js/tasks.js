@@ -48,10 +48,9 @@ $(function () {
             type = 0;
        
         if (typeof page != 'undefine' && page < 0)
-            {page = 1;
+            page = 1;
 
-        $('#task-list').load(appUrl + 'tasks?type=' + type + '&page=' + page);}
-        $('input[type="checkbox"]').addClass('ac');
+        $('#task-list').load(appUrl + 'tasks?type=' + type + '&page=' + page);
     }
 
     $(document).on('click', '.mail-next,.mail-previous', function (e) {
@@ -59,6 +58,11 @@ $(function () {
         var href = $(this).attr('href');
         var page = href.replace('#', '');
         loadTaskList(0,page);
+
+        $('input[type="checkbox"]').iCheck({
+            checkboxClass: 'icheckbox_flat-blue',
+            radioClass: 'iradio_flat-blue'
+        });
     });
 
 
@@ -77,10 +81,6 @@ $(function () {
         var href = $(this).attr('href');
         var page = href.replace('#', '');
         loadCompletedList(1,page);
-        $('input[type="checkbox"]').iCheck({
-            checkboxClass: 'icheckbox_flat-blue',
-            radioClass: 'iradio_flat-blue'
-        });
     });
 
 
