@@ -197,7 +197,7 @@ class BillController extends BaseController {
     {
         $id = $this->request->route('id');
         $data = $this->getInfo($id);
-        $pdf->generate(time(), 'template.bill', compact('data'), false);
+        $pdf->generate($data['invoice_number'].'_'.time(), 'template.bill', compact('data'), true);
     }
 
     function sendEmail(Pdf $pdf)
