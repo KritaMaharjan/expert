@@ -126,7 +126,7 @@ class EmailController extends BaseController {
 
         $message = "
 
-<br/>
+<br/><br/>
 <hr/>
 <strong>From:</strong> " . $display_name . "[mailto:" . $email . "]<br/>
 <strong>Sent:</strong> " . date('D, F d, Y, h:i A') ."<br/>
@@ -169,10 +169,15 @@ class EmailController extends BaseController {
         $data['folder'] = $folder;
 
         if($folder == 0)
-            $data['mails'] = $this->email->user()->orderBy('created_at', 'DESC')->type($type)->with('attachments', 'receivers')->paginate($per_page);
+            $data['mails'] = $this->email->user()->where('sender_id', current_user()->id)->orderBy('created_at', 'DESC')->type($type)->with('attachments', 'receivers')->paginate($per_page);
         else {
-            $this->readUserEmail($type);
-            $data['mails'] = $this->incomingEmail->user()->orderBy('created_at', 'DESC')->type($type)->paginate($per_page);
+            $connection = $this->readUserEmail($type);
+            if($connection !== true)
+                $data['connection_errors'] = $connection['error'];
+            if($type == 0)
+                $data['mails'] = $this->incomingEmail->user()->where('user_id', current_user()->id)->orderBy('created_at', 'DESC')->type($type)->paginate($per_page);
+            else
+                $data['mails'] = $this->incomingEmail->user()->orderBy('created_at', 'DESC')->type($type)->paginate($per_page);
         }
         return view('tenant.email.list', $data);
     }
@@ -228,7 +233,6 @@ class EmailController extends BaseController {
         $user_id = $this->request->input('user_id');
         $perpage = 10;
         $mails = $this->email->getSearchEmail($user_id,$search_option);
-
         return view('tenant.customer.emailList', compact('mails'));
      }
 
@@ -237,7 +241,7 @@ class EmailController extends BaseController {
     {
         $user = current_user();
         if($type == 0) {
-            $smtp = (object)$user->profile->smtp;
+            $smtp = $user->smtp;
         }
         else {
             $smtp = (object)$this->setting->getSupportSetting();
@@ -251,11 +255,14 @@ class EmailController extends BaseController {
             if ($mailbox->connect()) {
                 $data = $mailbox->read($user->profile->email_sync_at);
                 $this->recordEmail($data, $type);
+                return true;
             } else {
-                return $this->fail(array('error' => $mailbox->error()));
+                return array('status'=> 'fail', 'error' => $mailbox->error());
+                //return array('status'=> 'fail', 'error' => $mailbox->error());
+                    //$this->fail(array('error' => $mailbox->error()));
             }
         }
-        return $this->fail(array('error' => $validSmtp));
+        return array('status'=> 'fail', 'error' => $validSmtp);
     }
 
     private function recordEmail($data, $type)

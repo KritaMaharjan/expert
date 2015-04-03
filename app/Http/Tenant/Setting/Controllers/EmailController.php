@@ -36,8 +36,6 @@ class EmailController extends BaseController {
                                             'outgoing_server' => 'required',
                                             'username' => 'required',
                                             'password' => 'required',
-
-
                                             )
                                         );
 
@@ -50,6 +48,7 @@ class EmailController extends BaseController {
     	$details = serialize([
         						'incoming_server'=>$all['incoming_server'],
 								'outgoing_server'=>$all['outgoing_server'],
+								'port'=>$all['port'],
 								'username'=>$all['username'],
 								'password'=>$all['password']
 							]);
@@ -58,10 +57,7 @@ class EmailController extends BaseController {
     	$profile = new Profile;
         $user_id = $this->current_user->id;
 
-
-
     	$profile->updateprofile($user_id,$details,$flied);
-
 
         return \Response::json(array('status' => 'true', 'message' => 'Email Updated successfully'));
 

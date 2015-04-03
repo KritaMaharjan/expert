@@ -1,3 +1,11 @@
+@if(isset($connection_errors))
+    <div class="callout callout-danger">
+        {{--{{ $errors }}--}}
+        <?php print_r($connection_errors) ?>
+    </div>
+@endif
+
+
 <div class="table-responsive fix-height" style="background: #FDFDFD; border: 1px solid #F8F8F8;">
 <!-- THE MESSAGES -->
 <table class="table table-mailbox no-mg-btm">
@@ -20,7 +28,7 @@
                 @else
                     @foreach($receiver as $to)
                         @if($to->type ==1)
-                           {{ str_limit($to->email,30)}};
+                           {{ str_limit($to->email,30)}}
                         @endif
                     @endforeach
                 @endif
@@ -59,4 +67,3 @@ $from =  $to - $mails->perPage()+1+($mails->perPage()-$items);
     @endif
 </p>
 @endif
-
