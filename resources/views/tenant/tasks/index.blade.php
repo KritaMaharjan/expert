@@ -25,8 +25,7 @@ Tasks
                     </a>
                     {{--<a class="btn btn-primary" data-toggle="modal" data-url="#todo-modal-data" data-target="#fb-modal">
                         <i class="fa fa-tasks"></i> To Do List
-                    </a>
---}}
+                    </a>--}}
                   </div>
                 </div><!-- /.box-header -->
                 <div class="box-body task-list" id="task-list">
