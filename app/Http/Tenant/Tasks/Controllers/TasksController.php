@@ -39,7 +39,6 @@ class TasksController extends BaseController {
      */
     public function index()
     {
-
         $tasks = $this->task->getTasks();
         if ($this->request->ajax()) {
             $type = \Input::get('type');

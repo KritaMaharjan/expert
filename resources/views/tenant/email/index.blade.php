@@ -69,21 +69,27 @@ $(function(){
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-4 bg-white">
-                        <div class="box box-solid">
-                          <div class="box-body">
+                      <div>
+                            <div class="email-loader" style="display: none">
+                                Loading...
+                            </div>
 
-                          <div class="row mailbox" >
-                            <div class="col-md-12 col-sm-12">
-                              <div id="email-list"></div>
-                            </div><!-- /.col (RIGHT) -->
+                          <div class="col-md-4 bg-white">
+                            <div class="box box-solid">
+                              <div class="box-body">
+
+                              <div class="row mailbox" >
+                                <div class="col-md-12 col-sm-12">
+                                  <div id="email-list"></div>
+                                </div><!-- /.col (RIGHT) -->
+                              </div>
+                            </div><!-- /.box -->
+                          </div><!-- bg-white -->
                           </div>
-                        </div><!-- /.box -->
-                      </div><!-- bg-white -->
-                      </div>
-                      <div id="email-single" class="col-md-6 bg-white">
+                          <div id="email-single" class="col-md-6 bg-white">
 
-                      </div><!-- bg-white -->
+                          </div><!-- bg-white -->
+                      </div>
 
                     </div>
                     
