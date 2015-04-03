@@ -217,7 +217,7 @@ class ClientController extends BaseController {
         }else{
              $client = Tenant::where('id', $tenant->basic->id)->first();
              $client->delete();
-             return redirect('system/client');
+             return redirect('system/client')->with('message', 'Client deleted successfully');
         }
 
     }

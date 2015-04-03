@@ -95,7 +95,9 @@ Tasks
     //$('.text').click(function(){
       $(this).parent().find('.todos-box').slideToggle('fast');
 
-    })
+    });
+    
+   
   });
 </script>
 
