@@ -34,7 +34,8 @@ class Tasks extends Model
         $task = Tasks::create([
             'subject' => $request->input('subject'),
             'body' => $request->input('body'),
-            'due_date' => $request->input('due_date')
+            'due_date' => $request->input('due_date'),
+            'is_complete' => 0
         ]);
 
         $task = $task->toArray();
