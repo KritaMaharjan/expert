@@ -1,3 +1,11 @@
+@if(isset($connection_errors))
+    <div class="callout callout-danger">
+        {{--{{ $errors }}--}}
+        <?php print_r($connection_errors) ?>
+    </div>
+@endif
+
+
 <div class="table-responsive fix-height" style="background: #FDFDFD; border: 1px solid #F8F8F8;">
 <!-- THE MESSAGES -->
 <table class="table table-mailbox no-mg-btm">
@@ -58,11 +66,4 @@ $from =  $to - $mails->perPage()+1+($mails->perPage()-$items);
       <a href="#{{$mails->currentPage()+1}}"  class="color-grey mail-next"><i class="fa  fa-chevron-right"></i></a>
     @endif
 </p>
-@endif
-
-@if(isset($connection_errors))
-    <div class="callout callout-danger">
-        {{--{{ $errors }}--}}
-        <?php print_r($connection_errors) ?>
-    </div>
 @endif
