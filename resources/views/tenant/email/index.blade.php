@@ -14,7 +14,7 @@ Email
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <link href="{{ asset('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css')}}" rel="stylesheet" type="text/css" /> 
 
-<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script> 
 <script src="//cdn.ckeditor.com/4.4.3/standard/ckeditor.js"></script>
 <script src="{{ asset('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js')}}" type="text/javascript"></script>
 {{FB::js('assets/plugins/plupload/js/plupload.full.min.js')}}

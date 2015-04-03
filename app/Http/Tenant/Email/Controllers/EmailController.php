@@ -136,7 +136,7 @@ class EmailController extends BaseController {
 
         if ($mail['cc'] != '')
             $message .= "
-<strong>Cc:</strong> " . $mail['to']."<br/>";
+<strong>Cc:</strong> " . $mail['to']."<br/>"; 
 
         $message .= "
 <strong>Subject:</strong> " . $mail['subject'] . "<br/>
