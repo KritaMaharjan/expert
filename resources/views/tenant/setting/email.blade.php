@@ -7,7 +7,7 @@ SMTP Settings
 @section('breadcrumb')
     @parent
     <li><i class="fa fa-cog"></i> Setting</li>
-    <li><i class="fa fa-cog"></i> Email</li>
+    @if(current_user()->isAdmin)<li><i class="fa fa-cog"></i> Email</li>@endif
 @stop
 
 @section('content')
@@ -27,12 +27,12 @@ SMTP Settings
               	@include('tenant.setting.personalsmtp')
 
               </div><!-- /.tab-pane -->
+              @if(current_user()->isAdmin)
               <div class="tab-pane" id="support-smtp">
               	@include('tenant.setting.supportsmtp')
 
               </div><!-- /.tab-pane -->
-
-              
+              @endif
 
             </div><!-- /.tab-content -->
           </div><!-- nav-tabs-custom -->

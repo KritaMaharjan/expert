@@ -169,12 +169,15 @@ class EmailController extends BaseController {
         $data['folder'] = $folder;
 
         if($folder == 0)
-            $data['mails'] = $this->email->user()->orderBy('created_at', 'DESC')->type($type)->with('attachments', 'receivers')->paginate($per_page);
+            $data['mails'] = $this->email->user()->where('sender_id', current_user()->id)->orderBy('created_at', 'DESC')->type($type)->with('attachments', 'receivers')->paginate($per_page);
         else {
             $connection = $this->readUserEmail($type);
             if($connection !== true)
                 $data['connection_errors'] = $connection['error'];
-            $data['mails'] = $this->incomingEmail->user()->orderBy('created_at', 'DESC')->type($type)->paginate($per_page);
+            if($type == 0)
+                $data['mails'] = $this->incomingEmail->user()->where('user_id', current_user()->id)->orderBy('created_at', 'DESC')->type($type)->paginate($per_page);
+            else
+                $data['mails'] = $this->incomingEmail->user()->orderBy('created_at', 'DESC')->type($type)->paginate($per_page);
         }
         return view('tenant.email.list', $data);
     }

@@ -21,8 +21,7 @@
      @if($folder == 0)
          @foreach($receiver as $cc)
             @if($cc->type ==2)
-              <?php $has_cc = true; ?>
-              @break
+              <?php $has_cc = true;?>
             @endif
          @endforeach
       @endif

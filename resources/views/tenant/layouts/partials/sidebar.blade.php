@@ -75,17 +75,17 @@
             </li>
             @endif
 
-            @if(FB::can_view('Settings'))
             <li class="treeview <?php echo (strpos($current_path, 'setting') !==false)? 'active' : '';?>">
               <a href="#" title="Settings">
                 <i class="fa fa-cog"></i> <span>Settings</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
               <ul class="treeview-menu">
-                <li><a href="{{tenant_route('tenant.setting.system')}}" data-push="true" title="System"><i class="fa fa-circle-o"></i> System</a></li>
+                @if(FB::can_view('Settings'))
+                    <li><a href="{{tenant_route('tenant.setting.system')}}" data-push="true" title="System"><i class="fa fa-circle-o"></i> System</a></li>
+                @endif
                 <li><a href="{{tenant_route('tenant.setting.email')}}" data-push="true" title="Email"><i class="fa fa-circle-o"></i> Email</a></li>
               </ul>
-            </li> 
-            @endif           
+            </li>
           </ul>
         </section>
         <!-- /.sidebar -->
