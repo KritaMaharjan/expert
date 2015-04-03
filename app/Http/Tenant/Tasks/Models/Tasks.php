@@ -19,7 +19,7 @@ class Tasks extends Model
      *
      * @var array
      */
-    protected $fillable = ['subject', 'body', 'due_date', 'is_complete', 'completion_date'];
+    protected $fillable = ['subject', 'body', 'due_date', 'is_complete', 'completion_date', 'user_id'];
 
     /**
      * The attributes excluded from the model's JSON form.
