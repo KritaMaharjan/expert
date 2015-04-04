@@ -990,9 +990,10 @@ div.dataTables_length select {
     width: 100% !important;
 }
 
-#email-list,.fix-height {
+.fix-height {
     max-height: 543px!important;
 }
+
 .no-record {
     color: #777;
     padding: 10px;
