@@ -23,7 +23,14 @@ Statistics
           <div class="tab-content col-md-12">
             <div class="row">
               <div class="col-md-8">
-                <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;"></div>                            
+                <!-- LINE CHART -->
+                <div class="box box-solid">
+                  
+                  <div class="box-body chart-responsive">
+                    <div class="chart" id="line-chart" style="height: 300px;"></div>
+                  </div><!-- /.box-body -->
+                </div><!-- /.box -->
+
               </div>
               <div class="col-md-4 pad-top-100">
                 <form>
@@ -187,5 +194,6 @@ Statistics
         });
 
   })')}}
+
 
 @stop
