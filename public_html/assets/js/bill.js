@@ -54,31 +54,39 @@ $(function () {
 
     function format(d) {
 
-        if(thisUrl == 'offer')
-            var conv = '<li><a href="'+appUrl+'invoice/offer/'+d.id+'/convert">Convert to Bill</a></li>';
-        else
-            var conv = '';
+        var conv = '';
+        var payment = '';
+        var payment_option = '';
+
+        if(thisUrl == 'offer') {
+            conv = '<li><a href="' + appUrl + 'invoice/offer/' + d.id + '/convert">Convert to Bill</a></li>';
+
+        }
+        else {
+            payment = '<li><a class="link-block" href="#">Register payment</a></li>';
+            payment_option = '<div class="payment-info" style="display: none;">' +
+                '<form class="payment-form" id="'+d.id+'" method="post" action="">' +
+                '<input type="hidden" name="_token" value="'+token+'">'+
+                '<div class="form-group"><label> Payment date </label><input name="payment_date" id="payment_date" type="text" class="datepicker form-control"></div>' +
+                '<div class="form-group"><label> Amount paid </label><input name="paid_amount" id="paid_amount" type="number" class="form-control"></div>' +
+                '<div class="bottom-section clearfix">' +
+                '<button class="btn-small btn btn-primary" id="payment-submit">Account as paid</button>' +
+                '<a class="abort btn btn-danger" href="#">Abort</a></div>' +
+                '</form></div>';
+        }
 
         var token = $('meta[name="csrf-token"]').attr('content');
 
         $hidden_child = '<tr class="temp_tr">' +
         '<td colspan="5"><div class="clearfix">' +
         '<ul class="links-td">' +
-        '<li><a class="link-block" href="#">Register payment</a></li>' +
+        payment +
         '<li><a href="'+appUrl+'invoice/'+thisUrl+'/'+d.id+'/download">Download</a></li>' +
         '<li><a href="'+appUrl+'invoice/'+thisUrl+'/'+d.id+'/print">Print</a></li>'+
         '<li><a href="'+appUrl+'invoice/bill/'+d.id+'/mail" class="send-mail">Send Mail</a></li>'
         + conv +
         '</ul>' +
-        '<div class="payment-info" style="display: none;">' +
-        '<form class="payment-form" id="'+d.id+'" method="post" action="">' +
-        '<input type="hidden" name="_token" value="'+token+'">'+
-        '<div class="form-group"><label> Payment date </label><input name="payment_date" id="payment_date" type="text" class="datepicker form-control"></div>' +
-        '<div class="form-group"><label> Amount paid </label><input name="paid_amount" id="paid_amount" type="number" class="form-control"></div>' +
-        '<div class="bottom-section clearfix">' +
-        '<button class="btn-small btn btn-primary" id="payment-submit">Account as paid</button>' +
-        '<a class="abort btn btn-danger" href="#">Abort</a></div>' +
-        '</form></div>'+
+        payment_option+
         '</div></td></tr>';
         return $hidden_child;
 
