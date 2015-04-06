@@ -43,7 +43,7 @@ $(function(){
                       </div>
                     </div><!-- /.row -->
                     <div class="mail-wrap-section clearfix">
-                      <div class="col-md-2 width-sm">
+                      <div class="col-md-2 width-sm pad-0">
                       <div class="box-header">
                         
                       </div>
@@ -79,14 +79,14 @@ $(function(){
                               <div class="box-body">
 
                               <div class="row mailbox" >
-                                <div class="col-md-12 col-sm-12">
+                                <div class="col-md-12 col-sm-12 pad-0">
                                   <div id="email-list"></div>
                                 </div><!-- /.col (RIGHT) -->
                               </div>
                             </div><!-- /.box -->
                           </div><!-- bg-white -->
                           </div>
-                          <div id="email-single" class="col-md-7 bg-white">
+                          <div id="email-single" class="col-md-7">
 
                           </div><!-- bg-white -->
                       </div>

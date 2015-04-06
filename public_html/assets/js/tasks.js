@@ -42,6 +42,8 @@ $(function () {
 
     });
 
+  
+
     function loadTaskList(type,page) {
 
         if (type != 0 && type != 1)
