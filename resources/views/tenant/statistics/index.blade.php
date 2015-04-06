@@ -61,7 +61,7 @@ Statistics
             <div class="col-md-12">
               <div class="stat-info">
                 <div class="col-md-3 ">
-                   <h3 class="align-center">Customers</h3> 
+                   <h3 class="line-yellow">Customers</h3> 
                    <div class="form-group">
                      <label>Customer total:</label>
                      <span>475</span>                   
@@ -80,7 +80,7 @@ Statistics
                    </div>   
                 </div>
                 <div class="col-md-3">
-                    <h3 class="align-center">Billing</h3> 
+                    <h3  class="line-green">Billing</h3> 
                     <div class="form-group">
                       <label>Number of bills:</label>
                       <span>475</span>                   
@@ -111,7 +111,7 @@ Statistics
                   </div>  
                 </div>
                 <div class="col-md-3">
-                   <h3 class="align-center">Collection</h3> 
+                   <h3  class="line-purple">Collection</h3> 
                    <div class="form-group">
                      <label>Number of cases:</label>
                      <span>45</span>                   
@@ -126,35 +126,35 @@ Statistics
                    </div>
                    <div class="form-group">
                      <label>Purring:</label>
-                     <div class="left-block">
+                     <div>
                        <span>0 cases</span>                   
                        <span>0,00 NOK</span>   
                      </div>                
                    </div>
                    <div class="form-group">
                      <label>Inkassovarsel:</label>
-                     <div class="left-block">
+                     <div>
                        <span>0 cases</span>                   
                        <span>0,00 NOK</span>   
                      </div>                
                    </div>
                    <div class="form-group">
                      <label>Betalingsoppfordring :</label>
-                     <div class="left-block">
+                     <div>
                        <span>0 cases</span>                   
                        <span>0,00 NOK</span>   
                      </div>                
                    </div>
                    <div class="form-group">
                      <label>Betalingsoppfordring :</label>
-                     <div class="left-block">
+                     <div>
                        <span>0 cases</span>                   
                        <span>0,00 NOK</span>   
                      </div>                
                    </div>   
                 </div>
                 <div class="col-md-3">
-                    <h3 class="align-center">Statistics</h3> 
+                    <h3  class="line-red">Statistics</h3> 
                     <div class="form-group">
                      <label>Income:</label>
                      <span>15,000,000- NOK</span>                   
