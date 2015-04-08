@@ -1203,12 +1203,9 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
     z-index: 999;
 }
 .stat-info label{
-    width: 60%;
+    display: block;
 }
-.left-block{
-    display: inline-block;
-    width: 37%;
-}
+
 .stat-info .left-block span{
     display: block;
 }
@@ -1218,4 +1215,23 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
 }
 .pad-top-100{
     padding-top: 100px;
+}
+.stat-info h3{
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dbdbdb;
+}
+.stat-info h3.line-yellow{
+    color:#fd9d11;
+}
+.stat-info h3.line-green{
+    color:#237a7a;
+}
+.stat-info h3.line-purple{
+    color:#7070a0;
+}
+.stat-info h3.line-red{
+    color:#d45127;
+}
+.morris-hover-point{
+    text-align: left;
 }
