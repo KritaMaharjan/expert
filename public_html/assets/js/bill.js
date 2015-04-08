@@ -71,7 +71,6 @@ $(function () {
                 '<div class="form-group"><label> Amount paid </label><input name="paid_amount" id="paid_amount" type="number" class="form-control"></div>' +
                 '<div class="bottom-section clearfix">' +
                 '<button class="btn-small btn btn-primary" id="payment-submit">Account as paid</button>' +
-                '<a class="abort btn btn-danger" href="#">Abort</a></div>' +
                 '</form></div>';
         }
 
