@@ -1,6 +1,5 @@
 {!!Form::open(['id'=>'customer-form', 'enctype'=>'multipart/form-data','files'=>true])!!}
 
- 
               <div class="box-body">
                       <div class="form-group">
                         <label for="">Name</label>

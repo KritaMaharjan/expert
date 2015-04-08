@@ -18,13 +18,10 @@ class UserController extends BaseController {
     protected $rules = array(
                 'fullname' => 'required|between:2,30',
                 'email' => 'required|email',
-
                 'phone' => 'numeric',
-
                 'address' => 'required|between:2,50',
                 'postcode' => 'required|numeric',
                 'town' => 'alpha|between:2,50',
-                'social_security_number' => 'required|size:5',
                 //'photo' => 'image',
                 'incoming_server' => 'min:8|required_with:outgoing_server,email_username,email_password',
                 'outgoing_server' => 'min:8|required_with:incoming_server,email_username,email_password',
@@ -54,6 +51,7 @@ class UserController extends BaseController {
         $this->rules['email'] = 'required|email|unique:fb_users';
         $this->rules['password'] = 'required|between:5,25';
         $this->rules['confirm_password'] = 'required|same:password';
+        $this->rules['social_security_number'] = 'required|min:5|unique:fb_profile';
         $validator = \Validator::make($request->all(), $this->rules);
 
         if ($validator->fails())
@@ -146,6 +144,7 @@ class UserController extends BaseController {
     {
         $user = User::where('guid', $this->request['guid'])->first();
         $this->rules['email'] = 'required|email|unique:fb_users,email,'.$user->id; //ignore a id
+        $this->rules['social_security_number'] = 'required|min:5|unique:fb_profile,social_security_number,'.$user->id.',user_id';
         $validator = \Validator::make($this->request->all(), $this->rules);
 
         if ($validator->fails())

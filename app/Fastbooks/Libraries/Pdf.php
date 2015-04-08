@@ -10,7 +10,8 @@ class Pdf {
 
     function __construct()
     {
-        $this->uploadPath = public_path() . '/assets/uploads/invoices/';
+        $this->uploadPath = tenant()->folder('invoice', true)->url();
+        //$this->uploadPath = public_path() . '/assets/uploads/invoices/';
         $this->pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         $this->setInfo();
         $this->setMargin();

@@ -3,7 +3,6 @@ $(function () {
     $('.business_div').hide();
     var modal = $('.modal-body');
 
-
     $(document).on('click', '#business', function () {
 
         if (modal.find('#business').is(':checked')) {

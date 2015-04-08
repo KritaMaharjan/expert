@@ -198,19 +198,4 @@
     </div><!-- /.col -->
   </div><!-- /.row -->
 
-{{-- Customer Add Modal--}}
-<div id="customer-modal-data" class="hide">
-    <div class="box box-solid">
-        <div class="box-header">
-            <h3 class="box-title">Add New Customer</h3>
-        </div>
-       
-        @include('tenant.customer.createCustomer')
-       
-    </div><!-- /.box-body -->
-</div>
-
-{{--Load JS--}}
-{{FB::registerModal()}}
-{{FB::js('assets/js/customer.js')}}
 

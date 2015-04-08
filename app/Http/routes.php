@@ -19,9 +19,3 @@ Validator::extend('validArrayEmail', function ($attribute, $value, $parameters) 
     return true;
 
 });
-
-
-get('getpdf', function(\App\Fastbooks\Libraries\Pdf $pdf){
-    $data['data'] = 'data';
-    $pdf->generate(time(),'template.bill',$data);
-});

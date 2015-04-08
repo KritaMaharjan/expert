@@ -86,8 +86,6 @@ class Customer extends Model {
 
         $postal_code = explode(',', $request['postcode']);
 
-
-
         $customer = Customer::create([
             'type'           => $request['type'],
             'name'           => $request['name'],
@@ -101,8 +99,6 @@ class Customer extends Model {
             'postcode'       => $postal_code[0],
             'town'           => $request['town'],
             'status'         => $request['status'],
-
-
         ]);
         $customer_add['data'] = $this->toFomatedData($customer);
         $customer_add['template'] = $this->getTemplate($customer);
@@ -142,6 +138,7 @@ class Customer extends Model {
     public function getTemplate($details = '')
     {
         $details->name = "<a href=" . tenant_route('tenant.customer.CustomerCard', ['id' => $details->id]) . ">" . $details->name . "</a>";
+        $details->customerName = $details->name;
 
         $details->created = $details->created_at->format('d-M-Y');
 

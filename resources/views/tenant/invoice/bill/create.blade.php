@@ -41,6 +41,22 @@
 </div>
 </div><!-- /.content -->
 </div>
+
+{{-- Customer Add Modal--}}
+<div id="customer-modal-data" class="hide">
+    <div class="box box-solid">
+        <div class="box-header">
+            <h3 class="box-title">Add New Customer</h3>
+        </div>
+
+        @include('tenant.customer.createCustomer')
+
+    </div><!-- /.box-body -->
+</div>
+
+{{--Load JS--}}
+{{FB::registerModal()}}
+
 <div class="clearfix"></div>
 
     {{FB::js('assets/plugins/slimScroll/jquery.slimScroll.min.js')}}
