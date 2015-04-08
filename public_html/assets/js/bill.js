@@ -45,7 +45,7 @@ $(function () {
         else {
             // Open this row
             row.child(format(row.data())).show();
-            $('.datepicker').datepicker({format: 'yyyy-mm-dd',endDate:new Date()});
+            $('.datepicker').datepicker({format: 'yyyy-mm-dd',endDate:new Date(),todayHighlight:true});
             tr.addClass('shown');
         }
     });

@@ -7,6 +7,7 @@ use App\Http\Tenant\Email\Models\Attachment;
 use App\Http\Tenant\Email\Models\Receiver;
 use App\Models\Tenant\Customer;
 use App\Models\Tenant\Setting;
+use App\Models\Tenant\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Tenant\Email\Models\Email;
@@ -43,11 +44,12 @@ class EmailController extends BaseController {
         return view('tenant.email.index', compact('action'));
     }
 
-    function customerSearch(Customer $customer)
+    function customerSearch(Customer $customer, User $user)
     {
         $query = $this->request->input('term');
         $details = $customer->select('id', 'name as label', 'email as value')->where('email', 'LIKE', '%' . $query . '%')->orWhere('name', 'LIKE', '%' . $query . '%')->get()->toArray();
-
+        $userdetails = $user->select('id', 'fullname as label', 'email as value')->where('email', 'LIKE', '%' . $query . '%')->orWhere('fullname', 'LIKE', '%' . $query . '%')->get()->toArray();
+        $details = array_merge($details, $userdetails);
         return \Response::JSON($details);
     }
 

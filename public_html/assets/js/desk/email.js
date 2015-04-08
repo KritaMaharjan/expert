@@ -70,6 +70,8 @@ $(function () {
                 // add placeholder to get the comma-and-space at the end
                 terms.push("");
                 this.value = terms.join("; ");
+
+                //this.value = (ui.item.label) + " (" + (ui.item.value) + ");";
                 return false;
             }
         });
@@ -255,7 +257,6 @@ $(function () {
                 loadEmailList(support_type, 1, folder);
             }
         }
-        
 
     });
 
