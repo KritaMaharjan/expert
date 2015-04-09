@@ -17,6 +17,7 @@ if (env('APP_ENV') == 'live') {
     $group_guest = ['domain' => '{account}.mashbooks.app', 'namespace' => 'Controllers', 'middleware' => 'guest.tenant'];
     $group_auth = ['domain' => '{account}.mashbooks.app', 'middleware' => 'auth.tenant'];
 }
+
 /*
  * For Cron
  *
