@@ -156,6 +156,18 @@ Route::group($group_auth, function () {
     });
 
     /** Registered by Krita **/
+    Route::group(['namespace' => 'Tenant\Supplier\Controllers'], function () {
+        get('supplier', ['as' => 'tenant.supplier.index', 'uses' => 'SupplierController@index']);
+        post('supplier', ['as' => 'tenant.supplier.create', 'uses' => 'SupplierController@create']);
+        get('supplier/SupplierCard/{id}', ['as' => 'tenant.supplier.SupplierCard', 'uses' => 'SupplierController@supplierCard']);
+        get('supplier/{id}/delete', ['as' => 'supplier.delete', 'uses' => 'SupplierController@deleteSupplier']);
+        get('supplier/{id}/edit', ['as' => 'tenant.supplier.edit', 'uses' => 'SupplierController@edit']);
+        post('supplier/{id}/edit', ['as' => 'tenant.supplier.edit', 'uses' => 'SupplierController@update']);
+        post('supplier/data', ['as' => 'tenant.supplier.data', 'uses' => 'SupplierController@dataJson']);
+        post('supplier/upload', ['as' => 'tenant.supplier.upload', 'uses' => 'SupplierController@upload']);
+        post('supplier/changeStatus', ['as' => 'tenant.supplier.changeStatus', 'uses' => 'SupplierController@changeStatus']);
+    });
+
     Route::group(['namespace' => 'Tenant\Tasks\Controllers'], function () {
 
         // bill routes

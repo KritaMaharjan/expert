@@ -19,6 +19,14 @@
             @endif
 
             @if(FB::can_view('Invoice'))
+            <li class="<?php echo (strpos($current_path, 'supplier') !==false)? 'active' : '';?>">
+              <a href="{{tenant_route('tenant.supplier.index')}}" title="Suppliers">
+                <i class="fa fa-users"></i> <span>Suppliers</span>
+              </a>
+            </li>
+            @endif
+
+            @if(FB::can_view('Invoice'))
             <li class="treeview">
               <a href="#" title="Invoices">
                 <i class="fa fa-file"></i> <span>Invoices</span> <i class="fa fa-angle-left pull-right"></i>
