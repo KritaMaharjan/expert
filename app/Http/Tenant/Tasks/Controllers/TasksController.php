@@ -14,7 +14,6 @@ class TasksController extends BaseController {
 
     public function __construct(Tasks $task, Request $request)
     {
-        \FB::can('Invoice');
         parent::__construct();
         $this->task = $task;
         $this->request = $request;
@@ -40,7 +39,17 @@ class TasksController extends BaseController {
     public function index()
     {
         $tasks = $this->task->getTasks();
-        return view('tenant.tasks.index', compact('tasks'))->with('pageTitle', 'All Tasks');
+        if ($this->request->ajax()) {
+            $type = \Input::get('type');
+         
+            if($type == 0)
+                return view('tenant.tasks.taskList', compact('tasks'))->with('pageTitle', 'All Tasks');
+            else if($type == 1)
+                return view('tenant.tasks.completedList', compact('tasks'))->with('pageTitle', 'All Tasks');
+        }else{
+             return view('tenant.tasks.index', compact('tasks'))->with('pageTitle', 'All Tasks');
+        
+        }
     }
 
     public function dataJson()

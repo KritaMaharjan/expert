@@ -28,7 +28,7 @@ class ProductController extends BaseController {
     protected $rules = [
         'number'        => 'required|alpha_dash|max:25|unique:fb_products',
         'name'          => 'required|string|max:100|unique:fb_products',
-        'vat'           => 'required|numeric|max:99',
+        'vat'           => 'required|Integer|max:99|min:1',
         'selling_price' => 'required|numeric|min:1|max:9999999999',
         'purchase_cost' => 'required|numeric|min:1|max:999999999',
     ];
@@ -41,6 +41,18 @@ class ProductController extends BaseController {
     public function index()
     {
         return view('tenant.inventory.product.index');
+    }
+
+    public function stock()
+    {
+        $product_list = $this->product->get_product();
+       
+        if ($this->request->ajax()) {
+             return view('tenant.inventory.stock.list',compact('product_list'));
+        }else{
+             return view('tenant.inventory.stock.index',compact('product_list'));
+        }
+       
     }
 
     public function dataJson()

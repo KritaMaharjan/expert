@@ -140,4 +140,6 @@ class Inventory extends Model {
         return $data;
     }
 
+    
+
 }

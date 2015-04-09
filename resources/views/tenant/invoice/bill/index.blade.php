@@ -8,7 +8,7 @@
 @section('breadcrumb')
     @parent
     <li><a data-push="true" href="{{tenant_route('tenant.invoice.index')}}"><i class="fa fa-cog"></i> Invoice</a></li>
-    <li><i class="fa fa-money"></i> {{ ucfirst($type) }}</li>
+    <li><i class="fa fa-circle-o"></i> {{ ucfirst($type) }}</li>
 @stop
 
 @section('content')
@@ -43,6 +43,7 @@
        var thisUrl = "{{ $type }}";
     </script>
     {{--Load JS--}}
+    {{FB::registerModal()}}
     {{FB::js('assets/js/bill.js')}}
 
 @stop

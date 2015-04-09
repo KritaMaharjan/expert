@@ -18,17 +18,23 @@ if (env('APP_ENV') == 'live') {
     $group_auth = ['domain' => '{account}.mashbooks.app', 'middleware' => 'auth.tenant'];
 }
 
+$group_cron = ['domain' => '{account}.mashbooks.app'];
+$group_guest = ['domain' => '{account}.mashbooks.app', 'namespace' => 'Controllers', 'middleware' => 'guest.tenant'];
+$group_auth = ['domain' => '{account}.mashbooks.app', 'middleware' => 'auth.tenant'];
+
 /*
  * For Cron
  *
  */
 
-Route::group($group_cron, function () {
-    /*
-     * @todo Change block/account to post request and ensure that only superadmin can block/unblock account
-     */
-    get('block/account', 'Controllers\Tenant\AuthController@blockAccount');
-});
+if(isset($group_cron)) {
+    Route::group($group_cron, function () {
+        /*
+         * @todo Change block/account to post request and ensure that only superadmin can block/unblock account
+         */
+        get('block/account', 'Controllers\Tenant\AuthController@blockAccount');
+    });
+}
 
 
 Route::group($group_guest, function () {
@@ -52,7 +58,6 @@ Route::group($group_auth, function () {
         post('email/upload/data', ['as' => 'desk.email.upload', 'uses' => 'EmailController@attach']);
         post('email/send', ['as' => 'desk.email.send', 'uses' => 'EmailController@send']);
         get('email/customer/search', ['as' => 'tenant.email.customer.search', 'uses' => 'EmailController@customerSearch']);
-        post('email/send', ['as' => 'desk.email.send', 'uses' => 'EmailController@send']);
         get('email/{id}/delete', ['as' => 'tenant.email.delete', 'uses' => 'EmailController@delete']);
         get('email/{id}/reply', ['as' => 'tenant.email.reply', 'uses' => 'EmailController@reply']);
         get('email/{id}/forward', ['as' => 'tenant.email.forward', 'uses' => 'EmailController@forward']);
@@ -62,10 +67,7 @@ Route::group($group_auth, function () {
         get('email/delete/attach', ['as' => 'tenant.email.attach.delete', 'uses' => 'EmailController@deleteAttachment']);
 
         get('email/search_emails', ['as' => 'tenant.email.search', 'uses' => 'EmailController@search_email']);
-
         get('email/inbox', ['as' => 'tenant.email.inbox', 'uses' => 'IncomingEmailController@inbox']);
-
-
     });
 
     Route::group(['prefix' => 'invoice', 'namespace' => 'Tenant'], function () {
@@ -85,6 +87,16 @@ Route::group($group_auth, function () {
         get('new-business', 'AccountingController@newBusiness');
     });
 
+    // Registered by Krita
+    Route::group(['namespace' => 'Tenant\Statistics\Controllers'], function () {
+        get('statistics', 'StatisticsController@index');
+    });
+
+    // Registered by Krita
+    Route::group(['namespace' => 'Tenant\Report\Controllers'], function () {
+        get('report', 'ReportController@index');
+    });
+
     Route::group(['namespace' => 'Tenant\Inventory\Controllers'], function () {
         // product routes
         get('inventory/product', ['as' => 'tenant.inventory.product.index', 'uses' => 'ProductController@index']);
@@ -94,6 +106,8 @@ Route::group($group_auth, function () {
         get('inventory/product/{id}/edit', ['as' => 'tenant.inventory.product.edit', 'uses' => 'ProductController@edit']);
         post('inventory/product/{id}/edit', ['as' => 'tenant.inventory.product.update', 'uses' => 'ProductController@update']);
         get('inventory/product/{id}/delete', ['as' => 'tenant.inventory.product.delete', 'uses' => 'ProductController@delete']);
+        get('inventory/stock', ['as' => 'tenant.inventory.stock', 'uses' => 'ProductController@stock']);
+
 
         // Registered By Krita
         get('product/suggestions', ['as' => 'tenant.product.suggestions', 'uses' => 'ProductController@getSuggestions']);
@@ -106,6 +120,9 @@ Route::group($group_auth, function () {
         post('inventory/{id}/edit', ['as' => 'tenant.inventory.update', 'uses' => 'InventoryController@update']);
         get('inventory/{id}/edit', ['as' => 'tenant.inventory.edit', 'uses' => 'InventoryController@edit']);
         get('inventory/{id}/delete', ['as' => 'tenant.inventory.delete', 'uses' => 'InventoryController@delete']);
+
+        // Registered By Pooja
+         //get('inventory/stock', ['as' => 'tenant.inventory.stock', 'uses' => 'InventoryController@index']);
     });
 
     /** Registered by Krita **/
@@ -116,13 +133,14 @@ Route::group($group_auth, function () {
         get('invoice/bill/add', ['as' => 'tenant.invoice.bill.add', 'uses' => 'BillController@add']);
         post('invoice/bill/add', ['as' => 'tenant.invoice.bill.post', 'uses' => 'BillController@create']);
         post('invoice/bill/data', ['as' => 'tenant.invoice.bill.data', 'uses' => 'BillController@dataJson']);
-        get('invoice/bill/{id}', ['as' => 'tenant.invoice.bill.show', 'uses' => 'BillController@show']);
+        get('invoice/bill/{id}', ['as' => 'tenant.invoice.bill.view', 'uses' => 'BillController@view']);
         get('invoice/bill/{id}/edit', ['as' => 'tenant.invoice.bill.edit', 'uses' => 'BillController@edit']);
         post('invoice/bill/{id}/edit', ['as' => 'tenant.invoice.bill.update', 'uses' => 'BillController@update']);
         get('invoice/bill/{id}/delete', ['as' => 'tenant.invoice.bill.delete', 'uses' => 'BillController@delete']);
         get('invoice/bill/{id}/download', ['as' => 'tenant.invoice.bill.download', 'uses' => 'BillController@download']);
         get('invoice/bill/{id}/print', ['as' => 'tenant.invoice.bill.download', 'uses' => 'BillController@printBill']);
         get('invoice/bill/{id}/mail', ['as' => 'tenant.invoice.bill.email', 'uses' => 'BillController@sendEmail']);
+        post('invoice/bill/{id}/payment', ['as' => 'tenant.invoice.bill.payment', 'uses' => 'BillController@payment']);
 
         // invoice routes
         get('invoice', ['as' => 'tenant.invoice.index', 'uses' => 'InvoiceController@index']);
@@ -225,7 +243,6 @@ Route::group($group_auth, function () {
         get('customer/details/{customerId}', ['as' => 'tenant.customer.details', 'uses' => 'Tenant\Customer\CustomerController@getCustomerDetails']);
         post('test/upload', ['as' => 'test.upload', 'uses' => 'Tenant\Customer\CustomerController@testUpload']);
         post('customer/invoices/data', ['as' => 'tenant.inventory.customer.data', 'uses' => 'Tenant\Customer\CustomerController@invoices']);
-
 
     });
 

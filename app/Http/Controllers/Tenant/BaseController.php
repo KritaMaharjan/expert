@@ -74,7 +74,7 @@ class BaseController extends Controller {
         {
             if ($this->current_user->status == 0) {
                 Auth::logout();
-                return tenant()->redirect('tenant.login')->withInput()->with('message', lang('Your account has not been activated.'));
+                return tenant()->url('tenant.login')->withInput()->with('message', lang('Your account has not been activated.'));
             } elseif ($this->current_user->status == 2) {
                 Auth::logout();
                 return tenant()->redirect('tenant.login')->withInput()->with('message', lang('Your account has been suspended.'));

@@ -31,9 +31,7 @@
                                         'yy-mm-dd' => 'yy-mm-dd',
                                         'd M, y' => 'd M, y',
                                         'd MM, y' => 'd MM, y',
-                                         'DD, d MM, yy' => 'DD, d MM, yy',
-                                        
-                                      
+                      
                             ],isset($dateformat['value']) ? $dateformat['value'] : '',  array('class' => 'form-control')) !!}
         @if($errors->has('dateformat'))
           {!! $errors->first('dateformat', '<label class="control-label" for="inputError">:message</label>') !!}
@@ -47,7 +45,15 @@
     <div class="form-group no-mg">
       <label class="control-label" name="vat" value="">Vat</label>
       <div class="@if($errors->has('vat')) {{'has-error'}} @endif">
-      	{!!Form::text('vat',isset($vat->value) ? $vat->value : '',array('class' => 'form-control','id' => 'dateformat'))!!}  
+            {!! Form::select('vat',  [
+                                        '8' => '8 %',
+                                        '15' => '15 %',
+                                        '25' => '25 %',
+                                        '0' => 'Foreign Exempt',
+                                        '0' => 'Domestic Exempt',
+                      
+                            ],isset($vat->value) ? $vat->value : '',  array('class' => 'form-control')) !!}
+      	
       	@if($errors->has('vat'))
        		{!! $errors->first('vat', '<label class="control-label" for="inputError">:message</label>') !!}
       	@endif

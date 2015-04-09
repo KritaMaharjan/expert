@@ -11,7 +11,8 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 
-class TenantTable {
+class TenantTable
+{
 
     /**
      * Constant for table prefix
@@ -181,6 +182,7 @@ class TenantTable {
     /*
     * Email Attachments [One to many relation with Emails table]
      * */
+
     function attachmentsEmail()
     {
         if (!Schema::hasTable(self::TBL_PREFIX . 'attachments_email')) {
@@ -319,6 +321,7 @@ class TenantTable {
         if (!Schema::hasTable(self::TBL_PREFIX . 'tasks')) {
             Schema::create(self::TBL_PREFIX . 'tasks', function ($table) {
                 $table->increments('id'); // autoincrement value of a tenant admin
+                $table->integer('user_id'); // autoincrement value of a tenant admin
                 $table->string('subject', 100);
                 $table->text('body'); // customer id
                 $table->datetime('due_date');
@@ -338,14 +341,14 @@ class TenantTable {
                 $table->integer('user_id')->unsign()->index();
                 $table->integer('vacation_days')->unsign()->index();
                 $table->integer('sick_days')->unsign()->index();
-
+                $table->date('from');
+                $table->date('to');
 
                 // created_at, updated_at DATETIME
                 $table->timestamps();
             });
         }
     }
-
 
     /* ---------------------------------------
      * Tables for Accounting Module

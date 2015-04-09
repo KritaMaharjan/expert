@@ -19,7 +19,7 @@ class Tasks extends Model
      *
      * @var array
      */
-    protected $fillable = ['subject', 'body', 'due_date', 'is_complete', 'completion_date'];
+    protected $fillable = ['subject', 'body', 'due_date', 'is_complete', 'completion_date', 'user_id'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -34,7 +34,9 @@ class Tasks extends Model
         $task = Tasks::create([
             'subject' => $request->input('subject'),
             'body' => $request->input('body'),
-            'due_date' => $request->input('due_date')
+            'due_date' => $request->input('due_date'),
+            'is_complete' => 0,
+            'user_id' => current_user()->id,
         ]);
 
         $task = $task->toArray();
@@ -109,14 +111,15 @@ class Tasks extends Model
 
     function getTasks()
     {
+        $per_page = 10;
         $today = \Carbon::now()->format('Y-m-d');
         $tomorrow = \Carbon::now()->addDay()->format('Y-m-d');
         $tasks = array();
         /*$tasks['upcoming_tasks'] = Tasks::where('due_date', '>', $today)->get();
         $tasks['overdue_tasks'] = Tasks::where('due_date', '<=', $today)->get();*/
-        $tasks['upcoming_tasks'] = Tasks::where('is_complete', 0)->orderBy('due_date', 'asc')->get();
-        $tasks['completed_tasks'] = Tasks::where('is_complete', 1)->orderBy('completion_date', 'asc')->get();
-        $tasks['todo_tasks'] = Tasks::where('is_complete', 0)->where('due_date', '>=', $today)->where('due_date', '<', $tomorrow)->orderBy('due_date', 'asc')->get();
+        $tasks['upcoming_tasks'] = Tasks::where('is_complete', 0)->where('user_id', current_user()->id)->orderBy('due_date', 'asc')->paginate($per_page);
+        $tasks['completed_tasks'] = Tasks::where('is_complete', 1)->where('user_id', current_user()->id)->orderBy('completion_date', 'asc')->paginate($per_page);
+        $tasks['todo_tasks'] = Tasks::where('is_complete', 0)->where('user_id', current_user()->id)->where('due_date', '>=', $today)->where('due_date', '<', $tomorrow)->orderBy('due_date', 'asc')->paginate($per_page);
         return $tasks;
     }
 

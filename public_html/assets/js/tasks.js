@@ -42,6 +42,51 @@ $(function () {
 
     });
 
+  
+
+    function loadTaskList(type,page) {
+
+        if (type != 0 && type != 1)
+            type = 0;
+       
+        if (typeof page != 'undefine' && page < 0)
+            page = 1;
+
+        $('#task-list').load(appUrl + 'tasks?type=' + type + '&page=' + page);
+    }
+
+    $(document).on('click', '.mail-next,.mail-previous', function (e) {
+        e.preventDefault();
+        var href = $(this).attr('href');
+        var page = href.replace('#', '');
+        loadTaskList(0,page);
+
+        $('input[type="checkbox"]').iCheck({
+            checkboxClass: 'icheckbox_flat-blue',
+            radioClass: 'iradio_flat-blue'
+        });
+    });
+
+
+    function loadCompletedList(type,page) {
+        if (type != 0 && type != 1)
+            type = 1;
+       
+        if (typeof page != 'undefine' && page < 0)
+            page = 1;
+
+        $('#completed-list').load(appUrl + 'tasks?type=' + type + '&page=' + page);
+    }
+
+    $(document).on('click', '.mail-next1,.mail-previous1', function (e) {
+        e.preventDefault();
+        var href = $(this).attr('href');
+        var page = href.replace('#', '');
+        loadCompletedList(1,page);
+    });
+
+
+
 
 $(document).on('submit', '#task-form', function (e) {
         e.preventDefault();

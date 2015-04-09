@@ -17,61 +17,29 @@ Tasks
             <!-- TO DO List -->
               <div class="box box-solid">
                 <div class="box-header">
-                  <i class="ion ion-clipboard"></i>
+                  <i class="fa fa-clipboard"></i>
                   <h3 class="box-title">Upcoming Tasks</h3>
                   <div class="box-tools pull-right">
-                    <a class="btn btn-primary pull-right" data-toggle="modal" data-url="#task-modal-data" data-target="#fb-modal">
-                        <i class="fa fa-plus"></i> Add new task
+                    <a class="btn btn-primary" data-toggle="modal" data-url="#task-modal-data" data-target="#fb-modal">
+                        <i class="fa fa-plus"></i> Add New Task
                     </a>
-
-                    <a class="btn btn-primary pull-right" data-toggle="modal" data-url="#todo-modal-data" data-target="#fb-modal">
+                    {{--<a class="btn btn-primary" data-toggle="modal" data-url="#todo-modal-data" data-target="#fb-modal">
                         <i class="fa fa-tasks"></i> To Do List
-                    </a>
-
+                    </a>--}}
                   </div>
                 </div><!-- /.box-header -->
-                <div class="box-body">
-                  <ul class="todo-list upcoming-tasks">
-
-                    @foreach($tasks['upcoming_tasks'] as $task)
-                    <li id = {{$task->id}}>
-                      <!-- checkbox -->
-                      <input type="checkbox" value="" name="" class="icheck"/>
-                      <!-- todo text -->
-                      <span class="text">{{ $task->subject }}</span>
-                      <!-- Emphasis label -->
-                      {!! calculate_todo_time($task->due_date) !!}
-                      <!-- General tools such as edit or delete-->
-                      <div class="tools">
-                        {{--<i class="fa fa-edit"></i>--}}
-                        <a href="#" title="Edit" data-original-title="Edit" class="btn btn-box-tool"  data-toggle="modal" data-url="{{ tenant()->url('tasks/' . $task->id . '/edit') }}" data-target="#fb-modal" data-url="" >
-                            <i class="fa fa-edit"></i>
-                        </a>
-                        <i class="fa fa-trash-o btn-delete-task" data-id="{{ $task->id }}"></i>
-                      </div>
-                      <div class="todos-box pad-lr-29">
-                        <div>
-                          <label>Added date:</label>
-                          <span>{{ format_datetime($task->created_at) }}</span>
-                        </div>
-                        <div>
-                          <label>Due date:</label>
-                          <span>{{ format_datetime($task->due_date) }}</span>
-                        </div>
-                        <p>{{ $task->body }}</p>
-                      </div>
-                    </li>
-                    @endforeach
-                  </ul>
+                <div class="box-body task-list" id="task-list">
+                 @include('tenant.tasks.taskList')
                 </div><!-- /.box-body -->
                 <div class="box-footer clearfix no-border">
-                  <ul class="pagination pagination-sm inline pull-right">
+                
+                  {{-- <ul class="pagination pagination-sm inline pull-right">
                     <li><a href="#">&laquo;</a></li>
                     <li><a href="#">1</a></li>
                     <li><a href="#">2</a></li>
                     <li><a href="#">3</a></li>
                     <li><a href="#">&raquo;</a></li>
-                  </ul>
+                  </ul> --}}
                 </div>
               </div><!-- /.box -->
 
@@ -84,55 +52,21 @@ Tasks
           <!-- TO DO List -->
             <div class="box box-solid">
               <div class="box-header">
-                <i class="ion ion-clipboard"></i>
+                <i class="fa fa-clipboard"></i>
                 <h3 class="box-title">Completed List</h3>
               </div><!-- /.box-header -->
-              <div class="box-body">
-              <ul class="todo-list completed-tasks">
-                    @if(count($tasks['completed_tasks']) == 0)
-                        <p class="no-results">No completed tasks</p>
-                    @else
-
-                        @foreach($tasks['completed_tasks'] as $task)
-                            <li id = {{$task->id}}>
-                              <!-- checkbox -->
-                              <input type="checkbox" value="" name="" class="icheck" checked="checked"/>
-                              <!-- todo text -->
-                              <span class="text">{{ $task->subject }}</span>
-                              <!-- Emphasis label -->
-                              {!! calculate_todo_time($task->completion_date, true) !!}
-                              <!-- General tools such as edit or delete-->
-                              <div class="tools">
-                                <i class="fa fa-trash-o btn-delete-task" data-id="{{ $task->id }}"></i>
-                              </div>
-                              <div class="todos-box pad-lr-29">
-                                  <div>
-                                    <label>Added date:</label>
-                                    <span>{{ format_datetime($task->created_at) }}</span>
-                                  </div>
-                                  <div>
-                                    <label>Due date:</label>
-                                    <span>{{ format_datetime($task->due_date) }}</span>
-                                  </div>
-                                  <div>
-                                      <label>Completed date:</label>
-                                      <span>{{ format_datetime($task->completion_date) }}</span>
-                                  </div>
-                                  <p>{{ $task->body }}</p>
-                              </div>
-                            </li>
-                        @endforeach
-                    @endif
-                </ul>
+              <div class="box-body" id="completed-list">
+              @include('tenant.tasks.completedList')
               </div><!-- /.box-body -->
               <div class="box-footer clearfix no-border">
-                <ul class="pagination pagination-sm inline pull-right">
+                {{-- <ul class="pagination pagination-sm inline pull-right">
                   <li><a href="#">&laquo;</a></li>
                   <li><a href="#">1</a></li>
                   <li><a href="#">2</a></li>
                   <li><a href="#">3</a></li>
                   <li><a href="#">&raquo;</a></li>
-                </ul>
+                </ul> --}}  
+                
               </div>
             </div><!-- /.box -->
 
@@ -161,22 +95,10 @@ Tasks
     //$('.text').click(function(){
       $(this).parent().find('.todos-box').slideToggle('fast');
 
-    })
+    });
+    
+   
   });
 </script>
-
-<div class="container">
-<div class="row">
-<div class='col-sm-6'>
-<div class="form-group">
-<div class='input-group date' id='datetimepicker1'>
-<input type='text' class="form-control" />
-<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-</span>
-</div>
-</div>
-</div>
-</div>
-</div>
 
 @stop

@@ -1,5 +1,7 @@
 <?php namespace App\Http\Tenant\Email\Models;
 
+use App\Http\Tenant\Tasks\Models\Tasks;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Request;
@@ -191,9 +193,22 @@ class Email extends Model {
         $email->status = $this->email_status;
         $email->save();
 
+        if($this->email_status == 5)
+            $this->createTask();
+
         return $email->toArray();
     }
 
+    function createTask()
+    {
+        Tasks::create([
+            'subject' => $this->email_subject,
+            'body' => $this->email_message,
+            'due_date' => Carbon::tomorrow(),
+            'is_complete' => 0,
+            'user_id' => current_user()->id
+        ]);
+    }
 
     function fire()
     {

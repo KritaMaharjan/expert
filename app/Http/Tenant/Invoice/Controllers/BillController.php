@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Laracasts\Flash\Flash;
 use App\Models\Tenant\Setting;
+use App\Http\Tenant\Invoice\Models\Payment;
 
 class BillController extends BaseController {
 
@@ -26,12 +27,6 @@ class BillController extends BaseController {
         $this->request = $request;
         $this->setting = $setting;
     }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Response
-     */
 
     protected $rules = [
         'customer' => 'required',
@@ -58,6 +53,7 @@ class BillController extends BaseController {
             show_404();
         }
     }
+
 
     public function add()
     {
@@ -103,25 +99,14 @@ class BillController extends BaseController {
         return tenant()->route('tenant.invoice.bill.index');
     }
 
-
-    /**
-     * Display product detail
-     * @return string
-     */
-    function show()
+    function view()
     {
         $id = $this->request->route('id');
-        $bill = $this->bill->find($id);
+        $bill = $this->bill->with('payments')->find($id);
         if ($bill == null) {
             show_404();
         }
-
-        if ($this->request->ajax()) {
-            return $this->success($bill->toArray());
-        }
-
-        return view('tenant.inventory.product.show', compact('product'));
-
+        return view('tenant.invoice.bill.view', compact('bill'));
     }
 
 
@@ -166,7 +151,6 @@ class BillController extends BaseController {
 
         return tenant()->route('tenant.invoice.bill.index');
     }
-
 
     function delete()
     {
@@ -213,7 +197,7 @@ class BillController extends BaseController {
     {
         $id = $this->request->route('id');
         $data = $this->getInfo($id);
-        $pdf->generate(time(), 'template.bill', compact('data'), false);
+        $pdf->generate($data['invoice_number'].'_'.time(), 'template.bill', compact('data'), true);
     }
 
     function sendEmail(Pdf $pdf)
@@ -238,6 +222,24 @@ class BillController extends BaseController {
         return view('template.print', compact('data'));
     }
 
+    function payment(Payment $payment)
+    {
+        if($this->request->ajax()) {
+            $id = $this->request->route('id');
+            $bill_remaining = Bill::find($id, ['remaining'])->remaining;
+            $payment_rules = [
+                'payment_date' => 'required|date',
+                'paid_amount' => 'required|integer|min:1|max:'.$bill_remaining
+            ];
+
+            $validator = Validator::make($this->request->all(), $payment_rules);
+            if ($validator->fails())
+                return $this->fail(['errors' => $validator->getMessageBag()]);
+
+            $pay_details = $payment->add($this->request, $id);
+            return ($pay_details) ? $this->success($pay_details) : $this->fail(['errors' => 'Something went wrong!']);
+        }
+    }
 
     function getInfo($id)
     {

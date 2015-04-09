@@ -6,10 +6,13 @@ use App\Http\Controllers\Tenant\BaseController;
 use App\Http\Tenant\Email\Models\Attachment;
 use App\Http\Tenant\Email\Models\Receiver;
 use App\Models\Tenant\Customer;
+use App\Models\Tenant\Setting;
+use App\Models\Tenant\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Tenant\Email\Models\Email;
-
+use App\Http\Tenant\Email\Models\IncomingEmail;
+use App\Fastbooks\Libraries\Mailbox\EmailReader;
 
 class EmailController extends BaseController {
 
@@ -18,9 +21,12 @@ class EmailController extends BaseController {
     protected $attachment;
     protected $receiver;
     protected $upload_path = './assets/uploads/';
+    protected $host = 'alucio.com';
+    protected $host_email = 'krita@alucio.com';
+    protected $password = '@1uc!0';
+    protected $port = 25;
 
-
-    function __construct(Request $request, Email $email, Attachment $attachment, Receiver $receiver)
+    function __construct(Request $request, Email $email, Attachment $attachment, Receiver $receiver, IncomingEmail $incomingEmail, Setting $setting)
     {
 
         parent::__construct();
@@ -28,21 +34,22 @@ class EmailController extends BaseController {
         $this->email = $email;
         $this->attachment = $attachment;
         $this->receiver = $receiver;
-
+        $this->incomingEmail = $incomingEmail;
+        $this->setting = $setting;
     }
 
     function index()
     {
         $action = 'add';
-
         return view('tenant.email.index', compact('action'));
     }
 
-    function customerSearch(Customer $customer)
+    function customerSearch(Customer $customer, User $user)
     {
         $query = $this->request->input('term');
         $details = $customer->select('id', 'name as label', 'email as value')->where('email', 'LIKE', '%' . $query . '%')->orWhere('name', 'LIKE', '%' . $query . '%')->get()->toArray();
-
+        $userdetails = $user->select('id', 'fullname as label', 'email as value')->where('email', 'LIKE', '%' . $query . '%')->orWhere('fullname', 'LIKE', '%' . $query . '%')->get()->toArray();
+        $details = array_merge($details, $userdetails);
         return \Response::JSON($details);
     }
 
@@ -62,13 +69,10 @@ class EmailController extends BaseController {
         if ($validator->fails()) {
             return $this->fail(['errors' => $validator->messages()]);
         }
-
         if ($email = $this->email->send()) {
             return $this->success($email);
         }
-
         return $this->fail(['error' => 'Could not send email at this moment. Please try again later']);
-
     }
 
 
@@ -90,46 +94,52 @@ class EmailController extends BaseController {
     function get()
     {
         $id = $this->request->route('id');
-        $mail = $this->email->with('attachments', 'receivers')->where('id', $id)->user()->first()->toArray();
+        $folder = $this->request->input('folder');
 
-        $to = "";
-        $cc = "";
-        foreach ($mail['receivers'] as $re) {
-            if ($re['type'] == 1)
-                $to .= $re['email'] . ';';
-            else
-                $cc .= $re['email'];
+        if($folder == 0) {
+            $mail = $this->email->with('attachments', 'receivers')->where('id', $id)->user()->first()->toArray();
+            $to = "";
+            $cc = "";
+            foreach ($mail['receivers'] as $re) {
+                if ($re['type'] == 1)
+                    $to .= $re['email'] . ';';
+                else
+                    $cc .= $re['email'];
+            }
+
+            foreach ($mail['attachments'] as &$at) {
+                unset($at['id']);
+                unset($at['email_id']);
+            }
+
+            unset($mail['receivers']);
+            $mail['to'] = $to;
+            $mail['cc'] = $cc;
         }
-
-        foreach ($mail['attachments'] as &$at) {
-            unset($at['id']);
-            unset($at['email_id']);
+        else {
+            $mail = $this->incomingEmail->where('id', $id)->user()->first()->toArray();
+            $mail['message'] = $mail['body_html'];
+            $mail['to'] = $mail['from_email'];
+            $mail['cc'] = '';
         }
-
-
-        unset($mail['receivers']);
-        $mail['to'] = $to;
-        $mail['cc'] = $cc;
 
         $display_name = current_user()->display_name;
         $email = current_user()->smtp->email;
 
         $message = "
-<br/>
-<br/>
-<br/>
-<br/>
+
+<br/><br/>
 <hr/>
 <strong>From:</strong> " . $display_name . "[mailto:" . $email . "]<br/>
-<strong>Sent:</strong> " . date('D, F d, Y, h:i A') . "<br/>
-<strong>To:</strong> " . $mail['to'] . "<br/>";
+<strong>Sent:</strong> " . date('D, F d, Y, h:i A') ."<br/>
+<strong>To:</strong> " . $mail['to']."<br/>";
 
         if ($mail['cc'] != '')
             $message .= "
-<strong>Cc:</strong> " . $mail['to'];
+<strong>Cc:</strong> " . $mail['to']."<br/>"; 
 
         $message .= "
-<strong>Subject:</strong> " . $mail['subject'] . "
+<strong>Subject:</strong> " . $mail['subject'] . "<br/>
 
 " . $mail['message'];
 
@@ -143,19 +153,34 @@ class EmailController extends BaseController {
     function show()
     {
         $id = $this->request->route('id');
-        $mail = $this->email->with('attachments', 'receivers')->where('id', $id)->user()->first();
+        $folder = $this->request->input('folder');
 
-        return view('tenant.email.view', compact('mail'));
+        if($folder == 0)
+            $mail = $this->email->with('attachments', 'receivers')->where('id', $id)->user()->first();
+        else
+            $mail = $this->incomingEmail->where('id', $id)->user()->first();
+        return view('tenant.email.view', compact('mail'))->with('folder', $folder);
     }
 
     function listing()
     {
         $type = $this->request->input('type');
         $data['type'] = $type = ($type == 1) ? $type : 0;
-        $data['per_page'] = $per_page = 5;
-        $data['mails'] = $this->email->user()->orderBy('created_at', 'DESC')->type($type)->with('attachments', 'receivers')->paginate($per_page);
+        $data['per_page'] = $per_page = 10;
+        $folder = $this->request->input('folder');
+        $data['folder'] = $folder;
 
-
+        if($folder == 0)
+            $data['mails'] = $this->email->user()->where('sender_id', current_user()->id)->orderBy('created_at', 'DESC')->type($type)->with('attachments', 'receivers')->paginate($per_page);
+        else {
+            $connection = $this->readUserEmail($type);
+            if($connection !== true)
+                $data['connection_errors'] = $connection['error'];
+            if($type == 0)
+                $data['mails'] = $this->incomingEmail->user()->where('user_id', current_user()->id)->orderBy('created_at', 'DESC')->type($type)->paginate($per_page);
+            else
+                $data['mails'] = $this->incomingEmail->user()->orderBy('created_at', 'DESC')->type($type)->paginate($per_page);
+        }
         return view('tenant.email.list', $data);
     }
 
@@ -176,36 +201,99 @@ class EmailController extends BaseController {
     {
         if ($this->request->ajax()) {
             $id = $this->request->route('id');
-            $email = $this->email->where('id', $id)->user()->first();
-            if (!empty($email)) {
-                if ($email->delete()) {
+            $folder = $this->request->input('folder');
 
-                    $this->attachment->where('email_id', $id)->delete();
-                    $this->receiver->where('email_id', $id)->delete();
+            if($folder == 0) {
+                $email = $this->email->where('id', $id)->user()->first();
+                if (!empty($email)) {
+                    if ($email->delete()) {
 
-                    return $this->success(['message' => 'Email deleted Successfully']);
+                        $this->attachment->where('email_id', $id)->delete();
+                        $this->receiver->where('email_id', $id)->delete();
+
+                        return $this->success(['message' => 'Email deleted Successfully!']);
+                    }
+                }
+            }
+            else{
+                $email = $this->incomingEmail->where('id', $id)->user()->first();
+                if (!empty($email)) {
+                    if ($email->delete()) {
+                        return $this->success(['message' => 'Email deleted Successfully!']);
+                    }
                 }
             }
 
             return $this->fail(['error' => 'Something went wrong. Please try again later']);
         }
-
     }
 
 
      function search_email(){
-        
+
         $search_option = $this->request->input('search_option');
         $user_id = $this->request->input('user_id');
-         $perpage = 10;
-          $mails = $this->email->getSearchEmail($user_id,$search_option);
-         
-         return view('tenant.customer.emailList', compact('mails'));
-         
+        $perpage = 10;
+        $mails = $this->email->getSearchEmail($user_id,$search_option);
+        return view('tenant.customer.emailList', compact('mails'));
+     }
 
 
+    function readUserEmail($type = 0)
+    {
+        $user = current_user();
+        if($type == 0) {
+            $smtp = $user->smtp;
+        }
+        else {
+            $smtp = (object)$this->setting->getSupportSetting();
+        }
+        $validSmtp = $this->validateSmtp($smtp);
+        //$validSmtp = true;
+        if ($validSmtp === true) {
+            $mailbox = new EmailReader($smtp->incoming_server, $smtp->email, $smtp->password, $smtp->port);
+            //$mailbox = new EmailReader($this->host, $this->host_email, $this->password, 993);
 
+            if ($mailbox->connect()) {
+                $data = $mailbox->read($user->profile->email_sync_at);
+                $this->recordEmail($data, $type);
+                return true;
+            } else {
+                return array('status'=> 'fail', 'error' => $mailbox->error());
+                //return array('status'=> 'fail', 'error' => $mailbox->error());
+                    //$this->fail(array('error' => $mailbox->error()));
+            }
+        }
+        return array('status'=> 'fail', 'error' => $validSmtp);
     }
 
+    private function recordEmail($data, $type)
+    {
+        if($data)
+            $this->incomingEmail->saveEmail($data, $type);
+    }
 
+    private function validateSmtp($smtp)
+    {
+        if (empty($smtp)) {
+            return lang('Please configure SMTP.');
+        }
+        if (!isset($smtp->email) || $smtp->email == '') {
+            return lang('Email is missing');
+        }
+
+        if (!isset($smtp->incoming_server) || $smtp->incoming_server == '') {
+            return lang('Incoming Server is missing');
+        }
+
+        if (!isset($smtp->password) || $smtp->password == '') {
+            return lang('Password is missing');
+        }
+
+        if (!isset($smtp->port) || $smtp->port == '') {
+            return lang('Port is missing');
+        }
+
+        return true;
+    }
 }

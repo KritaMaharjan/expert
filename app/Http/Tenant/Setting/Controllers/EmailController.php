@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Http\Controllers\Tenant\Settings;
 use App\Http\Controllers\Tenant\BaseController;
 use Illuminate\Support\Facades\Validator;
@@ -10,7 +10,7 @@ use App\Models\Tenant\Setting;
 class EmailController extends BaseController {
 
 	protected $profile;
-	public function _construct(Profile $profile=NULL)
+	public function _construct(Profile $profile)
 	{
         \FB::can('Settings');
 		parent::_construct();
@@ -20,9 +20,9 @@ class EmailController extends BaseController {
 
     public function index()
     {
-        $profile = new Profile;
-    	$personal_email_setting = $profile->getPersonalSetting($this->current_user->id);
-    	$support_email_setting = $profile->getSupportSetting($this->current_user->id);
+        //$profile = new Profile;
+    	$personal_email_setting = $this->profile->getPersonalSetting($this->current_user->id);
+    	$support_email_setting = $this->profile->getSupportSetting($this->current_user->id);
     	$data = array('page_title' => 'Email Controller','personal'=>$personal_email_setting,'support'=>$support_email_setting);
     	return view('tenant.setting.email')->with($data);
     	//return view('tenant.setting.email');
@@ -36,20 +36,19 @@ class EmailController extends BaseController {
                                             'outgoing_server' => 'required',
                                             'username' => 'required',
                                             'password' => 'required',
-                                           
-                                
                                             )
                                         );
 
         if ($validator->fails())
         {
             return \Response::json(array('status' => 'false', 'errors' => $validator->getMessageBag()->toArray()));
-        } 
-        else 
+        }
+        else
         {
     	$details = serialize([
         						'incoming_server'=>$all['incoming_server'],
 								'outgoing_server'=>$all['outgoing_server'],
+								'port'=>$all['port'],
 								'username'=>$all['username'],
 								'password'=>$all['password']
 							]);
@@ -57,11 +56,8 @@ class EmailController extends BaseController {
 
     	$profile = new Profile;
         $user_id = $this->current_user->id;
-       
-        
 
     	$profile->updateprofile($user_id,$details,$flied);
-
 
         return \Response::json(array('status' => 'true', 'message' => 'Email Updated successfully'));
 

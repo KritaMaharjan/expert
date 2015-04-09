@@ -5,7 +5,6 @@ use Ddeboer\Imap\Search\Date\After;
 use Ddeboer\Imap\SearchExpression;
 use Ddeboer\Imap\Server;
 
-
 /*
  * Example
  * host: alucio.com   / imap.gmail.com
@@ -57,14 +56,14 @@ class EmailReader {
         $this->connection = $server->authenticate($this->email, $this->password);
     }
 
-    function getMailbox()
+    function mailbox()
     {
         return $this->connection->getMailbox($this->folder);
     }
 
     function messageSince($date)
     {
-        $mailbox = $this->getMailbox();
+        $mailbox = $this->mailbox();
         $search = new SearchExpression();
         $since = new \DateTime($date);
         $search->addCondition(new After($since));
@@ -85,13 +84,16 @@ class EmailReader {
         $inbox = array();
         foreach ($messages as $message) {
             $m = new \stdClass();
-            $m->getSubject = $message->getSubject();
-            $m->getFrom = $message->getFrom();
+            $m->msid = $message->getNumber();
+            $m->subject = $message->getSubject();
+            $m->fromEmail = $message->getFrom()->getAddress();
+            $m->fromName = $message->getFrom()->getName();
             $m->getTo = $message->getTo();
-            $m->getDate = $message->getDate();
+            $m->date = $message->getDate();
+            $m->receivedDate = $message->getDate()->format('Y-m-d h:m:s');
             $m->isSeen = $message->isSeen();
             $m->body = $message->keepUnseen()->getBodyHtml();
-            $m->body = $message->keepUnseen()->getBodyText();
+            $m->body_text = $message->keepUnseen()->getBodyText();
 
             $inbox[] = $m;
         }

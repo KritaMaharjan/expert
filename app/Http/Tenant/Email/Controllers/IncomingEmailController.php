@@ -8,6 +8,14 @@ use App\Http\Tenant\Email\Models\IncomingEmail;
 
 class IncomingEmailController extends BaseController {
 
+    /*protected $host = 'imap.gmail.com';
+    protected $host_email = 'manish.alucio@gmail.com';
+    protected $password = '@sdf@sdf';*/
+
+    protected $host = 'alucio.com';
+    protected $host_email = 'krita@alucio.com';
+    protected $password = '@1uc!0';
+
     function __construct(IncomingEmail $incomingEmail)
     {
         parent::__construct();
@@ -17,18 +25,9 @@ class IncomingEmailController extends BaseController {
 
     function inbox()
     {
-        $user = current_user();
-
-        $smtp = (object)$user->profile->smtp;
-
-        $validSmtp = $this->validateSmtp($smtp);
-
-        $data['error'] = $validSmtp;
-
+        $this->readUserEmail();
         $data['action'] = 'add';
-
-        return view('tenant.email/inbox', $data);
-
+        return view('tenant.email.index', $data);
     }
 
     function listing()
@@ -44,29 +43,29 @@ class IncomingEmailController extends BaseController {
 
     function readUserEmail()
     {
-
-
         $user = current_user();
         $smtp = (object)$user->profile->smtp;
         $validSmtp = $this->validateSmtp($smtp);
+        $validSmtp = true;
         if ($validSmtp === true) {
-            $mailbox = new EmailReader($user->smtp->incoming_server, $user->smtp->email, $user->smtp->password, $user->smtp->port);
+            //$mailbox = new EmailReader($user->smtp->incoming_server, $user->smtp->email, $user->smtp->password, $user->smtp->port);
+            $mailbox = new EmailReader($this->host, $this->host_email, $this->password, 993);
 
             if ($mailbox->connect()) {
-                $data = $mailbox->read();
-
+                $data = $mailbox->read($user->profile->email_sync_at);
                 return $this->recordEmail($data);
             } else {
                 return $this->fail(array('error' => $mailbox->error()));
             }
         }
-
         return $this->fail(array('error' => $validSmtp));
     }
 
     private function recordEmail($data)
     {
-
+        if($data)
+            $this->incomingEmail->saveEmail($data);
+        dd($data);
         return $this->success(array('mail' => $data));
     }
 

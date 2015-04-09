@@ -48,7 +48,7 @@
                                 Attachment
                             </a>
                         </div>
-                        <p class="help-block">Max. 2MB</p>
+                        <p class="help-block">Max. 20MB</p>
                          <div id='filelist'>Your browser doesn't have Flash, Silverlight or HTML5 support.</div>
                     </div>
 
@@ -60,7 +60,7 @@
                         <div  class="form-group f-width">
  
                             <div class="input-group input-custom">
-                                    <span class="input-group-addon">Action:</span>
+                                    <span class="input-group-addon">Send as</span>
                                     <?php
                                      $status_list = [
                                              '' => 'Select',

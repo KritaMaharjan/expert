@@ -36,7 +36,7 @@ $successCallback ="
 ?>
 <script type="text/javascript">
 $(function(){
-    {!! plupload()->button('attachment')->maxSize('2mb')->mimeTypes('image')->url(url('/desk/email/upload/data'))->autoStart(true)->success($successCallback)->init() !!}
+    {!! plupload()->button('attachment')->maxSize('20mb')->mimeTypes('image')->url(url('/desk/email/upload/data'))->autoStart(true)->success($successCallback)->init() !!}
 });
 </script>
 
@@ -213,7 +213,29 @@ $(function(){
 
                   </div><!-- /.box -->
                 </div><!-- bg-white -->
+@if($mails->total() > 1)
+
+<p class="align-right">
+<?php
+$items = count($mails->items());
+$to = ($mails->currentPage()-1) * $mails->perPage() + $items;
+if($items >= $mails->perPage())
+$from =  $to - $mails->perPage()+1;
+else
+$from =  $to - $mails->perPage()+1+($mails->perPage()-$items);
+?>
+<span class="color-grey">{{$from}}-{{$to}} of {{$mails->total()}}</span>
+    @if($from !=1)
+      <a href="#{{$mails->currentPage()-1}}" data class="mg-lr-5 mail-previous color-grey"><i class="fa  fa-chevron-left"></i></a>
+    @endif
+    @if($to != $mails->total())
+      <a href="#{{$mails->currentPage()+1}}"  class="color-grey mail-next"><i class="fa  fa-chevron-right"></i></a>
+    @endif
+</p>
+@endif
+
                 </div>
+             
                 <div id="email-single" class="col-md-7 bg-white">
         
                 </div><!-- bg-white -->
@@ -285,7 +307,7 @@ $(function(){
                                 Attachment
                             </a>
                         </div>
-                        <p class="help-block">Max. 2MB</p>
+                        <p class="help-block">Max. 20MB</p>
                          <div id='filelist'>Your browser doesn't have Flash, Silverlight or HTML5 support.</div>
                     </div>
 

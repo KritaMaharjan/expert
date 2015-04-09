@@ -23,7 +23,7 @@ Print Invoice
                       </div>
                       <div class="col-md-3 col-sm-3 col-xs-3">
                         <label>Belop</label>
-                        <span class="block-f-width">&nbsp;{{ $data['currency'] }}</span>
+                        <span class="block-f-width">&nbsp;{{ $data['amount'] }}</span>
                       </div>
                       <div class="col-md-3 col-sm-3 pad-0 col-xs-3">
                         <label>Betalerens kontonummer</label>
@@ -51,7 +51,7 @@ Print Invoice
                               </div>
                               <div class="row">
                                 <label class="col-md-5 col-sm-5 col-xs-5 font-mid">Fakturanr:</label>
-                                <span class="col-md-7 col-sm-7 col-xs-7">{{ $data['invoice_number']}} kid</span>
+                                <span class="col-md-7 col-sm-7 col-xs-7">{{ $data['invoice_number']}}</span>
                               </div>
                               <div class="row">
                                 <label class="col-md-5 col-sm-5 col-xs-5 font-mid">Fakturadato:</label>
@@ -132,10 +132,10 @@ Print Invoice
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-4 box1 col-sm-4 col-xs-4">
-                          <h3>Kundeidentifikasjon(KID)</h3>
+                          {{--<h3>Kundeidentifikasjon(KID)</h3>
                           <p class="align-right font-mid">
                             478507204539453
-                          </p>
+                          </p>--}}
                         </div>
                         <div class="col-md-2 box2 col-sm-2 col-xs-2">
                           <h3>Kroner</h3>

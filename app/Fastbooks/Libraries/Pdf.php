@@ -10,7 +10,8 @@ class Pdf {
 
     function __construct()
     {
-        $this->uploadPath = public_path() . '/assets/uploads/invoices/';
+        $this->uploadPath = public_path().'/' .tenant()->folder('invoice', true)->path();
+        //$this->uploadPath = public_path() . '/assets/uploads/invoices/';
         $this->pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         $this->setInfo();
         $this->setMargin();
@@ -73,6 +74,7 @@ class Pdf {
         //save PDF
         if ($save)
         {
+            ob_clean();
             $this->pdf->Output($this->uploadPath . $filename . '.pdf', 'F');
             return $this->uploadPath.$filename.'.pdf';
         }
@@ -80,7 +82,6 @@ class Pdf {
         //Close and output PDF document
         if ($download)
             $this->pdf->Output($filename . '.pdf', 'D');
-
         else
             $this->pdf->Output($this->uploadPath . $filename . '.pdf', 'I');
         return true;

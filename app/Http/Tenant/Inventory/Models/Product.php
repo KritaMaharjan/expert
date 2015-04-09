@@ -73,8 +73,15 @@ class Product extends Model {
         $this->purchase_cost = $this->purchase_cost();
         $this->selling_price = $this->selling_price();
         $this->vat = $this->vat();
+        $this->is_inventory = $this->in_inventory($this->id);
 
         return $this->toArray();
+    }
+
+    function in_inventory($product_id){
+        $inventory = \DB::table('fb_inventory')->where('product_id', $product_id)->first();
+        return $inventory;
+
     }
 
 
@@ -130,6 +137,36 @@ class Product extends Model {
 
         return $data;
     }
+
+    function get_product(){
+        $perpage = 10;
+        $products = Product::paginate($perpage);
+        $total = 0;
+         $total_bill = 0;
+        foreach ($products as $key => &$value) {
+            $inventory = Inventory::where('product_id',$value->id)->get();
+            foreach ($inventory as $key => $inv) {
+                $total += $inv->quantity;
+
+
+            }
+            $bill = \DB::table('fb_bill_products')->where('product_id',$value->id)->get();
+             foreach ($bill as $key => $pro) {
+                $total_bill += $pro->quantity;
+
+
+            }
+            
+            $value->total_product = $total; 
+             $value->total_bill = $total_bill; 
+             $value->remaining = $total - $total_bill; 
+        }
+
+        return $products;
+       
+    }
+
+
 
 
 }

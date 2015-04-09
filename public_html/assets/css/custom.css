@@ -991,8 +991,9 @@ div.dataTables_length select {
 }
 
 .fix-height {
-    height: 435px;
+    max-height: 543px!important;
 }
+
 .no-record {
     color: #777;
     padding: 10px;
@@ -1044,7 +1045,10 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
     float: right;
     width: 40%;
 }
-
+.date-box2{
+    float: right;
+    width: 60%;
+}
 .date-box input {
     width: 100% !important;
 }
@@ -1085,7 +1089,7 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
 .todo-list li span.text {
     cursor: pointer;
 }
-.todos-box{display: none;}
+.todos-box,#after-paid{display: none;}
 .pad-lr-29{
     padding: 10px 29px 0;
 }
@@ -1136,7 +1140,6 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
      background: none repeat scroll 0 0 #fdfcbc;
     border: 1px solid #f8f7b6;
     box-shadow: 0 2px 1px rgba(0, 0, 0, 0.2);
-    height: 70px;
     padding: 10px;
 }
 .pos-right{
@@ -1156,4 +1159,79 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
     width: 30px!important;
     display: inline-block!important;
     text-align: center;
+}
+
+.btns-box {
+    background: none repeat scroll 0 0 #ececec;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.2);
+    padding: 40px;
+    text-align: center;
+}
+.btns-box a {
+    margin: 0 10px;
+}
+.width-sm{
+    width: 12%;
+}
+.half-width2{
+    width: 40%;
+}
+.image-section {
+    border: 1px solid #dbdbdb;
+    padding: 0;
+}
+.image-section img{
+    width: 100%;
+}
+.mg-btm-40{
+    margin-bottom: 40px;
+}
+.uppercase{
+    text-transform: uppercase;
+}
+
+#email-single .box-title {
+    width: 85%;
+} 
+.email-loader{
+    left: 50%;
+    position: absolute;
+    top: 50% !important;
+    width: 50px;
+    height: 50px;
+    background: url("../images/loader.gif") no-repeat scroll 0 0 rgba(0, 0, 0, 0);
+    z-index: 999;
+}
+.stat-info label{
+    display: block;
+}
+
+.stat-info .left-block span{
+    display: block;
+}
+.form-group > span {
+    display: inline-block;
+    width: 37%;
+}
+.pad-top-100{
+    padding-top: 100px;
+}
+.stat-info h3{
+    padding-bottom: 10px;
+    border-bottom: 1px solid #dbdbdb;
+}
+.stat-info h3.line-yellow{
+    color:#fd9d11;
+}
+.stat-info h3.line-green{
+    color:#237a7a;
+}
+.stat-info h3.line-purple{
+    color:#7070a0;
+}
+.stat-info h3.line-red{
+    color:#d45127;
+}
+.morris-hover-point{
+    text-align: left;
 }

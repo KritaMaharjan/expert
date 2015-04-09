@@ -6,27 +6,31 @@
     <p><small class="color-blue">Sent: </small> <?php echo $mail->created_at->format('D m/d/Y h:i A');?></p>
      <?php $receiver = $mail->receivers;?>
      <p><small class="color-blue"> To: </small>
-        @foreach($receiver as $to)
-            @if($to->type ==1)
-               {{ $to->email}};
-            @endif
-         @endforeach
+        @if($folder == 0)
+            @foreach($receiver as $to)
+                @if($to->type ==1)
+                   {{ $to->email}};
+                @endif
+             @endforeach
+         @else
+            {{ $mail->from_email}};
+         @endif
      </p>
 
-     <?php
-     $has_cc = false;
-      foreach($receiver as $cc):
-          if($cc->type ==2):
-            $has_cc = true;
-            break;
-          endif;
-       endforeach;
-     ?>
+     <?php $has_cc = false; ?>
+     @if($folder == 0)
+         @foreach($receiver as $cc)
+            @if($cc->type ==2)
+              <?php $has_cc = true;?>
+            @endif
+         @endforeach
+      @endif
+
        @if($has_cc)
        <p><small class="color-blue"> CC: </small>
          @foreach($receiver as $cc)
              @if($cc->type ==2)
-                {{ $cc->email  }};
+                {{ $cc->email  }}
              @endif
           @endforeach
           </p>
@@ -37,13 +41,13 @@
       </button>
       <ul role="menu" class="dropdown-menu pos-right">
          <li>
-            <a href="#" data-type="<?php echo  $mail->type ? 'support' : 'personal' ;?>" title="Reply Email" data-original-title="Reply Email" data-toggle="modal" data-action="reply" data-id="<?php echo $mail->id;?>" data-target="#compose-modal"><small class="color-grey"><i class="fa fa-reply"></i></small> Reply</a>
+            <a href="#" data-type="<?php echo  $mail->type ? 'support' : 'personal' ;?>" title="Reply Email" data-original-title="Reply Email" data-toggle="modal" data-action="reply" data-id="{{ $mail->id }}" data-target="#compose-modal" folder="{{ $folder }}"><small class="color-grey"><i class="fa fa-reply"></i></small> Reply</a>
          </li>
          <li>
-            <a href="#" data-type="<?php echo  $mail->type ? 'support' : 'personal' ;?>" title="Forward Email" data-original-title="Forward Email"  data-toggle="modal" data-action="forward" data-id="<?php echo $mail->id;?>" data-target="#compose-modal"><small class="color-grey"><i class="fa fa-mail-forward"></i></small> Forward</a>
+            <a href="#" data-type="<?php echo  $mail->type ? 'support' : 'personal' ;?>" title="Forward Email" data-original-title="Forward Email"  data-toggle="modal" data-action="forward" data-id="<?php echo $mail->id;?>" data-target="#compose-modal" folder="{{ $folder }}"><small class="color-grey"><i class="fa fa-mail-forward"></i></small> Forward</a>
          </li>
          <li>
-            <a href="#" title="Delete Email" class="email-delete" data-id="<?php echo $mail->id; ?>"><small class="color-grey"><i class="fa fa-close"></i></small> Delete</a>
+            <a href="#" folder = "{{$folder}}" title="Delete Email" class="email-delete" data-id="<?php echo $mail->id; ?>"><small class="color-grey"><i class="fa fa-close"></i></small> Delete</a>
          </li>
       </ul>
     </div>
@@ -58,7 +62,11 @@
     @endif
   </div><!-- /.box-header -->
   <div class="box-body">
-        <?php echo nl2br($mail->message);?>
+        @if($folder == 0)
+            {!! $mail->message !!}
+        @else
+            {!! $mail->body_html !!}
+        @endif
       <hr/>
       @if($mail->note)
        <label>Note :</label>

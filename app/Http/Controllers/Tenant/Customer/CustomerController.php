@@ -54,18 +54,15 @@ class CustomerController extends BaseController {
     public function create()
     {
 
-
         $validator = \Validator::make($this->request->all(),
             array(
                 'name'          => 'required|between:2,30',
                 'email'         => 'required|unique:fb_customers',
                 'dob'           => '',
-                'street_name'   => 'required',
-                'street_number' => 'required',
+                //'street_name'   => 'required',
+                //'street_number' => 'required',
                 'telephone'     => 'numeric',
                 'mobile'        => 'numeric',
-
-
                 'postcode'      => 'required|numeric',
                 'town'          => 'alpha|between:2,50',
 
@@ -74,9 +71,6 @@ class CustomerController extends BaseController {
 
         if ($validator->fails())
             return \Response::json(array('status' => 'fail', 'errors' => $validator->getMessageBag()->toArray()));
-
-
-       
         $result = $this->customer->createCustomer($this->request, $this->current_user->id);
         $redirect_url = tenant_route('tenant.customer.index');
 
@@ -123,15 +117,12 @@ class CustomerController extends BaseController {
                 'name'          => 'required|between:2,30',
                 'email'         => 'required',
                 'dob'           => '',
-                'street_name'   => 'required',
-                'street_number' => 'required',
-
+                //'street_name'   => 'required',
+                //'street_number' => 'required',
                 'telephone'     => 'numeric',
                 'mobile'        => 'numeric',
-
                 'postcode'      => 'required|numeric',
                 'town'          => 'between:2,50',
-                
             )
         );
 

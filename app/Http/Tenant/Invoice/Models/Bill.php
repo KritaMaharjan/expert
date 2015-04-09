@@ -1,4 +1,6 @@
-<?php namespace App\Http\Tenant\Invoice\Models;
+<?php
+
+namespace App\Http\Tenant\Invoice\Models;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
@@ -30,6 +32,11 @@ class Bill extends Model {
      */
     protected $hidden = [];
 
+
+    function payments()
+    {
+        return $this->hasMany('App\Http\Tenant\Invoice\Models\Payment');
+    }
 
     function add(Request $request, $offer = false)
     {
@@ -75,6 +82,7 @@ class Bill extends Model {
             $bill->subtotal = $subtotal;
             $bill->tax = $tax;
             $bill->total = $alltotal;
+            $bill->remaining = $alltotal;
             $bill->customer_payment_number = format_id($bill->customer_id).format_id($bill->id);
             $bill->save();
 
@@ -215,6 +223,7 @@ class Bill extends Model {
                 $value->status = '<span class="label label-danger">Unpaid</span>';
 
             $value->invoice_date = date('d-M-Y  h:i:s A', strtotime($value->created_at));
+            $value->view_url = tenant()->url('invoice/bill/' . $value->id);
             //$value->created_at->format('d-M-Y  h:i:s A');
             $value->DT_RowId = "row-" . $value->guid;
         }

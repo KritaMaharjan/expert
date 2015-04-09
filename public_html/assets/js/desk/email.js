@@ -1,7 +1,20 @@
 var personal_type = 0, support_type = 1;
+var sent = 0, inbox = 1;
+
+$( document ).ready(function() {
+    $.ajaxSetup({
+        beforeSend: function(xhr) {
+            $('.email-loader').show();
+        },
+        complete: function() {
+            $('.email-loader').hide();
+        }
+    });
+});
 
 $(function () {
-    var requestURL = appUrl + 'desk/email/customer/search'
+
+    var requestURL = appUrl + 'desk/email/customer/search';
 
     function split(val) {
         if (val.length > 0 && val.charAt(val.length - 1) == ';') {
@@ -57,6 +70,8 @@ $(function () {
                 // add placeholder to get the comma-and-space at the end
                 terms.push("");
                 this.value = terms.join("; ");
+
+                //this.value = (ui.item.label) + " (" + (ui.item.value) + ");";
                 return false;
             }
         });
@@ -76,45 +91,45 @@ $(function () {
         form.find('.has-error').removeClass('has-error');
         var sending = false;
 
-        if(!sending){
+        if (!sending) {
             sending = true
-        $.ajax({
-            url: action,
-            type: 'POST',
-            dataType: 'json',
-            data: form.serialize()
-        })
-            .done(function (response) {
+            $.ajax({
+                url: action,
+                type: 'POST',
+                dataType: 'json',
+                data: form.serialize()
+            })
+                .done(function (response) {
 
-                if (response.status == '1') {
-                    $('#compose-modal').modal('hide');
-                    var tbody = $('.table-mailbox');
-                    $('.content').prepend(notify('success', 'Message sent'));
-                    tbody.prepend(getTemplate(response.data));
-                    setTimeout(function () {
-                        $('.callout').remove()
-                    }, 4000);
-                }
-                else {
-                    if ("errors" in response.data) {
-                        $.each(response.data.errors, function (id, error) {
-                            form.find('#' + id).parent().parent().addClass('has-error')
-                            form.find('#' + id).parent().parent().append('<label class="error error-' + id + '">' + error[0] + '<label>');
-                        })
+                    if (response.status == '1') {
+                        $('#compose-modal').modal('hide');
+                        var tbody = $('.table-mailbox');
+                        $('.content').prepend(notify('success', 'Message sent'));
+                        //tbody.prepend(getTemplate(response.data));
+                        setTimeout(function () {
+                            $('.callout').remove()
+                        }, 4000);
                     }
+                    else {
+                        if ("errors" in response.data) {
+                            $.each(response.data.errors, function (id, error) {
+                                form.find('#' + id).parent().parent().addClass('has-error')
+                                form.find('#' + id).parent().parent().append('<label class="error error-' + id + '">' + error[0] + '<label>');
+                            })
+                        }
 
-                    if ("error" in response.data) {
-                        form.prepend(notify('danger', response.data.error));
+                        if ("error" in response.data) {
+                            form.prepend(notify('danger', response.data.error));
+                        }
                     }
-                }
-            })
-            .fail(function () {
-               console.log("Connect Error!");
-            })
-            .done(function(){
-                sending = false;
-                form.find('.btn-email-submit').removeAttr('disabled');
-            })
+                })
+                .fail(function () {
+                    console.log("Connect Error!");
+                })
+                .done(function () {
+                    sending = false;
+                    form.find('.btn-email-submit').removeAttr('disabled');
+                })
 
         }
 
@@ -147,12 +162,11 @@ $(function () {
         var action = button.data('action');
         var type = button.data('type');
 
-       //@pooja
+        //@pooja
 
-        if(action =='reply')
-        {
-           $('.modal-title span').html('Reply to Message');
-        }else if(action == 'forward'){
+        if (action == 'reply') {
+            $('.modal-title span').html('Reply to Message');
+        } else if (action == 'forward') {
             $('.modal-title span').html('Forward Message');
         }
 
@@ -170,15 +184,15 @@ $(function () {
 
         if (typeof action != 'undefined') {
             var id = button.data('id');
+            var folder = button.attr('folder');
             $.ajax({
-                url: appUrl + 'desk/email/' + id + '/get',
+                url: appUrl + 'desk/email/' + id + '/get?folder='+folder,
                 type: 'GET',
                 dataType: 'json'
             })
                 .done(function (response) {
                     var mail = response.data.mail;
-                    if (action == 'reply')
-                    {
+                    if (action == 'reply') {
                         $('#email_to').val(mail.to);
                         $('#email_cc').val(mail.cc);
                         $('#subject').val('RE: ' + mail.subject);
@@ -190,8 +204,8 @@ $(function () {
                     $('iframe').contents().find('body').html(mail.message);
                     //    $('#note').val(mail.note);
 
-                    if (mail.attachments.length > 0) {
-                        $('#filelist').append(getTemplateFields(mail.attachments));
+                    if (typeof(mail.attachments) != "undefined" && mail.attachments !== null && mail.attachments.length > 0) {
+                        //$('#filelist').append(getTemplateFields(mail.attachments));
                     }
 
                 })
@@ -225,33 +239,56 @@ $(function () {
 
 // load emails
 $(function () {
+    loadEmailList(0, 1, 1);
 
-    loadEmailList(0, 1);
-
-    $('.inbox').on('click', function () {
+    $('.type').on('click', function () {
+        $('.type').removeClass('inbox-active');
 
         if (!$(this).hasClass('btn-primary')) {
-            $('.inbox').removeClass('btn-primary');
 
-            $(this).addClass('btn-primary');
+            $(this).addClass('inbox-active');
 
             var type = $(this).attr('id');
+            var folder = $(this).attr('folder');
             if (type == "personal") {
-                loadEmailList(personal_type, 1);
+                loadEmailList(personal_type, 1, folder);
             }
             else {
-                loadEmailList(support_type, 1);
+                loadEmailList(support_type, 1, folder);
             }
         }
 
     });
 
+    // Change Folder
+    $('.folder').on('click', function () {
+
+        if (!$(this).parent().hasClass('active')) {
+            $('.folder').parent().removeClass('active');
+
+            $(this).parent().addClass('active');
+
+            var type = $(this).attr('id');
+            if (type == "sent") {
+                $('.type').attr('folder', 0);
+                loadEmailList(personal_type, 1, sent);
+            }
+            else {
+                $('.type').attr('folder', 1);
+                loadEmailList(personal_type, 1, inbox);
+            }
+        }
+
+    });
+
+    // Show Mail Details
     $(document).on('click', '.table-mailbox a', function (e) {
         e.preventDefault();
         var id = $(this).attr('data-id');
+        var folder = $(this).attr('folder');
 
         if (!$('#email-single').hasClass('email-' + id)) {
-            $('#email-single').load(appUrl + 'desk/email/' + id + '/show');
+            $('#email-single').load(appUrl + 'desk/email/' + id + '/show?folder=' + folder);
             $('#email-single').removeClass(function (index, css) {
                 return (css.match(/(^|\s)email-\S+/g) || []).join(' ');
             });
@@ -259,19 +296,18 @@ $(function () {
         }
     });
 
-
     // Delete Email
-
     $(document).on('click', '.email-delete', function (e) {
         e.preventDefault();
 
         if (!confirm('Are you sure, you want to delete email permanently?')) return false;
 
         var id = $(this).data('id');
+        var folder = $(this).attr('folder');
         $.ajax({
-            url: appUrl + 'desk/email/' + id + '/delete',
+            url: appUrl + 'desk/email/' + id + '/delete?folder=' + folder,
             type: 'GET',
-            dataType: 'json',
+            dataType: 'json'
         })
             .done(function (response) {
                 if (response.status == 1) {
@@ -287,25 +323,28 @@ $(function () {
                 }
             })
             .fail(function () {
-                alert("Connect error!");
+                alert("Connection error!");
             })
     });
 
-    function loadEmailList(type, page) {
+    function loadEmailList(type, page, folder) {
         if (type != 0 && type != 1)
-            type = 0
+            type = 0;
 
-        if (typeof page != 'undefine' && page < 0)
-            page = 1
+        if (folder != 0 && folder != 1)
+            folder = 1; //1 : inbox, 0 : sent
 
-        $('#email-list').load(appUrl + 'desk/email/list?type=' + type + '&page=' + page);
+        if (typeof page != 'undefined' && page < 0)
+            page = 1;
+
+        $('#email-list').load(appUrl + 'desk/email/list?type=' + type + '&page=' + page + '&folder=' + folder);
     }
 
     $(document).on('click', '.mail-next,.mail-previous', function (e) {
         e.preventDefault();
         var href = $(this).attr('href');
         var page = href.replace('#', '');
-        loadEmailList(0, page);
+        loadEmailList(0, page, 1);
     });
 
     $(document).on('click', '.cancel_upload', function (e) {
@@ -339,9 +378,11 @@ $(function () {
             wrap.remove();
         }
 
-
     });
 
+    function notify(type, text) {
+        return '<div class="callout callout-' + type + '"><p>' + text + '</p></div>';
+    }
 
 });
 

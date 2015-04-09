@@ -42,8 +42,20 @@
 
           <div id="add_part" style="display:none">
            <div class="form-group two-inputs">
-              <input class="form-control" name="from" id="from" value="" placeholder="From">
-              <input class="form-control" name="to" id="to" value="" placeholder="To">
+             
+                <input class="form-control" name="from" id="from" value="" placeholder="From">
+                {{-- <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span> --}}
+           
+           
+                <input class="form-control" name="to" id="to" value="" placeholder="To">
+                {{-- <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span> --}}
+            
+             
+             
             </div>
 
         <div class="box-footer clearfix">
@@ -61,35 +73,56 @@
     $('#add_part').show();
   });
 
+    $(function () {
+       var startDate = new Date('2012-01-01');
+var FromEndDate = new Date();
+var ToEndDate = new Date();
 
-  $("#from").datepicker({
-              'format': 'yyyy-mm-dd',
-        onSelect: function(date) {
-          
-            
+ToEndDate.setDate(ToEndDate.getDate()+365);
 
-        },  
-        onClose: function( selectedDate ) {
-            $( "#to" ).datepicker( "option", "minDate", selectedDate );
-        } 
+$('#from').datepicker({
+    
+    weekStart: 1,
+    startDate: '01/01/2012',
+    //endDate: FromEndDate, 
+     format: 'yyyy-mm-dd',
+    autoclose: true
+})
+    .on('changeDate', function(selected){
+        startDate = new Date(selected.date.valueOf());
+        startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())));
+        $('#to').datepicker('setStartDate', startDate);
+    }); 
+$('#to').datepicker({
+        
+        weekStart: 1,
+        startDate: startDate,
+        endDate: ToEndDate,
+        autoclose: true,
+         format: 'yyyy-mm-dd'
+    })
+    .on('changeDate', function(selected){
+        FromEndDate = new Date(selected.date.valueOf());
+        FromEndDate.setDate(FromEndDate.getDate(new Date(selected.date.valueOf())));
+        $('#from').datepicker('setEndDate', FromEndDate);
+    });
 
-         });
- $("#to").datepicker({
-            'format': 'yyyy-mm-dd',
-        onSelect: function(date) {
-           
-            
+  
+  
+  
+  
+});
+   
 
-        },  
-        onClose: function( selectedDate ) {
-           
-        } 
-         });
+  
+
+
+  
 
   $(document).on('click', '.saveleave', function (e) {
         e.preventDefault();
 
-      
+      $('.error').remove();
        var _token = $('#_token').val();
        var user_id = $('#user_id').val();
        var vacation_days = $('#total').val();
@@ -97,8 +130,10 @@
          var to = $('#to').val();
         var type = 'vacation_days';
         
-       
-           $.ajax({
+       if(from == '' || to == ''){
+             $('.two-inputs').after('<label class="error">All fields are required.</label');
+       }else{
+          $.ajax({
             url: appUrl + 'user/addVacation',
             type: 'POST',
             dataType: 'json',
@@ -126,12 +161,15 @@
 
                  }
         });
+
+       }
+
             
     });
 
 
 $(document).on('click', '.delete-leave', function () {
-    $('#add_part').show();
+   
      var leave_id = $(this).attr('leave_id');
        var _token = $('#_token').val();
         $this = $(this);

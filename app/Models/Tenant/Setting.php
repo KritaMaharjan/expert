@@ -112,11 +112,6 @@ class Setting extends Model {
             }
 
             }
-           
-                
-
-            
-            
         endif;
     }
 
@@ -128,6 +123,11 @@ class Setting extends Model {
         } else {
             return $value;
         }
+    }
+
+    public function getSupportSetting() {
+        $support_smtp = Setting::where('name', 'support_smtp')->first();
+        return ($support_smtp) ? ($support_smtp->value) : null;
     }
 
 }
