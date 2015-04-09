@@ -57,7 +57,15 @@ Accounting Expenses
             	</div>
             	<div class="col-md-6">
             		<div class="image-section">
-            			<img src="../../assets/images/print.jpg">
+            			<!-- <img src="../../assets/images/print.jpg"> -->
+
+            			<h4>Drop files anywhere to upload</h4>
+            				<span>or</span>
+            				<form class="upload-file">
+            					<input type="file">	
+            				</form>
+            				<br />
+            				<span>Maximum upload file size: 20MB</span>
             		</div>
             	</div>
             </div>
@@ -75,8 +83,8 @@ Accounting Expenses
 	        			</thead>
 	        			<tbody>
 	        				<tr>
-	        					<td><span class="border-bx block price"> </span></td>
-	        					<td><span class="border-bx block price"> </span></td>
+	        					<td><!-- <span class="border-bx block price"> </span> --><input type="text" class="form-control"></td>
+	        					<td><input type="text" class="form-control"></td>
 	        					<td>
 	        						<select class="form-control">
 	        							<option>VAT</option>
@@ -87,7 +95,7 @@ Accounting Expenses
 	        							<option>Domestic Exempt</option>
 	        						</select>
 	    						</td>
-	        					<td><span class="border-bx block price"> </span></td>
+	        					<td><input type="text" class="form-control"></td>
 	        					<td>
 	        						<select class="select-multiple">
 										<option>Select expense account</option>

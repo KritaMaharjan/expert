@@ -61,10 +61,9 @@
 
 
                     
- <input type="text" placeholder="postcode"  id="postcode" name="postcode"  value="{{old('postcode')}}" class="form-control postal_code">
-                        <input type="text" placeholder="Town"  id="city" name="town"  value="{{old('town')}}" class="form-control city">
+                        <input type="text" placeholder="Town"  id="city" name="town"  value="{{old('town')}}" class="form-control city pull-right">
+                        <input type="text" placeholder="postcode"  id="postcode" name="postcode"  value="{{old('postcode')}}" class="form-control postal_code">
 
-                    
                       </div>
                       <div class="form-group">
                         <label for="">Telephone</label>
