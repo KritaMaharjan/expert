@@ -377,6 +377,19 @@ class TenantTable
         }
     }
 
+    function billPayment()
+    {
+        if (!Schema::hasTable(self::TBL_PREFIX . 'bill_payment')) {
+            Schema::create(self::TBL_PREFIX . 'bill_payment', function ($table) {
+                $table->increments('id'); // autoincrement value of a suppliers
+                $table->integer('bill_id');
+                $table->float('amount_paid');
+                $table->date('payment_date');
+                $table->timestamps();
+            });
+        }
+    }
+
 
     function suppliers()
     {

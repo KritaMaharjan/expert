@@ -35,7 +35,7 @@ class Bill extends Model {
 
     function payments()
     {
-        return $this->hasMany('App\Http\Tenant\Invoice\Models\Payment');
+        return $this->hasMany('App\Http\Tenant\Invoice\Models\BillPayment');
     }
 
     function add(Request $request, $offer = false)

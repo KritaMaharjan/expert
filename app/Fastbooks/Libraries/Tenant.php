@@ -180,6 +180,7 @@ class Tenant {
         $this->createTable->emailReceivers();
         $this->createTable->attachmentsEmail();
         $this->createTable->incomingEmails();
+        $this->createTable->billPayment();
     }
 
 

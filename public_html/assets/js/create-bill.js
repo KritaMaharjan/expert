@@ -112,7 +112,7 @@
     }
 
     //delete current product row
-    $('table').on('click', 'tr .delete', function (e) {
+    $('table').on('click', 'tr .invoice-delete', function (e) {
         e.preventDefault();
         var rowCount = $('.product-table tr').length;
         if (rowCount > 2)
@@ -183,8 +183,8 @@
 
 
                         $this.parent().parent().find('.add-quantity').removeAttr('readonly', 'readonly');
-                        $this.parent().parent().find('.price').html(response.data.selling_price);
-                        $this.parent().parent().find('.vat').html(response.data.vat);
+                        $this.parent().parent().find('.price').html(parseFloat(response.data.selling_price).toFixed(2));
+                        $this.parent().parent().find('.vat').html(parseFloat(response.data.vat).toFixed(2));
                     } else {
                         alert('Something went wrong!');
                     }
@@ -211,7 +211,7 @@
             var vat = parseFloat($this.parent().parent().find('.vat').html());
             var price = parseFloat($this.parent().parent().find('.price').html());
             var total = (price + vat * 0.01 * price) * quantity;
-            $this.parent().parent().find('.total').html(total);
+            $this.parent().parent().find('.total').html(parseFloat(total).toFixed(2));
         }
 
         var allTotal = 0;
@@ -229,9 +229,9 @@
                 subtotal = subtotal + price * thisQuantity;
             }
         });
-        $('#subtotal').html(subtotal);
-        $('#tax-amount').html(vatTotal);
-        $('#all-total').html(allTotal);
+        $('#subtotal').html(subtotal.toFixed(2));
+        $('#tax-amount').html(vatTotal.toFixed(2));
+        $('#all-total').html(allTotal.toFixed(2));
     });
 
     //creation of customer

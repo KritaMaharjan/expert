@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Laracasts\Flash\Flash;
 use App\Models\Tenant\Setting;
-use App\Http\Tenant\Invoice\Models\Payment;
+use App\Http\Tenant\Invoice\Models\BillPayment;
 
 class BillController extends BaseController {
 
@@ -222,7 +222,7 @@ class BillController extends BaseController {
         return view('template.print', compact('data'));
     }
 
-    function payment(Payment $payment)
+    function payment(BillPayment $payment)
     {
         if($this->request->ajax()) {
             $id = $this->request->route('id');
