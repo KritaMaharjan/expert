@@ -61,11 +61,9 @@ Route::group($group_auth, function () {
         get('email/{id}/show', ['as' => 'tenant.email.show', 'uses' => 'EmailController@show']);
         get('email/{id}/get', ['as' => 'tenant.email.get', 'uses' => 'EmailController@get']);
         get('email/delete/attach', ['as' => 'tenant.email.attach.delete', 'uses' => 'EmailController@deleteAttachment']);
+
         get('email/search_emails', ['as' => 'tenant.email.search', 'uses' => 'EmailController@search_email']);
-
         get('email/inbox', ['as' => 'tenant.email.inbox', 'uses' => 'IncomingEmailController@inbox']);
-
-
     });
 
     Route::group(['prefix' => 'invoice', 'namespace' => 'Tenant'], function () {
@@ -96,7 +94,6 @@ Route::group($group_auth, function () {
     });
 
     Route::group(['namespace' => 'Tenant\Inventory\Controllers'], function () {
-
         // product routes
         get('inventory/product', ['as' => 'tenant.inventory.product.index', 'uses' => 'ProductController@index']);
         post('inventory/product', ['as' => 'tenant.inventory.product.post', 'uses' => 'ProductController@create']);

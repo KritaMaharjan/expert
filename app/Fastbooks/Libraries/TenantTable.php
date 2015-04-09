@@ -139,6 +139,10 @@ class TenantTable
         }
     }
 
+
+    /*
+     * Table for Sent emails
+     * */
     function emails()
     {
         if (!Schema::hasTable(self::TBL_PREFIX . 'emails')) {
@@ -158,6 +162,9 @@ class TenantTable
 
     }
 
+    /*
+     * Email Receivers [ one to many relation with Emails table]
+     * */
 
     function emailReceivers()
     {
@@ -172,6 +179,9 @@ class TenantTable
         }
     }
 
+    /*
+    * Email Attachments [One to many relation with Emails table]
+     * */
 
     function attachmentsEmail()
     {
@@ -183,6 +193,32 @@ class TenantTable
             });
         }
     }
+
+    /*
+    * Incoming Emails
+     *  */
+    function incomingEmails()
+    {
+        if (!Schema::hasTable(self::TBL_PREFIX . 'incoming_emails')) {
+            Schema::create(self::TBL_PREFIX . 'incoming_emails', function (Blueprint $table) {
+                $table->increments('id'); // autoincrement value of an attachment
+                $table->integer('user_id')->unsign()->index()->nullable(); //User id
+                $table->integer('msid')->unsign()->index(); //Mail unique id
+                $table->string('from_email', 100); //From email Address
+                $table->string('from_name', 100); //From Name
+                $table->string('subject', 255); //Subject of an email
+                $table->text('body_html'); //mail body in html format
+                $table->text('body_text'); //mail body in plain text
+                $table->text('attachments')->nullable(); //store all attachments as serialised value
+                $table->tinyInteger('type')->default(1); //'0 for personal, 1 for support'
+                $table->tinyInteger('is_seen')->default(0); //'0 for unseen, 1 for seen'
+                $table->dateTime('received_at');
+                // created_at DATETIME
+                $table->timestamps('created_at');
+            });
+        }
+    }
+
 
     /**
      * Items table for inventory [Many to one relation with inventory table]
@@ -314,27 +350,87 @@ class TenantTable
         }
     }
 
-    function incomingEmails()
+    /* ---------------------------------------
+     * Tables for Accounting Module
+     * ---------------------------------------
+     */
+    function payroll()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'incoming_emails')) {
-            Schema::create(self::TBL_PREFIX . 'incoming_emails', function ($table) {
-                $table->increments('id'); // autoincrement value of a vacation
-                $table->integer('msid')->unsign()->index();
-                $table->integer('user_id')->unsign()->index()->nullable();
-                $table->string('from_email, 100');
-                $table->text('attachments')->nullable();
-                $table->string('from_name, 100');
-                $table->string('subject, 255');
-                $table->text('body_html');
-                $table->text('body_text');
-                $table->boolean('is_seen')->default(0);
-                $table->boolean('type')->default(0); // 0 : personal, 1 : support
-                $table->datetime('received_at'); // 0 : personal, 1 : support
+        if (!Schema::hasTable(self::TBL_PREFIX . 'payroll')) {
+            Schema::create(self::TBL_PREFIX . 'payroll', function ($table) {
+                $table->increments('id'); // autoincrement value
+                $table->integer('user_id')->unsign()->index(); // employee ID
+                $table->tinyInteger('type')->default(1); //'0:hourly, 1:monthly'
+                $table->float('worked_for'); // worked hours/month of an employee
+                $table->decimal('basic_salary', 11, 2); // basic salary of employee
+                $table->decimal('other_payment', 11, 2); // other payment made for employee
+                $table->text('description'); // some description about payroll
+                $table->decimal('total_salary', 11, 2); // total salary of an employment
+                $table->float('tax_rate'); // tax
+                $table->float('vacation_fund'); // vacation
+                $table->decimal('total_paid', 11, 2); // total paid to employment
+                $table->date('payment_date'); // Date of payment
 
                 // created_at, updated_at DATETIME
                 $table->timestamps();
             });
         }
     }
+
+
+    function suppliers()
+    {
+        if (!Schema::hasTable(self::TBL_PREFIX . 'suppliers')) {
+            Schema::create(self::TBL_PREFIX . 'suppliers', function ($table) {
+                $table->increments('id'); // autoincrement value of a suppliers
+                $table->string('guid', 32); // unique auto generated ID of a suppliers
+                $table->integer('user_id')->unsign()->index(); //user id, who created the suppliers
+                $table->string('email', 100)->unique(); // email ID of a user
+                $table->integer('type')->unsign()->index(); //'1 - human - company' ,
+                $table->string('name', 45); //'name of a suppliers (human or company)'
+                $table->string('company_number', 30)->nullable(); //'company registration no of a company'
+                $table->date('dob')->nullable(); //'dob of human'
+                $table->string('street_name', 70); //'street address of a suppliers'
+                $table->string('street_number', 15); //'street number of a suppliers'
+                $table->string('postcode', 10); //'postcode of a suppliers'
+                $table->string('town', 55); //'town of a suppliers'
+                $table->integer('telephone')->nullable();//'telephone number of a suppliers'
+                $table->bigInteger('mobile')->nullable();//'mobile number of a suppliers'
+                $table->string('image', 50)->nullable(); //'image or logo of a suppliers'
+                $table->string('file', 50)->nullable(); //'file of a suppliers'
+                $table->tinyInteger('status'); //'1 - active\n0 - inactive'
+
+                // created_at, updated_at DATETIME
+                $table->timestamps();
+            });
+        }
+    }
+
+
+    function accountCodes()
+    {
+        if (!Schema::hasTable(self::TBL_PREFIX . 'account_codes')) {
+            Schema::create(self::TBL_PREFIX . 'account_codes', function ($table) {
+                $table->increments('id'); // autoincrement value of a vacation
+                $table->integer('code')->unsign()->index();
+                $table->string('account')->unsign()->index();
+                $table->string('subledger')->unsign()->index();
+                $table->string('nature')->unsign()->index();
+
+
+                // created_at, updated_at DATETIME
+                $table->timestamps();
+            });
+        }
+    }
+
+    function transactions()
+    {
+
+    }
+
+
+
+
 
 }
