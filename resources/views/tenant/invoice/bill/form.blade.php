@@ -47,10 +47,11 @@
      <div class="col-sm-7 invoice-col col-xs-6">
       <address class="address-info">
         <strong>{{ $company_details['company_name'] }}</strong><br>
+        {{ $company_details['company_number'] }}<br>
         {{ $company_details['postal_code'] }}, {{ $company_details['town'] }}<br>
         {{ $company_details['address'] }}<br>
         {!! (isset($company_details['telephone']))? 'Phone: '. format_telephone($company_details['telephone']).'<br/>': " " !!}
-        {!! (isset($company_details['service_email']))? 'Email: '. $company_details['service_email'].'<br/>': " " !!}
+        {!! (isset($company_details['website']))? 'Website: '. $company_details['website'].'<br/>': " " !!}
       </address>
 
       <div class="right-from align-right">
