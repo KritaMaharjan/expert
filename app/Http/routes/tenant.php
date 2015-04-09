@@ -61,7 +61,7 @@ Route::group($group_auth, function () {
         get('email/{id}/get', ['as' => 'tenant.email.get', 'uses' => 'EmailController@get']);
         get('email/delete/attach', ['as' => 'tenant.email.attach.delete', 'uses' => 'EmailController@deleteAttachment']);
 
-         get('email/search_emails', ['as' => 'tenant.email.search', 'uses' => 'EmailController@search_email']);
+        get('email/search_emails', ['as' => 'tenant.email.search', 'uses' => 'EmailController@search_email']);
 
         get('email/inbox', ['as' => 'tenant.email.inbox', 'uses' => 'IncomingEmailController@inbox']);
 
@@ -83,14 +83,9 @@ Route::group($group_auth, function () {
         get('lists', 'AccountingController@lists');
         get('setup', 'AccountingController@setup');
         get('new-business', 'AccountingController@newBusiness');
-
     });
 
-
-
-
     Route::group(['namespace' => 'Tenant\Inventory\Controllers'], function () {
-
         // product routes
         get('inventory/product', ['as' => 'tenant.inventory.product.index', 'uses' => 'ProductController@index']);
         post('inventory/product', ['as' => 'tenant.inventory.product.post', 'uses' => 'ProductController@create']);
@@ -229,7 +224,7 @@ Route::group($group_auth, function () {
         get('customer/suggestions', ['as' => 'tenant.customer.suggestions', 'uses' => 'Tenant\Customer\CustomerController@getCustomerSuggestions']);
         get('customer/details/{customerId}', ['as' => 'tenant.customer.details', 'uses' => 'Tenant\Customer\CustomerController@getCustomerDetails']);
         post('test/upload', ['as' => 'test.upload', 'uses' => 'Tenant\Customer\CustomerController@testUpload']);
-         post('customer/invoices/data', ['as' => 'tenant.inventory.customer.data', 'uses' => 'Tenant\Customer\CustomerController@invoices']);
+        post('customer/invoices/data', ['as' => 'tenant.inventory.customer.data', 'uses' => 'Tenant\Customer\CustomerController@invoices']);
 
 
     });
