@@ -166,5 +166,5 @@ function calculate_todo_time($date, $completed = false)
 
 function force_redirect($url)
 {
-    header('location :'. $url);
+    header('location:'. $url);
 }
