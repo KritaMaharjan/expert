@@ -225,16 +225,17 @@ class BillController extends BaseController {
     function payment(Payment $payment)
     {
         if($this->request->ajax()) {
+            $id = $this->request->route('id');
+            $bill_remaining = Bill::find($id, ['remaining'])->remaining;
             $payment_rules = [
                 'payment_date' => 'required|date',
-                'paid_amount' => 'required'
+                'paid_amount' => 'required|integer|min:1|max:'.$bill_remaining
             ];
 
             $validator = Validator::make($this->request->all(), $payment_rules);
             if ($validator->fails())
                 return $this->fail(['errors' => $validator->getMessageBag()]);
 
-            $id = $this->request->route('id');
             $pay_details = $payment->add($this->request, $id);
             return ($pay_details) ? $this->success($pay_details) : $this->fail(['errors' => 'Something went wrong!']);
         }
