@@ -34,7 +34,7 @@ User Details
                   <td>@if($user->status == 0)
                         Pending
                       @elseif($user->status == 1)
-                        Activated
+                        Active
                       @elseif($user->status == 2)
                         Suspended
                       @else

@@ -163,3 +163,8 @@ function calculate_todo_time($date, $completed = false)
     else
         return '<small class="label label-default"><i class="fa fa-clock-o"></i> ' . $time . '</small>';
 }
+
+function force_redirect($url)
+{
+    header('location :'. $url);
+}
