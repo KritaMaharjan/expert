@@ -59,8 +59,8 @@ class CustomerController extends BaseController {
                 'name'          => 'required|between:2,30',
                 'email'         => 'required|unique:fb_customers',
                 'dob'           => '',
-                'street_name'   => 'required',
-                'street_number' => 'required',
+                //'street_name'   => 'required',
+                //'street_number' => 'required',
                 'telephone'     => 'numeric',
                 'mobile'        => 'numeric',
                 'postcode'      => 'required|numeric',
@@ -117,15 +117,12 @@ class CustomerController extends BaseController {
                 'name'          => 'required|between:2,30',
                 'email'         => 'required',
                 'dob'           => '',
-                'street_name'   => 'required',
-                'street_number' => 'required',
-
+                //'street_name'   => 'required',
+                //'street_number' => 'required',
                 'telephone'     => 'numeric',
                 'mobile'        => 'numeric',
-
                 'postcode'      => 'required|numeric',
                 'town'          => 'between:2,50',
-                
             )
         );
 
