@@ -11,8 +11,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 
-class TenantTable
-{
+class TenantTable {
 
     /**
      * Constant for table prefix
@@ -314,6 +313,24 @@ class TenantTable
     }
 
     /**
+     * Bill Payment
+     */
+    function billPayment()
+    {
+        if (!Schema::hasTable(self::TBL_PREFIX . 'bill_payment')) {
+            Schema::create(self::TBL_PREFIX . 'bill_payment', function ($table) {
+                $table->increments('id'); // autoincrement value
+                $table->integer('bill_id'); //Bill id
+                $table->decimal('amount_paid', 11, 2); // payment amount
+                $table->date('payment_date'); // payment due date
+
+                // created_at, updated_at DATETIME
+                $table->timestamps();
+            });
+        }
+    }
+
+    /**
      * Table for Tasks in to do list
      */
     function tasks()
@@ -333,6 +350,10 @@ class TenantTable
         }
     }
 
+    /**
+     * Vacation and sick leave table
+     * @todo we need to change table name to leave
+     */
     function vacation()
     {
         if (!Schema::hasTable(self::TBL_PREFIX . 'vacation')) {
@@ -360,14 +381,20 @@ class TenantTable
             Schema::create(self::TBL_PREFIX . 'payroll', function ($table) {
                 $table->increments('id'); // autoincrement value
                 $table->integer('user_id')->unsign()->index(); // employee ID
-                $table->tinyInteger('type')->default(1); //'0:hourly, 1:monthly'
-                $table->float('worked_for'); // worked hours/month of an employee
-                $table->decimal('basic_salary', 11, 2); // basic salary of employee
+                $table->tinyInteger('type')->default(1); //Salary type 0:hourly, 1:monthly
+                $table->float('worked'); // worked hours/month of an employee
+                $table->decimal('rate', 11, 2); // rate (hourly | monthly) of employee
+                $table->decimal('basic_salary', 11, 2); // Basic salary
+
                 $table->decimal('other_payment', 11, 2); // other payment made for employee
                 $table->text('description'); // some description about payroll
+
                 $table->decimal('total_salary', 11, 2); // total salary of an employment
-                $table->float('tax_rate'); // tax
-                $table->float('vacation_fund'); // vacation
+
+                $table->float('tax_rate'); // tax in percentage
+                $table->float('vacation_fund'); // vacation fund in percentage
+                $table->float('payroll_tax'); // payroll tax in percentage
+
                 $table->decimal('total_paid', 11, 2); // total paid to employment
                 $table->date('payment_date'); // Date of payment
 
@@ -378,6 +405,9 @@ class TenantTable
     }
 
 
+    /**
+     * Suppliers table
+     */
     function suppliers()
     {
         if (!Schema::hasTable(self::TBL_PREFIX . 'suppliers')) {
@@ -406,17 +436,21 @@ class TenantTable
         }
     }
 
-
-    function accountCodes()
+    /**
+     * Account Expense Table
+     */
+    function expenses()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'account_codes')) {
-            Schema::create(self::TBL_PREFIX . 'account_codes', function ($table) {
-                $table->increments('id'); // autoincrement value of a vacation
-                $table->integer('code')->unsign()->index();
-                $table->string('account')->unsign()->index();
-                $table->string('subledger')->unsign()->index();
-                $table->string('nature')->unsign()->index();
-
+        if (!Schema::hasTable(self::TBL_PREFIX . 'expenses')) {
+            Schema::create(self::TBL_PREFIX . 'expense', function ($table) {
+                $table->increments('id'); // autoincrement value
+                $table->tinyInteger('type'); // 1:cash, 2:credit
+                $table->integer('supplier_id')->nullable(); //supplier id if purchase in credit
+                $table->date('billing_date'); //Billing date
+                $table->date('payment_due_date'); // payment due date
+                $table->integer('invoice_number'); // invoice number
+                $table->string('bill_image', 70); // bill image
+                $table->tinyInteger('is_paid')->default(0); // 0:unpaid 1 for paid
 
                 // created_at, updated_at DATETIME
                 $table->timestamps();
@@ -424,13 +458,83 @@ class TenantTable
         }
     }
 
-    function transactions()
+
+    /**
+     * Expense product table
+     */
+    function expenseProducts()
     {
+        if (!Schema::hasTable(self::TBL_PREFIX . 'expense_products')) {
+            Schema::create(self::TBL_PREFIX . 'expense_products', function ($table) {
+                $table->increments('id'); // autoincrement value of a vacation
+                $table->string('billing_date'); //Billing date
+                $table->decimal('amount', 11, 2); // payment due date
+                $table->float('vat'); // payment due date
+                $table->integer('account_code_id'); //account id from account code table
+
+                // created_at, updated_at DATETIME
+                $table->timestamps();
+            });
+        }
 
     }
 
 
+    /**
+     * Expense Payment table
+     */
+    function expensePayment()
+    {
+        if (!Schema::hasTable(self::TBL_PREFIX . 'expense_payment')) {
+            Schema::create(self::TBL_PREFIX . 'expense_payment', function ($table) {
+                $table->increments('id'); // autoincrement value
+                $table->integer('expense_id'); //Bill id
+                $table->decimal('amount_paid', 11, 2); // payment amount
+                $table->tinyInteger('payment_method'); // 1:cash , 2:bank
+                $table->date('payment_date'); // payment due date
 
+                // created_at, updated_at DATETIME
+                $table->timestamps();
+            });
+        }
+    }
 
+    /**
+     * Account codes
+     */
+    function accountCodes()
+    {
+        if (!Schema::hasTable(self::TBL_PREFIX . 'account_codes')) {
+            Schema::create(self::TBL_PREFIX . 'account_codes', function ($table) {
+                $table->increments('id'); // autoincrement value of a vacation
+                $table->integer('code');
+                $table->string('account_en');
+                $table->string('account_no');
+                $table->string('subledger');
+                $table->string('nature');
+                $table->string('note')->nullable();
+            });
+        }
+    }
 
+    /**
+     * All account related transaction stored in this table
+     */
+    function transactions()
+    {
+        if (!Schema::hasTable(self::TBL_PREFIX . 'transactions')) {
+            Schema::create(self::TBL_PREFIX . 'transactions', function ($table) {
+                $table->increments('id'); // autoincrement value of a vacation
+                $table->integer('account_code_id'); //account id from account code table
+                $table->integer('subledger'); // sub-ledger
+                $table->decimal('amount', 11, 2); // Transaction amount
+                $table->text('description'); // transaction description
+                $table->tinyInteger('type'); // 1: Debit , 2: credit
+                $table->float('vat'); // vat
+                $table->date('payment_date'); // payment date
+                // created_at, updated_at DATETIME
+                $table->timestamps();
+            });
+        }
+    }
 }
