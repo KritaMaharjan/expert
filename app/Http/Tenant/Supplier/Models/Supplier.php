@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class Supplier extends Model {
 
-    protected $table = "fb_supplier";
+    protected $table = "fb_suppliers";
 
     protected $fillable = ['user_id', 'type', 'name', 'email', 'dob', 'street_name', 'street_number', 'postcode', 'town', 'telephone', 'mobile', 'image', 'status'];
 
@@ -31,17 +31,19 @@ class Supplier extends Model {
         $orderColumn = $columns[$column_id]['data'];
         $orderdir = $order[0]['dir'];
 
-        $customer = array();
+        $supplier = array();
         $query = $this->select($select);
 
         if ($orderColumn != '' AND $orderdir != '') {
             $query = $query->orderBy($orderColumn, $orderdir);
+        } else {
+            $query = $query->orderBy('id', 'desc');
         }
 
         if ($search != '') {
             $query = $query->where('name', 'LIKE', "%$search%");
         }
-        $customer['total'] = $query->count();
+        $supplier['total'] = $query->count();
 
 
         $query->skip($start)->take($take);
@@ -49,20 +51,17 @@ class Supplier extends Model {
         $data = $query->get();
 
         foreach ($data as $key => &$value) {
-            $value->name = "<a href=" . tenant_route('tenant.customer.CustomerCard', ['id' => $value->id]) . ">" . $value->name . "</a>";
-            $value->email = $value->email;
             $value->created = $value->created_at->format('d-M-Y');
             $value->DT_RowId = "row-" . $value->id;
         }
 
-        $customer['data'] = $data->toArray();
-
+        $supplier['data'] = $data->toArray();
 
         $json = new \stdClass();
         $json->draw = ($request->input('draw') > 0) ? $request->input('draw') : 1;
-        $json->recordsTotal = $customer['total'];
-        $json->recordsFiltered = $customer['total'];
-        $json->data = $customer['data'];
+        $json->recordsTotal = $supplier['total'];
+        $json->recordsFiltered = $supplier['total'];
+        $json->data = $supplier['data'];
 
         return $json;
     }
@@ -71,13 +70,13 @@ class Supplier extends Model {
 
     function toData()
     {
-        $this->show_url = tenant()->url('customer/' . $this->id);
-        $this->edit_url = tenant()->url('customer/' . $this->id . '/edit');
+        $this->show_url = tenant()->url('supplier/' . $this->id);
+        $this->edit_url = tenant()->url('supplier/' . $this->id . '/edit');
 
         return $this->toArray();
     }
 
-    public function createCustomer($request, $user_id)
+    public function createSupplier($request, $user_id)
     {
         if ($request['type'] == 2)
             $dob = '';
@@ -86,7 +85,7 @@ class Supplier extends Model {
 
         $postal_code = explode(',', $request['postcode']);
 
-        $customer = Customer::create([
+        $supplier = Supplier::create([
             'type'           => $request['type'],
             'name'           => $request['name'],
             'email'          => $request['email'],
@@ -100,45 +99,44 @@ class Supplier extends Model {
             'town'           => $request['town'],
             'status'         => $request['status'],
         ]);
-        $customer_add['data'] = $this->toFomatedData($customer);
-        $customer_add['template'] = $this->getTemplate($customer);
+        $supplier_add['data'] = $this->toFomatedData($supplier);
+        $supplier_add['edit_url'] = tenant()->url('supplier/' . $supplier->id . '/edit');
+        $supplier_add['template'] = $this->getTemplate($supplier);
 
-        return $customer_add;
+        return $supplier_add;
     }
 
-    public function updateCustomer($id, $details, $dob)
+    public function updateSupplier($id, $details, $dob)
     {
 
         $postal_code = explode(',', $details['postcode']);
 
-        $customer = Customer::where('id', $id)->first();
-        $customer->type = $details['type'];
-        $customer->name = $details['name'];
-        $customer->email = $details['email'];
-        $customer->user_id = current_user()->id;
-        $customer->dob = $dob;
-        $customer->street_name = $details['street_name'];
-        $customer->street_number = $details['street_number'];
-        $customer->telephone = $details['telephone'];
-        $customer->mobile = $details['mobile'];
-        $customer->postcode = $postal_code[0];
-        $customer->town = $details['town'];
-        $customer->status = $details['status'];
-        $customer->save();
+        $supplier = Supplier::where('id', $id)->first();
+        $supplier->type = $details['type'];
+        $supplier->name = $details['name'];
+        $supplier->email = $details['email'];
+        $supplier->user_id = current_user()->id;
+        $supplier->dob = $dob;
+        $supplier->street_name = $details['street_name'];
+        $supplier->street_number = $details['street_number'];
+        $supplier->telephone = $details['telephone'];
+        $supplier->mobile = $details['mobile'];
+        $supplier->postcode = $postal_code[0];
+        $supplier->town = $details['town'];
+        $supplier->status = $details['status'];
+        $supplier->save();
 
 
-        $updated_customer['data'] = $this->toFomatedData($customer);
-        $updated_customer['template'] = $this->getTemplate($customer);
-        $updated_customer['show_url'] = tenant()->url('customer/CustomerCard/' . $id);
-        $updated_customer['edit_url'] = tenant()->url('customer/' . $id . '/edit');
+        $updated_supplier['data'] = $this->toFomatedData($supplier);
+        $updated_supplier['template'] = $this->getTemplate($supplier);
+        $updated_supplier['edit_url'] = tenant()->url('supplier/' . $id . '/edit');
 
-        return $updated_customer;
+        return $updated_supplier;
     }
 
     public function getTemplate($details = '')
     {
-        $details->name = "<a href=" . tenant_route('tenant.customer.CustomerCard', ['id' => $details->id]) . ">" . $details->name . "</a>";
-        $details->customerName = $details->name;
+        $details->supplierName = $details->name;
 
         $details->created = $details->created_at->format('d-M-Y');
 

@@ -197,7 +197,7 @@ class BillController extends BaseController {
     {
         $id = $this->request->route('id');
         $data = $this->getInfo($id);
-        $pdf->generate($data['invoice_number'].'_'.time(), 'template.bill', compact('data'), true);
+        $pdf->generate($data['invoice_number'], 'template.bill', compact('data'), true);
     }
 
     function sendEmail(Pdf $pdf)
@@ -253,6 +253,7 @@ class BillController extends BaseController {
             'invoice_date' => $bill->created_at,
             'due_date' => $bill->due_date,
             'customer' => $bill->customer,
+            'customer_payment_number' => $bill->customer_payment_number,
             'customer_details' => $bill->customer_details->toArray(),
             'company_details' => $company_details
         );

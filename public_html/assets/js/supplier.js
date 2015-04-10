@@ -111,20 +111,20 @@ $(function () {
                 dataType: 'json'
             })
                 .done(function (response) {
-                    if (response.status == '0') {
-                        $.each(response.errors, function (i, v) {
-                            $this.closest('form').find('input[name=' + i + ']').after('<label class="error ">' + v + '</label>');
-                        });
+                    if (response.status === 1) {
+                        $('.mainContainer .box-solid').before(notify('success', response.data.message));
+                        parentTr.remove();
+                    } else {
+                        $('.mainContainer .box-solid').before(notify('error', response.data.message));
+                        parentTr.show('fast');
                     }
-
-                    if (response.status == '1') {
-                        window.location.href = appUrl + 'supplier';
-                    } //success
-                    response.success
+                    setTimeout(function () {
+                        $('.callout').remove()
+                    }, 2500);
                 })
                 .fail(function () {
                     alert('something went wrong');
-                    parentTr.show();
+                    parentTr.show('fast');
                 })
                 .always(function () {
                     doing = false;
@@ -149,80 +149,6 @@ $(function () {
         }
 
     });
-
-
-    /*$(document).on('click', '#supplier-submit', function (e) {
-        e.preventDefault();
-        $('.erroring').remove();
-        var form = $('#supplier-form');
-        var formAction = appUrl + 'supplier';
-        //var formData = form.serialize();
-
-
-        var requestType = form.find('.supplier-submit').val();
-
-        form.find('.supplier-submit').val('loading...');
-        form.find('.supplier-submit').attr('disabled', true);
-
-        form.find('.has-error').removeClass('has-error');
-        form.find('label.error').remove();
-        form.find('.callout').remove();
-
-
-        $.ajax({
-            url: formAction,
-            type: 'POST',
-            dataType: 'json',
-            data: formData,
-
-            //required for ajax file upload
-            processData: false,
-            contentType: false
-        })
-            .done(function (response) {
-                if (response.success == true || response.status == 1) {
-                    $('.error').remove();
-
-                    $('#fb-modal').modal('hide');
-                    var tbody = $('.box-body table tbody');
-                    if (requestType == 'Add') {
-
-                        window.location.replace(response.redirect_url);
-                    }
-                    else {
-
-                        $('.mainContainer .box-solid').before(notify('success', 'Customer updated Successfully'));
-                        tbody.find('#supplier-' + response.data.id).html(getTemplate(response, true));
-
-                    }
-                    setTimeout(function () {
-                        $('.callout').remove()
-                    }, 2500);
-                }
-                else {
-                    if (response.status == 'fail') {
-                        $('.error').remove();
-                        $.each(response.errors, function (i, v) {
-                            // form.closest('form').find('input[name='+i+']').after('<label class="error ">'+v+'</label>');
-                            $('.modal-body #' + i).parent().addClass('has-error');
-                            $('.modal-body #' + i).after('<label class="error erroring error-' + i + '">' + v + '<label>');
-                        });
-                    }
-
-                    // if ("error" in response.data) {
-                    //     form.prepend(notify('danger', response.data.error));
-                    // }
-
-                }
-            })
-            .fail(function () {
-                alert('something went wrong');
-            })
-            .always(function () {
-                form.find('.supplier-submit').removeAttr('disabled');
-                form.find('.supplier-submit').val(requestType);
-            });
-    });*/
 
     $(document).on('submit', '#supplier-form', function (e) {
         e.preventDefault();
@@ -259,12 +185,13 @@ $(function () {
                     $('#fb-modal').modal('hide');
                     var tbody = $('.box-body table tbody');
                     if (requestType == 'Add') {
-
-                        window.location.replace(response.redirect_url);
+                        $('.mainContainer .box-solid').before(notify('success', 'Supplier added Successfully'));
+                        tbody.prepend(getTemplate(response, false));
+                        //window.location.replace(response.redirect_url);
                     }
                     else {
 
-                        $('.mainContainer .box-solid').before(notify('success', 'Customer updated Successfully'));
+                        $('.mainContainer .box-solid').before(notify('success', 'Supplier updated Successfully'));
                         tbody.find('#supplier-' + response.data.id).html(getTemplate(response, true));
 
                     }
@@ -317,12 +244,9 @@ function showActionbtn(row) {
 
 function getTemplate(response, type) {
 
-
     var html = '<td>' + response.data.id + '</td>' +
         '<td>' +
-        '<a href="#" data-toggle="modal" data-url="' + response.show_url + '" data-target="#fb-modal">' +
         response.data.name +
-        '</a>' +
         '</td>' +
         '<td>' + response.data.email + '</td>' +
         '<td>' + response.data.created_at + '</td>' +

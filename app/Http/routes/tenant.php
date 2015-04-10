@@ -159,7 +159,6 @@ Route::group($group_auth, function () {
     Route::group(['namespace' => 'Tenant\Supplier\Controllers'], function () {
         get('supplier', ['as' => 'tenant.supplier.index', 'uses' => 'SupplierController@index']);
         post('supplier', ['as' => 'tenant.supplier.create', 'uses' => 'SupplierController@create']);
-        get('supplier/SupplierCard/{id}', ['as' => 'tenant.supplier.SupplierCard', 'uses' => 'SupplierController@supplierCard']);
         get('supplier/{id}/delete', ['as' => 'supplier.delete', 'uses' => 'SupplierController@deleteSupplier']);
         get('supplier/{id}/edit', ['as' => 'tenant.supplier.edit', 'uses' => 'SupplierController@edit']);
         post('supplier/{id}/edit', ['as' => 'tenant.supplier.edit', 'uses' => 'SupplierController@update']);

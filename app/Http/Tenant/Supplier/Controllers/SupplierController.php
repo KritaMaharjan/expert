@@ -7,6 +7,7 @@ use App\Http\Tenant\Invoice\Models\Bill;
 use App\Http\Controllers\Tenant\BaseController;
 use Illuminate\Http\Request;
 use Input;
+use Session;
 use App\Http\Tenant\Email\Models\Email;
 use App\Http\Tenant\Email\Models\Receiver;
 
@@ -52,7 +53,7 @@ class SupplierController extends BaseController {
         $validator = \Validator::make($this->request->all(),
             array(
                 'name'          => 'required|between:2,30',
-                'email'         => 'required|unique:fb_supplier',
+                'email'         => 'required|unique:fb_suppliers',
                 'telephone'     => 'numeric',
                 'mobile'        => 'numeric',
                 'postcode'      => 'required|numeric',
@@ -65,7 +66,7 @@ class SupplierController extends BaseController {
         $result = $this->supplier->createSupplier($this->request, $this->current_user->id);
         $redirect_url = tenant_route('tenant.supplier.index');
 
-        return \Response::json(array('success' => true, 'data' => $result['data'], 'template' => $result['template'], 'redirect_url' => $redirect_url));
+        return \Response::json(array('success' => true, 'data' => $result['data'], 'template' => $result['template'], 'edit_url' => $result['edit_url'], 'redirect_url' => $redirect_url));
 
 
     }
@@ -108,8 +109,6 @@ class SupplierController extends BaseController {
                 'name'          => 'required|between:2,30',
                 'email'         => 'required',
                 'dob'           => '',
-                //'street_name'   => 'required',
-                //'street_number' => 'required',
                 'telephone'     => 'numeric',
                 'mobile'        => 'numeric',
                 'postcode'      => 'required|numeric',
@@ -125,7 +124,7 @@ class SupplierController extends BaseController {
 
         $redirect_url = tenant_route('tenant.supplier.index');
 
-        return \Response::json(array('success' => true, 'data' => $suppliers['data'], 'template' => $suppliers['template'], 'show_url' => $suppliers['show_url'], 'edit_url' => $suppliers['edit_url'], 'redirect_url' => $redirect_url));
+        return \Response::json(array('success' => true, 'data' => $suppliers['data'], 'template' => $suppliers['template'], 'edit_url' => $suppliers['edit_url'], 'redirect_url' => $redirect_url));
     }
 
     function invoices(){
@@ -158,29 +157,6 @@ class SupplierController extends BaseController {
         }
     }
 
-    public function supplierCard()
-    {
-        $user_id = $this->request->route('id');
-
-        $supplier = $this->supplier->where('id', '=', $user_id)->first();
-        Session::put('supplier_id', $user_id);
-       
-        $invoices = $this->bill->getSupplierBill($user_id);
-
-        $perpage = 10;
-
-
-       //$mails = $this->receiver->supplier($user_id)->with('attachments', 'receivers');
-        $mails = $this->email->getSupplierEmail($user_id,$perpage);
-      
-       //dd($mails);
-     
-
-
-        return view('tenant.supplier.supplierCard', compact('supplier','invoices','mails'))->withPageTitle('Supplier');
-    }
-
-
 
     public function deleteSupplier()
     {
@@ -195,8 +171,6 @@ class SupplierController extends BaseController {
         return $this->fail(['message' => 'Something went wrong. Please try again later']);
 
     }
-
-
 
     public function changeStatus()
     {
@@ -214,7 +188,6 @@ class SupplierController extends BaseController {
         return $this->fail(['message' => 'Something went  wrong. Please try again later']);
 
     }
-
 
     public function upload()
     {

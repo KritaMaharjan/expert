@@ -1,21 +1,21 @@
 
-   {!!Form::open(['id'=>'customer-form', 'files'=>true, 'enctype'=>'multipart/form-data'])!!}
+   {!!Form::open(['id'=>'supplier-form', 'files'=>true, 'enctype'=>'multipart/form-data'])!!}
                     <div class="box-body">
                       <div class="form-group">
                         <label for="">Name</label>
-                        <input type="text" placeholder="Name" name="name" value="{{$customer->name}}" id="name" class="form-control">
+                        <input type="text" placeholder="Name" name="name" value="{{$supplier->name}}" id="name" class="form-control">
                         
                       </div>
 
                       <div class="form-group">
                         <label for="">Email</label>
-                        <input type="email" placeholder="Email" name="email" value="{{$customer->email}}" id="email" class="form-control">
+                        <input type="email" placeholder="Email" name="email" value="{{$supplier->email}}" id="email" class="form-control">
                         
                       </div>
                    
                       <div class="form-group dob_div">
                         <label for="">Date of birth</label>
-                        <?php $dob = explode("-",$customer->dob); ?>
+                        <?php $dob = explode("-",$supplier->dob); ?>
                          <select name="day" class="form-control" id="day">
                             <?php for ($i = 1; $i <= 32; $i++): ?>
                                 <option value='<?php echo $i; ?>' <?php if($i == $dob['2']) echo 'selected = selected'; ?>><?php echo $i; ?></option>
@@ -42,10 +42,10 @@
                       </div>
                   
                       <div class="form-group business_div">
-                          <input type="text" placeholder="Company Number" name="company_number" value="{{$customer->company_number}}" class="form-control">
+                          <input type="text" placeholder="Company Number" name="company_number" value="{{$supplier->company_number}}" class="form-control">
                       </div>
                  
-                        <input type="hidden" name="type" id="type" value="{{$customer->type}}">
+                        <input type="hidden" name="type" id="type" value="{{$supplier->type}}">
                       <div class="col-md-12 pad-0">
                         <div class="input-group">
                        
@@ -54,29 +54,29 @@
                      </div>
                       <div class="form-group">
                         <label for="">Street name</label>
-                        <input type="text" placeholder="Street Name"  id="street_name" name="street_name"  value="{{$customer->street_name}}" class="form-control">
+                        <input type="text" placeholder="Street Name"  id="street_name" name="street_name"  value="{{$supplier->street_name}}" class="form-control">
                        
                       </div>
                        <div class="form-group">
                         <label for="">Street number</label>
-                        <input type="text" placeholder="Street Number"  id="street_number" name="street_number"  value="{{$customer->street_number}}" class="form-control">
+                        <input type="text" placeholder="Street Number"  id="street_number" name="street_number"  value="{{$supplier->street_number}}" class="form-control">
                      
                       </div>
                       <div class="form-group two-inputs">
                         <label for="">Postal code/Town</label>
                        
-                         <input type="text" placeholder="postcode"  id="postcode" name="postcode"  value="{{$customer->postcode}}" class="form-control postal_code">
-                        <input type="text" placeholder="Town"  id="town" name="town"  value="{{$customer->town}}" class="form-control city">
+                         <input type="text" placeholder="postcode"  id="postcode" name="postcode"  value="{{$supplier->postcode}}" class="form-control postal_code">
+                        <input type="text" placeholder="Town"  id="town" name="town"  value="{{$supplier->town}}" class="form-control city">
                     
                       </div>
                       <div class="form-group">
                         <label for="">Telephone</label>
-                        <input type="text" placeholder="Telephone" id="telephone"  name="telephone" value="{{$customer->telephone}}" class="form-control">
+                        <input type="text" placeholder="Telephone" id="telephone"  name="telephone" value="{{$supplier->telephone}}" class="form-control">
                     
                       </div>
                       <div class="form-group">
                         <label for="">Mobile</label>
-                        <input type="text" placeholder="Mobile" id="mobile" name="mobile" value="{{$customer->mobile}}" class="form-control">
+                        <input type="text" placeholder="Mobile" id="mobile" name="mobile" value="{{$supplier->mobile}}" class="form-control">
                      
                       </div>
                      
@@ -88,14 +88,15 @@
                           '0' => 'Inactive',
                           '1' => 'Active',
                           
-                        ], $customer->status, array('class' => 'form-control')) !!}
+                        ], $supplier->status, array('class' => 'form-control')) !!}
                       </div>
                
 
                    
                 <div class="box-footer">
                     <button type="button" class="btn sm-mg-btn" data-dismiss="modal"><i class="fa fa-times"></i> Abort</button>    
-                    <input type="submit" class="btn btn-primary customer-submit" value="Update" />
+                    <input type="submit" class="btn btn-primary supplier-submit" value="Update" />
+                </div>
                 </div>
                    
 {!! Form::close() !!}
@@ -160,7 +161,7 @@ $(function () {
                         response(items1);
                 });
             },
-             //appendTo: '#customer-modal-data',
+             //appendTo: '#supplier-modal-data',
             search: function(event, ui) {
                
             },
@@ -190,9 +191,3 @@ $(function () {
 
 
 </script>
-
-           
-
-           
-
-           

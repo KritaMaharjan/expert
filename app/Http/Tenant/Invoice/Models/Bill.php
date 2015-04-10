@@ -9,7 +9,8 @@ use App\Http\Tenant\Invoice\Models\BillProducts;
 use App\Http\Tenant\Inventory\Models\Product;
 use Illuminate\Support\Facades\DB;
 
-class Bill extends Model {
+class Bill extends Model
+{
 
     /**
      * The database table used by the model.
@@ -46,10 +47,10 @@ class Bill extends Model {
             $customer_id = $request->input('customer');
             $bill = Bill::create([
                 'invoice_number' => $this->getPrecedingInvoiceNumber($customer_id),
-                'customer_id'    => $customer_id,
-                'due_date'       => $request->input('due_date'),
-                'currency'       => $request->input('currency'),
-                'is_offer'       => ($offer == true) ? 1 : 0
+                'customer_id' => $customer_id,
+                'due_date' => $request->input('due_date'),
+                'currency' => $request->input('currency'),
+                'is_offer' => ($offer == true) ? 1 : 0
             ]);
 
             $products = $request->input('product');
@@ -65,11 +66,11 @@ class Bill extends Model {
                     $total = ($product_details->selling_price + $product_details->vat * 0.01 * $product_details->selling_price) * $quantity[$key];
                     $product_bill = BillProducts::create([
                         'product_id' => $product,
-                        'bill_id'    => $bill->id,
-                        'quantity'   => $quantity[$key],
-                        'price'      => $product_details->selling_price,
-                        'vat'        => $product_details->vat,
-                        'total'      => $total
+                        'bill_id' => $bill->id,
+                        'quantity' => $quantity[$key],
+                        'price' => $product_details->selling_price,
+                        'vat' => $product_details->vat,
+                        'total' => $total
                     ]);
                     $alltotal += $total;
                     $tax += $product_details->vat * 0.01 * $product_details->selling_price * $quantity[$key];
@@ -83,7 +84,7 @@ class Bill extends Model {
             $bill->tax = $tax;
             $bill->total = $alltotal;
             $bill->remaining = $alltotal;
-            $bill->customer_payment_number = format_id($bill->customer_id).format_id($bill->id);
+            $bill->customer_payment_number = format_id($bill->customer_id) . format_id($bill->id);
             $bill->save();
 
             DB::commit();
@@ -123,11 +124,11 @@ class Bill extends Model {
                     $total = ($product_details->selling_price + $product_details->vat * 0.01 * $product_details->selling_price) * $quantity[$key];
                     $product_bill = BillProducts::create([
                         'product_id' => $product,
-                        'bill_id'    => $bill->id,
-                        'quantity'   => $quantity[$key],
-                        'price'      => $product_details->selling_price,
-                        'vat'        => $product_details->vat,
-                        'total'      => $total
+                        'bill_id' => $bill->id,
+                        'quantity' => $quantity[$key],
+                        'price' => $product_details->selling_price,
+                        'vat' => $product_details->vat,
+                        'total' => $total
                     ]);
                     $alltotal += $total;
                     $tax += $product_details->vat * 0.01 * $product_details->selling_price * $quantity[$key];
@@ -280,8 +281,8 @@ class Bill extends Model {
         $data = $query->where('customer_id', $customer_id)->get();
 
         foreach ($data as $key => &$value) {
-         
-             $value->total = $value->total;
+
+            $value->total = $value->total;
 
             $value->raw_status = $value->status;
             if ($value->status == 1)
@@ -292,7 +293,7 @@ class Bill extends Model {
                 $value->status = '<span class="label label-danger">Unpaid</span>';
 
             $value->invoice_date = date('d-M-Y  h:i:s A', strtotime($value->created_at));
-            
+
             $value->DT_RowId = "row-" . $value->guid;
         }
 
@@ -334,12 +335,12 @@ class Bill extends Model {
     function getPrecedingInvoiceNumber($customer_id)
     {
         $today = \Carbon::now()->format('Y-m-d');
-        $latest_count = Bill::select('id')->where('customer_id',$customer_id)->where('created_at', '>', $today)->count();
+        $latest_count = Bill::select('id')->where('customer_id', $customer_id)->where('created_at', '>', $today)->count();
         //$latest = Bill::select('id')->where('customer_id',$customer_id)->orderBy('id', 'desc')->first();
         if ($latest_count)
-            $new_invoice_num = date('dmy') . format_id($customer_id).'-'.($latest_count + 1);
+            $new_invoice_num = date('dmy') . format_id($customer_id) . '-' . ($latest_count + 1);
         else
-            $new_invoice_num = date('dmy') . format_id($customer_id). '-1';
+            $new_invoice_num = date('dmy') . format_id($customer_id) . '-1';
 
         return $new_invoice_num;
     }
@@ -348,7 +349,7 @@ class Bill extends Model {
     {
         $latest = Bill::select('id')->orderBy('id', 'desc')->first();
         if ($latest)
-            $new_cus_no = format_id($id, 3).sprintf("%03d", ($latest->id + 1));
+            $new_cus_no = format_id($id, 3) . sprintf("%03d", ($latest->id + 1));
         else
             $new_cus_no = format_id($id, 3) . '001';
 
@@ -367,25 +368,25 @@ class Bill extends Model {
             return false;
     }
 
-    function getCustomerBill($customer_id){
-       $bills =  Bill::where('customer_id', $customer_id)->get();
-     $invoices = array();
-     $totalbills = 0;
-     $totaloffers = 0;
-     foreach ($bills as $key => $value) {
-       if($value->is_offer == 0){
-            $totalbills +=  $value->total;
-       }
-        else if($value->is_offer == 1){
-            $totaloffers +=  $value->total;
+    function getCustomerBill($customer_id)
+    {
+        $bills = Bill::where('customer_id', $customer_id)->get();
+        $invoices = array();
+        $totalbills = 0;
+        $totaloffers = 0;
+        foreach ($bills as $key => $value) {
+            if ($value->is_offer == 0) {
+                $totalbills += $value->total;
+            } else if ($value->is_offer == 1) {
+                $totaloffers += $value->total;
+            }
         }
-     }
 
-     $invoices['bills'] = $bills;
-     $invoices['totalbills'] = $totalbills;
-     $invoices['totaloffers'] = $totaloffers;
+        $invoices['bills'] = $bills;
+        $invoices['totalbills'] = $totalbills;
+        $invoices['totaloffers'] = $totaloffers;
 
-     return $invoices;
+        return $invoices;
 
     }
 }

@@ -19,3 +19,10 @@ Validator::extend('validArrayEmail', function ($attribute, $value, $parameters) 
     return true;
 
 });
+
+Validator::extend('minValue', function ($attribute, $value, $parameters) {
+
+
+    return true;
+
+});
