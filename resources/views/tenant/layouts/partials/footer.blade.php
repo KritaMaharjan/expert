@@ -49,8 +49,7 @@
           ykeys: ['item1', 'item2', 'item3', 'item4'],
           labels: ['Customers', 'Billing', 'Collection', 'Statistics'],
           lineColors: ['#fd9d11','#237a7a','#7070a0','#d45127'],
-          hideHover: 'auto',
-
+          hideHover: 'auto'
         });
     </script>
   </body>
