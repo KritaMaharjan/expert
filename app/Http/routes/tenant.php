@@ -71,18 +71,6 @@ Route::group($group_auth, function () {
         get('offer', 'Email\Controllers\OfferController@index');
     });
 
-
-    Route::group(['prefix' => 'accounting', 'namespace' => 'Tenant\Accounting\Controllers'], function () {
-        get('expense', 'AccountingController@expense');
-        get('payroll', 'AccountingController@payroll');
-        get('open', 'AccountingController@open');
-        get('close', 'AccountingController@close');
-        get('vat', 'AccountingController@vat');
-        get('lists', 'AccountingController@lists');
-        get('setup', 'AccountingController@setup');
-        get('new-business', 'AccountingController@newBusiness');
-    });
-
     // Registered by Krita
     Route::group(['namespace' => 'Tenant\Statistics\Controllers'], function () {
         get('statistics', 'StatisticsController@index');
@@ -168,7 +156,6 @@ Route::group($group_auth, function () {
     });
 
     Route::group(['namespace' => 'Tenant\Tasks\Controllers'], function () {
-
         // bill routes
         get('tasks', ['as' => 'tenant.tasks.index', 'uses' => 'TasksController@index']);
         post('tasks', ['as' => 'tenant.tasks.post', 'uses' => 'TasksController@create']);
@@ -181,6 +168,38 @@ Route::group($group_auth, function () {
         get('tasks/{id}/redo', ['as' => 'tenant.tasks.redo', 'uses' => 'TasksController@complete']);
     });
 
+    Route::group(['namespace' => 'Tenant\Accounting\Controllers'], function () {
+        get('accounting', ['as' => 'tenant.accounting.index', 'uses' => 'AccountingController@index']);
+        post('accounting', ['as' => 'tenant.accounting.create', 'uses' => 'AccountingController@create']);
+        get('accounting/payroll', ['as' => 'tenant.accounting.payroll', 'uses' => 'AccountingController@payroll']);
+        post('accounting/payroll', ['as' => 'tenant.accounting.payroll.create', 'uses' => 'AccountingController@createPayroll']);
+        get('accounting/{id}/delete', ['as' => 'accounting.delete', 'uses' => 'AccountingController@deleteSupplier']);
+        get('accounting/{id}/edit', ['as' => 'tenant.accounting.edit', 'uses' => 'AccountingController@edit']);
+        post('accounting/{id}/edit', ['as' => 'tenant.accounting.edit', 'uses' => 'AccountingController@update']);
+        post('accounting/data', ['as' => 'tenant.accounting.data', 'uses' => 'AccountingController@dataJson']);
+        post('accounting/upload', ['as' => 'tenant.accounting.upload', 'uses' => 'AccountingController@upload']);
+        post('accounting/changeStatus', ['as' => 'tenant.accounting.changeStatus', 'uses' => 'AccountingController@changeStatus']);
+        get('expense', 'AccountingController@expense');
+        get('open', 'AccountingController@open');
+        get('close', 'AccountingController@close');
+        get('vat', 'AccountingController@vat');
+        get('lists', 'AccountingController@lists');
+        get('setup', 'AccountingController@setup');
+        get('new-business', 'AccountingController@newBusiness');
+    });
+
+    Route::group(['namespace' => 'Tenant\Collection\Controllers'], function () {
+        get('collection', ['as' => 'tenant.collection.index', 'uses' => 'CollectionController@index']);
+        post('collection', ['as' => 'tenant.collection.create', 'uses' => 'CollectionController@create']);
+        get('collection/purring', ['as' => 'tenant.collection.purring', 'uses' => 'CollectionController@purring']);
+        get('collection/payment', ['as' => 'tenant.collection.payment', 'uses' => 'CollectionController@payment']);
+        get('collection/debt', ['as' => 'tenant.collection.debt', 'uses' => 'CollectionController@debt']);
+        get('collection/options', ['as' => 'tenant.collection.options', 'uses' => 'CollectionController@options']);
+        get('collection/case', ['as' => 'tenant.collection.case', 'uses' => 'CollectionController@courtCase']);
+        get('collection/case/followUp', ['as' => 'tenant.collection.case.followup', 'uses' => 'CollectionController@followup']);
+        get('collection/utlegg', ['as' => 'tenant.collection.utlegg', 'uses' => 'CollectionController@utlegg']);
+        get('collection/utlegg/followUp', ['as' => 'tenant.collection.utlegg.followup', 'uses' => 'CollectionController@utleggFollowup']);
+    });
 
     /*
      * Todo : don't register new routes under this group

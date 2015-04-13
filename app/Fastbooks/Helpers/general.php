@@ -168,3 +168,8 @@ function force_redirect($url)
 {
     header('location:'. $url);
 }
+
+function float_format($number, $digits = 2)
+{
+    return number_format($number, $digits);
+}

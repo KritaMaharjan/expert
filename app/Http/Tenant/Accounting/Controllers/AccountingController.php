@@ -1,9 +1,18 @@
 <?php
 namespace APP\Http\Tenant\Accounting\Controllers;
-
 use App\Http\Controllers\Tenant\BaseController;
 
 class AccountingController extends BaseController {
+
+    protected $task;
+    protected $request;
+
+    public function __construct(Tasks $task, Request $request)
+    {
+        parent::__construct();
+        $this->task = $task;
+        $this->request = $request;
+    }
 
     public function expense()
     {
@@ -18,6 +27,11 @@ class AccountingController extends BaseController {
     public function payroll()
     {
         return view('tenant.accounting.account.payroll');
+    }
+
+    public function createPayroll()
+    {
+
     }
 
     public function vat()

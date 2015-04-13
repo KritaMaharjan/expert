@@ -210,6 +210,7 @@ class Bill extends Model
         $data = $query->get();
 
         foreach ($data as $key => &$value) {
+            $value->total = number_format($value->total, 2);
             $value->invoice_number = '<a class="link" href="#">' . $value->invoice_number . '</a>';
             $customer = Customer::find($value->customer_id);
             if ($customer)
@@ -282,7 +283,7 @@ class Bill extends Model
 
         foreach ($data as $key => &$value) {
 
-            $value->total = $value->total;
+            $value->total = number_format($value->total, 2);
 
             $value->raw_status = $value->status;
             if ($value->status == 1)

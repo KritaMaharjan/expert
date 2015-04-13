@@ -20,9 +20,9 @@ Validator::extend('validArrayEmail', function ($attribute, $value, $parameters) 
 
 });
 
-Validator::extend('minValue', function ($attribute, $value, $parameters) {
-
-
-    return true;
-
+Validator::extend('maxValue', function ($attribute, $value, $parameters) {
+    if($parameters[0] >= $value)
+        return true;
+    else
+        return false;
 });
