@@ -198,7 +198,7 @@ Route::group($group_auth, function () {
         get('collection/case', ['as' => 'tenant.collection.case', 'uses' => 'CollectionController@courtCase']);
         get('collection/case/followUp', ['as' => 'tenant.collection.case.followup', 'uses' => 'CollectionController@followup']);
         get('collection/utlegg', ['as' => 'tenant.collection.utlegg', 'uses' => 'CollectionController@utlegg']);
-        get('collection/utlegg/followUp', ['as' => 'tenant.collection.utlegg.followup', 'uses' => 'CollectionController@utleggFollowup']);
+        get('collection/utlegg/followup', ['as' => 'tenant.collection.utlegg.followup', 'uses' => 'CollectionController@utleggFollowup']);
     });
 
     /*

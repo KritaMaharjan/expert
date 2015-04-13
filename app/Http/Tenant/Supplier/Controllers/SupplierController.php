@@ -68,7 +68,6 @@ class SupplierController extends BaseController {
 
         return \Response::json(array('success' => true, 'data' => $result['data'], 'template' => $result['template'], 'edit_url' => $result['edit_url'], 'redirect_url' => $redirect_url));
 
-
     }
 
     function edit()

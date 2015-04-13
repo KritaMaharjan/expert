@@ -7,6 +7,12 @@ class AccountingController extends BaseController {
     protected $task;
     protected $request;
 
+    protected $rules = [
+        'subject' => 'required|between:2,100',
+        'body' => 'required',
+        'due_date' => 'required|date'
+    ];
+
     public function __construct(Tasks $task, Request $request)
     {
         parent::__construct();

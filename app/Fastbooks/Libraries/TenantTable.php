@@ -11,7 +11,8 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 
-class TenantTable {
+class TenantTable
+{
 
     /**
      * Constant for table prefix
