@@ -9,6 +9,7 @@ Accounting List
         <div class="box-body clearfix">
         	<div class="row">        	
 	        	<div class="col-md-12 table-responsive">
+	        	    @include('flash::message')
 	        		<table class="table product-table">
 	        			<thead>
 	        				<tr>

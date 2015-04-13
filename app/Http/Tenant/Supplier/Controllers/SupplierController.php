@@ -2,7 +2,6 @@
 namespace App\Http\Tenant\Supplier\Controllers;
 
 use App\Http\Tenant\Supplier\Models\Supplier;
-
 use App\Http\Tenant\Invoice\Models\Bill;
 use App\Http\Controllers\Tenant\BaseController;
 use Illuminate\Http\Request;

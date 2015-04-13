@@ -74,27 +74,25 @@ class Payroll extends Model {
         return $this->toArray();
     }
 
-    public function createPayroll($request, $user_id)
+    public function createPayroll($request)
     {
         $payroll = Payroll::create([
             'user_id'           => $request['user_id'],
             'type'           => $request['type'],
             'worked'          => $request['worked'],
-            'user_id'        => $request['worked'],
-            'dob'            => $dob,
-            'street_name'    => $request['street_name'],
-            'street_number'  => $request['street_number'],
-            'telephone'      => $request['telephone'],
-            'mobile'         => $request['mobile'],
-            'postcode'       => $postal_code[0],
-            'town'           => $request['town'],
-            'status'         => $request['status'],
+            'rate'        => $request['rate'],
+            'basic_salary'    => $request['basic_salary'],
+            'other_payment'  => $request['other_payment'],
+            'description'      => $request['description'],
+            'total_salary'        => $request['total_salary'],
+            'tax_rate'           => $request['tax_rate'],
+            'payroll_tax'         => $request['payroll_tax'],
+            'vacation_fund'         => $request['vacation_fund'],
+            'total_paid'         => $request['total_paid'],
+            'payment_date'         => $request['payment_date']
         ]);
-        $payroll_add['data'] = $this->toFomatedData($payroll);
-        $payroll_add['edit_url'] = tenant()->url('payroll/' . $payroll->id . '/edit');
-        $payroll_add['template'] = $this->getTemplate($payroll);
 
-        return $payroll_add;
+        return $payroll->toArray();
     }
 
     public function updatePayroll($id, $details, $dob)

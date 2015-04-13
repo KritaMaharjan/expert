@@ -95,7 +95,6 @@ class BillController extends BaseController {
         $this->bill->add($this->request);
 
         Flash::success('Bill added successfully!');
-
         return tenant()->route('tenant.invoice.bill.index');
     }
 

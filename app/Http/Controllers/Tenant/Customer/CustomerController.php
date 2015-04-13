@@ -11,8 +11,6 @@ use App\Http\Tenant\Email\Models\Attachment;
 use App\Http\Tenant\Email\Models\Receiver;
 use Session;
 
-
-
 class CustomerController extends BaseController {
 
 

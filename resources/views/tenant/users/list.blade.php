@@ -49,6 +49,7 @@ All Users
 
   </div>
 
+
   @include('tenant.users.create')
   
 @stop
@@ -57,5 +58,3 @@ All Users
 
 {{FB::registerModal()}}
 {{FB::js('assets/js/user.js')}}
-
-{{-- {{ FB::js("blockUser.js") }} --}}

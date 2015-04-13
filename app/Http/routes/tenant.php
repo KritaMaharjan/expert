@@ -247,10 +247,7 @@ Route::group($group_auth, function () {
         get('user/registerDays/{type}/{guid}', ['as' => 'user.registerDays', 'uses' => 'Tenant\Users\UserController@registerVacation']);
         post('user/addVacation', ['as' => 'user.addVacation', 'uses' => 'Tenant\Users\UserController@addVacation']);
         post('user/deleteVacation', ['as' => 'user.deleteVacation', 'uses' => 'Tenant\Users\UserController@deleteVacation']);
-
-
-        //registered by : Manish
-
+        get('employee/suggestions', ['as' => 'tenant.employee.suggestions', 'uses' => 'Tenant\Users\UserController@getEmployeeSuggestions']);
 
         //registered by : Pooja
 

@@ -13,7 +13,7 @@
          @elseif(isset($customer_id) && !empty($customer_details))
            {!! Form::select('customer', array($customer_details->id => $customer_details->name), $customer_details->id, array('class' => 'select-customer form-control', 'required' => 'required')) !!}
          @else
-            {!! Form::select('customer', array('' => 'Select Customer'), null, array('class' => 'select-customer form-control', 'required' => 'required')) !!}
+           {!! Form::select('customer', array('' => 'Select Customer'), null, array('class' => 'select-customer form-control', 'required' => 'required')) !!}
          @endif
          @if($errors->has('customer'))
              {!! $errors->first('customer', '<label class="control-label error" for="inputError">:message</label>') !!}

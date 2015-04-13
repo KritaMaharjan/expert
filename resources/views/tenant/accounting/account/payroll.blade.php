@@ -12,14 +12,9 @@ Pay an employee
             </div>
             <div class="row mg-btm-40">
             	<div class="col-md-6">
-            		<form>
-		            	<div class="form-group clearfix">
-				         	<select class="form-control half-width2 pull-left">
-				         		<option>Select employee</option>
-				         		<option>user1</option>
-				         		<option>user2</option>
-				         		<option>user3</option>
-				         	</select>
+            		{!! Form::open(array('method'=>'POST', 'id'=>'payroll-form')) !!}
+		            	<div class="form-group clearfix  {{ ($errors->has('user_id'))? 'has-error': '' }}">
+		            	    {!! Form::select('user_id', array('' => 'Select Employee'), null, array('class' => 'form-control half-width2 pull-left', 'id' => 'select-employee')) !!}
 							<div class="date-box">					         	
 					         	<select class="form-control">
 					         		<option>Salary type</option>
@@ -27,38 +22,59 @@ Pay an employee
 					         		<option>Monthly</option>
 					         	</select>
 				         	</div>
+				         	@if($errors->has('user_id'))
+                                {!! $errors->first('user_id', '<label class="control-label" for="inputError">:message</label>') !!}
+                            @endif
 
 				        </div>
-		        		<div class="form-group clearfix">
+		        		<div class="form-group clearfix  {{ ($errors->has('rate'))? 'has-error': '' }}">
 				          {!! Form::label('', 'Rate per hour') !!}
-				          <input class="form-control date-box" type="text">
+				          {!! Form::text('rate', NULL, array('class' => 'form-control date-box')) !!}
+				          @if($errors->has('rate'))
+                                {!! $errors->first('rate', '<label class="control-label" for="inputError">:message</label>') !!}
+                            @endif
 				        </div>
 				        
-				        <div class="form-group clearfix">
+				        <div class="form-group clearfix  {{ ($errors->has('worked'))? 'has-error': '' }}">
 				          {!! Form::label('', 'Hours') !!}
-				          <input class="form-control date-box" type="text">
+				          {!! Form::text('worked', NULL, array('class' => 'form-control date-box')) !!}
+				          @if($errors->has('worked'))
+                                {!! $errors->first('worked', '<label class="control-label" for="inputError">:message</label>') !!}
+                            @endif
 				        </div>
-				        <div class="form-group clearfix">
+				        <div class="form-group clearfix  {{ ($errors->has('basic_salary'))? 'has-error': '' }}">
 				          {!! Form::label('', 'Total wages') !!}
-				          <input class="form-control date-box" type="text">
+				          {!! Form::text('basic_salary', NULL, array('class' => 'form-control date-box')) !!}
+				          @if($errors->has('basic_salary'))
+                                {!! $errors->first('basic_salary', '<label class="control-label" for="inputError">:message</label>') !!}
+                            @endif
 				        </div>
 				        <p><strong>Other payments?</strong></p>
 				        <hr class="mg-top-0">
 
-				        <div class="form-group clearfix">
+				        <div class="form-group clearfix  {{ ($errors->has('other_payment'))? 'has-error': '' }}">
 				          {!! Form::label('', 'Amount') !!}
-				          <input class="form-control date-box" type="text">
+				          {!! Form::text('other_payment', NULL, array('class' => 'form-control date-box')) !!}
+				          @if($errors->has('other_payment'))
+                                {!! $errors->first('other_payment', '<label class="control-label" for="inputError">:message</label>') !!}
+                            @endif
 				        </div>
-				        <div class="form-group clearfix">
+				        <div class="form-group clearfix  {{ ($errors->has('description'))? 'has-error': '' }}">
 				          {!! Form::label('', 'Text') !!}
-				          <input class="form-control date-box" type="text">
+				          {!! Form::text('description', NULL, array('class' => 'form-control date-box')) !!}
+				          @if($errors->has('description'))
+                                {!! $errors->first('description', '<label class="control-label" for="inputError">:message</label>') !!}
+                            @endif
 				        </div>
 
-				        <div class="form-group clearfix {{ ($errors->has('due_date'))? 'has-error': '' }}">
-				          {!! Form::label('due_date', 'Date paid out') !!}
+				        <div class="form-group clearfix  {{ ($errors->has('payment_date'))? 'has-error': '' }}">
+				          {!! Form::label('payment_date', 'Date paid out') !!}
 
 				          <div class='input-group date date-box' id='due-date-picker'>
-				              {!! Form:: text('due_date', null, array('class' => 'form-control', 'id' =>'paidout-date-pickers')) !!}
+				              {!! Form::text('payment_date', null, array('class' => 'form-control date-box', 'id' =>'paidout-date-pickers')) !!}
+				              @if($errors->has('payment_date'))
+                                {!! $errors->first('payment_date', '<label class="control-label" for="inputError">:message</label>') !!}
+                            @endif
 				              <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
 				              </span>
 				          </div>
@@ -70,38 +86,40 @@ Pay an employee
 				        	<strong>Witholdings</strong>				        	
 				        </p>
 				        <hr class="mg-top-0">
-				        <div class="form-group clearfix">
+				        <div class="form-group clearfix  {{ ($errors->has('tax_rate'))? 'has-error': '' }}">
 				          {!! Form::label('', 'Tax withheld') !!}
-				          <input class="form-control date-box" type="text">
+				          {!! Form::text('tax_rate', NULL, array('class' => 'form-control date-box', 'placeholder' => '%')) !!}
+				          @if($errors->has('tax_rate'))
+                                {!! $errors->first('tax_rate', '<label class="control-label" for="inputError">:message</label>') !!}
+                            @endif
 				        </div>
-				        <div class="form-group clearfix">
+				        <div class="form-group clearfix  {{ ($errors->has('vacation_fund'))? 'has-error': '' }}">
 				          {!! Form::label('', 'Vacation fund') !!}
-				          <input class="form-control date-box" type="text" placeholder="%">
+				          {!! Form::text('vacation_fund', NULL, array('class' => 'form-control date-box')) !!}
+				          @if($errors->has('vacation_fund'))
+                                {!! $errors->first('vacation_fund', '<label class="control-label" for="inputError">:message</label>') !!}
+                            @endif
 				        </div>
-				        <div class="form-group clearfix">
+				        <div class="form-group clearfix  {{ ($errors->has('payroll_tax'))? 'has-error': '' }}">
 				          {!! Form::label('', 'Payroll tax') !!}
-				          <input class="form-control date-box" type="text" placeholder="%">
+				          {!! Form::text('payroll_tax', NULL, array('class' => 'form-control date-box')) !!}
+				          @if($errors->has('payroll_tax'))
+                                {!! $errors->first('payroll_tax', '<label class="control-label" for="inputError">:message</label>') !!}
+                            @endif
 				        </div><br />
-						<div class="form-group clearfix">        
+						<div class="form-group clearfix">
 					        <div>
 					        	<button class="btn btn-primary pull-right savebusiness" type="submit">Make payslip</button>
 					        </div>
 					    </div>
 				       
-		            </form>
+		            {!! Form::close() !!}
             	</div>
             	
             </div>
             
         </div>
     <div>
-    {{ FB::js('$(function(){
-		$("#paidout-date-pickers").datepicker({
-        "format": "yyyy-mm-dd"
-        });
-        $(".select-multiple").select2({
-			theme: "classic"
-		});
 
-	})')}}
+    {{ FB::js('assets/js/payroll.js')}}
 @stop
