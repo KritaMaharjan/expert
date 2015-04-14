@@ -12,6 +12,11 @@ Options
             </div>
 
             <div class="row">
+            	<div class="col-md-6">
+            		<p><a href="#" class="btn btn-primary">Take the case to court</a></p>
+            		<p><a href="#">or skip the step and go to</a></p>
+            		<p><a href="#" class="btn btn-default">Create Utlegg.pgf</a></p>
+            	</div>
         	</div>
         </div>
     </div>
