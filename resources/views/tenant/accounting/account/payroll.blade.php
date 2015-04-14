@@ -14,12 +14,12 @@ Pay an employee
             	<div class="col-md-6">
             		{!! Form::open(array('method'=>'POST', 'id'=>'payroll-form')) !!}
 		            	<div class="form-group clearfix  {{ ($errors->has('user_id'))? 'has-error': '' }}">
-		            	    <div class="date-box">
-                                {!! Form::select('user_id', array('' => 'Select Employee'), null, array('class' => 'form-control half-width2 pull-left', 'id' => 'select-employee')) !!}
+		            	    <label class="half-width2">
+                                {!! Form::select('user_id', array('' => 'Select Employee'), null, array('class' => 'form-control pull-left', 'id' => 'select-employee')) !!}
                                 @if($errors->has('user_id'))
                                     {!! $errors->first('user_id', '<label class="control-label" for="inputError">:message</label>') !!}
                                 @endif
-                            </div>
+                            </label>
 
 							<div class="date-box">
                                 {!! Form::select('type', array('' => 'Select Type', 0 => 'Hourly', 1 => 'Monthly'), null, array('class' => 'form-control')) !!}
