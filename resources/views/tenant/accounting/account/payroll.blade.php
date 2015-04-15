@@ -31,7 +31,7 @@ Payroll Report
                     </tr>
                 </thead>
                 <tbody class="payout-info">
-
+                    Payments
                 </tbody>
               </table>
             </div><!-- /.box-body -->

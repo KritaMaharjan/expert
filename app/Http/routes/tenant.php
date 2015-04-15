@@ -174,19 +174,14 @@ Route::group($group_auth, function () {
         get('accounting/payroll', ['as' => 'tenant.accounting.payroll', 'uses' => 'AccountingController@payroll']);
         get('accounting/payroll/add', ['as' => 'tenant.accounting.payroll.add', 'uses' => 'AccountingController@addPayroll']);
         post('accounting/payroll/add', ['as' => 'tenant.accounting.payroll.create', 'uses' => 'AccountingController@createPayroll']);
-        get('accounting/{id}/delete', ['as' => 'accounting.delete', 'uses' => 'AccountingController@deleteSupplier']);
-        get('accounting/{id}/edit', ['as' => 'tenant.accounting.edit', 'uses' => 'AccountingController@edit']);
-        post('accounting/{id}/edit', ['as' => 'tenant.accounting.edit', 'uses' => 'AccountingController@update']);
-        post('accounting/data', ['as' => 'tenant.accounting.data', 'uses' => 'AccountingController@dataJson']);
-        post('accounting/upload', ['as' => 'tenant.accounting.upload', 'uses' => 'AccountingController@upload']);
-        post('accounting/changeStatus', ['as' => 'tenant.accounting.changeStatus', 'uses' => 'AccountingController@changeStatus']);
-        get('expense', 'AccountingController@expense');
-        get('open', 'AccountingController@open');
-        get('close', 'AccountingController@close');
-        get('vat', 'AccountingController@vat');
-        get('lists', 'AccountingController@lists');
-        get('setup', 'AccountingController@setup');
-        get('new-business', 'AccountingController@newBusiness');
+        post('payout/details/1', ['as' => 'tenant.accounting.payroll.create', 'uses' => 'AccountingController@createPayroll']);
+        get('accounting/expense', 'AccountingController@expense');
+        get('accounting/open', 'AccountingController@open');
+        get('accounting/close', 'AccountingController@close');
+        get('accounting/vat', 'AccountingController@vat');
+        get('accounting/lists', 'AccountingController@lists');
+        get('accounting/setup', 'AccountingController@setup');
+        get('accounting/new-business', 'AccountingController@newBusiness');
     });
 
     Route::group(['namespace' => 'Tenant\Collection\Controllers'], function () {
