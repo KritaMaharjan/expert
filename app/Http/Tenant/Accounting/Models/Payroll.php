@@ -98,55 +98,34 @@ class Payroll extends Model
         return $payroll->toArray();
     }
 
-    public function updatePayroll($id, $details, $dob)
+    public function getPayrolls($employee_id)
     {
-
-        $postal_code = explode(',', $details['postcode']);
-
-        $payroll = Payroll::where('id', $id)->first();
-        $payroll->type = $details['type'];
-        $payroll->name = $details['name'];
-        $payroll->email = $details['email'];
-        $payroll->user_id = current_user()->id;
-        $payroll->dob = $dob;
-        $payroll->street_name = $details['street_name'];
-        $payroll->street_number = $details['street_number'];
-        $payroll->telephone = $details['telephone'];
-        $payroll->mobile = $details['mobile'];
-        $payroll->postcode = $postal_code[0];
-        $payroll->town = $details['town'];
-        $payroll->status = $details['status'];
-        $payroll->save();
-
-
-        $updated_payroll['data'] = $this->toFomatedData($payroll);
-        $updated_payroll['template'] = $this->getTemplate($payroll);
-        $updated_payroll['edit_url'] = tenant()->url('payroll/' . $id . '/edit');
-
-        return $updated_payroll;
-    }
-
-    public function getTemplate($details = '')
-    {
-        $details->payrollName = $details->name;
-
-        $details->created = $details->created_at->format('d-M-Y');
-
-
-        $template = "<td>" . $details->fullname . "</td>
-                     <td>" . $details->created . "</td>
-                     <td>" . $details->email . "</td>
-                     <td>" . $details->status . "</td>";
-
+        $payrolls = Payroll::where('user_id', $employee_id)->get();
+        $template = $this->getTemplate($payrolls);
         return $template;
     }
 
-    function toFomatedData($data)
+    public function getTemplate($payrolls)
     {
-        foreach ($data as $k => &$items) {
-            $this->toArray();
+        $template = '';
+        if(count($payrolls) > 0) {
+            foreach ($payrolls as $payroll)
+            {
+                $type = ($payroll->type == 0)? 'Hourly' : 'Monthly';
+                $template_row = '<table class="table table-hover"><tr><td>Salary Type: </td><td>'.$type.'</td></tr>
+                <tr><td>Basic Salary: </td><td>'.number_format($payroll->basic_salary, 2).'</td></tr>
+                <tr><td>Other Payments: </td><td>'.number_format($payroll->other_payment, 2).'</td></tr>
+                <tr><td>Total Payout: </td><td>'.number_format($payroll->total_salary, 2).'</td></tr>
+                <tr><td>Taxes Withheld: </td><td>'.number_format($payroll->tax_rate, 2).'</td></tr>
+                <tr><td>Vacation Fund: </td><td>'.number_format($payroll->vacation_fund, 2).'</td></tr>
+                <tr><td>Payroll Taxes: </td><td>'.number_format($payroll->payroll_tax, 2).'</td></tr></table>';
+                $template = $template.$template_row;
+            }
+            return $template;
         }
-
-        return $data;
+        else {
+            return "No Payrolls Added";
+        }
     }
+
 }

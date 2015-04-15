@@ -22,19 +22,9 @@ Payroll Report
                  </a>
              </p>
             <div class="box-body table-responsive">
-              <table id="table-bill" class="table table-hover table-bill">
-                <thead>
-                    <tr>
-                        <th>Name of Employee</th>
-                        <th>
-                            {!! Form::select('user_id', array('' => 'Select Employee'), null, array('class' => 'form-control pull-left', 'id' => 'select-employee')) !!}
-                        </th>
-                    </tr>
-                </thead>
-                <tbody class="payout-info">
-                    Payments
-                </tbody>
-              </table>
+                {!! Form::label('user_id', 'Name of Employee') !!}
+                {!! Form::select('user_id', array('' => 'Select Employee'), null, array('class' => 'form-control pull-left', 'id' => 'select-employee')) !!}
+                <div class="payout-info"></div>
             </div><!-- /.box-body -->
           </div><!-- /.box -->
         </div>

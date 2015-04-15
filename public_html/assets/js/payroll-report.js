@@ -54,12 +54,12 @@
             $.ajax({
                 url: appUrl + 'payout/details/' + employee_id,
                 type: 'GET',
-                dataType: 'json'
+                dataType: 'json',
+                data: {id : 'year', month : 'month'}
             })
                 .done(function (response) {
-                    if (response.success === true) {
-                        //var addressInfo = DetailsTemplate(response.details);
-                        $('.payout-info').html('ing');
+                    if (response.status == 1) {
+                        $('.payout-info').html(response.data.details);
                     } else {
                         alert('Something went wrong!');
                         $('.payout-info').html('');
@@ -75,12 +75,5 @@
         }
 
     });
-
-    function DetailsTemplate(details) {
-        var template = '<strong>' + details.name +
-            '</strong><br>' + details.street_name + ' ' + details.street_number +
-            '<br>' + details.town + '<br>Phone: ' + details.telephone + '<br>Email: ' + details.email;
-        return template;
-    }
 
 })();
