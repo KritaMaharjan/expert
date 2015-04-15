@@ -1292,3 +1292,7 @@ textarea.list-bx {
 .pad-top-50{
     padding-top: 50px;
 }
+.pad-lt-0{
+    padding-left: 0!important;
+    padding-right: 0!important;
+}
