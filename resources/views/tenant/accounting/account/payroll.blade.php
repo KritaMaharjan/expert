@@ -57,26 +57,16 @@ Payroll Report
                 @include('flash::message')
                
                   <div class="box-body table-responsive pad-lt-0">
-                    <table id="table-bill" class="table table-hover table-bill">
-                      <thead>
-                          <tr>
-                              <th>Name of Employee</th>
-                              <th>
-                                  {!! Form::select('user_id', array('' => 'Select Employee'), null, array('class' => 'form-control pull-left', 'id' => 'select-employee')) !!}
-                              </th>
-                          </tr>
-                      </thead>
-                      <tbody class="payout-info">
-
-                      </tbody>
-                    </table>
+                  {!! Form::label('user_id', 'Name of Employee') !!}
+                  {!! Form::select('user_id', array('' => 'Select Employee'), null, array('class' => 'form-control pull-left', 'id' => 'select-employee')) !!}
+                  <div class="payout-info"></div>
+                    
                   </div><!-- /.box-body -->
                 </div><!-- /.box -->
               </div>
             </div>  
   </div>
 
-</div>
     {{--Load JS--}}
     {{FB::js('assets/js/payroll-report.js')}}
 

@@ -61,6 +61,13 @@ class AccountingController extends BaseController {
         return tenant()->route('tenant.accounting.account.payroll');
     }
 
+    public function employeePayrollDetails()
+    {
+        $employee_id = $this->request->route('employeeId');
+        $result = $this->payroll->getPayrolls($employee_id);
+        return ($result) ? $this->success(['details' => $result]) : $this->fail(['errors' => 'Something went wrong!']);
+    }
+
     public function vat()
     {
         return view('tenant.accounting.account.vat');
