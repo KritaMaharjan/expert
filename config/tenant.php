@@ -1,8 +1,7 @@
 <?php
-
 return [
 
-    'database'  => [
+    'database'   => [
         'username'   => env('ROOT_USER', ''),
         'password'   => env('ROOT_PASSWORD', ''),
         'db_prefix'  => env('ROOT_DB_PREFIX', ''),
@@ -10,9 +9,9 @@ return [
 
     ],
 
-    'month'     => [1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'May', 6 => 'Jun', 7 => 'Jul', 8 => 'Aug', 9 => 'Sep', 10 => 'Oct', 11 => 'Nov', 12 => 'Dec'],
+    'month'      => [1 => 'Jan', 2 => 'Feb', 3 => 'Mar', 4 => 'Apr', 5 => 'May', 6 => 'Jun', 7 => 'Jul', 8 => 'Aug', 9 => 'Sep', 10 => 'Oct', 11 => 'Nov', 12 => 'Dec'],
 
-    'countries' => [
+    'countries'  => [
         'AF' => 'Afghanistan',
         'AX' => 'Aland Islands',
         'AL' => 'Albania',
@@ -272,5 +271,13 @@ return [
         'DKK' => 'DKK',
         'SEK' => 'SEK',
         'CNY' => 'CNY'
-    ]
+    ],
+
+    'vat'      => [
+        8  => '8%',
+        15 => '15%',
+        25 => '25%',
+        0  => 'Domestic Exempt'
+    ],
+
 ];
