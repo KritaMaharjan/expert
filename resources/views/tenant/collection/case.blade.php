@@ -81,8 +81,8 @@ Court Case
         				</li>
             		</ol>
             		<p class="col-md-6 align-right">
-            			<a href="#" class="btn btn-primary">Create Debt</a>
-            			<a href="#" class="btn btn-danger">Cancel</a>
+            			<a href="#" class="btn btn-primary" title="Create Bebt">Create Debt</a>
+            			<a href="#" class="btn btn-danger" title="Cancel">Cancel</a>
             		</p>
             	</div>		
         	</div>
