@@ -48,7 +48,10 @@ Payroll Report
                     </select>                   
                   </div>
                 </div>
-               
+                <div class="form-group"> 
+                    {!! Form::label('user_id', 'Name of Employee') !!}
+                    <div class="date-box">{!! Form::select('user_id', array('' => 'Select Employee'), null, array('class' => 'form-control pull-left', 'id' => 'select-employee')) !!}</div>
+                  </div>
                 </form>
               </div>              
             </div>
@@ -57,8 +60,7 @@ Payroll Report
                 @include('flash::message')
                
                   <div class="box-body table-responsive pad-lt-0">
-                  {!! Form::label('user_id', 'Name of Employee') !!}
-                  {!! Form::select('user_id', array('' => 'Select Employee'), null, array('class' => 'form-control pull-left', 'id' => 'select-employee')) !!}
+                  
                   <div class="payout-info"></div>
                     
                   </div><!-- /.box-body -->
