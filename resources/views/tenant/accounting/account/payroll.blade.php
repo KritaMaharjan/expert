@@ -24,20 +24,21 @@ Payroll Report
               <table id="table-bill" class="table table-hover table-bill">
                 <thead>
                     <tr>
-                      <th>Name of Employee</th>
-                      <th>Salary type</th>
-                      <th>Other payment</th>
-                      <th>Payment Date</th>
-                      <th>Total paid</th>
-                      <th>Action</th>
+                        <th>Name of Employee</th>
+                        <th>
+                            {!! Form::select('user_id', array('' => 'Select Employee'), null, array('class' => 'form-control pull-left', 'id' => 'select-employee')) !!}
+                        </th>
                     </tr>
                 </thead>
+                <tbody class="payout-info">
+
+                </tbody>
               </table>
             </div><!-- /.box-body -->
           </div><!-- /.box -->
         </div>
 </div>
     {{--Load JS--}}
-    {{--{{FB::js('assets/js/bill.js')}}--}}
+    {{FB::js('assets/js/payroll-report.js')}}
 
 @stop
