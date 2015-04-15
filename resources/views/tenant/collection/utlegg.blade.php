@@ -7,9 +7,9 @@ Utlegg
 @section('content')
     <div class="box box-solid">
         <div class="box-body">
-        	<div class="box-header pad-0">
+        	<!-- <div class="box-header pad-0">
                 <h3 class="box-title"></h3>
-            </div>
+            </div> -->
 
             <div class="row">
             	<div class="col-md-6">

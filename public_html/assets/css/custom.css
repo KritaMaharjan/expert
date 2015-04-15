@@ -1277,3 +1277,18 @@ textarea.list-bx {
     height: 150px;
     resize:none;
 }
+.list-bx ul li {
+    margin-bottom: 0;
+}
+
+.textarea-height{
+    height: 60px!important;
+    resize:none;
+}
+.no-list-style{
+    list-style: none;
+    padding: 0
+}
+.pad-top-50{
+    padding-top: 50px;
+}

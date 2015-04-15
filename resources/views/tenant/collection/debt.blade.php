@@ -13,10 +13,10 @@ Debt Forecast
 
             <div class="row">
             	<div class="col-md-6">
-            		<p><a href="#" class="btn btn-default">Create a Debt.pdf</a></p>
-            		<p><a href="#" class="btn btn-primary">Register payment</a></p>
-            		<p><a href="#" class="btn btn-primary">Register dispute</a></p>
-            		<p><a href="#" class="btn btn-danger">Cancel collection case</a></p>
+            		<p><a href="#" class="btn btn-default" title="Create a Debt.pdf">Create a Debt.pdf</a></p>
+            		<p><a href="#" class="btn btn-primary" title="Register payment">Register payment</a></p>
+            		<p><a href="#" class="btn btn-primary" title="Register dispute">Register dispute</a></p>
+            		<p><a href="#" class="btn btn-danger" title="Cancel collection case">Cancel collection case</a></p>
             	</div>
         	</div>
         </div>

@@ -73,7 +73,7 @@ Pay an employee
 				        <div class="form-group clearfix  {{ ($errors->has('description'))? 'has-error': '' }}">
 				          {!! Form::label('', 'Text') !!}
 				          <div class="date-box">
-					          {!! Form::textarea('description', NULL, array('class' => 'form-control')) !!}
+					          {!! Form::textarea('description', NULL, array('class' => 'form-control  textarea-height')) !!}
 					          @if($errors->has('description'))
 	                                {!! $errors->first('description', '<label class="control-label" for="inputError">:message</label>') !!}
 	                            @endif
