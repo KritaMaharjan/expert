@@ -43,35 +43,39 @@
     }
 
     //display payroll details
-    employeeSelect.on("change", function (e) {
-        var $this = $(this);
-        var employee_id = $this.val();
-        var doing = false;
+    $("#select-employee, #year, #month").on("change", function (e) {
+        var employee_id = $("#select-employee").val();
+        var year = $('#year').val();
+        var month = $('#month').val();
 
-        if (doing == false) {
-            doing = true;
-            $('.payout-info').html('<i class="fa fa-spinner fa-spin"></i> Processing...');
-            $.ajax({
-                url: appUrl + 'payout/details/' + employee_id,
-                type: 'GET',
-                dataType: 'json',
-                data: {id : 'year', month : 'month'}
-            })
-                .done(function (response) {
-                    if (response.status == 1) {
-                        $('.payout-info').html(response.data.details);
-                    } else {
-                        alert('Something went wrong!');
+        if(employee_id != '') {
+            var doing = false;
+
+            if (doing == false) {
+                doing = true;
+                $('.payout-info').html('<i class="fa fa-spinner fa-spin"></i> Processing...');
+                $.ajax({
+                    url: appUrl + 'payout/details/' + employee_id,
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {year: year, month: month}
+                })
+                    .done(function (response) {
+                        if (response.status == 1) {
+                            $('.payout-info').html(response.data.details);
+                        } else {
+                            alert('Something went wrong!');
+                            $('.payout-info').html('');
+                        }
+                    })
+                    .fail(function () {
+                        alert('something went wrong');
                         $('.payout-info').html('');
-                    }
-                })
-                .fail(function () {
-                    alert('something went wrong');
-                    $('.payout-info').html('');
-                })
-                .always(function () {
-                    doing = false;
-                });
+                    })
+                    .always(function () {
+                        doing = false;
+                    });
+            }
         }
 
     });

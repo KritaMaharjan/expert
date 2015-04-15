@@ -98,9 +98,17 @@ class Payroll extends Model
         return $payroll->toArray();
     }
 
-    public function getPayrolls($employee_id)
+    public function getPayrolls($employee_id, $year='', $month='')
     {
-        $payrolls = Payroll::where('user_id', $employee_id)->get();
+        $query = Payroll::where('user_id', $employee_id);
+
+        if($year != '')
+            $query = $query->whereRaw('YEAR(payment_date) = '.$year);
+
+        if($year != '')
+            $query = $query->whereRaw('MONTH(payment_date) = '.$month);
+
+        $payrolls = $query->get();
         $template = $this->getTemplate($payrolls);
         return $template;
     }
@@ -112,13 +120,13 @@ class Payroll extends Model
             foreach ($payrolls as $payroll)
             {
                 $type = ($payroll->type == 0)? 'Hourly' : 'Monthly';
-                $template_row = '<table class="table table-hover"><tr><td>Salary Type: </td><td>'.$type.'</td></tr>
-                <tr><td>Basic Salary: </td><td>'.number_format($payroll->basic_salary, 2).'</td></tr>
-                <tr><td>Other Payments: </td><td>'.number_format($payroll->other_payment, 2).'</td></tr>
-                <tr><td>Total Payout: </td><td>'.number_format($payroll->total_salary, 2).'</td></tr>
-                <tr><td>Taxes Withheld: </td><td>'.number_format($payroll->tax_rate, 2).'</td></tr>
-                <tr><td>Vacation Fund: </td><td>'.number_format($payroll->vacation_fund, 2).'</td></tr>
-                <tr><td>Payroll Taxes: </td><td>'.number_format($payroll->payroll_tax, 2).'</td></tr></table>';
+                $template_row = '<table class="table table-hover"><tr><td><strong>Salary Type: </strong></td><td>'.$type.'</td></tr>
+                <tr><td><strong>Basic Salary: </strong></td><td>'.number_format($payroll->basic_salary, 2).'</td></tr>
+                <tr><td><strong>Other Payments: </strong></td><td>'.number_format($payroll->other_payment, 2).'</td></tr>
+                <tr><td><strong>Total Payout: </strong></td><td>'.number_format($payroll->total_salary, 2).'</td></tr>
+                <tr><td><strong>Taxes Withheld: </strong></td><td>'.number_format($payroll->tax_rate, 2).'</td></tr>
+                <tr><td><strong>Vacation Fund: </strong></td><td>'.number_format($payroll->vacation_fund, 2).'</td></tr>
+                <tr><td><strong>Payroll Taxes: </strong></td><td>'.number_format($payroll->payroll_tax, 2).'</td></tr></table>';
                 $template = $template.$template_row;
             }
             return $template;

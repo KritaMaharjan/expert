@@ -64,7 +64,9 @@ class AccountingController extends BaseController {
     public function employeePayrollDetails()
     {
         $employee_id = $this->request->route('employeeId');
-        $result = $this->payroll->getPayrolls($employee_id);
+        $year = $this->request->get('year');
+        $month = $this->request->get('month');
+        $result = $this->payroll->getPayrolls($employee_id, $year, $month);
         return ($result) ? $this->success(['details' => $result]) : $this->fail(['errors' => 'Something went wrong!']);
     }
 
