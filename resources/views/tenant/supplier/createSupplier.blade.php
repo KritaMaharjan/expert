@@ -1,4 +1,4 @@
-{!!Form::open(['id'=>'customer-form', 'enctype'=>'multipart/form-data','files'=>true])!!}
+{!!Form::open(['id'=>'supplier-form', 'enctype'=>'multipart/form-data','files'=>true])!!}
 
               <div class="box-body">
                       <div class="form-group">
@@ -61,9 +61,10 @@
 
 
                     
-                        <input type="text" placeholder="Town"  id="city" name="town"  value="{{old('town')}}" class="form-control city pull-right">
-                        <input type="text" placeholder="postcode"  id="postcode" name="postcode"  value="{{old('postcode')}}" class="form-control postal_code">
+ <input type="text" placeholder="postcode"  id="postcode" name="postcode"  value="{{old('postcode')}}" class="form-control postal_code">
+                        <input type="text" placeholder="Town"  id="city" name="town"  value="{{old('town')}}" class="form-control city">
 
+                    
                       </div>
                       <div class="form-group">
                         <label for="">Telephone</label>
@@ -91,7 +92,7 @@
                    
                     <div class="box-footer">
                         <button type="button" class="btn sm-mg-btn" data-dismiss="modal"><i class="fa fa-times"></i> Abort</button>
-                        <input type="submit" class="btn btn-primary customer-submit" id="customer-submit" value="Add" />
+                        <input type="submit" class="btn btn-primary supplier-submit" id="supplier-submit" value="Add" />
                     </div>
                    
            {!! Form::close() !!}
@@ -133,7 +134,7 @@ $(function () {
                         response(items1);
                 });
             },
-             //appendTo: '#customer-modal-data',
+             //appendTo: '#supplier-modal-data',
             search: function(event, ui) {
                
             },

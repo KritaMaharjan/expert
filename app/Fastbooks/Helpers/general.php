@@ -105,6 +105,13 @@ function format_date($date)
     return $formatted_date;
 }
 
+function readable_date($date)
+{
+    $formatted_date = date('M d, Y', strtotime($date));
+
+    return $formatted_date;
+}
+
 function format_datetime($date)
 {
     $formatted_date = date('M d, Y h:i a', strtotime($date));
@@ -166,5 +173,10 @@ function calculate_todo_time($date, $completed = false)
 
 function force_redirect($url)
 {
-    header('location:'. $url);
+    header('location:' . $url);
+}
+
+function float_format($number, $digits = 2)
+{
+    return number_format($number, $digits);
 }

@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Laracasts\Flash\Flash;
 use App\Models\Tenant\Setting;
-use App\Http\Tenant\Invoice\Models\Payment;
+use App\Http\Tenant\Invoice\Models\BillPayment;
 
 class BillController extends BaseController {
 
@@ -95,7 +95,6 @@ class BillController extends BaseController {
         $this->bill->add($this->request);
 
         Flash::success('Bill added successfully!');
-
         return tenant()->route('tenant.invoice.bill.index');
     }
 
@@ -197,7 +196,7 @@ class BillController extends BaseController {
     {
         $id = $this->request->route('id');
         $data = $this->getInfo($id);
-        $pdf->generate($data['invoice_number'].'_'.time(), 'template.bill', compact('data'), true);
+        $pdf->generate($data['invoice_number'], 'template.bill', compact('data'), true);
     }
 
     function sendEmail(Pdf $pdf)
@@ -222,14 +221,14 @@ class BillController extends BaseController {
         return view('template.print', compact('data'));
     }
 
-    function payment(Payment $payment)
+    function payment(BillPayment $payment)
     {
         if($this->request->ajax()) {
             $id = $this->request->route('id');
             $bill_remaining = Bill::find($id, ['remaining'])->remaining;
             $payment_rules = [
                 'payment_date' => 'required|date',
-                'paid_amount' => 'required|integer|min:1|max:'.$bill_remaining
+                'paid_amount' => 'required|numeric|maxValue:'.$bill_remaining
             ];
 
             $validator = Validator::make($this->request->all(), $payment_rules);
@@ -253,6 +252,7 @@ class BillController extends BaseController {
             'invoice_date' => $bill->created_at,
             'due_date' => $bill->due_date,
             'customer' => $bill->customer,
+            'customer_payment_number' => $bill->customer_payment_number,
             'customer_details' => $bill->customer_details->toArray(),
             'company_details' => $company_details
         );

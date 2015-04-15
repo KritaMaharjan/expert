@@ -132,10 +132,10 @@ Print Invoice
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-4 box1 col-sm-4 col-xs-4">
-                          {{--<h3>Kundeidentifikasjon(KID)</h3>
+                          <h3>Customer Payment Number</h3>
                           <p class="align-right font-mid">
-                            478507204539453
-                          </p>--}}
+                            {{ $data['customer_payment_number'] }}
+                          </p>
                         </div>
                         <div class="col-md-2 box2 col-sm-2 col-xs-2">
                           <h3>Kroner</h3>

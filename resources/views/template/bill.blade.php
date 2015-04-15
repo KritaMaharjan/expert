@@ -157,9 +157,9 @@
       <table class="footer" cellpadding="6">
         <tr>
           <td width="30%" style="border-right:1px solid #ccc;">
-            <table><tr><td>Customer Identification (CID)</td></tr></table>
+            <table><tr><td>Customer Payment Number</td></tr></table>
             <table cellpadding="5"><tr style="text-align: right;">
-              <td>478507204539453</td>
+              <td>{{ $data['customer_payment_number'] }}</td>
               </tr>
             </table>
           </td>

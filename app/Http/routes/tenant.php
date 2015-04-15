@@ -71,18 +71,6 @@ Route::group($group_auth, function () {
         get('offer', 'Email\Controllers\OfferController@index');
     });
 
-
-    Route::group(['prefix' => 'accounting', 'namespace' => 'Tenant\Accounting\Controllers'], function () {
-        get('expense', 'AccountingController@expense');
-        get('payroll', 'AccountingController@payroll');
-        get('open', 'AccountingController@open');
-        get('close', 'AccountingController@close');
-        get('vat', 'AccountingController@vat');
-        get('lists', 'AccountingController@lists');
-        get('setup', 'AccountingController@setup');
-        get('new-business', 'AccountingController@newBusiness');
-    });
-
     // Registered by Krita
     Route::group(['namespace' => 'Tenant\Statistics\Controllers'], function () {
         get('statistics', 'StatisticsController@index');
@@ -156,8 +144,18 @@ Route::group($group_auth, function () {
     });
 
     /** Registered by Krita **/
-    Route::group(['namespace' => 'Tenant\Tasks\Controllers'], function () {
+    Route::group(['namespace' => 'Tenant\Supplier\Controllers'], function () {
+        get('supplier', ['as' => 'tenant.supplier.index', 'uses' => 'SupplierController@index']);
+        post('supplier', ['as' => 'tenant.supplier.create', 'uses' => 'SupplierController@create']);
+        get('supplier/{id}/delete', ['as' => 'supplier.delete', 'uses' => 'SupplierController@deleteSupplier']);
+        get('supplier/{id}/edit', ['as' => 'tenant.supplier.edit', 'uses' => 'SupplierController@edit']);
+        post('supplier/{id}/edit', ['as' => 'tenant.supplier.edit', 'uses' => 'SupplierController@update']);
+        post('supplier/data', ['as' => 'tenant.supplier.data', 'uses' => 'SupplierController@dataJson']);
+        post('supplier/upload', ['as' => 'tenant.supplier.upload', 'uses' => 'SupplierController@upload']);
+        post('supplier/changeStatus', ['as' => 'tenant.supplier.changeStatus', 'uses' => 'SupplierController@changeStatus']);
+    });
 
+    Route::group(['namespace' => 'Tenant\Tasks\Controllers'], function () {
         // bill routes
         get('tasks', ['as' => 'tenant.tasks.index', 'uses' => 'TasksController@index']);
         post('tasks', ['as' => 'tenant.tasks.post', 'uses' => 'TasksController@create']);
@@ -170,6 +168,34 @@ Route::group($group_auth, function () {
         get('tasks/{id}/redo', ['as' => 'tenant.tasks.redo', 'uses' => 'TasksController@complete']);
     });
 
+    Route::group(['namespace' => 'Tenant\Accounting\Controllers'], function () {
+        get('accounting', ['as' => 'tenant.accounting.index', 'uses' => 'AccountingController@index']);
+        post('accounting', ['as' => 'tenant.accounting.create', 'uses' => 'AccountingController@create']);
+        get('accounting/payroll', ['as' => 'tenant.accounting.payroll', 'uses' => 'AccountingController@payroll']);
+        get('accounting/payroll/add', ['as' => 'tenant.accounting.payroll.add', 'uses' => 'AccountingController@addPayroll']);
+        post('accounting/payroll/add', ['as' => 'tenant.accounting.payroll.create', 'uses' => 'AccountingController@createPayroll']);
+        get('payout/details/{employeeId}', ['as' => 'tenant.accounting.payroll.create', 'uses' => 'AccountingController@employeePayrollDetails']);
+        get('accounting/expense', 'AccountingController@expense');
+        get('accounting/open', 'AccountingController@open');
+        get('accounting/close', 'AccountingController@close');
+        get('accounting/vat', 'AccountingController@vat');
+        get('accounting/lists', 'AccountingController@lists');
+        get('accounting/setup', 'AccountingController@setup');
+        get('accounting/new-business', 'AccountingController@newBusiness');
+    });
+
+    Route::group(['namespace' => 'Tenant\Collection\Controllers'], function () {
+        get('collection', ['as' => 'tenant.collection.index', 'uses' => 'CollectionController@index']);
+        post('collection', ['as' => 'tenant.collection.create', 'uses' => 'CollectionController@create']);
+        get('collection/purring', ['as' => 'tenant.collection.purring', 'uses' => 'CollectionController@purring']);
+        get('collection/payment', ['as' => 'tenant.collection.payment', 'uses' => 'CollectionController@payment']);
+        get('collection/debt', ['as' => 'tenant.collection.debt', 'uses' => 'CollectionController@debt']);
+        get('collection/options', ['as' => 'tenant.collection.options', 'uses' => 'CollectionController@options']);
+        get('collection/case', ['as' => 'tenant.collection.case', 'uses' => 'CollectionController@courtCase']);
+        get('collection/case/followUp', ['as' => 'tenant.collection.case.followup', 'uses' => 'CollectionController@followup']);
+        get('collection/utlegg', ['as' => 'tenant.collection.utlegg', 'uses' => 'CollectionController@utlegg']);
+        get('collection/utlegg/followup', ['as' => 'tenant.collection.utlegg.followup', 'uses' => 'CollectionController@utleggFollowup']);
+    });
 
     /*
      * Todo : don't register new routes under this group
@@ -217,10 +243,7 @@ Route::group($group_auth, function () {
         get('user/registerDays/{type}/{guid}', ['as' => 'user.registerDays', 'uses' => 'Tenant\Users\UserController@registerVacation']);
         post('user/addVacation', ['as' => 'user.addVacation', 'uses' => 'Tenant\Users\UserController@addVacation']);
         post('user/deleteVacation', ['as' => 'user.deleteVacation', 'uses' => 'Tenant\Users\UserController@deleteVacation']);
-
-
-        //registered by : Manish
-
+        get('employee/suggestions', ['as' => 'tenant.employee.suggestions', 'uses' => 'Tenant\Users\UserController@getEmployeeSuggestions']);
 
         //registered by : Pooja
 

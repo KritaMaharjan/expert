@@ -272,12 +272,10 @@ return [
         'SEK' => 'SEK',
         'CNY' => 'CNY'
     ],
-
-    'vat'      => [
+    'vat'        => [
         8  => '8%',
         15 => '15%',
         25 => '25%',
         0  => 'Domestic Exempt'
     ],
-
 ];

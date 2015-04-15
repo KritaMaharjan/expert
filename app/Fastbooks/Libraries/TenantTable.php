@@ -11,7 +11,8 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 
-class TenantTable {
+class TenantTable
+{
 
     /**
      * Constant for table prefix
@@ -126,7 +127,7 @@ class TenantTable {
                 $table->string('street_number', 15); //'street number of a customer'
                 $table->string('postcode', 10); //'postcode of a customer'
                 $table->string('town', 55); //'town of a customer'
-                $table->integer('telephone')->nullable();//'telephone number of a customer'
+                $table->bigInteger('telephone')->nullable();//'telephone number of a customer'
                 $table->bigInteger('mobile')->nullable();//'mobile number of a customer'
                 $table->string('image', 50)->nullable(); //'image or logo of a customer'
                 $table->string('file', 50)->nullable(); //'file of a customer'
@@ -404,7 +405,6 @@ class TenantTable {
         }
     }
 
-
     /**
      * Suppliers table
      */
@@ -424,7 +424,7 @@ class TenantTable {
                 $table->string('street_number', 15); //'street number of a suppliers'
                 $table->string('postcode', 10); //'postcode of a suppliers'
                 $table->string('town', 55); //'town of a suppliers'
-                $table->integer('telephone')->nullable();//'telephone number of a suppliers'
+                $table->bigInteger('telephone')->nullable();//'telephone number of a suppliers'
                 $table->bigInteger('mobile')->nullable();//'mobile number of a suppliers'
                 $table->string('image', 50)->nullable(); //'image or logo of a suppliers'
                 $table->string('file', 50)->nullable(); //'file of a suppliers'

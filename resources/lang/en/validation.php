@@ -74,6 +74,7 @@ return [
     "url"                  => "The :attribute format is invalid.",
     "timezone"             => "The :attribute must be a valid zone.",
     'valid_array_email'    => 'Invalid Emails',
+    'max_value' => 'The amount exceeds required payment amount.',
 
     /*
     |--------------------------------------------------------------------------

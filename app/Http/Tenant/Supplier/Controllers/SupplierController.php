@@ -1,29 +1,27 @@
 <?php
-namespace App\Http\Controllers\Tenant\Customer;
+namespace App\Http\Tenant\Supplier\Controllers;
 
+use App\Http\Tenant\Supplier\Models\Supplier;
 use App\Http\Tenant\Invoice\Models\Bill;
-use App\Models\Tenant\Customer;
 use App\Http\Controllers\Tenant\BaseController;
 use Illuminate\Http\Request;
 use Input;
-use App\Http\Tenant\Email\Models\Email;
-use App\Http\Tenant\Email\Models\Attachment;
-use App\Http\Tenant\Email\Models\Receiver;
 use Session;
+use App\Http\Tenant\Email\Models\Email;
+use App\Http\Tenant\Email\Models\Receiver;
 
-class CustomerController extends BaseController {
+class SupplierController extends BaseController {
 
 
     protected $request;
-    protected $customer;
+    protected $supplier;
     protected $email;
 
-    public function __construct(Customer $customer, Request $request, Bill $bill,Email $email,Receiver $receiver)
+    public function __construct(Supplier $supplier, Request $request, Bill $bill,Email $email,Receiver $receiver)
     {
-        \FB::can('Customer');
-
+        \FB::can('Invoice');
         parent::__construct();
-        $this->customer = $customer;
+        $this->supplier = $supplier;
         $this->request = $request;
         $this->bill = $bill;
         $this->email = $email;
@@ -39,8 +37,7 @@ class CustomerController extends BaseController {
     {
         $months = \Config::get('tenant.month');
         $data = array('months' => $months);
-
-        return view('tenant.customer.customer')->withPageTitle('Customer')->with($data);
+        return view('tenant.supplier.supplier')->withPageTitle('Supplier')->with($data);
 
     }
 
@@ -55,37 +52,32 @@ class CustomerController extends BaseController {
         $validator = \Validator::make($this->request->all(),
             array(
                 'name'          => 'required|between:2,30',
-                'email'         => 'required|unique:fb_customers',
-                'dob'           => '',
-                //'street_name'   => 'required',
-                //'street_number' => 'required',
+                'email'         => 'required|unique:fb_suppliers',
                 'telephone'     => 'numeric',
                 'mobile'        => 'numeric',
                 'postcode'      => 'required|numeric',
                 'town'          => 'alpha|between:2,50',
-
             )
         );
 
         if ($validator->fails())
             return \Response::json(array('status' => 'fail', 'errors' => $validator->getMessageBag()->toArray()));
-        $result = $this->customer->createCustomer($this->request, $this->current_user->id);
-        $redirect_url = tenant_route('tenant.customer.index');
+        $result = $this->supplier->createSupplier($this->request, $this->current_user->id);
+        $redirect_url = tenant_route('tenant.supplier.index');
 
-        return \Response::json(array('success' => true, 'data' => $result['data'], 'template' => $result['template'], 'redirect_url' => $redirect_url));
-
+        return \Response::json(array('success' => true, 'data' => $result['data'], 'template' => $result['template'], 'edit_url' => $result['edit_url'], 'redirect_url' => $redirect_url));
 
     }
 
     function edit()
     {
         $id = $this->request->route('id');
-        $customer = $this->customer->find($id);
-        if ($customer == null) {
+        $supplier = $this->supplier->find($id);
+        if ($supplier == null) {
             show_404();
         }
 
-        return view('tenant.customer.editCustomer', compact('customer'));
+        return view('tenant.supplier.editSupplier', compact('supplier'));
     }
 
     public function testUpload(Request $request)
@@ -99,10 +91,10 @@ class CustomerController extends BaseController {
     function update()
     {
         $id = $this->request->route('id');
-        $customer1 = $this->customer->find($id);
+        $supplier1 = $this->supplier->find($id);
 
-        if (empty($customer1))
-            return $this->fail(['error' => 'Invalid Customer ID']);
+        if (empty($supplier1))
+            return $this->fail(['error' => 'Invalid Supplier ID']);
 
 
         if ($this->request['type'] == 2)
@@ -115,8 +107,6 @@ class CustomerController extends BaseController {
                 'name'          => 'required|between:2,30',
                 'email'         => 'required',
                 'dob'           => '',
-                //'street_name'   => 'required',
-                //'street_number' => 'required',
                 'telephone'     => 'numeric',
                 'mobile'        => 'numeric',
                 'postcode'      => 'required|numeric',
@@ -128,19 +118,19 @@ class CustomerController extends BaseController {
             return \Response::json(array('status' => 'fail', 'errors' => $validator->getMessageBag()->toArray()));
 
        
-        $customers = $this->customer->updateCustomer($id, $this->request, $dob, $this->current_user->id);
+        $suppliers = $this->supplier->updateSupplier($id, $this->request, $dob, $this->current_user->id);
 
-        $redirect_url = tenant_route('tenant.customer.index');
+        $redirect_url = tenant_route('tenant.supplier.index');
 
-        return \Response::json(array('success' => true, 'data' => $customers['data'], 'template' => $customers['template'], 'show_url' => $customers['show_url'], 'edit_url' => $customers['edit_url'], 'redirect_url' => $redirect_url));
+        return \Response::json(array('success' => true, 'data' => $suppliers['data'], 'template' => $suppliers['template'], 'edit_url' => $suppliers['edit_url'], 'redirect_url' => $redirect_url));
     }
 
     function invoices(){
         if ($this->request->ajax()) {
             $select = ['id', 'total', 'due_date', 'status'];
-            $customer_id = Session::get('customer_id');
-            $json = $this->bill->dataTablePaginationCustomer($this->request, $select,$customer_id);
-           Session::forget('customer_id');
+            $supplier_id = Session::get('supplier_id');
+            $json = $this->bill->dataTablePaginationSupplier($this->request, $select,$supplier_id);
+           Session::forget('supplier_id');
             echo json_encode($json, JSON_PRETTY_PRINT);
         } else {
             show_404();
@@ -158,44 +148,21 @@ class CustomerController extends BaseController {
         if ($this->request->ajax()) {
             $select = ['id', 'name', 'email', 'created_at'];
 
-            $json = $this->customer->dataTablePagination($this->request, $select);
+            $json = $this->supplier->dataTablePagination($this->request, $select);
             echo json_encode($json, JSON_PRETTY_PRINT);
         } else {
             show_404();
         }
     }
 
-    public function customerCard()
-    {
-        $user_id = $this->request->route('id');
 
-        $customer = $this->customer->where('id', '=', $user_id)->first();
-        Session::put('customer_id', $user_id);
-       
-        $invoices = $this->bill->getCustomerBill($user_id);
-
-        $perpage = 10;
-
-
-       //$mails = $this->receiver->customer($user_id)->with('attachments', 'receivers');
-        $mails = $this->email->getCustomerEmail($user_id,$perpage);
-      
-       //dd($mails);
-     
-
-
-        return view('tenant.customer.customerCard', compact('customer','invoices','mails'))->withPageTitle('Customer');
-    }
-
-
-
-    public function deleteCustomer()
+    public function deleteSupplier()
     {
         $id = $this->request->route('id');
-        $customer = $this->customer->find($id);
-        if (!empty($customer)) {
-            if ($customer->delete()) {
-                return $this->success(['message' => 'Customer deleted Successfully']);
+        $supplier = $this->supplier->find($id);
+        if (!empty($supplier)) {
+            if ($supplier->delete()) {
+                return $this->success(['message' => 'Supplier deleted Successfully']);
             }
         }
 
@@ -203,17 +170,15 @@ class CustomerController extends BaseController {
 
     }
 
-
-
     public function changeStatus()
     {
-        $customer_id = Input::get('cus_id');
+        $supplier_id = Input::get('cus_id');
         $status = Input::get('status');
 
-        $customer = $this->customer->find($customer_id);
-        if (!empty($customer)) {
-            $customer->status = $status;
-            $customer->save();
+        $supplier = $this->supplier->find($supplier_id);
+        if (!empty($supplier)) {
+            $supplier->status = $status;
+            $supplier->save();
 
             return \Response::json(array('status' => true));
         }
@@ -221,7 +186,6 @@ class CustomerController extends BaseController {
         return $this->fail(['message' => 'Something went  wrong. Please try again later']);
 
     }
-
 
     public function upload()
     {
@@ -247,11 +211,11 @@ class CustomerController extends BaseController {
 
     }
 
-    public function getCustomerSuggestions()
+    public function getSupplierSuggestions()
     {
         $name = \Input::get('name');
         //change this later
-        $details = Customer::where('name', 'LIKE', '%' . $name . '%')->get();
+        $details = Supplier::where('name', 'LIKE', '%' . $name . '%')->get();
         $newResult = array();
 
         if (!empty($details)) {
@@ -267,14 +231,14 @@ class CustomerController extends BaseController {
         return $newResult;
     }
 
-    public function getCustomerDetails()
+    public function getSupplierDetails()
     {
-        $customer_id = $this->request->route('customerId');
-        $customer = Customer::find($customer_id);
-        $customer->paymentNo = $this->bill->getCustomerPayment($customer_id);
-        $customer->invoiceNo = $this->bill->getPrecedingInvoiceNumber($customer_id);
+        $supplier_id = $this->request->route('supplierId');
+        $supplier = Supplier::find($supplier_id);
+        $supplier->paymentNo = $this->bill->getSupplierPayment($supplier_id);
+        $supplier->invoiceNo = $this->bill->getPrecedingInvoiceNumber($supplier_id);
 
-        return \Response::json(['success' => true, 'details' => $customer]);
+        return \Response::json(['success' => true, 'details' => $supplier]);
     }
 
 
