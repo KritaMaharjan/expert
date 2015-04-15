@@ -80,22 +80,6 @@ Pay an employee
                            </div>
 				        </div>
 
-				        <div class="form-group clearfix  {{ ($errors->has('payment_date'))? 'has-error': '' }}">
-				          {!! Form::label('payment_date', 'Date paid out') !!}
-				          <div class="date-box">
-
-					          <div class='input-group date' id='due-date-picker'>
-					              {!! Form::text('payment_date', null, array('class' => 'form-control date-box', 'id' =>'paidout-date-pickers')) !!}
-					              
-					              <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-					              </span>
-					          </div>
-					          @if($errors->has('payment_date'))
-	                                {!! $errors->first('payment_date', '<label class="control-label" for="inputError">:message</label>') !!}
-	                          @endif
-					       </div>
-					    </div>
-
 				        <br />
 				        <p>
 				        	<strong>Witholdings</strong>
@@ -129,6 +113,29 @@ Pay an employee
 	                            @endif
                            </div>
 				        </div><br />
+
+				        <br/>
+				        <p>
+				            Payment Details
+				        </p>
+				        <hr class="mg-top-0">
+
+				        <div class="form-group clearfix  {{ ($errors->has('payment_date'))? 'has-error': '' }}">
+				          {!! Form::label('payment_date', 'Date paid out') !!}
+				          <div class="date-box">
+
+					          <div class='input-group date' id='due-date-picker'>
+					              {!! Form::text('payment_date', null, array('class' => 'form-control date-box', 'id' =>'paidout-date-pickers')) !!}
+
+					              <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+					              </span>
+					          </div>
+					          @if($errors->has('payment_date'))
+	                                {!! $errors->first('payment_date', '<label class="control-label" for="inputError">:message</label>') !!}
+	                          @endif
+					       </div>
+					    </div>
+
 						<div class="form-group clearfix">
 					        <div>
 					        	<button class="btn btn-primary pull-right savebusiness" type="submit">Make payslip</button>
