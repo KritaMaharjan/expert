@@ -108,7 +108,7 @@ class Payroll extends Model
         if($year != '')
             $query = $query->whereRaw('MONTH(payment_date) = '.$month);
 
-        $payrolls = $query->get();
+        $payrolls = $query->orderBy('payment_date', 'desc')->get();
         $template = $this->getTemplate($payrolls);
         return $template;
     }
@@ -120,13 +120,14 @@ class Payroll extends Model
             foreach ($payrolls as $payroll)
             {
                 $type = ($payroll->type == 0)? 'Hourly' : 'Monthly';
-                $template_row = '<table class="table table-hover"><tr><td><strong>Salary Type: </strong></td><td>'.$type.'</td></tr>
+                $template_row = '<table class="table table-hover table-striped"><tr><td><strong>Salary Type: </strong></td><td>'.$type.'</td></tr>
                 <tr><td><strong>Basic Salary: </strong></td><td>'.number_format($payroll->basic_salary, 2).'</td></tr>
                 <tr><td><strong>Other Payments: </strong></td><td>'.number_format($payroll->other_payment, 2).'</td></tr>
                 <tr><td><strong>Total Payout: </strong></td><td>'.number_format($payroll->total_salary, 2).'</td></tr>
                 <tr><td><strong>Taxes Withheld: </strong></td><td>'.number_format($payroll->tax_rate, 2).'</td></tr>
                 <tr><td><strong>Vacation Fund: </strong></td><td>'.number_format($payroll->vacation_fund, 2).'</td></tr>
-                <tr><td><strong>Payroll Taxes: </strong></td><td>'.number_format($payroll->payroll_tax, 2).'</td></tr></table>';
+                <tr><td><strong>Payroll Taxes: </strong></td><td>'.number_format($payroll->payroll_tax, 2).'</td></tr>
+                <tr><td><strong>Payment Date: </strong></td><td>'.readable_date($payroll->payment_date).'</td></tr></table>';
                 $template = $template.$template_row;
             }
             return $template;
