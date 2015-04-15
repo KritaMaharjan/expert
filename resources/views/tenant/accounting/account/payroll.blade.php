@@ -75,6 +75,7 @@ Payroll Report
               </div>
             </div>  
   </div>
+
 </div>
     {{--Load JS--}}
     {{FB::js('assets/js/payroll-report.js')}}
