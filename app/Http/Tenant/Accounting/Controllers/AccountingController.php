@@ -12,16 +12,15 @@ class AccountingController extends BaseController {
     protected $request;
 
     protected $rules = [
-        'user_id' => 'required|exists:fb_users,user_id',
+        'user_id' => 'required|exists:fb_users,id',
         'type' => 'required',
         'worked' => 'required|integer|min:1',
         'rate' => 'required|numeric|min:1',
-        'basic_salary' => 'required|numeric|min:1',
         'other_payment' => 'numeric',
         'description' => 'required_with:other_payment',
         'tax_rate' => 'required|numeric',
         'payroll_tax' => 'required|numeric',
-        'vacation_fund' => 'required|numeric',
+        //'vacation_fund' => 'required|numeric',
         'payment_date' => 'required|date',
     ];
 
@@ -47,6 +46,11 @@ class AccountingController extends BaseController {
         return view('tenant.accounting.account.payroll');
     }
 
+    public function addPayroll()
+    {
+        return view('tenant.accounting.account.createPayroll');
+    }
+
     public function createPayroll()
     {
         $validator = \Validator::make($this->request->all(), $this->rules);
@@ -54,7 +58,7 @@ class AccountingController extends BaseController {
             return redirect()->back()->withErrors($validator)->withInput();
         $this->payroll->createPayroll($this->request);
         Flash::success('Payslip added successfully!');
-        return tenant()->route('tenant.collection.index');
+        return tenant()->route('tenant.accounting.account.payroll');
     }
 
     public function vat()

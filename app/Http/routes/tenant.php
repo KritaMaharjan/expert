@@ -172,7 +172,8 @@ Route::group($group_auth, function () {
         get('accounting', ['as' => 'tenant.accounting.index', 'uses' => 'AccountingController@index']);
         post('accounting', ['as' => 'tenant.accounting.create', 'uses' => 'AccountingController@create']);
         get('accounting/payroll', ['as' => 'tenant.accounting.payroll', 'uses' => 'AccountingController@payroll']);
-        post('accounting/payroll', ['as' => 'tenant.accounting.payroll.create', 'uses' => 'AccountingController@createPayroll']);
+        get('accounting/payroll/add', ['as' => 'tenant.accounting.payroll.add', 'uses' => 'AccountingController@addPayroll']);
+        post('accounting/payroll/add', ['as' => 'tenant.accounting.payroll.create', 'uses' => 'AccountingController@createPayroll']);
         get('accounting/{id}/delete', ['as' => 'accounting.delete', 'uses' => 'AccountingController@deleteSupplier']);
         get('accounting/{id}/edit', ['as' => 'tenant.accounting.edit', 'uses' => 'AccountingController@edit']);
         post('accounting/{id}/edit', ['as' => 'tenant.accounting.edit', 'uses' => 'AccountingController@update']);

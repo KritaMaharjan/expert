@@ -1,9 +1,11 @@
 <?php
 namespace App\Http\Tenant\Accounting\Models;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
-class Payroll extends Model {
+class Payroll extends Model
+{
 
     protected $table = "fb_payroll";
 
@@ -65,7 +67,6 @@ class Payroll extends Model {
     }
 
 
-
     function toData()
     {
         $this->show_url = tenant()->url('payroll/' . $this->id);
@@ -76,20 +77,22 @@ class Payroll extends Model {
 
     public function createPayroll($request)
     {
+        $vacation_fund = $request['worked'] * $request['rate'] * 0.102;
+        $total_salary = ($request['worked'] * $request['rate']) + $vacation_fund + $request['other_payment'];
         $payroll = Payroll::create([
-            'user_id'           => $request['user_id'],
-            'type'           => $request['type'],
-            'worked'          => $request['worked'],
-            'rate'        => $request['rate'],
-            'basic_salary'    => $request['basic_salary'],
-            'other_payment'  => $request['other_payment'],
-            'description'      => $request['description'],
-            'total_salary'        => $request['total_salary'],
-            'tax_rate'           => $request['tax_rate'],
-            'payroll_tax'         => $request['payroll_tax'],
-            'vacation_fund'         => $request['vacation_fund'],
-            'total_paid'         => $request['total_paid'],
-            'payment_date'         => $request['payment_date']
+            'user_id' => $request['user_id'],
+            'type' => $request['type'],
+            'worked' => $request['worked'],
+            'rate' => $request['rate'],
+            'basic_salary' => $request['worked'] * $request['rate'],
+            'other_payment' => $request['other_payment'],
+            'description' => $request['description'],
+            'total_salary' => $total_salary,
+            'tax_rate' => $request['tax_rate'],
+            'payroll_tax' => $request['payroll_tax'],
+            'vacation_fund' => $vacation_fund,
+            'total_paid' => $total_salary,
+            'payment_date' => $request['payment_date']
         ]);
 
         return $payroll->toArray();

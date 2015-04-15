@@ -58,7 +58,7 @@
             @endif
 
             @if(FB::can_view('Accounting'))
-            <li class="treeview">
+            <li class="treeview <?php echo (strpos($current_path, 'accounting') !==false || ($current_path =='tasks'))? 'active' : '';?>">
               <a href="#" title="Accounting">
                 <i class="fa fa-book"></i> <span>Accounting</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
