@@ -1,5 +1,21 @@
 (function() {
 
+    $('.business_div').hide();
+
+    $(document).on('click', '#business', function () {
+        parentDiv = $(this).parent().parent().parent();
+        if ($(this).is(':checked')) {
+            parentDiv.find('#type').val('2');
+            parentDiv.find('.dob_div').hide();
+            parentDiv.find('.business_div').show();
+        } else {
+            parentDiv.find('#type').val('1');
+            parentDiv.find('.dob_div').show();
+            parentDiv.find('.business_div').hide();
+        }
+
+    });
+
     $('.source').on('change', function(){
         var source = $(this).val();
         if(source == 'supplier')
@@ -68,4 +84,61 @@
     $(document).on('ifChanged', '#paid-box .icheck', function (e) {
         $("#after-paid").slideToggle();
     });
+
+    //add new supplier
+    $(document).on('submit', '#supplier-form', function (e) {
+        e.preventDefault();
+        var form = $(this);
+        var formAction = form.attr('action');
+
+        var formData = new FormData(form[0]);
+
+        var requestType = form.find('.supplier-submit').val();
+        form.find('.supplier-submit').val('loading...');
+        form.find('.supplier-submit').attr('disabled', true);
+
+        form.find('.has-error').removeClass('has-error');
+        form.find('label.error').remove();
+        form.find('.callout').remove();
+
+        $.ajax({
+            url: appUrl + 'supplier',
+            type: 'POST',
+            dataType: 'json',
+            data: formData,
+
+            //required for ajax file upload
+            processData: false,
+            contentType: false
+        })
+            .done(function (response) {
+                if (response.success == true || response.status == 1) {
+
+                    $('#fb-modal').modal('hide');
+                    $('.mainContainer .box-solid').before(notify('success', 'Supplier added Successfully'));
+
+                    $('.select-supplier').prepend('<option value="'+response.data.id+'">'+response.data.name+'</option>');
+                    supplierSelect.val(response.data.id).trigger("change");
+                }
+                else {
+                    if (response.status == 'fail') {
+                        $.each(response.errors, function (i, v) {
+                            $('.modal-body #' + i).parent().addClass('has-error');
+                            $('.modal-body #' + i).after('<label class="error error-' + i + '">' + v + '<label>');
+                        });
+                    }
+                }
+            })
+            .fail(function () {
+                alert('something went wrong');
+            })
+            .always(function () {
+                form.find('.supplier-submit').removeAttr('disabled');
+                form.find('.supplier-submit').val(requestType);
+            });
+    });
+
+    function notify(type, text) {
+        return '<div class="callout callout-' + type + '"><p>' + text + '</p></div>';
+    }
 })();

@@ -14,16 +14,12 @@ Suppliers
   <div class="row">
 		<div class="col-md-12 mainContainer">
       
-	    	<div class="box box-solid">
-          <p class="align-right btn-inside">
-
-            <a class="btn btn-primary" id="supplier-add" data-toggle="modal" data-url="#supplier-modal-data" data-target="#fb-modal">
-
-                 <i class="fa fa-plus"></i> Add new Supplier
-                 
-            </a>
-           
-         </p>
+        <div class="box box-solid">
+            <p class="align-right btn-inside">
+                <a class="btn btn-primary" id="supplier-add" data-toggle="modal" data-url="#supplier-modal-data" data-target="#fb-modal">
+                     <i class="fa fa-plus"></i> Add new Supplier
+                </a>
+            </p>
          
 		    <div class="box-body">
 		      <table id="table-supplier" class="table table-hover">
@@ -38,17 +34,16 @@ Suppliers
                </thead>
              </table>
 		    </div><!-- /.box-body -->
-		  </div><!-- /.box -->
+		 </div><!-- /.box -->
 	  	</div>
 
         <div id="supplier-modal-data" class="hide">
-        <div class="box box-solid">
-            <div class="box-header">
-                <h3 class="box-title">Add New Supplier</h3>
-            </div>
-            @include('tenant.supplier.createSupplier')
-                   </div><!-- /.box-body -->
-               
+            <div class="box box-solid">
+                <div class="box-header">
+                    <h3 class="box-title">Add New Supplier</h3>
+                </div>
+                @include('tenant.supplier.createSupplier')
+            </div><!-- /.box-body -->
         </div>
     </div>
 	  	

@@ -11,10 +11,21 @@ class AccountingController extends BaseController {
     protected $payroll;
     protected $request;
 
-    protected $rules = [
+    protected $payroll_rules = [
         'user_id' => 'required|exists:fb_users,id',
         'type' => 'required',
         'worked' => 'required|integer|min:1',
+        'rate' => 'required|numeric|min:1',
+        'other_payment' => 'numeric',
+        'description' => 'required_with:other_payment',
+        'tax_rate' => 'required|numeric',
+        'payroll_tax' => 'required|numeric',
+        //'vacation_fund' => 'required|numeric',
+        'payment_date' => 'required|date',
+    ];
+
+    protected $expense_rules = [
+        'supplier_id' => 'required|integer|min:1',
         'rate' => 'required|numeric|min:1',
         'other_payment' => 'numeric',
         'description' => 'required_with:other_payment',
@@ -40,7 +51,8 @@ class AccountingController extends BaseController {
     {
         $accounts = $this->getAccountCode('en');
         $tax = \Config::get('tenant.vat');
-        return view('tenant.accounting.account.expense', compact('accounts', 'tax'));
+        $months= \Config::get('tenant.month');
+        return view('tenant.accounting.account.expense', compact('accounts', 'tax', 'months'));
     }
 
     public function getAccountCode($lang)
@@ -66,7 +78,7 @@ class AccountingController extends BaseController {
 
     public function createPayroll()
     {
-        $validator = \Validator::make($this->request->all(), $this->rules);
+        $validator = \Validator::make($this->request->all(), $this->payroll_rules);
         if ($validator->fails())
             return redirect()->back()->withErrors($validator)->withInput();
         $this->payroll->createPayroll($this->request);

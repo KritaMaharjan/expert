@@ -154,20 +154,16 @@ $(function () {
         e.preventDefault();
         var form = $(this);
         var formAction = form.attr('action');
-        //var formData = form.serialize();
 
         var formData = new FormData(form[0]);
-//        formData.append('photo', $('#supplier-form input[type=file]')[0].files[0]);
 
         var requestType = form.find('.supplier-submit').val();
-
         form.find('.supplier-submit').val('loading...');
         form.find('.supplier-submit').attr('disabled', true);
 
         form.find('.has-error').removeClass('has-error');
         form.find('label.error').remove();
         form.find('.callout').remove();
-
 
         $.ajax({
             url: formAction,
