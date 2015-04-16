@@ -38,7 +38,20 @@ class AccountingController extends BaseController {
 
     public function expense()
     {
-        return view('tenant.accounting.account.expense');
+        $accounts = $this->getAccountCode('en');
+        $tax = \Config::get('tenant.vat');
+        return view('tenant.accounting.account.expense', compact('accounts', 'tax'));
+    }
+
+    public function getAccountCode($lang)
+    {
+        $accounts = \Config::get('accounts.codes');
+        $codes = array('' => 'Select Account Expense');
+        foreach($accounts as $key => $account)
+        {
+            $codes[$key] = $account[$lang];
+        }
+        return $codes;
     }
 
     public function payroll()

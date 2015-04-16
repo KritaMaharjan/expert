@@ -153,6 +153,7 @@ Route::group($group_auth, function () {
         post('supplier/data', ['as' => 'tenant.supplier.data', 'uses' => 'SupplierController@dataJson']);
         post('supplier/upload', ['as' => 'tenant.supplier.upload', 'uses' => 'SupplierController@upload']);
         post('supplier/changeStatus', ['as' => 'tenant.supplier.changeStatus', 'uses' => 'SupplierController@changeStatus']);
+        get('supplier/suggestions', ['as' => 'tenant.supplier.suggestions', 'uses' => 'SupplierController@getSupplierSuggestions']);
     });
 
     Route::group(['namespace' => 'Tenant\Tasks\Controllers'], function () {
@@ -175,7 +176,7 @@ Route::group($group_auth, function () {
         get('accounting/payroll/add', ['as' => 'tenant.accounting.payroll.add', 'uses' => 'AccountingController@addPayroll']);
         post('accounting/payroll/add', ['as' => 'tenant.accounting.payroll.create', 'uses' => 'AccountingController@createPayroll']);
         get('payout/details/{employeeId}', ['as' => 'tenant.accounting.payroll.create', 'uses' => 'AccountingController@employeePayrollDetails']);
-        get('accounting/expense', 'AccountingController@expense');
+        get('accounting/expense', ['as' => 'tenant.accounting.expense', 'uses' => 'AccountingController@expense']);
         get('accounting/open', 'AccountingController@open');
         get('accounting/close', 'AccountingController@close');
         get('accounting/vat', 'AccountingController@vat');

@@ -442,7 +442,7 @@ class TenantTable
     function expenses()
     {
         if (!Schema::hasTable(self::TBL_PREFIX . 'expenses')) {
-            Schema::create(self::TBL_PREFIX . 'expense', function ($table) {
+            Schema::create(self::TBL_PREFIX . 'expenses', function ($table) {
                 $table->increments('id'); // autoincrement value
                 $table->tinyInteger('type'); // 1:cash, 2:credit
                 $table->integer('supplier_id')->nullable(); //supplier id if purchase in credit
@@ -467,7 +467,7 @@ class TenantTable
         if (!Schema::hasTable(self::TBL_PREFIX . 'expense_products')) {
             Schema::create(self::TBL_PREFIX . 'expense_products', function ($table) {
                 $table->increments('id'); // autoincrement value of a vacation
-                $table->string('billing_date'); //Billing date
+                $table->text('text'); //Billing date
                 $table->decimal('amount', 11, 2); // payment due date
                 $table->float('vat'); // payment due date
                 $table->integer('account_code_id'); //account id from account code table

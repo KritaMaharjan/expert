@@ -27,7 +27,7 @@ $(function () {
     });*/
 
 
-    $('.icheck').iCheck({
+    var icheck = $('.icheck').iCheck({
         checkboxClass: 'icheckbox_flat-blue',
         radioClass: 'iradio_flat-blue',
         tap: true
