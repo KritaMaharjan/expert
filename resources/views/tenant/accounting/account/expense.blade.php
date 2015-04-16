@@ -66,8 +66,8 @@ Accounting Expenses
             	</div>
             </div>
             <div class="row">
-	        	<div class="col-md-12 table-responsive">
-	        		<table class="table product-table">
+	        	<div class="col-md-12 table-responsive  pad-0-40">
+	        		<table class="table expense-table">
 	        			<thead>
 	        				<tr>
 	        					<th width="30%">Text</th>
@@ -78,7 +78,7 @@ Accounting Expenses
 	        				</tr>
 	        			</thead>
 	        			<tbody>
-	        				<tr>
+	        				<tr  class="position-r">
 	        					<td>
 	        					    {!! Form:: text('text[]', null, array('class' => 'form-control')) !!}
                                 </td>
@@ -89,11 +89,19 @@ Accounting Expenses
                                     {!! Form::select('vat[]', $tax, null, array('class' => 'form-control', 'id' => 'vat')) !!}
 	    						</td>
 	        					<td>
-	        					    {!! Form:: text('total[]', null, array('class' => 'form-control')) !!}
+                                    <span class="border-bx block total"> </span>
+
                                 </td>
-	        					<td>
+	        					<td class="position-relative">
 	        					    {!! Form::select('account_code_id[]', $accounts, null, array('class' => 'select-multiple', 'id' => 'account-code')) !!}
-	        					</td>
+	        					    
+                                    <div class="action-buttons">
+                                        <a title="Delete" class="invoice-delete fa fa-close btn-danger" href="javascript:;"></a>
+                                    </div>  
+                                </td>
+                                <!-- <td>
+                                    <span class="border-bx block total"> </span>
+                              </td> -->
 	        				</tr>
 	        			</tbody>
 	        		</table>
@@ -109,9 +117,11 @@ Accounting Expenses
 
 	        			<div class="row">
 	        				<div id="after-paid" class="col-md-6">
-                                <div class="form-group clearfix">
-                                    Paid from
-                                    {!! Form::select('payment_method', [1 => 'Cash', 2 =>'Bank account'] , null, array('class' => 'form-control half-width2 pull-left')) !!}
+                                <div class="form-group clearfix">                                    
+                                    {!! Form::label('', 'Paid from') !!}
+                                    <div class="date-box">
+                                        {!! Form::select('payment_method', [1 => 'Cash', 2 =>'Bank account'] , null, array('class' => 'form-control pull-left')) !!}
+                                    </div>
                                 </div>
                                 <br />
                                 <div class="form-group clearfix">

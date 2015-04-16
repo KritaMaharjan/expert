@@ -13,7 +13,6 @@
             parentDiv.find('.dob_div').show();
             parentDiv.find('.business_div').hide();
         }
-
     });
 
     $('.source').on('change', function(){
@@ -141,4 +140,27 @@
     function notify(type, text) {
         return '<div class="callout callout-' + type + '"><p>' + text + '</p></div>';
     }
+
+
+    var invoice_tr = $('.expense-table .position-r');
+    var invoice_tr_html = invoice_tr.html();
+    var invoice_tr_html_wrap = '<tr class="position-r">' + invoice_tr_html + '</tr>';
+    var add_btn = $('.add-btn');
+
+
+    add_btn.on('click', function () {
+        var html_product = '<tr class="position-r"><td><input type="text" name="text[]" class="form-control"></td>' +
+            '<td><input type="text" name="amount[]" class="form-control"></td>' +
+            '<td><select name="vat[]" id="vat" class="form-control"><option value="8">8%</option><option value="15">15%</option><option value="25">25%</option><option value="0">Foreign/Domestic Exempt</option></select></td>' +
+            '<td><span class="border-bx block total"> </span></td>' +
+            '<td class="position-relative">' +
+            '<div class="action-buttons"><a title="Delete" class="invoice-delete fa fa-close btn-danger delete" href="javascript:;"></a></div>' +
+            '<select class="select-product form-control"><option>aasdf</option></select></td></tr>';
+        // invoice_tr.after(invoice_tr_html_wrap);
+        $('.expense-table tr:last').after(html_product);
+
+
+        selectProduct();
+    });
+
 })();
