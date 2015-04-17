@@ -185,7 +185,9 @@ class Bill extends Model
         $orderdir = $order[0]['dir'];
 
         $products = array();
-        $query = $this->select($select);
+        array_push($select, 'c.name');
+
+        $query = $this->from('fb_bill as b')->select($select)->join('fb_customers as c', 'b.customer_id', '=', 'c.id');
 
         if ($is_offer == true)
             $query = $query->where('is_offer', 1);
@@ -212,10 +214,10 @@ class Bill extends Model
         foreach ($data as $key => &$value) {
             $value->total = number_format($value->total, 2);
             $value->invoice_number = '<a class="link" href="#">' . $value->invoice_number . '</a>';
-            $customer = Customer::find($value->customer_id);
-            if ($customer)
-                $value->customer = $customer->name;
-            else $value->customer = 'Undefined';
+            //$customer = Customer::find($value->customer_id);
+            //if ($customer)
+                $value->customer = $value->name;
+            //else $value->customer = 'Undefined';
             $value->raw_status = $value->status;
             if ($value->status == 1)
                 $value->status = '<span class="label label-success">Paid</span>';
