@@ -39,11 +39,6 @@ class AccountingController extends BaseController {
         $this->expense = $expense;
     }
 
-    public function index()
-    {
-        return view('tenant.accounting.account.lists');
-    }
-
     public function expense()
     {
         $accounts = $this->getAccountCode('en');
@@ -130,6 +125,11 @@ class AccountingController extends BaseController {
     public function close()
     {
         return view('tenant.accounting.account.close');
+    }
+
+    public function listing()
+    {
+
     }
 
 

@@ -156,11 +156,11 @@ Accounting Expenses
                                         {!! Form::label('', 'Amount paid') !!}
                                         {!! Form:: text('amount_paid', null, array('class' => 'form-control date-box')) !!}
                                     </div>
-                                    <div class="form-group clearfix {{ ($errors->has('due_date'))? 'has-error': '' }}">
-                                        {!! Form::label('due_date', 'Paid date') !!}
+                                    <div class="form-group clearfix {{ ($errors->has('payment_date'))? 'has-error': '' }}">
+                                        {!! Form::label('payment_date', 'Paid date') !!}
 
                                         <div class='input-group date date-box' id='due-date-picker'>
-                                            {!! Form:: text('due_date', null, array('class' => 'form-control', 'id' =>'paid-date-pickers')) !!}
+                                            {!! Form:: text('payment_date', null, array('class' => 'form-control', 'id' =>'paid-date-pickers')) !!}
                                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                                             </span>
                                         </div>

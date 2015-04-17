@@ -79,4 +79,56 @@ class Expense extends Model
         }
     }
 
+    function dataTablePagination(Request $request, array $select = array(), $is_offer = false)
+    {
+        if ((is_array($select) AND count($select) < 1)) {
+            $select = "*";
+        }
+
+        $take = ($request->input('length') > 0) ? $request->input('length') : 15;
+        $start = ($request->input('start') > 0) ? $request->input('start') : 0;
+
+        $search = $request->input('search');
+        $search = $search['value'];
+        $order = $request->input('order');
+        $column_id = $order[0]['column'];
+        $columns = $request->input('columns');
+        $orderColumn = $columns[$column_id]['data'];
+        $orderdir = $order[0]['dir'];
+
+        $expenses = array();
+        $query = $this->select($select)->where('is_paid', 0);
+
+        if ($orderColumn != '' AND $orderdir != '') {
+            if ($orderColumn != 'invoice_date')
+                $query = $query->orderBy($orderColumn, $orderdir);
+            else
+                $query = $query->orderBy('created_at', $orderdir);
+        }
+
+        if ($search != '') {
+            $query = $query->where('invoice_number', 'LIKE', "%$search%");
+        }
+        $expenses['total'] = $query->count();
+
+
+        $query->skip($start)->take($take);
+
+        $data = $query->get();
+
+        foreach ($data as $key => &$value) {
+            $value->type = ($value->type == 1)? 'Supplier' : 'Cash';
+        }
+
+        $expenses['data'] = $data->toArray();
+
+        $json = new \stdClass();
+        $json->draw = ($request->input('draw') > 0) ? $request->input('draw') : 1;
+        $json->recordsTotal = $expenses['total'];
+        $json->recordsFiltered = $expenses['total'];
+        $json->data = $expenses['data'];
+
+        return $json;
+    }
+
 }

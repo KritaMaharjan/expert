@@ -10,6 +10,19 @@ Accounting List
         	<div class="row">        	
 	        	<div class="col-md-12 table-responsive">
 	        	    @include('flash::message')
+	        	    <div class="box-body table-responsive">
+                        <table id="table-expense" class="table table-hover table-expense">
+                            <thead>
+                                <tr>
+                                    <th>Invoice Number</th>
+                                    <th>Billing Date</th>
+                                    <th>Payment Due Date</th>
+                                    <th>Type</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
 	        		<table class="table product-table">
 	        			<thead>
 	        				<tr>
@@ -87,17 +100,12 @@ Accounting List
         </div>
     </div>
 </div>
-
-
-{{ FB::js('$(function(){
-		$("#reg-date-pickers").datepicker({
-        "format": "yyyy-mm-dd"
-        });
-	})')}}
-
+</div>
+</div>
 
 {{--Load JS--}}
-{{FB::registerModal()}}
+{{ FB::registerModal() }}
+{{ FB::js('assets/js/expense-list.js') }}
 
 @stop
 

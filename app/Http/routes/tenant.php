@@ -168,7 +168,9 @@ Route::group($group_auth, function () {
     });
 
     Route::group(['namespace' => 'Tenant\Accounting\Controllers'], function () {
-        get('accounting', ['as' => 'tenant.accounting.index', 'uses' => 'AccountingController@index']);
+        get('accounting', ['as' => 'tenant.accounting.index', 'uses' => 'ListController@index']);
+        post('accounting/data', ['as' => 'tenant.accounting.data', 'uses' => 'ListController@dataJson']);
+
         post('accounting', ['as' => 'tenant.accounting.create', 'uses' => 'AccountingController@create']);
         get('accounting/payroll', ['as' => 'tenant.accounting.payroll', 'uses' => 'AccountingController@payroll']);
         get('accounting/payroll/add', ['as' => 'tenant.accounting.payroll.add', 'uses' => 'AccountingController@addPayroll']);
@@ -179,7 +181,6 @@ Route::group($group_auth, function () {
         get('accounting/open', 'AccountingController@open');
         get('accounting/close', 'AccountingController@close');
         get('accounting/vat', 'AccountingController@vat');
-        get('accounting/lists', 'AccountingController@lists');
         get('accounting/setup', 'AccountingController@setup');
         get('accounting/new-business', 'AccountingController@newBusiness');
     });
