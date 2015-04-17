@@ -1177,14 +1177,25 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
     width: 40%;
 }
 .image-section {
-    border: 3px dashed #dbdbdb;
-    height: 230px;
-    padding: 0;
+    border: 4px dashed #999;
     text-align: center;
+    color: #999;
+    font-size: 20px;
+    height: 230px;
+    line-height: 230px;
+    cursor: pointer;
 }
 .image-section img{
     width: 100%;
 }
+
+img.bill_image {max-width: 100%}
+
+#uploader.dragover .image-section {
+    background: #ccc);
+    border-color: green;
+}
+
 .mg-btm-40{
     margin-bottom: 40px;
 }

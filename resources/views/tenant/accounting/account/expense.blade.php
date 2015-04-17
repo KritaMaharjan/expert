@@ -70,16 +70,16 @@ Accounting Expenses
                             </div>
 
                     </div>
-                    <div class="col-md-6">
-                        <div class="image-section">
-                            <!-- <img src="../../assets/images/print.jpg"> -->
 
-                            <h4>Drop files anywhere to upload</h4>
-                                <span>or</span>
-                                    <input type="file" class="upload-file" name="bill_image" />
-                                <br />
-                                <span>Maximum upload file size: 20MB</span>
+                    <div class="col-md-6">
+                        <div id="container" >
+                              <div id="uploader">
+                                    <div class="image-section">
+                                        Drop your file
+                                    </div>
+                              </div>
                         </div>
+                        <div id='filelist'>Your browser doesn't have Flash, Silverlight or HTML5 support.</div>
                     </div>
                 </div>
                 <div class="row">
@@ -194,3 +194,54 @@ Accounting Expenses
 </div>
 </div>
 @stop
+
+
+{{FB::js('assets/plugins/plupload/js/plupload.full.min.js')}}
+<?php
+$successCallback ="
+  var response = JSON.parse(object.response);
+  var wrap = $('#'+file.id);
+  wrap.append('<input type=\"hidden\" class=\"attachment\" name=\"bill_image\" value=\"'+response.data.fileName+'\" />');
+  wrap.append('<a href=\"#\" data-action=\"compose\" data-url=\"'+response.data.fileName+'\" class=\"cancel_upload\" ><i class=\"fa fa-times\"></i></a>');
+  $('#container').hide();
+  $('.bill_image').remove();
+  $('#container').before('<img class=\"bill_image\" src='+response.data.pathName+'/>');
+";
+FB::js(plupload()->button('uploader')->maxSize('20mb')->mimeTypes('image')->url(url('file/upload/data?folder=expense'))->autoStart(true)->success($successCallback)->init());
+
+$js ="$(document).on('click', '.cancel_upload', function (e) {
+              e.preventDefault();
+              var url = $(this).data('url');
+              var wrap = $(this).parent();
+              var action = $(this).data('action');
+
+              if (!confirm('Are you sure, you want to delete file?')) return false;
+
+              if (action == 'compose') {
+                  $.ajax({
+                      url: appUrl + 'file/delete',
+                      type: 'GET',
+                      dataType: 'json',
+                      data: {file: url, folder:'expense'}
+                  })
+                      .done(function (response) {
+                          if (response.status == 1) {
+                              wrap.remove();
+                              $('.bill_image').remove();
+                              $('#container').show();
+                          }
+                          else {
+                              alert(response.data.error);
+                          }
+                      })
+                      .fail(function () {
+                          alert('Connect error!');
+                      })
+              }
+              else {
+                  wrap.remove();
+              }
+          });";
+FB::js($js);
+
+?>
