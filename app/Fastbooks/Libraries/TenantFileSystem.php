@@ -183,7 +183,7 @@ class TenantFileSystem {
             $destinationPath = $this->path();
             $fileName = $this->getFilename($fileName, $extension);
             $data = Request::file($file)->move($destinationPath, $fileName);
-            $return = ['pathName' => asset(trim($data->getPathname(), '.')), 'fileName' => $data->getFilename()];
+            $return = ['pathName' => str_replace('\\', '/',asset($data->getPathname())), 'fileName' => $data->getFilename()];
 
             return $return;
         } else {

@@ -12,22 +12,15 @@ Class Entry {
     function __construct(Transaction $transaction)
     {
         $this->transaction = $transaction;
-        $this->setCode();
+        $this->codes = Config::get('accounts.codes');
     }
-
 
     function run()
     {
         $this->sendABill(001, 1500, 15);
     }
 
-
-    function setCode()
-    {
-        $this->codes = Config::get('accounts.codes');
-    }
-
-    function getCode($code = null)
+    private function getCode($code = null)
     {
         return is_null($code) ? $this->codes : $this->codes[$code];
     }
@@ -48,7 +41,7 @@ Class Entry {
     }
 
 
-    function getVatAccount($per = null)
+    private function getVatAccount($per = null)
     {
         $vat = Config::get('accounts.vat');
 
@@ -71,7 +64,7 @@ Class Entry {
     }
 
 
-    private function credit($account, $amount, $note)
+    private function credit($account, $amount, $vat, $note)
     {
         $credit = new \stdClass();
         $credit->type = Transaction::CREDIT;

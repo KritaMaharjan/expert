@@ -166,21 +166,7 @@ class Tenant {
      */
     function createTenantTables()
     {
-        $this->createTable->users();
-        $this->createTable->settings();
-        $this->createTable->profile();
-        $this->createTable->passwordReset();
-        $this->createTable->customers();
-        $this->createTable->products();
-        $this->createTable->inventory();
-        $this->createTable->bill();
-        $this->createTable->billProducts();
-        $this->createTable->tasks();
-        $this->createTable->emails();
-        $this->createTable->emailReceivers();
-        $this->createTable->attachmentsEmail();
-        $this->createTable->incomingEmails();
-        $this->createTable->billPayment();
+        $this->createTable->run();
     }
 
 
@@ -227,6 +213,8 @@ class Tenant {
         $this->folder('invoice', true);
         $this->folder('offer', true);
         $this->folder('user', true);
+        $this->folder('temp', true);
+        $this->folder('expense', true);
     }
 
     /**

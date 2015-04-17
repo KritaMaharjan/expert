@@ -11,21 +11,55 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 
-class TenantTable
-{
+class TenantTable {
 
     /**
      * Constant for table prefix
      */
-    const TBL_PREFIX = 'fb_';
+    protected $tbl_profix = 'fb_';
+
+    function __construct()
+    {
+        $this->tbl_profix = env('ROOT_TABLE_PREFIX', 'fb_');
+    }
+
+    /**
+     * Run all table SQL
+     */
+    public function run()
+    {
+        $this->users();
+        $this->settings();
+        $this->passwordReset();
+        $this->profile();
+        $this->customers();
+        $this->emails();
+        $this->emailReceivers();
+        $this->attachmentsEmail();
+        $this->incomingEmails();
+        $this->products();
+        $this->inventory();
+        $this->bill();
+        $this->billProducts();
+        $this->billPayment();
+        $this->tasks();
+        $this->vacation();
+        $this->payroll();
+        $this->suppliers();
+        $this->expenses();
+        $this->expenseProducts();
+        $this->expensePayment();
+        $this->accountCodes();
+        $this->transactions();
+    }
 
     /**
      * Users Tables [used for Tenant admin and sub-user ]
      */
-    function users()
+    private function users()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'users')) {
-            Schema::create(self::TBL_PREFIX . 'users', function ($table) {
+        if (!Schema::hasTable($this->tbl_profix . 'users')) {
+            Schema::create($this->tbl_profix . 'users', function ($table) {
                 $table->increments('id'); // autoincrement value of a tenant admin
                 $table->string('guid', 45)->unique(); // unique random ID for a user
                 $table->string('fullname', 45); // fullname of a user
@@ -52,10 +86,10 @@ class TenantTable
     /**
      * Tenant admin settings table
      */
-    function settings()
+    private function settings()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'settings')) {
-            Schema::create(self::TBL_PREFIX . 'settings', function ($table) {
+        if (!Schema::hasTable($this->tbl_profix . 'settings')) {
+            Schema::create($this->tbl_profix . 'settings', function ($table) {
                 $table->increments('id'); // autoincrement value of a setting
                 $table->string('name', 30)->unique(); // unique key for setting
                 $table->text('value')->nullable(); // value of a setting
@@ -69,10 +103,10 @@ class TenantTable
     /**
      * Password Reset Table
      */
-    function passwordReset()
+    private function passwordReset()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'password_resets')) {
-            Schema::create(self::TBL_PREFIX . 'password_resets', function (Blueprint $table) {
+        if (!Schema::hasTable($this->tbl_profix . 'password_resets')) {
+            Schema::create($this->tbl_profix . 'password_resets', function (Blueprint $table) {
                 $table->string('email')->index();  // user's email ID
                 $table->string('token')->index(); // token for verification
                 // created_at DATETIME
@@ -84,10 +118,10 @@ class TenantTable
     /**
      * User profile table [one to one relation with users table]
      */
-    function profile()
+    private function profile()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'profile')) {
-            Schema::create(self::TBL_PREFIX . 'profile', function (Blueprint $table) {
+        if (!Schema::hasTable($this->tbl_profix . 'profile')) {
+            Schema::create($this->tbl_profix . 'profile', function (Blueprint $table) {
                 // $table->increments('id'); // autoincrement value of a profile
                 $table->integer('user_id')->unsign()->unique(); // user id from user table
                 $table->text('smtp')->nullable(); // serialized value of personal email setting
@@ -111,10 +145,10 @@ class TenantTable
     /**
      * Customers tables [Many to one relation with users]
      */
-    function customers()
+    private function customers()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'customers')) {
-            Schema::create(self::TBL_PREFIX . 'customers', function ($table) {
+        if (!Schema::hasTable($this->tbl_profix . 'customers')) {
+            Schema::create($this->tbl_profix . 'customers', function ($table) {
                 $table->increments('id'); // autoincrement value of a customer
                 $table->string('guid', 32); // unique auto generated ID of a customer
                 $table->integer('user_id')->unsign()->index(); //user id, who created the customer
@@ -143,10 +177,10 @@ class TenantTable
     /*
      * Table for Sent emails
      * */
-    function emails()
+    private function emails()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'emails')) {
-            Schema::create(self::TBL_PREFIX . 'emails', function (Blueprint $table) {
+        if (!Schema::hasTable($this->tbl_profix . 'emails')) {
+            Schema::create($this->tbl_profix . 'emails', function (Blueprint $table) {
                 $table->increments('id'); // autoincrement value of an email
                 $table->integer('sender_id')->unsign()->index(); //sender user id
                 $table->text('message'); //message for email
@@ -166,10 +200,10 @@ class TenantTable
      * Email Receivers [ one to many relation with Emails table]
      * */
 
-    function emailReceivers()
+    private function emailReceivers()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'email_receivers')) {
-            Schema::create(self::TBL_PREFIX . 'email_receivers', function (Blueprint $table) {
+        if (!Schema::hasTable($this->tbl_profix . 'email_receivers')) {
+            Schema::create($this->tbl_profix . 'email_receivers', function (Blueprint $table) {
                 $table->increments('id'); // autoincrement value of an receiver
                 $table->integer('email_id')->unsign()->index(); //email ID
                 $table->integer('customer_id')->unsign()->index()->nullable(); //customer ID
@@ -183,10 +217,10 @@ class TenantTable
     * Email Attachments [One to many relation with Emails table]
      * */
 
-    function attachmentsEmail()
+    private function attachmentsEmail()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'attachments_email')) {
-            Schema::create(self::TBL_PREFIX . 'attachments_email', function (Blueprint $table) {
+        if (!Schema::hasTable($this->tbl_profix . 'attachments_email')) {
+            Schema::create($this->tbl_profix . 'attachments_email', function (Blueprint $table) {
                 $table->increments('id'); // autoincrement value of an attachment
                 $table->integer('email_id')->unsign()->index(); //email id
                 $table->string('file', 75); //file name
@@ -196,11 +230,12 @@ class TenantTable
 
     /*
     * Incoming Emails
-     *  */
-    function incomingEmails()
+    *
+    */
+    private function incomingEmails()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'incoming_emails')) {
-            Schema::create(self::TBL_PREFIX . 'incoming_emails', function (Blueprint $table) {
+        if (!Schema::hasTable($this->tbl_profix . 'incoming_emails')) {
+            Schema::create($this->tbl_profix . 'incoming_emails', function (Blueprint $table) {
                 $table->increments('id'); // autoincrement value of an attachment
                 $table->integer('user_id')->unsign()->index()->nullable(); //User id
                 $table->integer('msid')->unsign()->index(); //Mail unique id
@@ -223,10 +258,10 @@ class TenantTable
     /**
      * Items table for inventory [Many to one relation with inventory table]
      */
-    function products()
+    private function products()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'products')) {
-            Schema::create(self::TBL_PREFIX . 'products', function (Blueprint $table) {
+        if (!Schema::hasTable($this->tbl_profix . 'products')) {
+            Schema::create($this->tbl_profix . 'products', function (Blueprint $table) {
                 $table->increments('id'); // autoincrement value of a product
                 $table->integer('user_id')->unsign()->index(); //user id who added the product
                 $table->string('number', 25)->unique();  // product
@@ -244,10 +279,10 @@ class TenantTable
     /**
      * Inventory Table (used to record all the inventory items)
      */
-    function inventory()
+    private function inventory()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'inventory')) {
-            Schema::create(self::TBL_PREFIX . 'inventory', function (Blueprint $table) {
+        if (!Schema::hasTable($this->tbl_profix . 'inventory')) {
+            Schema::create($this->tbl_profix . 'inventory', function (Blueprint $table) {
                 $table->increments('id'); // autoincrement value of an product
                 $table->integer('product_id')->index(); //product id
                 $table->integer('user_id')->index();  // name of an product
@@ -267,10 +302,10 @@ class TenantTable
     /**
      * Table for Bills [Many to one relation with customer table]
      */
-    function bill()
+    private function bill()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'bill')) {
-            Schema::create(self::TBL_PREFIX . 'bill', function ($table) {
+        if (!Schema::hasTable($this->tbl_profix . 'bill')) {
+            Schema::create($this->tbl_profix . 'bill', function ($table) {
                 $table->increments('id'); // autoincrement value of a tenant admin
                 $table->string('invoice_number', 25);
                 $table->integer('customer_id')->index(); // customer id
@@ -294,10 +329,10 @@ class TenantTable
     /**
      * Table for Product [Many to one relation with bills table]
      */
-    function billProducts()
+    private function billProducts()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'bill_products')) {
-            Schema::create(self::TBL_PREFIX . 'bill_products', function ($table) {
+        if (!Schema::hasTable($this->tbl_profix . 'bill_products')) {
+            Schema::create($this->tbl_profix . 'bill_products', function ($table) {
                 $table->increments('id'); // autoincrement value
                 $table->integer('product_id')->index(); // product id
                 $table->integer('bill_id')->index(); // bill id
@@ -316,10 +351,10 @@ class TenantTable
     /**
      * Bill Payment
      */
-    function billPayment()
+    private function billPayment()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'bill_payment')) {
-            Schema::create(self::TBL_PREFIX . 'bill_payment', function ($table) {
+        if (!Schema::hasTable($this->tbl_profix . 'bill_payment')) {
+            Schema::create($this->tbl_profix . 'bill_payment', function ($table) {
                 $table->increments('id'); // autoincrement value
                 $table->integer('bill_id'); //Bill id
                 $table->decimal('amount_paid', 11, 2); // payment amount
@@ -334,10 +369,10 @@ class TenantTable
     /**
      * Table for Tasks in to do list
      */
-    function tasks()
+    private function tasks()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'tasks')) {
-            Schema::create(self::TBL_PREFIX . 'tasks', function ($table) {
+        if (!Schema::hasTable($this->tbl_profix . 'tasks')) {
+            Schema::create($this->tbl_profix . 'tasks', function ($table) {
                 $table->increments('id'); // autoincrement value of a tenant admin
                 $table->integer('user_id'); // autoincrement value of a tenant admin
                 $table->string('subject', 100);
@@ -355,10 +390,10 @@ class TenantTable
      * Vacation and sick leave table
      * @todo we need to change table name to leave
      */
-    function vacation()
+    private function vacation()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'vacation')) {
-            Schema::create(self::TBL_PREFIX . 'vacation', function ($table) {
+        if (!Schema::hasTable($this->tbl_profix . 'vacation')) {
+            Schema::create($this->tbl_profix . 'vacation', function ($table) {
                 $table->increments('id'); // autoincrement value of a vacation
                 $table->integer('user_id')->unsign()->index();
                 $table->integer('vacation_days')->unsign()->index();
@@ -376,10 +411,10 @@ class TenantTable
      * Tables for Accounting Module
      * ---------------------------------------
      */
-    function payroll()
+    private function payroll()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'payroll')) {
-            Schema::create(self::TBL_PREFIX . 'payroll', function ($table) {
+        if (!Schema::hasTable($this->tbl_profix . 'payroll')) {
+            Schema::create($this->tbl_profix . 'payroll', function ($table) {
                 $table->increments('id'); // autoincrement value
                 $table->integer('user_id')->unsign()->index(); // employee ID
                 $table->tinyInteger('type')->default(1); //Salary type 0:hourly, 1:monthly
@@ -408,10 +443,10 @@ class TenantTable
     /**
      * Suppliers table
      */
-    function suppliers()
+    private function suppliers()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'suppliers')) {
-            Schema::create(self::TBL_PREFIX . 'suppliers', function ($table) {
+        if (!Schema::hasTable($this->tbl_profix . 'suppliers')) {
+            Schema::create($this->tbl_profix . 'suppliers', function ($table) {
                 $table->increments('id'); // autoincrement value of a suppliers
                 $table->string('guid', 32); // unique auto generated ID of a suppliers
                 $table->integer('user_id')->unsign()->index(); //user id, who created the suppliers
@@ -439,10 +474,10 @@ class TenantTable
     /**
      * Account Expense Table
      */
-    function expenses()
+    private function expenses()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'expenses')) {
-            Schema::create(self::TBL_PREFIX . 'expenses', function ($table) {
+        if (!Schema::hasTable($this->tbl_profix . 'expenses')) {
+            Schema::create($this->tbl_profix . 'expenses', function ($table) {
                 $table->increments('id'); // autoincrement value
                 $table->tinyInteger('type'); // 1:supplier, 2:cash
                 $table->integer('supplier_id')->nullable(); //supplier id if purchase in credit
@@ -462,10 +497,10 @@ class TenantTable
     /**
      * Expense product table
      */
-    function expenseProducts()
+    private function expenseProducts()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'expense_products')) {
-            Schema::create(self::TBL_PREFIX . 'expense_products', function ($table) {
+        if (!Schema::hasTable($this->tbl_profix . 'expense_products')) {
+            Schema::create($this->tbl_profix . 'expense_products', function ($table) {
                 $table->increments('id'); // autoincrement value of a vacation
                 $table->integer('expense_id'); //Expense id
                 $table->text('text'); //Billing date
@@ -485,10 +520,10 @@ class TenantTable
     /**
      * Expense Payment table
      */
-    function expensePayment()
+    private function expensePayment()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'expense_payment')) {
-            Schema::create(self::TBL_PREFIX . 'expense_payment', function ($table) {
+        if (!Schema::hasTable($this->tbl_profix . 'expense_payment')) {
+            Schema::create($this->tbl_profix . 'expense_payment', function ($table) {
                 $table->increments('id'); // autoincrement value
                 $table->integer('expense_id'); //Expense id
                 $table->decimal('amount_paid', 11, 2); // payment amount
@@ -504,10 +539,10 @@ class TenantTable
     /**
      * Account codes
      */
-    function accountCodes()
+    private function accountCodes()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'account_codes')) {
-            Schema::create(self::TBL_PREFIX . 'account_codes', function ($table) {
+        if (!Schema::hasTable($this->tbl_profix . 'account_codes')) {
+            Schema::create($this->tbl_profix . 'account_codes', function ($table) {
                 $table->increments('id'); // autoincrement value of a vacation
                 $table->integer('code');
                 $table->string('account_en');
@@ -522,10 +557,10 @@ class TenantTable
     /**
      * All account related transaction stored in this table
      */
-    function transactions()
+    private function transactions()
     {
-        if (!Schema::hasTable(self::TBL_PREFIX . 'transactions')) {
-            Schema::create(self::TBL_PREFIX . 'transactions', function ($table) {
+        if (!Schema::hasTable($this->tbl_profix . 'transactions')) {
+            Schema::create($this->tbl_profix . 'transactions', function ($table) {
                 $table->increments('id'); // autoincrement value of a vacation
                 $table->integer('account_code_id'); //account id from account code table
                 $table->integer('subledger'); // sub-ledger
