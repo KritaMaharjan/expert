@@ -61,7 +61,6 @@ Route::group($group_auth, function () {
         get('email/{id}/show', ['as' => 'tenant.email.show', 'uses' => 'EmailController@show']);
         get('email/{id}/get', ['as' => 'tenant.email.get', 'uses' => 'EmailController@get']);
         get('email/delete/attach', ['as' => 'tenant.email.attach.delete', 'uses' => 'EmailController@deleteAttachment']);
-
         get('email/search_emails', ['as' => 'tenant.email.search', 'uses' => 'EmailController@search_email']);
         get('email/inbox', ['as' => 'tenant.email.inbox', 'uses' => 'IncomingEmailController@inbox']);
     });
@@ -177,6 +176,7 @@ Route::group($group_auth, function () {
         post('accounting/payroll/add', ['as' => 'tenant.accounting.payroll.create', 'uses' => 'AccountingController@createPayroll']);
         get('payout/details/{employeeId}', ['as' => 'tenant.accounting.payroll.create', 'uses' => 'AccountingController@employeePayrollDetails']);
         get('accounting/expense', ['as' => 'tenant.accounting.expense', 'uses' => 'AccountingController@expense']);
+        post('accounting/expense', ['as' => 'tenant.accounting.create.expense', 'uses' => 'AccountingController@createExpense']);
         get('accounting/open', 'AccountingController@open');
         get('accounting/close', 'AccountingController@close');
         get('accounting/vat', 'AccountingController@vat');

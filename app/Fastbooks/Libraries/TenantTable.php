@@ -449,7 +449,7 @@ class TenantTable
                 $table->date('billing_date'); //Billing date
                 $table->date('payment_due_date'); // payment due date
                 $table->integer('invoice_number'); // invoice number
-                $table->string('bill_image', 70); // bill image
+                $table->string('bill_image', 70)->nullable(); // bill image
                 $table->tinyInteger('is_paid')->default(0); // 0:unpaid 1 for paid
 
                 // created_at, updated_at DATETIME
@@ -467,6 +467,7 @@ class TenantTable
         if (!Schema::hasTable(self::TBL_PREFIX . 'expense_products')) {
             Schema::create(self::TBL_PREFIX . 'expense_products', function ($table) {
                 $table->increments('id'); // autoincrement value of a vacation
+                $table->integer('expense_id'); //Expense id
                 $table->text('text'); //Billing date
                 $table->decimal('amount', 11, 2); // amount without tax
                 $table->decimal('total', 11, 2); // total payment amount
@@ -489,7 +490,7 @@ class TenantTable
         if (!Schema::hasTable(self::TBL_PREFIX . 'expense_payment')) {
             Schema::create(self::TBL_PREFIX . 'expense_payment', function ($table) {
                 $table->increments('id'); // autoincrement value
-                $table->integer('expense_id'); //Bill id
+                $table->integer('expense_id'); //Expense id
                 $table->decimal('amount_paid', 11, 2); // payment amount
                 $table->tinyInteger('payment_method'); // 1:cash , 2:bank
                 $table->date('payment_date'); // payment due date

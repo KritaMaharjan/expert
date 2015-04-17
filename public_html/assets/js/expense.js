@@ -76,9 +76,14 @@
     $("#paid-date-pickers").datepicker({
         "format": "yyyy-mm-dd"
     });
-    $(".select-multiple").select2({
-        theme: "classic"
-    });
+
+    function selectProduct() {
+        $(".select-product").select2({
+            theme: "classic"
+        });
+    }
+
+    selectProduct();
 
     $(document).on('ifChanged', '#paid-box .icheck', function (e) {
         $("#after-paid").slideToggle();
@@ -89,7 +94,6 @@
         e.preventDefault();
         var form = $(this);
         var formAction = form.attr('action');
-
         var formData = new FormData(form[0]);
 
         var requestType = form.find('.supplier-submit').val();
@@ -143,10 +147,8 @@
 
 
     var invoice_tr = $('.expense-table .position-r');
-    var invoice_tr_html = invoice_tr.html();
-    var invoice_tr_html_wrap = '<tr class="position-r">' + invoice_tr_html + '</tr>';
+    var account_code_html = invoice_tr.find('#account-code').html();
     var add_btn = $('.add-btn');
-
 
     add_btn.on('click', function () {
         var html_product = '<tr class="position-r"><td><input type="text" name="text[]" class="form-control"></td>' +
@@ -155,12 +157,20 @@
             '<td><span class="border-bx block total"> </span></td>' +
             '<td class="position-relative">' +
             '<div class="action-buttons"><a title="Delete" class="invoice-delete fa fa-close btn-danger delete" href="javascript:;"></a></div>' +
-            '<select class="select-product form-control"><option>aasdf</option></select></td></tr>';
-        // invoice_tr.after(invoice_tr_html_wrap);
-        $('.expense-table tr:last').after(html_product);
+            '<select class="select-product form-control">'+account_code_html+'</select></td></tr>';
+            // invoice_tr.after(invoice_tr_html_wrap);
+            $('.expense-table tr:last').after(html_product);
+            selectProduct();
+    });
 
-
-        selectProduct();
+    //delete current product row
+    $('table').on('click', 'tr .invoice-delete', function (e) {
+        e.preventDefault();
+        var rowCount = $('.expense-table tr').length;
+        if (rowCount > 2)
+            $(this).closest('tr').remove();
+        else
+            alert("At least one product needs to be chosen.");
     });
 
 })();

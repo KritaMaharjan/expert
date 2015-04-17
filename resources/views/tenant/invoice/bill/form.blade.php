@@ -13,7 +13,7 @@
          @elseif(isset($customer_id) && !empty($customer_details))
            {!! Form::select('customer', array($customer_details->id => $customer_details->name), $customer_details->id, array('class' => 'select-customer form-control', 'required' => 'required')) !!}
          @else
-           {!! Form::select('customer', array('' => 'Select Customer'), null, array('class' => 'select-customer form-control', 'required' => 'required')) !!}
+            {!! Form::select('customer', array('' => 'Select Customer'), null, array('class' => 'select-customer form-control', 'required' => 'required')) !!}
          @endif
          @if($errors->has('customer'))
              {!! $errors->first('customer', '<label class="control-label error" for="inputError">:message</label>') !!}
@@ -84,7 +84,7 @@
 
         </div>
          @if($errors->has('due_date'))
-                      {!! $errors->first('due_date', '<label class="control-label error" style="position: relative;top: -10px;"for="inputError">:message</label>') !!}
+                      {!! $errors->first('due_date', '<label class="control-label error" style="position: relative;top: -10px;" for="inputError">:message</label>') !!}
                   @endif
         <div class="form-group clearfix" style="text-align: left!important;">
           {!! Form::label('account_number', 'Account no') !!}
