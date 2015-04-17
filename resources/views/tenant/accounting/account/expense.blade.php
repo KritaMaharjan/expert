@@ -98,15 +98,15 @@ Accounting Expenses
                             <tbody>
                                 <tr class="position-r">
                                     <td>
-                                        <input type="text" name="text[]" class="form-control" />
+                                        <input type="text" name="text[]" class="form-control" required="required" />
                                     </td>
                                     <td>
                                         {{--{!! Form:: text('amount[]', null, array('class' => 'form-control')) !!}--}}
-                                        <input type="text" name="amount[]" class="form-control" />
+                                        <input type="text" name="amount[]" class="form-control" id="amount" maxlength="7" required="required" />
                                     </td>
                                     <td>
                                         {{--{!! Form::select('vat[]', $tax, null, array('class' => 'form-control', 'id' => 'vat')) !!}--}}
-                                        <select name="vat[]" class="form-control">
+                                        <select name="vat[]" class="form-control" id="vat">
                                             @foreach($tax as $key => $vat)
                                                 <option value="{{$key}}">{{$vat}}</option>
                                             @endforeach
@@ -118,7 +118,7 @@ Accounting Expenses
                                     </td>
                                     <td class="position-relative">
                                         {{--{!! Form::select('account_code_id[]', $accounts, null, array('class' => 'select-product', 'id' => 'account-code')) !!}--}}
-                                        <select name="account_code_id[]" class="select-product" id="account-code">
+                                        <select name="account_code_id[]" class="select-product" id="account-code" required="required" >
                                             @foreach($accounts as $key => $account)
                                                 <option value="{{$key}}">{{$account}}</option>
                                             @endforeach

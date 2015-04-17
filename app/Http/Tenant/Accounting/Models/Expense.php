@@ -28,8 +28,6 @@ class Expense extends Model
 
     public function createExpense(Request $request)
     {
-        dd($request->input());
-        dd($request['text']);
         // Start transaction!
         DB::beginTransaction();
         try {

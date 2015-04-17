@@ -48,8 +48,6 @@ class Inventory extends Model {
 
     function totalSellingPrice()
     {
-
-
         return $this->convertToCurrency($this->selling_price * $this->quantity);
     }
 
