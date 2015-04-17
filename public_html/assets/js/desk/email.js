@@ -357,10 +357,10 @@ $(function () {
 
         if (action == 'compose') {
             $.ajax({
-                url: appUrl + 'desk/email/delete/attach',
+                url: appUrl + 'file/delete',
                 type: 'GET',
                 dataType: 'json',
-                data: {file: url}
+                data: {file: url, folder:'attachment'}
             })
                 .done(function (response) {
                     if (response.status == 1) {

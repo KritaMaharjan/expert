@@ -30,7 +30,7 @@ $successCallback ="
 ?>
 <script type="text/javascript">
 $(function(){
-    {!! plupload()->button('attachment')->maxSize('20mb')->mimeTypes('image')->url(url('/desk/email/upload/data'))->autoStart(true)->success($successCallback)->init() !!}
+    {!! plupload()->button('attachment')->maxSize('20mb')->mimeTypes('image')->url(url('file/upload/data?folder=attachment'))->autoStart(true)->success($successCallback)->init() !!}
 });
 </script>
            <div class="box box-solid">

@@ -53,16 +53,6 @@ class EmailController extends BaseController {
         return \Response::JSON($details);
     }
 
-    function attach()
-    {
-        if ($return = tenant()->folder('attachment')->upload('file')) {
-            return $this->success($return);
-        }
-
-        return $this->fail(['error' => 'File upload failed']);
-    }
-
-
     function send()
     {
         $validator = $this->validateComposer();
@@ -182,19 +172,6 @@ class EmailController extends BaseController {
                 $data['mails'] = $this->incomingEmail->user()->orderBy('created_at', 'DESC')->type($type)->paginate($per_page);
         }
         return view('tenant.email.list', $data);
-    }
-
-    function deleteAttachment()
-    {
-        if ($this->request->ajax()) {
-            $file = $this->request->input('file');
-            $destinationPath = $this->upload_path . $file;
-            unlink($destinationPath);
-
-            return $this->success(['message' => 'File deleted']);
-        }
-
-        return $this->fail(['error' => 'Something went wrong. Please try again later']);
     }
 
     function delete()

@@ -23,7 +23,7 @@ if (env('APP_ENV') == 'live') {
  *
  */
 
-if(isset($group_cron)) {
+if (isset($group_cron)) {
     Route::group($group_cron, function () {
         /*
          * @todo Change block/account to post request and ensure that only superadmin can block/unblock account
@@ -49,9 +49,14 @@ Route::group($group_auth, function () {
     /*
      * New Modular Routing
      */
+
+    Route::group(['prefix' => 'file', 'namespace' => 'Tenant\File\Controllers'], function () {
+        post('upload/data', 'FileController@upload');
+        get('delete', 'FileController@delete');
+    });
+
     Route::group(['prefix' => 'desk', 'namespace' => 'Tenant\Email\Controllers'], function () {
         get('email', ['as' => 'desk.email', 'uses' => 'EmailController@index']);
-        post('email/upload/data', ['as' => 'desk.email.upload', 'uses' => 'EmailController@attach']);
         post('email/send', ['as' => 'desk.email.send', 'uses' => 'EmailController@send']);
         get('email/customer/search', ['as' => 'tenant.email.customer.search', 'uses' => 'EmailController@customerSearch']);
         get('email/{id}/delete', ['as' => 'tenant.email.delete', 'uses' => 'EmailController@delete']);
@@ -60,14 +65,8 @@ Route::group($group_auth, function () {
         get('email/list', ['as' => 'tenant.email.forward', 'uses' => 'EmailController@listing']);
         get('email/{id}/show', ['as' => 'tenant.email.show', 'uses' => 'EmailController@show']);
         get('email/{id}/get', ['as' => 'tenant.email.get', 'uses' => 'EmailController@get']);
-        get('email/delete/attach', ['as' => 'tenant.email.attach.delete', 'uses' => 'EmailController@deleteAttachment']);
         get('email/search_emails', ['as' => 'tenant.email.search', 'uses' => 'EmailController@search_email']);
         get('email/inbox', ['as' => 'tenant.email.inbox', 'uses' => 'IncomingEmailController@inbox']);
-    });
-
-    Route::group(['prefix' => 'invoice', 'namespace' => 'Tenant'], function () {
-        get('bill', 'Email\Controllers\BillController@index');
-        get('offer', 'Email\Controllers\OfferController@index');
     });
 
     // Registered by Krita
@@ -105,7 +104,7 @@ Route::group($group_auth, function () {
         get('inventory/{id}/delete', ['as' => 'tenant.inventory.delete', 'uses' => 'InventoryController@delete']);
 
         // Registered By Pooja
-         //get('inventory/stock', ['as' => 'tenant.inventory.stock', 'uses' => 'InventoryController@index']);
+        //get('inventory/stock', ['as' => 'tenant.inventory.stock', 'uses' => 'InventoryController@index']);
     });
 
     /** Registered by Krita **/

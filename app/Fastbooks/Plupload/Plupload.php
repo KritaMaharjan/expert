@@ -86,7 +86,7 @@ Class Plupload {
     {
         $html = "var uploader = new plupload.Uploader({
             runtimes : 'html5,flash,silverlight,html4',
-
+            drop_element : '$this->pickerID',
             browse_button : '$this->pickerID', // you can pass in id...
             container: document.getElementById('$this->container'), // ... or DOM Element itself
 
@@ -151,6 +151,29 @@ Class Plupload {
 
             uploader.init();
 
+
+              uploader.bind('Init', function(up, params) {
+                if (uploader.features.dragdrop) {
+                  var target =  document.getElementById('$this->pickerID');
+
+                  target.ondragover = function(event) {
+                    event.dataTransfer.dropEffect = 'copy';
+                  };
+
+                  target.ondragenter = function() {
+                    this.className = 'dragover';
+                  };
+
+                  target.ondragleave = function() {
+                    this.className = '';
+                  };
+
+                  target.ondrop = function() {
+                    this.className = '';
+                  };
+                }
+              });
+
              $(document).on('shown.bs.modal', '#compose-modal', function (event) {
                 uploader.refresh();
              });
@@ -166,7 +189,7 @@ Class Plupload {
 
             ";
 
-        echo $html;
+        return $html;
     }
 
 
