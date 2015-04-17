@@ -224,9 +224,8 @@ class Bill extends Model
             else
                 $value->status = '<span class="label label-danger">Unpaid</span>';
 
-            $value->invoice_date = date('d-M-Y  h:i:s A', strtotime($value->created_at));
+            $value->invoice_date = $value->created_at->format('d-M-Y  h:i:s A');
             $value->view_url = tenant()->url('invoice/bill/' . $value->id);
-            //$value->created_at->format('d-M-Y  h:i:s A');
             $value->DT_RowId = "row-" . $value->guid;
         }
 

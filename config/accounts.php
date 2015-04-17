@@ -1,7 +1,6 @@
 <?php
 
 return [
-
     'codes'       => [
         10   => ['no' => 'Immaterielle eiendeler o.l', 'en' => 'Intangible fixed assets etc.', 'nature' => 'Real', 'subledger' => 'Main Balance sheet item', 'notes' => ''],
         1000 => ['no' => 'Forskning og utvikling', 'en' => 'Research and development', 'nature' => 'Real', 'subledger' => 'Intangible Asset', 'notes' => ''],
