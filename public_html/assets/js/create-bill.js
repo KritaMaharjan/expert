@@ -180,8 +180,6 @@
                     if (response.status == 1) {
                         /*$('#price').val(response.details.selling_price);
                          $('#vat').val(response.details.vat);*/
-
-
                         $this.parent().parent().find('.add-quantity').removeAttr('readonly', 'readonly');
                         $this.parent().parent().find('.price').html(parseFloat(response.data.selling_price).toFixed(2));
                         $this.parent().parent().find('.vat').html(parseFloat(response.data.vat).toFixed(2));

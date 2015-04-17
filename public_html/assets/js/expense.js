@@ -151,13 +151,13 @@
     var add_btn = $('.add-btn');
 
     add_btn.on('click', function () {
-        var html_product = '<tr class="position-r"><td><input type="text" name="text[]" class="form-control"></td>' +
-            '<td><input type="text" name="amount[]" class="form-control"></td>' +
+        var html_product = '<tr class="position-r"><td><input type="text" name="text[]" class="form-control" required="required" /></td>' +
+            '<td><input type="text" name="amount[]" class="form-control" id="amount" maxlength="7" required="required" /></td>' +
             '<td><select name="vat[]" id="vat" class="form-control"><option value="8">8%</option><option value="15">15%</option><option value="25">25%</option><option value="0">Foreign/Domestic Exempt</option></select></td>' +
             '<td><span class="border-bx block total"> </span></td>' +
             '<td class="position-relative">' +
             '<div class="action-buttons"><a title="Delete" class="invoice-delete fa fa-close btn-danger delete" href="javascript:;"></a></div>' +
-            '<select class="select-product form-control">'+account_code_html+'</select></td></tr>';
+            '<select class="select-product form-control" required="required" >'+account_code_html+'</select></td></tr>';
             // invoice_tr.after(invoice_tr_html_wrap);
             $('.expense-table tr:last').after(html_product);
             selectProduct();
@@ -171,6 +171,22 @@
             $(this).closest('tr').remove();
         else
             alert("At least one product needs to be chosen.");
+    });
+
+    //calculate the cost
+    $(document).on('change', '#amount, #vat', function () {
+        var $this = $(this);
+        var parent = $this.parent().parent();
+        var amount = parseFloat(parent.find('#amount').val());
+        var vat = parseFloat(parent.find('#vat').val());
+
+        if (amount < 1 || isNaN(amount)) {
+            alert('Please select a number at least 1.');
+        }
+        else {
+            var total = (amount + vat * 0.01 * amount);
+            parent.find('.total').html(parseFloat(total).toFixed(2));
+        }
     });
 
 })();

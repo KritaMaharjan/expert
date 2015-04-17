@@ -25,7 +25,7 @@ $(function () {
         "oLanguage": {
             "sProcessing": "<i class = 'fa fa-spinner'></i>  Processing..."
         },
-
+        "order": [[0, "desc"]],
         "processing": true,
         "serverSide": true,
         "ajax": {
