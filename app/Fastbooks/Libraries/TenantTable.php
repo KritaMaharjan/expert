@@ -51,6 +51,7 @@ class TenantTable {
         $this->expensePayment();
         $this->accountCodes();
         $this->transactions();
+        $this->entries();
     }
 
     /**
@@ -565,15 +566,31 @@ class TenantTable {
         if (!Schema::hasTable($this->tbl_profix . 'transactions')) {
             Schema::create($this->tbl_profix . 'transactions', function ($table) {
                 $table->increments('id'); // autoincrement value of a vacation
-                $table->integer('account_code_id'); //account id from account code table
+                $table->integer('description'); //account id from account code table
+                $table->decimal('amount', 11, 2); // Transaction amount
+                $table->tinyInteger('type'); // 1: Bill , 2: Expenses
+                // created_at, updated_at DATETIME
+                $table->timestamps();
+            });
+        }
+    }
+
+
+    /**
+     * Entries table : one to many relation with transactions
+     */
+    private function entries()
+    {
+        if (!Schema::hasTable($this->tbl_profix . 'entries')) {
+            Schema::create($this->tbl_profix . 'entries', function ($table) {
+                $table->increments('id'); // autoincrement value of a vacation
+                $table->integer('transaction_id'); //transaction id from account code table
+                $table->integer('account_code'); //account code from config
                 $table->integer('subledger'); // sub-ledger
                 $table->decimal('amount', 11, 2); // Transaction amount
                 $table->text('description'); // transaction description
                 $table->tinyInteger('type'); // 1: Debit , 2: credit
-                $table->float('vat'); // vat
-                $table->date('payment_date'); // payment date
-                // created_at, updated_at DATETIME
-                $table->timestamps();
+                $table->float('vat'); // vat %
             });
         }
     }
