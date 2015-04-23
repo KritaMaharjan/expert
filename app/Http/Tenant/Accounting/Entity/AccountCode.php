@@ -4,9 +4,12 @@ namespace App\Http\Tenant\Accounting\Entity;
 class AccountCode {
 
     protected $code = null;
+    protected $accounts = [];
 
     function __construct($code)
     {
+        $this->accounts = \Config::get('accounts.codes');
+
         if (self::isValidCode($code)) {
             $this->code = $code;
         } else {
@@ -19,12 +22,16 @@ class AccountCode {
      */
     public static function isValidCode($code)
     {
-        $accounts = \Config::get('accounts.codes');
-        if (array_key_exists($code, $accounts)) {
+        if (array_key_exists($code, self::$accounts)) {
             return true;
         }
 
         return false;
+    }
+
+    function description()
+    {
+        return $this->accounts[$this->code]['en'];
     }
 
 
@@ -33,7 +40,7 @@ class AccountCode {
      */
     public function __toString()
     {
-        return (string) $this->code;
+        return (string)$this->code;
     }
 
 } 

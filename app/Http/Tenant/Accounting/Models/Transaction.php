@@ -33,4 +33,14 @@ class Transaction extends Model {
      */
     protected $hidden = [];
 
+
+    public function boot(DispatcherContract $events)
+    {
+        parent::boot($events);
+
+        User::creating(function($user)
+        {
+
+        });
+    }
 }

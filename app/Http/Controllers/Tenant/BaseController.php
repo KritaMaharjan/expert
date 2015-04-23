@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
+use App\Http\Tenant\Accounting\Models\AccountingYear;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
@@ -31,6 +32,12 @@ class BaseController extends Controller {
      * @var
      */
     protected $current_lang;
+
+    /**
+     * Current Accounting Year
+     * @var
+     */
+    protected $current_accounting_year = null;
 
     /**
      * initialized everything for Tenant Controllers
@@ -97,12 +104,22 @@ class BaseController extends Controller {
         View::share('current_path', Request::path());
         View::share('domain', session()->get('domain'));
         View::share('current_lang', $this->current_lang);
+        View::share('current_accounting_year', $this->accountingYear());
 
         /* View::composer('tenant.layouts.partials.header', function ($view) {
              $view->with('company_logo', $this->getCompanyLogo());
          });*/
     }
 
+    /**
+     * get Current Accounting Year
+     * @return bool|null
+     */
+    function accountingYear()
+    {
+       $this->current_accounting_year = AccountingYear::CurrentYear();
+       return $this->current_accounting_year;
+    }
 
     /**
      * Get Company logo
