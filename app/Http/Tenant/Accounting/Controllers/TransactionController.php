@@ -6,21 +6,22 @@ use App\Http\Tenant\Accounting\Libraries\Record;
 use App\Http\Tenant\Accounting\Models\Transaction;
 use App\Http\Tenant\Invoice\Models\Bill;
 use App\Models\Tenant\Customer;
+use Illuminate\Http\Request;
 
 class TransactionController extends BaseController {
 
     /**
      * @param Transaction $transaction
+     * @param Request $request
      * @return \Illuminate\View\View
      */
-    function index(Transaction $transaction)
+    function index(Transaction $transaction, Request $request)
     {
-        $bill = Bill::find(1);
-        $customer = Customer::find(1);
-        Record::sendABill($bill, $customer, 2500, 15);
-        $transactions = $transaction->select()->with('entries')->get();
+        $transactions = $transaction->getPagination();
 
+        $get = ['type' => $request->get('type'), 'from' => $request->get('from'), 'to' => $request->get('to')];
+        $get = (object)$get;
 
-        return view('tenant.accounting.transaction.index', compact('transactions'));
+        return view('tenant.accounting.transaction.index', compact('transactions', 'get'));
     }
 }

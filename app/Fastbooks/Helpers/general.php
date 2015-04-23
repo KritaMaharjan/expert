@@ -122,6 +122,7 @@ function format_datetime($date)
 function format_id($id = 0, $zeros = 3)
 {
     $id = sprintf("%0" . $zeros . "d", $id);
+
     return $id;
 }
 
@@ -183,6 +184,18 @@ function float_format($number, $digits = 2)
 function get_name($user_id)
 {
     $user = \App\Models\Tenant\User::select('fullname')->find($user_id);
-    $name = (!empty($user))? $user->fullname : 'Undefined';
+    $name = (!empty($user)) ? $user->fullname : 'Undefined';
+
     return $name;
+}
+
+
+function display_vat($code)
+{
+    $vat = \App\Http\Tenant\Accounting\Entity\Vat::isAccountCode($code);
+    if (!is_null($vat)) {
+        return $vat['description'];
+    }
+
+    return '';
 }
