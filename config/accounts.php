@@ -435,7 +435,7 @@ return [
         15   => '2713',
         25   => '2711',
         0    => 'Domestic Exempt',
-        2712 => 'imported services',
+        2712 => 'Imported Services',
     ],
 
 

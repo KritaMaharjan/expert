@@ -52,12 +52,13 @@ class ListController extends BaseController
 
     public function RegisterPayment()
     {
-        $expense_rules = [
-            'amount_paid' => 'required|numeric',
-            'payment_date' => 'required|date'
-        ];
         $id = $this->request->route('id');
         $expense = $this->expense->find($id);
+
+        $expense_rules = [
+            'amount_paid' => 'required|numeric|maxValue:'.$expense->remaining,
+            'payment_date' => 'required|date'
+        ];
 
         if (empty($expense))
             return $this->fail(['error' => 'Invalid Expense ID']);
@@ -82,7 +83,7 @@ class ListController extends BaseController
     public function dataJson()
     {
         if ($this->request->ajax()) {
-            $select = ['id', 'type', 'billing_date', 'payment_due_date', 'invoice_number', 'created_at'];
+            $select = ['id', 'type', 'remaining', 'billing_date', 'payment_due_date', 'invoice_number', 'created_at'];
             $json = $this->expense->dataTablePagination($this->request, $select);
             echo json_encode($json, JSON_PRETTY_PRINT);
         } else {

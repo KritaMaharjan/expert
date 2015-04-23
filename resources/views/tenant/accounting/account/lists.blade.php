@@ -16,6 +16,7 @@ Accounting List
                                 <thead>
                                     <tr>
                                         <th>Invoice Number</th>
+                                        <th>Remaining</th>
                                         <th>Billing Date</th>
                                         <th>Payment Due Date</th>
                                         <th>Type</th>

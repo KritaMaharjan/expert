@@ -6,6 +6,7 @@ use App\Http\Controllers\Tenant\BaseController;
 use App\Http\Tenant\Accounting\Models\Payroll;
 use App\Http\Tenant\Accounting\Models\Expense;
 use Laracasts\Flash\Flash;
+use App\Http\Tenant\Accounting\Models\Entry;
 
 class AccountingController extends BaseController {
 
@@ -25,12 +26,13 @@ class AccountingController extends BaseController {
         'payment_date' => 'required|date',
     ];
 
-    public function __construct(Payroll $payroll, Request $request, Expense $expense)
+    public function __construct(Payroll $payroll, Request $request, Expense $expense, Entry $entry)
     {
         parent::__construct();
         $this->payroll = $payroll;
         $this->request = $request;
         $this->expense = $expense;
+        $this->entry = $entry;
     }
 
     public function payroll()
@@ -64,7 +66,30 @@ class AccountingController extends BaseController {
 
     public function vat()
     {
-        return view('tenant.accounting.account.vat');
+        $vat_entries = $this->entry->getVatEntries();
+        return view('tenant.accounting.vat.index', compact('vat_entries'));
+    }
+
+    public function entries()
+    {
+        if($this->request->ajax()) {
+            $vat_entries = $this->entry->getVatEntries($this->request->all());
+            $template = \View::make('tenant.accounting.vat.entries', compact('vat_entries'))->render();
+            return $this->success(['details' => $template]);
+        }
+        return false;
+    }
+
+    public function action()
+    {
+        if($this->request->ajax()) {
+            $action = $this->request->route('action');
+            $status = ($action == 'sent')? 1 : 2;
+            $vat_entries = $this->entry->getVatEntries($this->request->all());
+            $template = \View::make('tenant.accounting.vat.entries', compact('vat_entries'))->render();
+            return $this->success(['details' => $template]);
+        }
+        return false;
     }
 
     public function setup()

@@ -36,14 +36,35 @@ class ExpenseController extends BaseController {
         if($this->request->input('type') == 1)
             $this->expense_rules['supplier_id'] = 'required|integer|exists:fb_suppliers,id';
 
+        $total = $this->getTotal($this->request->all());
+
+        $this->expense_rules['amount_paid'] = 'numeric|maxValue:'.$total;
+
         $validator = \Validator::make($this->request->all(), $this->expense_rules);
         if ($validator->fails())
-            return redirect()->back()->withErrors($validator)->withInput();
+            return $this->fail(['errors' => $validator->messages()]);
+            //return redirect()->back()->withErrors($validator)->withInput();
 
-        $this->expense->createExpense($this->request);
+        $result = $this->expense->createExpense($this->request);
 
         Flash::success('Expense added successfully!');
-        return tenant()->route('tenant.accounting.index');
+        return ($result) ? $this->success(['result' => $result]) : $this->fail(['errors' => 'Something went wrong!']);
+        //return tenant()->route('tenant.accounting.index');
+    }
+
+    private function getTotal($request)
+    {
+        $products = $request['text'];
+        $amount = $request['amount'];
+        $vat = $request['vat'];
+        $expense_total = 0;
+        foreach ($products as $key => $product) {
+            if (isset($amount[$key]) && $amount[$key] > 0) {
+                $total = $amount[$key] + ($vat[$key] * 0.01 * $amount[$key]);
+            }
+            $expense_total += $total;
+        }
+        return $expense_total;
     }
 
     public function getAccountCode($lang)
@@ -76,7 +97,7 @@ class ExpenseController extends BaseController {
 
         $validator = \Validator::make($this->request->all(), $this->expense_rules);
         if ($validator->fails())
-            return redirect()->back()->withErrors($validator)->withInput();
+            return $this->fail(['errors' => $validator->messages()]);
 
         $updated = $this->expense->updateExpense($this->request, $id);
 
@@ -84,7 +105,8 @@ class ExpenseController extends BaseController {
             Flash::success('Expense updated successfully!');
         else
             Flash::fail('Something went wrong!');
-        return tenant()->route('tenant.accounting.index');
+
+        return ($updated) ? $this->success(['result' => $updated]) : $this->fail(['errors' => 'Something went wrong!']);
 
     }
 

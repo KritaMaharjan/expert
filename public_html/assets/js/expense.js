@@ -67,13 +67,7 @@
         return item.text;
     }
 
-    $("#billing-date-pickers").datepicker({
-        "format": "yyyy-mm-dd"
-    });
-    $("#payment-date-pickers").datepicker({
-        "format": "yyyy-mm-dd"
-    });
-    $("#paid-date-pickers").datepicker({
+    $(".date-picker").datepicker({
         "format": "yyyy-mm-dd"
     });
 
@@ -193,6 +187,52 @@
             var total = (amount + vat * 0.01 * amount);
             parent.find('.total').html(parseFloat(total).toFixed(2));
         }
+    });
+
+    //submit the form
+    $(document).on('submit', '#expense-form', function (e) {
+        e.preventDefault();
+        var form = $(this);
+        var formAction = form.attr('action');
+        var formData = form.serialize();
+
+        $('.error').remove();
+        form.find('.expense-submit').html('Loading...');
+        form.find('.expense-submit').attr('disabled', 'disabled');
+
+        form.find('.has-error').removeClass('has-error');
+        form.find('label.error').remove();
+        $('.callout').remove();
+
+        $.ajax({
+            url: formAction,
+            type: 'POST',
+            dataType: 'json',
+            data: formData
+        })
+            .done(function (response) {
+                if(response.status == 0)
+                {
+                    $.each(response.data.errors, function( index, value ) {
+                        var errorDiv = '.box-body #'+index;
+                        $(errorDiv).closest( ".form-group" ).addClass('has-error');
+                        $('.box-body #'+index).after('<label class="error error-'+index+'">'+value+'<label>');
+                    });
+                }
+
+                else {
+                    //$('.mainContainer .box-solid').before(notify('success', 'Payment added Successfully!'));
+                    window.location.replace(appUrl + 'accounting');
+                } //success
+            })
+            .fail(function () {
+                alert('Something went wrong! Please try again later!');
+            })
+            .always(function () {
+                form.find('.expense-submit').removeAttr('disabled');
+                form.find('.expense-submit').html('Register expense');
+
+            });
     });
 
 })();

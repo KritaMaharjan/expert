@@ -59,6 +59,7 @@
                     <th>Amount Paid</th>
                     <th>Payment Date</th>
                     <th>Payment Method</th>
+                    <th>Registered by</th>
                 </thead>
                 <tbody>
                 @foreach($expense->payments as $payment)
@@ -66,6 +67,7 @@
                         <td>{{ float_format($payment->amount_paid) }}</td>
                         <td>{{ readable_date($payment->payment_date) }}</td>
                         <td>{{ ($payment->payment_method == 1) ? 'Cash' : 'Bank Account' }}</td>
+                        <td>{{ get_name($payment->user_id) }}</td>
                     </tr>
                 @endforeach
                 </tbody>

@@ -180,3 +180,10 @@ function float_format($number, $digits = 2)
 {
     return number_format($number, $digits);
 }
+
+function get_name($user_id)
+{
+    $user = \App\Models\Tenant\User::select('fullname')->find($user_id);
+    $name = (!empty($user))? $user->fullname : 'Undefined';
+    return $name;
+}
