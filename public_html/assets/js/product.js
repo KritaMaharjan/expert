@@ -98,7 +98,7 @@ $(function () {
                     if ("errors" in response.data) {
 
                         $.each(response.data.errors, function (id, error) {
-                            $('.modal-body #' + id).parent().addClass('has-error')
+                            $('.modal-body #' + id).parent().addClass('has-error');
                             $('.modal-body #' + id).after('<label class="error error-' + id + '">' + error[0] + '<label>');
                         })
                     }

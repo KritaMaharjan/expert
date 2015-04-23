@@ -169,15 +169,23 @@ Route::group($group_auth, function () {
 
     Route::group(['namespace' => 'Tenant\Accounting\Controllers'], function () {
         get('accounting', ['as' => 'tenant.accounting.index', 'uses' => 'ListController@index']);
+        get('accounting/{id}/pay', ['as' => 'tenant.accounting.pay', 'uses' => 'ListController@pay']);
+        post('accounting/{id}/pay', ['as' => 'tenant.accounting.register.payment', 'uses' => 'ListController@registerPayment']);
         post('accounting/data', ['as' => 'tenant.accounting.data', 'uses' => 'ListController@dataJson']);
+        get('delete/expense/{id}', ['as' => 'tenant.expense.delete', 'uses' => 'ListController@deleteExpense']);
+
+        // for expense
+        get('accounting/expense', ['as' => 'tenant.accounting.expense', 'uses' => 'ExpenseController@index']);
+        get('accounting/expense/{id}', ['as' => 'tenant.accounting.expense.details', 'uses' => 'ExpenseController@details']);
+        post('accounting/expense', ['as' => 'tenant.accounting.create.expense', 'uses' => 'ExpenseController@createExpense']);
+        get('expense/{id}/edit', ['as' => 'tenant.expense.edit', 'uses' => 'ExpenseController@edit']);
+        post('expense/{id}/edit', ['as' => 'tenant.expense.update', 'uses' => 'ExpenseController@update']);
 
         post('accounting', ['as' => 'tenant.accounting.create', 'uses' => 'AccountingController@create']);
         get('accounting/payroll', ['as' => 'tenant.accounting.payroll', 'uses' => 'AccountingController@payroll']);
         get('accounting/payroll/add', ['as' => 'tenant.accounting.payroll.add', 'uses' => 'AccountingController@addPayroll']);
         post('accounting/payroll/add', ['as' => 'tenant.accounting.payroll.create', 'uses' => 'AccountingController@createPayroll']);
         get('payout/details/{employeeId}', ['as' => 'tenant.accounting.payroll.create', 'uses' => 'AccountingController@employeePayrollDetails']);
-        get('accounting/expense', ['as' => 'tenant.accounting.expense', 'uses' => 'AccountingController@expense']);
-        post('accounting/expense', ['as' => 'tenant.accounting.create.expense', 'uses' => 'AccountingController@createExpense']);
         get('accounting/open', 'AccountingController@open');
         get('accounting/close', 'AccountingController@close');
         get('accounting/vat', 'AccountingController@vat');

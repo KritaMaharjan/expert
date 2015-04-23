@@ -227,7 +227,9 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $profile->postcode = $details['postcode'];
         $profile->town = $details['town'];
         $profile->comment = $details['comment'];
-        if ($fileName != null) $profile->photo = $fileName;
+        if ($fileName != null) {
+            $profile->photo = $fileName; //unlink images
+        }
         $profile->tax_card = $details['tax_card'];
         $profile->social_security_number = $details['social_security_number'];
         $profile->smtp = $personal_email_setting;

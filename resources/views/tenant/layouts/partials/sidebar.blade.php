@@ -27,7 +27,7 @@
             @endif
 
             @if(FB::can_view('Invoice'))
-            <li class="treeview">
+            <li class="treeview" <?php echo (strpos($current_path, 'invoice') !==false)? 'active' : '' ?>>
               <a href="#" title="Invoices">
                 <i class="fa fa-file"></i> <span>Invoices</span> <i class="fa fa-angle-left pull-right"></i>
               </a>

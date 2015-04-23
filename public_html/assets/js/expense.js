@@ -17,7 +17,7 @@
 
     $('.source').on('change', function(){
         var source = $(this).val();
-        if(source == 'supplier')
+        if(source == 1)
             $('.supplier').show();
         else
             $('.supplier').hide();
@@ -85,8 +85,12 @@
 
     selectProduct();
 
-    $(document).on('ifChanged', '#paid-box .icheck', function (e) {
-        $("#after-paid").slideToggle();
+    $(document).on('ifChecked', '#paid-box .icheck', function (e) {
+        $("#after-paid").show("slow");
+    });
+
+    $(document).on('ifUnchecked', '#paid-box .icheck', function (e) {
+        $("#after-paid").hide("slow");
     });
 
     //add new supplier
@@ -159,7 +163,9 @@
             '<div class="action-buttons"><a title="Delete" class="invoice-delete fa fa-close btn-danger delete" href="javascript:;"></a></div>' +
             '<select class="select-product form-control" required="required" >'+account_code_html+'</select></td></tr>';
             // invoice_tr.after(invoice_tr_html_wrap);
-            $('.expense-table tr:last').after(html_product);
+            var $this = $('.expense-table tr:last').after(html_product);
+            $('.expense-table tr:last .select-product option:selected').removeAttr('selected');
+            $('.expense-table tr:last #vat option:selected').removeAttr('selected');
             selectProduct();
     });
 

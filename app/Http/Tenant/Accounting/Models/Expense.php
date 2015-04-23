@@ -41,6 +41,8 @@ class Expense extends Model
                 'is_paid' => ($request['is_paid'])? 1 : 0
             ]);
 
+            $expense_total = 0;
+            $expense_paid = 0;
             $products = $request['text'];
             $amount = $request['amount'];
             $vat = $request['vat'];
@@ -57,10 +59,11 @@ class Expense extends Model
                         'total' => $total,
                         'account_code_id' => $account_code_id[$key],
                     ]);
+                    $expense_total += $total;
                 }
 
             }
-
+            $expense_remaining = $expense_total;
             if($request['is_paid']) {
                 Payment::create([
                     'expense_id' => $expense->id,
@@ -68,7 +71,13 @@ class Expense extends Model
                     'payment_method' => $request['payment_method'],
                     'payment_date' => $request['payment_date']
                 ]);
+                $expense_paid += $request['amount_paid'];
+                $expense_remaining = $expense_total - $expense_paid;
             }
+
+            $expense->total = $expense_total;
+            $expense->paid = $expense_paid;
+            $expense->remaining = $expense_remaining;
 
             DB::commit();
             return $expense->toArray();
@@ -77,6 +86,91 @@ class Expense extends Model
             DB::rollback();
             throw $e;
         }
+    }
+
+    public function updateExpense(Request $request, $id) {
+        $expense = Expense::find($id);
+
+        if(!empty($expense)) {
+            // Start transaction!
+            DB::beginTransaction();
+            try {
+                //update expense
+                $expense->type = $request['type'];
+                $expense->supplier_id = isset($request['supplier_id']) ? $request['supplier_id'] : null;
+                $expense->billing_date = $request['billing_date'];
+                $expense->payment_due_date = $request['payment_due_date'];
+                $expense->invoice_number = $request['invoice_number'];
+                $expense->bill_image = $request['bill_image'];
+                $expense->is_paid = ($request['is_paid']) ? 1 : 0;
+                $expense->save();
+
+
+                //deleted related products
+                Product::where('expense_id', $id)->delete();
+
+                //add products
+                $products = $request['text'];
+                $amount = $request['amount'];
+                $vat = $request['vat'];
+                $account_code_id = $request['account_code_id'];
+
+                foreach ($products as $key => $product) {
+                    if (isset($amount[$key]) && $amount[$key] > 0) {
+                        $total = $amount[$key] + ($vat[$key] * 0.01 * $amount[$key]);
+                        Product::create([
+                            'expense_id' => $expense->id,
+                            'text' => $product,
+                            'amount' => $amount[$key],
+                            'vat' => $vat[$key],
+                            'total' => $total,
+                            'account_code_id' => $account_code_id[$key],
+                        ]);
+                    }
+                }
+
+                DB::commit();
+                return $expense->toArray();
+
+            } catch (\Exception $e) {
+                DB::rollback();
+                return false;
+            }
+        }
+        return false;
+    }
+
+    public function payExpense(Request $request, $id) {
+        $payment_info = Payment::create([
+            'expense_id' => $id,
+            'amount_paid' => $request['amount_paid'],
+            'payment_method' => $request['payment_method'],
+            'payment_date' => $request['payment_date']
+        ]);
+        return $payment_info->toArray();
+    }
+
+    public function deleteExpense($id)
+    {
+        $expense = Expense::find($id);
+        if (!empty($expense)) {
+            // Start transaction!
+            DB::beginTransaction();
+            try {
+                //delete expense
+                $expense->delete();
+                //deleted related products
+                Product::where('expense_id', $id)->delete();
+                //deleted related payments
+                Payment::where('expense_id', $id)->delete();
+                DB::commit();
+                return true;
+            } catch (\Exception $e) {
+                DB::rollback();
+                return false;
+            }
+        }
+        return false;
     }
 
     function dataTablePagination(Request $request, array $select = array(), $is_offer = false)
@@ -117,6 +211,7 @@ class Expense extends Model
         $data = $query->get();
 
         foreach ($data as $key => &$value) {
+            $value->invoice_number = '<a href="#" data-toggle="modal" data-url="'.tenant()->url('accounting/' . $value->id . '/pay').'" data-target="#fb-modal">' . $value->invoice_number . '</a>';
             $value->type = ($value->type == 1)? 'Supplier' : 'Cash';
         }
 

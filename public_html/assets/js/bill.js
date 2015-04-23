@@ -50,8 +50,6 @@ $(function () {
         }
     });
 
-    
-
     function format(d) {
 
         var conv = '';
@@ -93,8 +91,6 @@ $(function () {
         'Salary: ' + d.due_date + '<br>' +
         'The child row can contain any data you wish, including links, images, inner tables etc.';
     }
-
-    
 
     $(document).on('click', '#payment-submit', function (e) {
         e.preventDefault();
