@@ -3,6 +3,7 @@
 namespace App\Http\Tenant\Accounting\Models;
 
 
+use Ddeboer\Imap\Exception\Exception;
 use Illuminate\Database\Eloquent\Model;
 
 class AccountingYear extends Model {
@@ -35,12 +36,11 @@ class AccountingYear extends Model {
     {
         if(is_null(self::$current_year))
         {
-            $row = self::select('year')->orderBy('year', 'DESC')->first();
+            $row = self::select('id','year')->orderBy('year', 'DESC')->first();
             if ($row) {
-                return $row->year;
+                return $row;
             }
-
-            return false;
+            throw new Exception('Accounting year not setup yet.');
         }
 
         return self::$current_year;

@@ -21,7 +21,7 @@ class Entry extends Model {
      *
      * @var array
      */
-    protected $fillable = ['id', 'transaction_id', 'account_code', 'description', 'amount', 'type'];
+    protected $fillable = ['id', 'transaction_id', 'account_code', 'subledger', 'description', 'amount', 'type'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -32,4 +32,16 @@ class Entry extends Model {
 
 
     public $timestamps = false;
+
+
+    function account_code()
+    {
+        if (!is_null($this->subledger)) {
+            return $this->account_code . ':' . $this->subledger;
+        }
+
+        return $this->account_code;
+    }
+
+
 }

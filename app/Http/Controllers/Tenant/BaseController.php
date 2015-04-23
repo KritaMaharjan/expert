@@ -117,8 +117,10 @@ class BaseController extends Controller {
      */
     function accountingYear()
     {
-       $this->current_accounting_year = AccountingYear::CurrentYear();
-       return $this->current_accounting_year;
+        if (is_null($this->current_accounting_year))
+            $this->current_accounting_year = AccountingYear::CurrentYear();
+
+        return $this->current_accounting_year;
     }
 
     /**

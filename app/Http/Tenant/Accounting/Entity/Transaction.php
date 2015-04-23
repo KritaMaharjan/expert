@@ -14,15 +14,16 @@ class Transaction {
 
     /**
      * @param Amount $amount
-     * @param $desciption
+     * @param $description
      * @param Vat $vat
      * @param $type
+     * @param $type_id
      */
 
-    function __construct(Amount $amount, $desciption, Vat $vat, $type, $type_id)
+    function __construct(Amount $amount, $description, Vat $vat, $type, $type_id)
     {
         $this->amount = $amount;
-        $this->description = $desciption;
+        $this->description = $description;
         $this->vat = $vat;
         $this->type = $type;
         $this->type_id = $type_id;
@@ -32,21 +33,15 @@ class Transaction {
     function save()
     {
         $data = [
-            'user_id'         => current_user()->id,
-            'accounting_year' => AccountingYear::CurrentYear(),
-            'amount'          => $this->amount,
-            'description'     => $this->description,
-            'vat'             => $this->vat,
-            'type'            => $this->type,
-            'type_id'         => $this->type_id
+            'user_id'            => current_user()->id,
+            'accounting_year_id' => AccountingYear::CurrentYear()->id,
+            'amount'             => $this->amount,
+            'description'        => $this->description,
+            'vat'                => $this->vat,
+            'type'               => $this->type,
+            'type_id'            => $this->type_id
         ];
 
         return TransactionModel::create($data);
     }
-
-    public function __toString()
-    {
-        return $this->description;
-    }
-
 } 

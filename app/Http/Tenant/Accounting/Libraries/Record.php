@@ -37,7 +37,7 @@ class Record {
      * @param $vat
      * @return array
      */
-    public function sendABill(Bill $bill, Customer $customer, $amount, $vat)
+    public static function sendABill(Bill $bill, Customer $customer, $amount, $vat)
     {
         $vat = new Vat($vat);
         $amount = new Amount($amount);
@@ -67,7 +67,6 @@ class Record {
         $entry->credit(new Credit($amount_vat, $credit2_account_code, $credit2_description));
 
 
-        dd($entry);
 
         // finally save everything
         return $entry->save();
@@ -84,7 +83,7 @@ class Record {
      * @param $amount
      * @return array
      */
-    public function billPayment(Bill $bill, Customer $customer, $amount)
+    public static function billPayment(Bill $bill, Customer $customer, $amount)
     {
 
         $amount = new Amount($amount);
@@ -125,7 +124,7 @@ class Record {
      * @param $vat
      * @return array
      */
-    public function billCredit(Bill $bill, Customer $customer, Amount $amount, $vat)
+    public static function billCredit(Bill $bill, Customer $customer, Amount $amount, $vat)
     {
         $vat = new Vat($vat);
         $amount = new Amount($amount);
@@ -171,7 +170,7 @@ class Record {
      * @param Amount $amount
      * @return array
      */
-    public function billAsLoss(Bill $bill, Customer $customer, $amount)
+    public static function billAsLoss(Bill $bill, Customer $customer, $amount)
     {
         $amount = new Amount($amount);
 
@@ -215,7 +214,7 @@ class Record {
      * @internal param AccountCode $code
      * @return array
      */
-    public function createAnExpense(Expense $expense, Supplier $supplier, AccountCode $UserSelectedcode, $amount, $vat)
+    public static function createAnExpense(Expense $expense, Supplier $supplier, AccountCode $UserSelectedcode, $amount, $vat)
     {
         $vat = new Vat($vat);
         $amount = new Amount($amount);
@@ -259,7 +258,7 @@ class Record {
      * @param Supplier $supplier
      * @param $amount
      */
-    public function expensePaidWithBank(Expense $expense, Supplier $supplier, $amount)
+    public static function expensePaidWithBank(Expense $expense, Supplier $supplier, $amount)
     {
 
         $amount = new Amount($amount);
@@ -301,7 +300,7 @@ class Record {
      * @param $vat
      * @return array
      */
-    public function expensePaidWithCash(Expense $expense, Supplier $supplier, AccountCode $userSelectedcode, $amount, $vat)
+    public static function expensePaidWithCash(Expense $expense, Supplier $supplier, AccountCode $userSelectedcode, $amount, $vat)
     {
         $vat = new Vat($vat);
         $amount = new Amount($amount);
@@ -336,12 +335,12 @@ class Record {
     }
 
 
-    public function expenseCancel()
+    public static function expenseCancel()
     {
 
     }
 
-    public function paySalary()
+    public static function paySalary()
     {
 
     }
