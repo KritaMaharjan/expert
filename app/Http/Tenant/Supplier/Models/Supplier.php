@@ -166,6 +166,6 @@ class Supplier extends Model {
     function getAccount($account_code, $id)
     {
         $id = Supplier::select('id')->find($id)->id;
-        return $account_code.format_id($id, 4);
+        return $account_code.'-s'.format_id($id, 4);
     }
 }

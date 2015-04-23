@@ -169,6 +169,6 @@ class Customer extends Model {
     function getAccount($account_code, $id)
     {
         $id = Customer::select('id')->find($id)->id;
-        return $account_code.format_id($id, 4);
+        return $account_code.'-c'.format_id($id, 4);
     }
 }
