@@ -188,7 +188,11 @@ Route::group($group_auth, function () {
         get('payout/details/{employeeId}', ['as' => 'tenant.accounting.payroll.create', 'uses' => 'AccountingController@employeePayrollDetails']);
         get('accounting/open', 'AccountingController@open');
         get('accounting/close', 'AccountingController@close');
+
         get('accounting/vat', 'AccountingController@vat');
+        post('accounting/vat/entries', 'AccountingController@entries');
+        get('accounting/vat/action/{action}', 'AccountingController@action');
+
         get('accounting/setup', 'AccountingController@setup');
         get('accounting/new-business', 'AccountingController@newBusiness');
         get('accounting/transaction', 'TransactionController@index');

@@ -67,7 +67,6 @@ class Record {
         $entry->credit(new Credit($amount_vat, $credit2_account_code, $credit2_description));
 
 
-
         // finally save everything
         return $entry->save();
     }
@@ -333,7 +332,6 @@ class Record {
         // finally save everything
         return $entry->save();
     }
-
 
     public static function expenseCancel()
     {

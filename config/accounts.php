@@ -432,6 +432,7 @@ return [
         25 => ['account_code' => '2711', 'display' => '25', 'description' => 'High Tax'],
         15 => ['account_code' => '2713', 'display' => '15', 'description' => 'Medium Tax'],
         8  => ['account_code' => '2714', 'display' => '8', 'description' => 'Low Tax'],
+
     ],
 
 

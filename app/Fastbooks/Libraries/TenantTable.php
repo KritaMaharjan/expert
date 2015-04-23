@@ -529,6 +529,7 @@ class TenantTable {
         if (!Schema::hasTable($this->tbl_profix . 'expense_payment')) {
             Schema::create($this->tbl_profix . 'expense_payment', function ($table) {
                 $table->increments('id'); // autoincrement value
+                $table->integer('user_id'); // user id for the entry person
                 $table->integer('expense_id'); //Expense id
                 $table->decimal('amount_paid', 11, 2); // payment amount
                 $table->tinyInteger('payment_method'); // 1:cash , 2:bank
@@ -590,7 +591,6 @@ class TenantTable {
                 $table->decimal('amount', 11, 2); // Transaction amount
                 $table->text('description'); // transaction description
                 $table->tinyInteger('type'); // 1: Debit , 2: credit
-                $table->float('vat'); // vat %
             });
         }
     }

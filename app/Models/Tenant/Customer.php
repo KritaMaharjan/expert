@@ -159,4 +159,14 @@ class Customer extends Model {
 
         return $data;
     }
+
+    function name()
+    {
+        return $this->name;
+    }
+
+    function account()
+    {
+        return $this->account_code.'-c'.format_id($this->id, 4);
+    }
 }

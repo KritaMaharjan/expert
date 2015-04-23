@@ -154,7 +154,16 @@ class Supplier extends Model {
         foreach ($data as $k => &$items) {
             $this->toArray();
         }
-
         return $data;
+    }
+
+    function name()
+    {
+        return $this->name;
+    }
+
+    function account()
+    {
+        return $this->account_code.'-s'.format_id($this->id, 4);
     }
 }

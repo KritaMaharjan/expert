@@ -4,7 +4,7 @@
             <div class="form-group clearfix">
                 {!! Form::select('type', [1 => 'From supplier', 2 => 'Cash purchase'], null, array('class' => 'form-control half-width2 pull-left source', 'id' => 'source')) !!}
                 <div class="date-box supplier {{ ($errors->has('supplier_id'))? 'has-error': '' }}" style="{{ ($edit && $expense['type'] == 2)? 'display:none' : 'display:block'}}">
-                    <select name="supplier_id" class="form-control select-supplier">
+                    <select name="supplier_id" class="form-control select-supplier" id="supplier_id">
                         <option value="">Select supplier</option>
                     </select>
 
@@ -22,8 +22,8 @@
             </div>
             <div class="form-group clearfix {{ ($errors->has('billing_date'))? 'has-error': '' }}">
                 {!! Form::label('billing_date', 'Billing date') !!}
-                <div class='input-group date date-box' id='due-date-picker'>
-                      {!! Form:: text('billing_date', null, array('class' => 'form-control', 'id' =>'billing-date-pickers')) !!}
+                <div class='input-group date date-box' id='billing_date'>
+                      {!! Form:: text('billing_date', null, array('class' => 'form-control date-picker', 'id' =>'')) !!}
                       <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                       </span>
                 </div>
@@ -36,8 +36,8 @@
             <div class="form-group clearfix {{ ($errors->has('payment_due_date'))? 'has-error': '' }}">
                 {!! Form::label('payment_due_date', 'Payment due date') !!}
 
-                <div class='input-group date date-box' id='due-date-picker'>
-                    {!! Form:: text('payment_due_date', null, array('class' => 'form-control', 'id' =>'payment-date-pickers')) !!}
+                <div class='input-group date date-box' id='payment_due_date'>
+                    {!! Form:: text('payment_due_date', null, array('class' => 'form-control date-picker', 'id' =>'')) !!}
                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                     </span>
                 </div>
@@ -49,7 +49,7 @@
             </div>
             <div class="form-group clearfix {{ ($errors->has('invoice_number'))? 'has-error': '' }}">
                 {!! Form::label('', 'Invoice number') !!}
-                {!! Form:: text('invoice_number', null, array('class' => 'form-control date-box')) !!}
+                {!! Form:: text('invoice_number', null, array('class' => 'form-control date-box', 'id' => 'invoice_number')) !!}
 
                 @if($errors->has('invoice_number'))
                      {!! $errors->first('invoice_number', '<label class="control-label error error-right" for="inputError">:message</label>') !!}
@@ -184,15 +184,18 @@
                             {!! Form::select('payment_method', [1 => 'Cash', 2 =>'Bank account'] , null, array('class' => 'form-control pull-left')) !!}
                         </div>
                     </div>
-                    <div class="form-group clearfix">
+                    <div class="form-group clearfix {{ ($errors->has('amount_paid'))? 'has-error' : '' }}">
                         {!! Form::label('', 'Amount paid') !!}
-                        {!! Form:: text('amount_paid', null, array('class' => 'form-control date-box')) !!}
+                        {!! Form:: text('amount_paid', null, array('class' => 'form-control date-box', 'id' => 'amount_paid')) !!}
+                        @if($errors->has('amount_paid'))
+                             {!! $errors->first('amount_paid', '<label class="control-label error error-right" for="inputError">:message</label>') !!}
+                        @endif
                     </div>
                     <div class="form-group clearfix {{ ($errors->has('payment_date'))? 'has-error': '' }}">
                         {!! Form::label('payment_date', 'Paid date') !!}
 
-                        <div class='input-group date date-box' id='due-date-picker'>
-                            {!! Form:: text('payment_date', null, array('class' => 'form-control', 'id' =>'paid-date-pickers')) !!}
+                        <div class='input-group date date-box' id='payment_date'>
+                            {!! Form:: text('payment_date', null, array('class' => 'form-control date-picker', 'id' =>'')) !!}
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
@@ -205,7 +208,7 @@
     <div class="col-md-12">
         <div class="form-group clearfix">
         <div>
-            <button class="btn btn-primary pull-right savebusiness" type="submit">{{($edit)? 'Update expense' : 'Register Expense'}}</button>
+            <button class="btn btn-primary pull-right expense-submit" type="submit">{{($edit)? 'Update expense' : 'Register Expense'}}</button>
         </div>
     </div>
     </div>

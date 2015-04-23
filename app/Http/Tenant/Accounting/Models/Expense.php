@@ -75,9 +75,11 @@ class Expense extends Model
                 $expense_remaining = $expense_total - $expense_paid;
             }
 
-            $expense->total = $expense_total;
+            $expense->amount = $expense_total;
             $expense->paid = $expense_paid;
             $expense->remaining = $expense_remaining;
+            $expense->is_paid = ($expense->remaining == 0)? 1 : 0;
+            $expense->save();
 
             DB::commit();
             return $expense->toArray();
@@ -86,6 +88,7 @@ class Expense extends Model
             DB::rollback();
             throw $e;
         }
+        return false;
     }
 
     public function updateExpense(Request $request, $id) {
@@ -102,9 +105,11 @@ class Expense extends Model
                 $expense->payment_due_date = $request['payment_due_date'];
                 $expense->invoice_number = $request['invoice_number'];
                 $expense->bill_image = $request['bill_image'];
-                $expense->is_paid = ($request['is_paid']) ? 1 : 0;
                 $expense->save();
 
+                $expense_total = 0;
+                $expense_paid = $expense->paid;
+                $expense_remaining = $expense->remaining;
 
                 //deleted related products
                 Product::where('expense_id', $id)->delete();
@@ -127,7 +132,13 @@ class Expense extends Model
                             'account_code_id' => $account_code_id[$key],
                         ]);
                     }
+                    $expense_total += $total;
                 }
+
+                $expense->amount = $expense_total;
+                $expense->remaining = $expense_total - $expense_paid;
+                $expense->is_paid = ($expense->remaining == 0)? 1 : 0;
+                $expense->save();
 
                 DB::commit();
                 return $expense->toArray();
@@ -147,7 +158,16 @@ class Expense extends Model
             'payment_method' => $request['payment_method'],
             'payment_date' => $request['payment_date']
         ]);
-        return $payment_info->toArray();
+
+        $expense = Expense::find($id);
+        $expense->paid = $expense->paid + $request['amount_paid'];
+        $expense->remaining = $expense->remaining - $request['amount_paid'];
+        $expense->is_paid = ($expense->remaining == 0)? 1 : 0;
+        $expense->save();
+
+        $payment_info = $payment_info->toArray();
+        $payment_info['remaining'] = float_format($expense->remaining);
+        return $payment_info;
     }
 
     public function deleteExpense($id)
@@ -213,6 +233,8 @@ class Expense extends Model
         foreach ($data as $key => &$value) {
             $value->invoice_number = '<a href="#" data-toggle="modal" data-url="'.tenant()->url('accounting/' . $value->id . '/pay').'" data-target="#fb-modal">' . $value->invoice_number . '</a>';
             $value->type = ($value->type == 1)? 'Supplier' : 'Cash';
+            $value->remaining = float_format($value->remaining);
+            $value->DT_RowId = "row-" . $value->id;
         }
 
         $expenses['data'] = $data->toArray();

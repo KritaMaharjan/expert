@@ -17,13 +17,14 @@ $(function () {
         },
         "columnDefs": [{
             "orderable": false,
-            "targets": 4,
+            "targets": 5,
             "render": function (data, type, row) {
                 return showActionbtn(row);
             }
         }],
         "columns": [
             {"data": "invoice_number"},
+            {"data": "remaining"},
             {"data": "billing_date"},
             {"data": "payment_due_date"},
             {"data": "type"}
@@ -80,8 +81,8 @@ $(function () {
 
                 else {
                     $('.mainContainer .box-solid').before(notify('success', 'Payment added Successfully!'));
-                    //var action_html = "<td>"+showActionbtn(response.data)+"</td>";
-                    //$('#table-user > tbody').prepend("<tr>"+response.template + action_html+"</tr>");
+                    //change the remaining amount
+                    $('#row-'+response.data.result.expense_id).find('td:nth-child(2)').html(response.data.result.remaining);
                     $('.modal').modal('hide');
                     setTimeout(function () {
                         $('.callout').remove()
