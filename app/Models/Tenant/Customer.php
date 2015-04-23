@@ -159,4 +159,16 @@ class Customer extends Model {
 
         return $data;
     }
+
+    function getName($id)
+    {
+        $name = Customer::select('name')->find($id)->name;
+        return $name;
+    }
+
+    function getAccount($account_code, $id)
+    {
+        $id = Customer::select('id')->find($id)->id;
+        return $account_code.format_id($id, 4);
+    }
 }

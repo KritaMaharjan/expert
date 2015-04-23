@@ -4,7 +4,8 @@ namespace App\Http\Tenant\Accounting\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class VatPeriod extends Model {
+class VatPeriod extends Model
+{
 
     /**
      * The database table used by the model.
@@ -13,16 +14,12 @@ class VatPeriod extends Model {
      */
     protected $table = 'fb_vat_period';
 
-
-    const CREDIT = 1;
-    const DEBIT = 2;
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['id', 'transaction_id', 'account_code', 'description', 'amount', 'type'];
+    protected $fillable = ['id', 'period', 'months', 'status', 'sent_date', 'paid_date'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -30,3 +27,4 @@ class VatPeriod extends Model {
      * @var array
      */
     protected $hidden = [];
+}

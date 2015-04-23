@@ -154,7 +154,18 @@ class Supplier extends Model {
         foreach ($data as $k => &$items) {
             $this->toArray();
         }
-
         return $data;
+    }
+
+    function getName($id)
+    {
+        $name = Supplier::select('name')->find($id)->name;
+        return $name;
+    }
+
+    function getAccount($account_code, $id)
+    {
+        $id = Supplier::select('id')->find($id)->id;
+        return $account_code.format_id($id, 4);
     }
 }

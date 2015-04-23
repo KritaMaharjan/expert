@@ -122,7 +122,6 @@ function format_datetime($date)
 function format_id($id = 0, $zeros = 3)
 {
     $id = sprintf("%0" . $zeros . "d", $id);
-
     return $id;
 }
 
