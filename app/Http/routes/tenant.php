@@ -183,6 +183,7 @@ Route::group($group_auth, function () {
         get('accounting/vat', 'AccountingController@vat');
         get('accounting/setup', 'AccountingController@setup');
         get('accounting/new-business', 'AccountingController@newBusiness');
+        get('accounting/transaction', 'TransactionController@index');
     });
 
     Route::group(['namespace' => 'Tenant\Collection\Controllers'], function () {
