@@ -63,20 +63,20 @@
         </tbody>-->
     </table>
 
-    {!! Form::open(array('method'=>'POST', 'class' => 'action-form sent-form')) !!}
+    {!! Form::open(array('method'=>'POST', 'class' => 'action-form sent-form', 'dataAction' => 'sent')) !!}
         <div class="form-group">
             {!! Form::label('sent_date', 'This has been sent on :') !!}
             {!! Form::text('sent_date', null, array('class' => 'date-picker form-control', 'id' => 'sent_date')) !!}
         </div>
-        {!! Form::button('Mark as sent', array('class'=>'btn btn-primary pull-right sent-submit', 'type'=>'submit')) !!}
+        {!! Form::button('Mark as sent', array('class'=>'btn btn-primary pull-right form-submit', 'type'=>'submit')) !!}
     {!! Form::close() !!}
 
-    {!! Form::open(array('method'=>'POST', 'class' => 'action-form paid-form')) !!}
+    {!! Form::open(array('method'=>'POST', 'class' => 'action-form paid-form', 'dataAction' => 'paid')) !!}
         <div class="form-group">
             {!! Form::label('paid_date', 'This has been paid on :') !!}
             {!! Form::text('paid_date', null, array('class' => 'date-picker form-control', 'id' => 'paid_date')) !!}
         </div>
-        {!! Form::button('Mark as paid', array('class'=>'btn btn-primary pull-right sent-submit', 'type'=>'submit')) !!}
+        {!! Form::button('Mark as paid', array('class'=>'btn btn-primary pull-right form-submit', 'type'=>'submit')) !!}
     {!! Form::close() !!}
 
     {{ FB::js('$(".date-picker").datepicker({

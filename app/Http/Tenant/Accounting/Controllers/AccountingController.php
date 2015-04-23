@@ -7,6 +7,7 @@ use App\Http\Tenant\Accounting\Models\Payroll;
 use App\Http\Tenant\Accounting\Models\Expense;
 use Laracasts\Flash\Flash;
 use App\Http\Tenant\Accounting\Models\Entry;
+use App\Http\Tenant\Accounting\Models\VatPeriod;
 
 class AccountingController extends BaseController {
 
@@ -26,13 +27,14 @@ class AccountingController extends BaseController {
         'payment_date' => 'required|date',
     ];
 
-    public function __construct(Payroll $payroll, Request $request, Expense $expense, Entry $entry)
+    public function __construct(Payroll $payroll, Request $request, Expense $expense, Entry $entry, VatPeriod $vatPeriod)
     {
         parent::__construct();
         $this->payroll = $payroll;
         $this->request = $request;
         $this->expense = $expense;
         $this->entry = $entry;
+        $this->vatPeriod = $vatPeriod;
     }
 
     public function payroll()
@@ -84,8 +86,8 @@ class AccountingController extends BaseController {
     {
         if($this->request->ajax()) {
             $action = $this->request->route('action');
-            $status = ($action == 'sent')? 1 : 2;
-            $vat_entries = $this->entry->getVatEntries($this->request->all());
+            $status = ($action == 'sent')? 1 : 2; //resume
+            $vat_entries = $this->vatPeriod->getVatEntries($this->request->all());
             $template = \View::make('tenant.accounting.vat.entries', compact('vat_entries'))->render();
             return $this->success(['details' => $template]);
         }

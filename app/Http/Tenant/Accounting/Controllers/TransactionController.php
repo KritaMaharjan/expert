@@ -11,12 +11,12 @@ class TransactionController extends BaseController {
 
     function index(Record $record)
     {
-        $bill = Bill::find(1);
+        /*$bill = Bill::find(1);
         $customer = Customer::find(1);
 
         $d = $record->sendABill($bill, $customer, 100, 8);
 
-        dd($d);
+        dd($d);*/
 
 
         return view('tenant.accounting.transaction.index');

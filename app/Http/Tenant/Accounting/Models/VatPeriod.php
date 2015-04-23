@@ -28,8 +28,6 @@ class VatPeriod extends Model
      */
     protected $hidden = [];
 
-
-
     public function getMonth($period)
     {
         switch ($period)

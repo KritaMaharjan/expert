@@ -45,12 +45,13 @@
         }
 
         var form = $(this);
-        var formAction = appUrl + '';
+        var dataAction = $(this).attr('dataAction');
+        var formAction = appUrl + 'accounting/vat/action/'+dataAction;
         var formData = form.serialize();
 
-        $('.modal-body .error').remove();
-        form.find('.payment-submit').html('Loading...');
-        form.find('.payment-submit').attr('disabled', 'disabled');
+        $('.box-solid .error').remove();
+        form.find('.form-submit').html('Loading...');
+        form.find('.form-submit').attr('disabled', 'disabled');
 
         form.find('.has-error').removeClass('has-error');
         form.find('label.error').remove();
@@ -66,17 +67,15 @@
                 if(response.status == 0)
                 {
                     $.each(response.data.errors, function( index, value ) {
-                        var errorDiv = '.modal-body #'+index;
+                        var errorDiv = '.box-solid #'+index;
                         $(errorDiv).closest( ".form-group" ).addClass('has-error');
-                        $('.modal-body #'+index).after('<label class="error error-'+index+'">'+value+'<label>');
+                        $('.box-solid #'+index).after('<label class="error error-'+index+'">'+value+'<label>');
                     });
                 }
 
                 else {
-                    $('.mainContainer .box-solid').before(notify('success', 'Payment added Successfully!'));
+                    $('.mainContainer .box-solid').before(notify('success', 'Marked Successfully!'));
                     //change the remaining amount
-                    $('#row-'+response.data.result.expense_id).find('td:nth-child(2)').html(response.data.result.remaining);
-                    $('.modal').modal('hide');
                     setTimeout(function () {
                         $('.callout').remove()
                     }, 2500);
@@ -86,8 +85,8 @@
                 alert('Something went wrong! Please try again later!');
             })
             .always(function () {
-                form.find('.payment-submit').removeAttr('disabled');
-                form.find('.payment-submit').html('Register expense');
+                form.find('.form-submit').removeAttr('disabled');
+                form.find('.form-submit').html('Mark as '+dataAction);
 
             });
     });
