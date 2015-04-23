@@ -157,15 +157,13 @@ class Supplier extends Model {
         return $data;
     }
 
-    function getName($id)
+    function name()
     {
-        $name = Supplier::select('name')->find($id)->name;
-        return $name;
+        return $this->name;
     }
 
-    function getAccount($account_code, $id)
+    function account()
     {
-        $id = Supplier::select('id')->find($id)->id;
-        return $account_code.'-s'.format_id($id, 4);
+        return $this->account_code.'-s'.format_id($this->id, 4);
     }
 }
