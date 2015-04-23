@@ -7,30 +7,48 @@ Transaction
 @section('content')
 <!-- <div class="box box-solid">
     <div class="box-body">
-        <div class="box-header pad-0">
-            <h3 class="box-title">Close Accounting Year</font></h3>
-        </div>
-
         <div class="row">
             <div class="col-md-12 table-responsive">
-                <table class="table product-table">
-                    <tbody>
-                    <tr>
-                        <td>2015</td>
-                        <td>Open - <a href="#" data-toggle="modal" data-url="#close-ac-modal-data" data-target="#fb-modal" class="to-close" title="Close this one">Close this one</a></td>
-                    </tr>
-                    <tr>
-                        <td>2014</td>
-                        <td><font class="uppercase">Closed</font></td>
-                    </tr>
+                <ul>
+                    @foreach($transactions as  $key => $transaction)
+                        <li>
+                           <p>
+                               {{ $transaction->created_at->format('Y-m-d') }}
+                               {{ $transaction->id  }}
+                               {{ $transaction->description  }}
+                               {{ $transaction->type ? 'Bill' : 'Expense' }}
+                               #{{ $transaction->type_id }}
+                               {{ $transaction->amount }}
+                           </p>
+                            <table class="table table-hover">
+                            <thead>
+                                 <tr>
+                                        <th>Accound Number</th>
+                                        <th>Name</th>
+                                        <th style="text-align: right">Amount</th>
+                                        <th style="text-align: center">Vat Code</th>
+                                 </tr>
+                            </thead>
+                            <tbody>
+                                @foreach($transaction->entries as $k => $entry)
+                                    <tr>
+                                           <td>{{ $entry->account_code() }}</td>
+                                           <td>{{ $entry->description }}</td>
+                                           <td style="text-align: right">{{ $entry->amount }}</td>
+                                           <td style="text-align: center">{{ $entry->vatCode }}</td>
 
-                    </tbody>
-                </table>
+                                    </tr>
+                                @endforeach
+                              </tbody>
+                            </table>
+                        </li>
+                    @endforeach
+                </ul>
             </div>
-
         </div>
     </div>
     <div>
+
 
         <div id="close-ac-modal-data" class="hide">
             <div class="box box-solid">
@@ -134,3 +152,4 @@ Transaction
         {{FB::registerModal()}}
 
         @stop
+

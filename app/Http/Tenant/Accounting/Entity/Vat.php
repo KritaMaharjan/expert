@@ -46,7 +46,19 @@ class Vat {
     {
         $code = self::code();
 
-        return isset($code[$this->code]) ? $code[$this->code] : null;
+        return isset($code[$this->code]['account_code']) ? $code[$this->code]['account_code'] : null;
+    }
+
+    public static function isValidVatAccountCode($account)
+    {
+        $codes = self::code();
+        foreach ($codes as $key => $code) {
+            if ($code['account_code'] == $account) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 

@@ -4,11 +4,11 @@ namespace App\Http\Tenant\Accounting\Entity;
 class AccountCode {
 
     protected $code = null;
-    protected $accounts = [];
+    protected static $accounts = [];
 
     function __construct($code)
     {
-        $this->accounts = \Config::get('accounts.codes');
+        static::$accounts = \Config::get('accounts.codes');
 
         if (self::isValidCode($code)) {
             $this->code = $code;

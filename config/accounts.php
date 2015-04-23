@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'codes'       => [
+    'codes' => [
         10   => ['no' => 'Immaterielle eiendeler o.l', 'en' => 'Intangible fixed assets etc.', 'nature' => 'Real', 'subledger' => 'Main Balance sheet item', 'notes' => ''],
         1000 => ['no' => 'Forskning og utvikling', 'en' => 'Research and development', 'nature' => 'Real', 'subledger' => 'Intangible Asset', 'notes' => ''],
         1020 => ['no' => 'Konsesjoner', 'en' => 'Concessions', 'nature' => 'Real', 'subledger' => 'Intangible Asset', 'notes' => ''],
@@ -426,16 +426,13 @@ return [
         8990 => ['no' => 'Udekket tap', 'en' => '899 Uncovered losses', 'nature' => 'Nominal', 'subledger' => 'Equity', 'notes' => ''],
     ],
 
-    'transaction' => [
-        'SENDABILL' => ['dr' => 1500, 'cr' => 3010],
+    'vat'   => [
+        35 => ['account_code' => '2710', 'display' => 'Domestic Exempt', 'description' => 'Domestic Exempt'],
+        20 => ['account_code' => '2712', 'display' => 'Imported services', 'description' => 'Domestic Exempt'],
+        25 => ['account_code' => '2711', 'display' => '25', 'description' => 'High Tax'],
+        15 => ['account_code' => '2713', 'display' => '15', 'description' => 'Medium Tax'],
+        8  => ['account_code' => '2714', 'display' => '8', 'description' => 'Low Tax'],
 
-    ],
-    'vat'         => [
-        8    => '2714',
-        15   => '2713',
-        25   => '2711',
-        0    => 'Domestic Exempt',
-        2712 => 'Imported Services',
     ],
 
 

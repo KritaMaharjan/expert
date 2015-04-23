@@ -24,7 +24,9 @@ class Transaction extends Model {
      *
      * @var array
      */
-    protected $fillable = ['id', 'description', 'amount', 'type'];
+    protected $fillable = ['id', 'user_id', 'accounting_year_id',  'amount', 'description', 'vat', 'type', 'type_id'];
+
+
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -33,14 +35,10 @@ class Transaction extends Model {
      */
     protected $hidden = [];
 
-
-    public function boot(DispatcherContract $events)
+    public function entries()
     {
-        parent::boot($events);
-
-        User::creating(function($user)
-        {
-
-        });
+        return $this->hasMany('App\Http\Tenant\Accounting\Models\Entry');
     }
+
+
 }
