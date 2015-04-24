@@ -14,16 +14,16 @@ Transaction
 
 
                 {!! Form::open(array('method' => 'get')) !!}
-                    <div class="row">
-                     <div class="col-xs-2">
+                    <div class="row search-blk">
+                     <div class="col-xs-3">
                        <label>From</label>
                        <input type="text" name="from" value="<?php echo $get->from;?>" autocomplete="off" class="form-control date-picker" placeholder="Date">
                      </div>
-                     <div class="col-xs-2">
+                     <div class="col-xs-3">
                        <label>To</label>
                        <input type="text" name="to" value="<?php echo $get->to;?>" autocomplete="off" class="form-control date-picker" placeholder="Date">
                      </div>
-                     <div class="col-xs-2">
+                     <div class="col-xs-3">
                        <label> Filter by</label>
                        <select name="type" class="form-control">
                           <option value="">All</option>
