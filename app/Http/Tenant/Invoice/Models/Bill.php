@@ -9,8 +9,17 @@ use App\Http\Tenant\Invoice\Models\BillProducts;
 use App\Http\Tenant\Inventory\Models\Product;
 use Illuminate\Support\Facades\DB;
 
-class Bill extends Model
-{
+class Bill extends Model {
+
+
+    const TYPE_BILL = 1;
+    const TYPE_OFFER = 0;
+
+    const STATUS_UNPAID = 0;
+    const STATUS_PAID = 1;
+    const STATUS_PARTIAL_PAID = 2;
+    const STATUS_COLLECTION = 3;
+
 
     /**
      * The database table used by the model.
@@ -34,6 +43,15 @@ class Bill extends Model
     protected $hidden = [];
 
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    function customer()
+    {
+        return $this->belongsTo('App\Models\Tenant\Customer');
+    }
+
+
     function payments()
     {
         return $this->hasMany('App\Http\Tenant\Invoice\Models\BillPayment');
@@ -47,10 +65,10 @@ class Bill extends Model
             $customer_id = $request->input('customer');
             $bill = Bill::create([
                 'invoice_number' => $this->getPrecedingInvoiceNumber($customer_id),
-                'customer_id' => $customer_id,
-                'due_date' => $request->input('due_date'),
-                'currency' => $request->input('currency'),
-                'is_offer' => ($offer == true) ? 1 : 0
+                'customer_id'    => $customer_id,
+                'due_date'       => $request->input('due_date'),
+                'currency'       => $request->input('currency'),
+                'is_offer'       => ($offer == true) ? 1 : 0
             ]);
 
             $products = $request->input('product');
@@ -66,11 +84,11 @@ class Bill extends Model
                     $total = ($product_details->selling_price + $product_details->vat * 0.01 * $product_details->selling_price) * $quantity[$key];
                     $product_bill = BillProducts::create([
                         'product_id' => $product,
-                        'bill_id' => $bill->id,
-                        'quantity' => $quantity[$key],
-                        'price' => $product_details->selling_price,
-                        'vat' => $product_details->vat,
-                        'total' => $total
+                        'bill_id'    => $bill->id,
+                        'quantity'   => $quantity[$key],
+                        'price'      => $product_details->selling_price,
+                        'vat'        => $product_details->vat,
+                        'total'      => $total
                     ]);
                     $alltotal += $total;
                     $tax += $product_details->vat * 0.01 * $product_details->selling_price * $quantity[$key];
@@ -124,11 +142,11 @@ class Bill extends Model
                     $total = ($product_details->selling_price + $product_details->vat * 0.01 * $product_details->selling_price) * $quantity[$key];
                     $product_bill = BillProducts::create([
                         'product_id' => $product,
-                        'bill_id' => $bill->id,
-                        'quantity' => $quantity[$key],
-                        'price' => $product_details->selling_price,
-                        'vat' => $product_details->vat,
-                        'total' => $total
+                        'bill_id'    => $bill->id,
+                        'quantity'   => $quantity[$key],
+                        'price'      => $product_details->selling_price,
+                        'vat'        => $product_details->vat,
+                        'total'      => $total
                     ]);
                     $alltotal += $total;
                     $tax += $product_details->vat * 0.01 * $product_details->selling_price * $quantity[$key];
@@ -216,7 +234,7 @@ class Bill extends Model
             $value->invoice_number = '<a class="link" href="#">' . $value->invoice_number . '</a>';
             //$customer = Customer::find($value->customer_id);
             //if ($customer)
-                $value->customer = $value->name;
+            $value->customer = $value->name;
             //else $value->customer = 'Undefined';
             $value->raw_status = $value->status;
             if ($value->status == 1)

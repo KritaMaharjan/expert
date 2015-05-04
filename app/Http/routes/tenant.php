@@ -200,7 +200,12 @@ Route::group($group_auth, function () {
 
     Route::group(['namespace' => 'Tenant\Collection\Controllers'], function () {
         get('collection', ['as' => 'tenant.collection.index', 'uses' => 'CollectionController@index']);
-        post('collection', ['as' => 'tenant.collection.create', 'uses' => 'CollectionController@create']);
+        get('collection/waiting', ['as' => 'tenant.collection.waiting', 'uses' => 'CollectionController@waiting']);
+        get('collection/case/create', ['as' => 'tenant.collection.case.create', 'uses' => 'CollectionController@addCase']);
+        post('collection/data', ['as' => 'tenant.collection.data', 'uses' => 'CollectionController@data']);
+        get('collection/case/{id}/create', ['as' => 'tenant.collection.case.make', 'uses' => 'CollectionController@makeCollectionCase']);
+
+
         get('collection/purring', ['as' => 'tenant.collection.purring', 'uses' => 'CollectionController@purring']);
         get('collection/payment', ['as' => 'tenant.collection.payment', 'uses' => 'CollectionController@payment']);
         get('collection/debt', ['as' => 'tenant.collection.debt', 'uses' => 'CollectionController@debt']);

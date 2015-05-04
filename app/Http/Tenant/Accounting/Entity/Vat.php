@@ -19,6 +19,8 @@ class Vat {
      */
     public static function isValidVatPercentage($code)
     {
+        if($code =='') return false;
+
         $accounts = self::code();
         if (array_key_exists($code, $accounts)) {
             return true;
@@ -30,7 +32,8 @@ class Vat {
 
     public static function code()
     {
-        return \Config::get('accounts.vat');
+        $codes = \Config::get('accounts.vat');
+        return $codes;
     }
 
     /**
@@ -52,6 +55,7 @@ class Vat {
     public static function isAccountCode($account)
     {
         $codes = self::code();
+
         foreach ($codes as $key => $code) {
             if ($code['account_code'] == $account) {
                 return $code;

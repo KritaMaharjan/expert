@@ -20,7 +20,7 @@ class Transaction {
      * @param $type_id
      */
 
-    function __construct(Amount $amount, $description, Vat $vat, $type, $type_id)
+    function __construct(Amount $amount, $description, $vat, $type, $type_id)
     {
         $this->amount = $amount;
         $this->description = $description;

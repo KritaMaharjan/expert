@@ -40,7 +40,7 @@ class Transaction extends Model {
         return $this->hasMany('App\Http\Tenant\Accounting\Models\Entry');
     }
 
-    function getPagination()
+    function getPagination($perPage = 15)
     {
         $q = $this->with('entries');
 
@@ -53,14 +53,14 @@ class Transaction extends Model {
         }
 
         if ($from != '') {
-            $q->where('created_at', '>=',$from);
+            $q->where('created_at', '>=', date('Y-m-d', strtotime($from)));
         }
 
         if ($to != '') {
-            $q->where('created_at', '<' , date('Y-m-d', strtotime($to . '+1day')));
+            $q->where('created_at', '<', date('Y-m-d', strtotime($to . '+1day')));
         }
 
-        return $q->paginate(2);
+        return $q->paginate($perPage);
     }
 
 

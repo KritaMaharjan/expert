@@ -7,8 +7,8 @@ Collections
 @section('content')
     <div class="box box-solid">
         <div class="box-header">
-              <a class="btn  btn-primary btn-flat" href="{{url('collection')}}">All Collection Cases</a>
-              <a class="btn  btn-default btn-flat" href="{{url('collection/waiting')}}">Waiting Update</a>
+              <a class="btn  btn-default btn-flat" href="{{url('collection')}}">All Collection Cases</a>
+              <a class="btn  btn-primary btn-flat" href="{{url('collection/waiting')}}">Waiting Update</a>
               <a class="btn  btn-default btn-flat pull-right" href="{{url('collection/new-case')}}">Add New Case</a>
 
         </div>
@@ -30,11 +30,10 @@ Collections
              <tbody></tbody>
            </table>
          </div><!-- /.box-body -->
-
     </div>
 
 
 {{--Load JS--}}
-{{FB::js('assets/js/collection/main.js')}}
+{{FB::js('assets/js/collection/waiting.js')}}
 
 @stop

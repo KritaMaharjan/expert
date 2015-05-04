@@ -9,19 +9,15 @@ Transaction
     <div class="box-body">
         <div class="row">
             <div class="col-md-12 table-responsive">
-
-
-
-
-                {!! Form::open(array('method' => 'get')) !!}
+               {!! Form::open(array('method' => 'get')) !!}
                     <div class="row">
                      <div class="col-xs-2">
                        <label>From</label>
-                       <input type="text" name="from" value="<?php echo $get->from;?>" autocomplete="off" class="form-control date-picker" placeholder="Date">
+                       <input type="text" name="from" value="<?php echo $get->from;?>" autocomplete="off" class="form-control date-from" placeholder="Date">
                      </div>
                      <div class="col-xs-2">
                        <label>To</label>
-                       <input type="text" name="to" value="<?php echo $get->to;?>" autocomplete="off" class="form-control date-picker" placeholder="Date">
+                       <input type="text" name="to" value="<?php echo $get->to;?>" autocomplete="off" class="form-control date-to" placeholder="Date">
                      </div>
                      <div class="col-xs-2">
                        <label> Filter by</label>
@@ -38,9 +34,37 @@ Transaction
                 {!! Form::close() !!}
 
                 <script>
-                $(function(){
-                   $(".date-picker").datepicker({'format': 'yyyy-mm-dd'});
-                })
+         $(function(){
+                $.fn.datepicker.defaults.format = "yyyy-mm-dd";
+          // disabling dates
+          var nowTemp = new Date();
+          var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+
+          var checkin = $('.date-from').datepicker({
+              autoclose: true
+
+          }).on('changeDate', function (ev) {
+              if (ev.date.valueOf() > checkout.datepicker("getDate").valueOf()) {
+                  var newDate = new Date(ev.date);
+                  newDate.setDate(newDate.getDate() + 1);
+                  checkout.setValue(newDate);
+                  checkout.setDate(newDate);
+                  checkout.update();
+              }
+          });
+
+
+          var checkout = $('.date-to').datepicker({
+              beforeShowDay: function (date) {
+                  return date.valueOf() > checkin.datepicker("getDate").valueOf();
+              },
+              autoclose: true
+
+          });
+
+});
+
+                  // $(".date-picker").datepicker({'format': 'yyyy-mm-dd'});
                 </script>
              @if($transactions->total()>0)
 
