@@ -8,6 +8,7 @@
 namespace App\Http\Tenant\Accounting\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Input;
 
 class Transaction extends Model {
 
@@ -24,8 +25,7 @@ class Transaction extends Model {
      *
      * @var array
      */
-    protected $fillable = ['id', 'user_id', 'accounting_year_id',  'amount', 'description', 'vat', 'type', 'type_id'];
-
+    protected $fillable = ['id', 'user_id', 'accounting_year_id', 'amount', 'description', 'vat', 'type', 'type_id'];
 
 
     /**
@@ -38,6 +38,29 @@ class Transaction extends Model {
     public function entries()
     {
         return $this->hasMany('App\Http\Tenant\Accounting\Models\Entry');
+    }
+
+    function getPagination()
+    {
+        $q = $this->with('entries');
+
+        $from = Input::get('from');
+        $to = Input::get('to');
+        $type = Input::get('type');
+
+        if ($type != '') {
+            $q->where('type', $type);
+        }
+
+        if ($from != '') {
+            $q->where('created_at', '>=',$from);
+        }
+
+        if ($to != '') {
+            $q->where('created_at', '<' , date('Y-m-d', strtotime($to . '+1day')));
+        }
+
+        return $q->paginate(2);
     }
 
 

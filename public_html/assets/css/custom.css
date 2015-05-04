@@ -1307,3 +1307,20 @@ textarea.list-bx {
     padding-left: 0!important;
     padding-right: 0!important;
 }
+
+
+.no-list-style{
+    list-style: none;
+}
+.accord .accord-list{
+    padding: 10px;
+    background: #ececec;
+    cursor: pointer;
+}
+.accord p.accord-list:hover{
+    background: #e5e5e5;
+
+}
+.detail-sec{
+    display: none;
+}

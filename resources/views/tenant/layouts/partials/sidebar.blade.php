@@ -66,6 +66,7 @@
                 <li><a data-push="true" href="{{tenant_route('tenant.accounting.index')}}" title="Accounting List"><i class="fa fa-circle-o"></i> Accounting List</a></li>
                 <li><a data-push="true" href="{{tenant_route('tenant.accounting.payroll')}}" title="Payroll Report"><i class="fa fa-circle-o"></i> Payroll</a></li>
                 <li><a data-push="true" href="{{tenant_route('tenant.accounting.expense')}}" title="Account Expenses"><i class="fa fa-circle-o"></i> Expenses</a></li>
+                <li><a data-push="true" href="{{tenant_route('tenant.accounting.transaction')}}" title="Transactions"><i class="fa fa-circle-o"></i> Transactions</a></li>
               </ul>
             </li>
             @endif

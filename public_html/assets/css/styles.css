@@ -3048,3 +3048,15 @@ table.text-center, table.text-center td, table.text-center th {
 .error{
     color:red;
 }
+.search-blk input {
+    float: right;
+    width: auto;
+}
+.row.search-blk label {
+    float: left;
+    width: 30%;
+}
+.search-blk select {
+    float: right;
+    width: 60%;
+}
