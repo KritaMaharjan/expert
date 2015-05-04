@@ -76,7 +76,8 @@ class AccountingController extends BaseController {
     {
         if($this->request->ajax()) {
             $vat_entries = $this->entry->getVatEntries($this->request->all());
-            $template = \View::make('tenant.accounting.vat.entries', compact('vat_entries'))->render();
+            $vat_period = $this->vatPeriod->getVatPeriod($this->request->all());
+            $template = \View::make('tenant.accounting.vat.entries', compact('vat_entries', 'vat_period'))->render();
             return $this->success(['details' => $template]);
         }
         return false;
@@ -86,10 +87,9 @@ class AccountingController extends BaseController {
     {
         if($this->request->ajax()) {
             $action = $this->request->route('action');
-            $status = ($action == 'sent')? 1 : 2; //resume
-            $vat_entries = $this->vatPeriod->getVatEntries($this->request->all());
-            $template = \View::make('tenant.accounting.vat.entries', compact('vat_entries'))->render();
-            return $this->success(['details' => $template]);
+            $updated = $this->vatPeriod->changeStatus($this->request->all(), $action);
+            Flash::success('Successfully marked '.$action);
+            return ($updated)? $this->success(['details' => 'Successfully marked '.$action]): $this->fail(['details' => 'Something went wrong!']);
         }
         return false;
     }

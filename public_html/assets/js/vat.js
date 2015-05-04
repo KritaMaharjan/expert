@@ -14,6 +14,8 @@
     var period = $('#period').val();
     var doing = false;
 
+    if(year == '' || period == '')
+        return false;
     if (doing == false) {
         doing = true;
         $('.entries-info').html('<i class="fa fa-spinner fa-spin"></i> Processing...');
@@ -37,7 +39,7 @@
     });
 
     //mark as sent
-    $(document).on('submit', '#payment-form', function (e) {
+    $(document).on('submit', '.action-form', function (e) {
         e.preventDefault();
 
         if (!confirm('Are you sure you want to perform the action? This action will affect data permanently and can\'t be undone.')) {
@@ -74,12 +76,8 @@
                 }
 
                 else {
-                    $('.mainContainer .box-solid').before(notify('success', 'Marked Successfully!'));
-                    //change the remaining amount
-                    setTimeout(function () {
-                        $('.callout').remove()
-                    }, 2500);
-                } //success
+                    window.location.replace(appUrl + 'accounting/vat');
+                }
             })
             .fail(function () {
                 alert('Something went wrong! Please try again later!');

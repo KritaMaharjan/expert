@@ -191,7 +191,7 @@ Route::group($group_auth, function () {
 
         get('accounting/vat', 'AccountingController@vat');
         post('accounting/vat/entries', 'AccountingController@entries');
-        get('accounting/vat/action/{action}', 'AccountingController@action');
+        post('accounting/vat/action/{action}', 'AccountingController@action');
 
         get('accounting/setup', 'AccountingController@setup');
         get('accounting/new-business', 'AccountingController@newBusiness');

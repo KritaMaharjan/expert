@@ -1,4 +1,7 @@
 @if(count($vat_entries) > 0)
+    <div class="col-md-12">
+        <p><strong>Based on the year and term above:</strong></p>
+    </div>
     <table class="table table-striped product-table">
         <thead>
             <tr>
@@ -63,21 +66,18 @@
         </tbody>-->
     </table>
 
-    {!! Form::open(array('method'=>'POST', 'class' => 'action-form sent-form', 'dataAction' => 'sent')) !!}
-        <div class="form-group">
-            {!! Form::label('sent_date', 'This has been sent on :') !!}
-            {!! Form::text('sent_date', null, array('class' => 'date-picker form-control', 'id' => 'sent_date')) !!}
-        </div>
-        {!! Form::button('Mark as sent', array('class'=>'btn btn-primary pull-right form-submit', 'type'=>'submit')) !!}
-    {!! Form::close() !!}
+    <?php $action = ($vat_period->status == 0)? 'sent' : 'paid'  ?>
 
-    {!! Form::open(array('method'=>'POST', 'class' => 'action-form paid-form', 'dataAction' => 'paid')) !!}
-        <div class="form-group">
-            {!! Form::label('paid_date', 'This has been paid on :') !!}
-            {!! Form::text('paid_date', null, array('class' => 'date-picker form-control', 'id' => 'paid_date')) !!}
-        </div>
-        {!! Form::button('Mark as paid', array('class'=>'btn btn-primary pull-right form-submit', 'type'=>'submit')) !!}
-    {!! Form::close() !!}
+    @if($vat_period->status == 0 || $vat_period->status == 1)
+        {!! Form::open(array('method'=>'POST', 'class' => 'action-form', 'dataAction' => $action)) !!}
+            <div class="form-group">
+                {!! Form::label($action.'_date', 'This has been '.$action.' on :') !!}
+                {!! Form::text($action.'_date', null, array('class' => 'date-picker form-control', 'id' => $action.'_date')) !!}
+                {!! Form::hidden('period_id', $vat_period->id, array('id' => 'period_id')) !!}
+            </div>
+            {!! Form::button('Mark as '.$action, array('class'=>'btn btn-primary pull-right form-submit', 'type'=>'submit')) !!}
+        {!! Form::close() !!}
+    @endif
 
     {{ FB::js('$(".date-picker").datepicker({
        "format": "yyyy-mm-dd"
@@ -85,5 +85,7 @@
 
 
 @else
-No VAT transactions found for the selected period.
+<div class="col-md-12">
+    <p><strong>No VAT transactions found for the selected period.</strong></p>
+</div>
 @endif

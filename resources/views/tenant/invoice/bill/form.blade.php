@@ -98,6 +98,10 @@
           {!! Form::label('currency', 'Currency') !!}
           {!! Form::select('currency', $currencies, null, array('class' => 'form-control')) !!}
         </div>
+        <div class="form-group clearfix">
+          {!! Form::label('vat', 'Vat') !!}
+          {!! Form::select('vat', $vat, null, array('class' => 'form-control vat')) !!}
+        </div>
       </div>
 
     </div><!-- /.col -->
@@ -114,7 +118,7 @@
             <th width="40%">Product name</th>
             <th width="15%">Quantity</th>
             <th width="15%">Price</th>
-            <th width="15%">VAT %</th>
+            {{--<th width="15%">VAT %</th>--}}
             <th width="15%">Total</th>
           </tr>
         </thead>
@@ -133,7 +137,7 @@
                 <input type="number" name="quantity[]" class="add-quantity quantity form-control" id="quantity" value="{{$product->quantity}}" required="required" />
             </td>
             <td><span class="border-bx block price">{{ $product->price }} </span></td>
-            <td><span class="border-bx block vat">{{ $product->vat }} </span></td>
+            <td><span class="border-bx block vat">{{ $product->vat }} </span></td>--}}
             <td class="position-relative">
                 <div class="action-buttons">
                     <a title="Delete line" class="invoice-delete fa fa-close btn-danger" href="#"></a>
@@ -156,7 +160,6 @@
                 <input type="number" name="quantity[]" class="add-quantity quantity form-control" id="quantity" required="required" />
                 {{--{!! Form:: text('number', 'quantity[]', null, array('class' => 'form-control add-quantity quantity', 'id' => 'quantity', 'required'=>'required')) !!}--}}</td>
               <td><span class="border-bx block price"> </span></td>
-              <td><span class="border-bx block vat"> </span></td>
               <td class="position-relative">
                 <div class="action-buttons">
                     <a title="Delete" class="invoice-delete fa fa-close btn-danger" href="javascript:;"></a>

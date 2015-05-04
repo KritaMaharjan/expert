@@ -19,7 +19,7 @@ class VatPeriod extends Model
      *
      * @var array
      */
-    protected $fillable = ['id', 'period', 'months', 'status', 'sent_date', 'paid_date'];
+    protected $fillable = ['id', 'year', 'period', 'months', 'status', 'sent_date', 'paid_date'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -44,6 +44,37 @@ class VatPeriod extends Model
                 return [9, 10];
             case 6:
                 return [11, 12];
+        }
+        return false;
+    }
+
+    public function getVatPeriod($request)
+    {
+        //$vat_period = $this->vatPeriod->getVatPeriod($this->request->all());
+        $year = $request['year'];
+        $period= $request['period'];
+        $vat_period = VatPeriod::firstOrCreate([
+            'period' => $period,
+            'year' => $year
+        ]);
+        return $vat_period;
+    }
+
+    public function changeStatus($request, $action)
+    {
+        $period = VatPeriod::find($request['period_id']);
+        if(!empty($period))
+        {
+            if($action == 'sent') {
+                $period->status = 1;
+                $period->sent_date = $request['sent_date'];
+            }
+            elseif($action == 'paid') {
+                $period->status = 2;
+                $period->paid_date = $request['paid_date'];
+            }
+            $period->save();
+            return true;
         }
         return false;
     }

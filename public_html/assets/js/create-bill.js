@@ -18,7 +18,7 @@
         var html_product = '<tr class="position-r"><td><select name="product[]" class="select-product form-control"><option value="">Select Product</option></select></td>' +
             '<td><input type="number" name="quantity[]" class="add-quantity quantity form-control" id="quantity" required="required" readonly="readonly"/>' +
             '<td><span class="border-bx block price"> </span></td>' +
-            '<td><span class="border-bx block vat"> </span></td>' +
+            //'<td><span class="border-bx block vat"> </span></td>' +
             '<td class="position-relative">' +
             '<div class="action-buttons"><a title="Delete" class="invoice-delete fa fa-close btn-danger delete" href="javascript:;"></a></div>' +
             '<span class="border-bx block total"> </span></td></tr>';
@@ -115,8 +115,10 @@
     $('table').on('click', 'tr .invoice-delete', function (e) {
         e.preventDefault();
         var rowCount = $('.product-table tr').length;
-        if (rowCount > 2)
+        if (rowCount > 2) {
             $(this).closest('tr').remove();
+            changeSummary();
+        }
         else
             alert("At least one product needs to be chosen.");
     });
@@ -182,7 +184,7 @@
                          $('#vat').val(response.details.vat);*/
                         $this.parent().parent().find('.add-quantity').removeAttr('readonly', 'readonly');
                         $this.parent().parent().find('.price').html(parseFloat(response.data.selling_price).toFixed(2));
-                        $this.parent().parent().find('.vat').html(parseFloat(response.data.vat).toFixed(2));
+                        /*$this.parent().parent().find('.vat').html(parseFloat(response.data.vat).toFixed(2));*/
                     } else {
                         alert('Something went wrong!');
                     }
@@ -206,31 +208,47 @@
             $this.parent().parent().find('.total').html('');
         }
         else {
-            var vat = parseFloat($this.parent().parent().find('.vat').html());
+            //var vat = parseFloat($this.parent().parent().find('.vat').html());
             var price = parseFloat($this.parent().parent().find('.price').html());
-            var total = (price + vat * 0.01 * price) * quantity;
+            //var total = (price + vat * 0.01 * price) * quantity;
+            var total = price * quantity;
             $this.parent().parent().find('.total').html(parseFloat(total).toFixed(2));
         }
 
+        changeSummary();
+    });
+
+    $(document).on('change', '.vat', function () {
+        changeSummary();
+    });
+
+    function changeSummary() {
         var allTotal = 0;
         var vatTotal = 0;
         var subtotal = 0;
+        var totalQuantity = 0;
 
         $(".total").each(function () {
             var thisTotal = parseFloat($(this).html());
             if (thisTotal > 0) {
-                var vat = parseFloat($(this).parent().parent().find('.vat').html());
+                //var vat = parseFloat($(this).parent().parent().find('.vat').html());
                 var price = parseFloat($(this).parent().parent().find('.price').html());
                 var thisQuantity = parseFloat($(this).parent().parent().find('.quantity').val());
-                vatTotal = vatTotal + (vat * 0.01 * price * thisQuantity);
-                allTotal = allTotal + thisTotal;
-                subtotal = subtotal + price * thisQuantity;
+                //vatTotal = vatTotal + (vat * 0.01 * price * thisQuantity);
+                subtotal = subtotal + thisTotal;
+                totalQuantity = totalQuantity + thisQuantity;
+                //subtotal = subtotal + price * thisQuantity;
             }
         });
+
+        var vat = parseFloat($('.vat').val());
+        //withVat = (subtotal + vat * 0.01 * subtotal) * totalQuantity;
+        vatTotal = vat * 0.01 * subtotal;
+        allTotal = subtotal + vatTotal;
         $('#subtotal').html(subtotal.toFixed(2));
         $('#tax-amount').html(vatTotal.toFixed(2));
         $('#all-total').html(allTotal.toFixed(2));
-    });
+    }
 
     //creation of customer
     $(document).on('submit', '#customer-form', function (e) {

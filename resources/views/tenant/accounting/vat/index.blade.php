@@ -1,19 +1,16 @@
 @extends('tenant.layouts.main')
 
 @section('heading')
-VAT
+VAT ADMINISTRATION
 @stop
 
 @section('content')
     <div class="box box-solid">
         <div class="box-body">
-        	<div class="box-header pad-0">
-                <h3 class="box-title">VAT ADMINISTRATION</h3>
-            </div>
-            <div class="row mg-btm-40">
+            @include('flash::message')
+            <div class="row">
             	<div class="col-md-6">
             		<form>
-		            	
 		        		<div class="form-group clearfix">
 				         	<select class="form-control half-width2 pull-left" name="year" id="year">
 				         		<option value="">Select year</option>
@@ -37,9 +34,6 @@ VAT
             	</div>            	
             </div>
             <div class="row">
-            	<div class="col-md-12">
-            		<p><strong>Based on the year and term above display information as such:</strong></p>
-            	</div>
 	        	<div class="col-md-12 table-responsive entries-info">
 
 	        	</div>

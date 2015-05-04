@@ -34,6 +34,7 @@ class AccountingYear extends Model {
 
     public static function CurrentYear()
     {
+
         if(is_null(self::$current_year))
         {
             $row = self::select('id','year')->orderBy('year', 'DESC')->first();

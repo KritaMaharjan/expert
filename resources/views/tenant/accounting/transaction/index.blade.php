@@ -9,17 +9,27 @@ Transaction
     <div class="box-body">
         <div class="row">
             <div class="col-md-12 table-responsive">
+<<<<<<< HEAD
                {!! Form::open(array('method' => 'get')) !!}
                     <div class="row">
                      <div class="col-xs-2">
+=======
+
+
+
+
+                {!! Form::open(array('method' => 'get')) !!}
+                    <div class="row search-blk">
+                     <div class="col-xs-3">
+>>>>>>> 51fc7f6c6963ca23b7ed951f5afa819607ef18dc
                        <label>From</label>
                        <input type="text" name="from" value="<?php echo $get->from;?>" autocomplete="off" class="form-control date-from" placeholder="Date">
                      </div>
-                     <div class="col-xs-2">
+                     <div class="col-xs-3">
                        <label>To</label>
                        <input type="text" name="to" value="<?php echo $get->to;?>" autocomplete="off" class="form-control date-to" placeholder="Date">
                      </div>
-                     <div class="col-xs-2">
+                     <div class="col-xs-3">
                        <label> Filter by</label>
                        <select name="type" class="form-control">
                           <option value="">All</option>
