@@ -58,9 +58,9 @@ $(function () {
 
         if(thisUrl == 'offer') {
             conv = '<li><a href="' + appUrl + 'invoice/offer/' + d.id + '/convert">Convert to Bill</a></li>';
-
         }
         else {
+            conv = '<li><a href="' + appUrl + 'invoice/bill/' + d.id + '/credit">Credit</a></li>';
             payment = '<li><a class="link-block" href="#">Register payment</a></li>';
             payment_option = '<div class="payment-info" style="display: none;">' +
                 '<form class="payment-form" id="'+d.id+'" method="post" action="">' +
@@ -189,37 +189,10 @@ $(function () {
 
     });
 
-    function format_bck(d) {
-        $hidden_child = '<tr class="temp_tr">' +
-        '<td colspan="5"><div class="clearfix">' +
-        '<ul class="links-td">' +
-        '<li><a class="link-block" href="#">Register payment</a></li>' +
-        '<li><a href="#">Last ned and print</a></li>' +
-        '<li><a href="#">Resend</a></li>' +
-        '<li><a class="red" href="#">Credit</a></li>' +
-        '</ul>' +
-        '<div class="payment-info" style="display: block;">' +
-        '<form>' +
-        '<label> Payment date <input type="text"></label>' +
-        '<label> Amount paid <input type="text"></label>' +
-        '<div class="bottom-section clearfix">' +
-        '<a class="btn-small btn btn-primary" href="#">Account as paid</a>' +
-        '<a class="abort btn btn-danger" href="#">Abort</a></div>' +
-        '</form></div></div></td></tr>';
-        return $hidden_child;
-
-        return 'Full name: ' + d.name + '<br>' +
-        'Salary: ' + d.due_date + '<br>' +
-        'The child row can contain any data you wish, including links, images, inner tables etc.';
-    }
-
     function showActionbtn(row) {
         return '<div class="box-tools"> ' +
         '<a href="#" title="View Payments" data-original-title="View" class="btn btn-box-tool" data-toggle="modal" data-url="' + row.view_url + '" data-target="#fb-modal">' +
         '<i class="fa fa-eye"></i>' +
-        '</a>' +
-        '<a href="' + appUrl + 'invoice/'+thisUrl+'/' + row.id + '/edit" title="Edit" class="btn btn-box-tool">' +
-        '<i class="fa fa-edit"></i>' +
         '</a>' +
         '<button class="btn btn-box-tool btn-delete-bill" data-toggle="tooltip" data-id="' + row.id + '" data-original-title="Remove"><i class="fa fa-times"></i></button>' +
         '</div>';

@@ -261,6 +261,21 @@ class BillController extends BaseController {
         return $bill_details;
     }
 
-    
+    function credit()
+    {
+        if($this->request->ajax()) {
+            $id = $this->request->route('id');
+
+            $bill = $this->bill->billDetails($id);
+            if ($bill == null || empty($bill)) {
+                show_404();
+            }
+            $company_details = $this->getCompanyDetails();
+            $months = \Config::get('tenant.month');
+            $data = array('months' => $months, 'currencies' => \Config::get('tenant.currencies'));
+
+            return view('tenant.invoice.bill.edit', compact('bill'))->with('pageTitle', 'Update Bill')->with('company_details', $company_details)->with($data);
+        }
+    }
 
 }
