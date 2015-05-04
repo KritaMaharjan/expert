@@ -232,8 +232,10 @@ class Bill extends Model
                 $value->status = '<span class="label label-success">Paid</span>';
             elseif ($value->status == 2)
                 $value->status = '<span class="label label-warning">Partially Paid</span>';
-            else
+            elseif ($value->status == 0)
                 $value->status = '<span class="label label-danger">Unpaid</span>';
+            elseif ($value->status == 3)
+                $value->status = '<span class="label label-danger">Credited</span>';
 
             $value->invoice_date = $value->created_at->format('d-M-Y  h:i:s A');
             $value->view_url = tenant()->url('invoice/bill/' . $value->id);
