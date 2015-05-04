@@ -2,6 +2,7 @@
 
 namespace App\Http\Tenant\Invoice\Models;
 
+use App\Http\Tenant\Accounting\Libraries\Record;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Tenant\Customer;
@@ -24,7 +25,7 @@ class Bill extends Model
      *
      * @var array
      */
-    protected $fillable = ['invoice_number', 'customer_id', 'currency', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'status', 'due_date', 'is_offer', 'customer_payment_number'];
+    protected $fillable = ['invoice_number', 'customer_id', 'currency', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'status', 'due_date', 'is_offer', 'customer_payment_number', 'vat'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -45,11 +46,14 @@ class Bill extends Model
         DB::beginTransaction();
         try {
             $customer_id = $request->input('customer');
+            $vat = $request->input('vat');
+
             $bill = Bill::create([
                 'invoice_number' => $this->getPrecedingInvoiceNumber($customer_id),
                 'customer_id' => $customer_id,
                 'due_date' => $request->input('due_date'),
                 'currency' => $request->input('currency'),
+                'vat' => $vat,
                 'is_offer' => ($offer == true) ? 1 : 0
             ]);
 
@@ -59,21 +63,22 @@ class Bill extends Model
             $alltotal = 0;
             $subtotal = 0;
             $tax = 0;
-
             foreach ($products as $key => $product) {
                 if (isset($quantity[$key]) && $quantity[$key] > 0 && $product > 0) {
                     $product_details = Product::find($product);
-                    $total = ($product_details->selling_price + $product_details->vat * 0.01 * $product_details->selling_price) * $quantity[$key];
+                    $total = ($product_details->selling_price + $vat * 0.01 * $product_details->selling_price) * $quantity[$key];
+                    //$total = ($product_details->selling_price + $product_details->vat * 0.01 * $product_details->selling_price) * $quantity[$key];
                     $product_bill = BillProducts::create([
                         'product_id' => $product,
                         'bill_id' => $bill->id,
                         'quantity' => $quantity[$key],
                         'price' => $product_details->selling_price,
-                        'vat' => $product_details->vat,
+                        //'vat' => $product_details->vat,
                         'total' => $total
                     ]);
                     $alltotal += $total;
-                    $tax += $product_details->vat * 0.01 * $product_details->selling_price * $quantity[$key];
+                    $tax += $vat * 0.01 * $product_details->selling_price * $quantity[$key];
+                    //$tax += $product_details->vat * 0.01 * $product_details->selling_price * $quantity[$key];
                     $subtotal += $product_details->selling_price * $quantity[$key];
                 }
 
@@ -81,13 +86,18 @@ class Bill extends Model
 
             //$bill->invoice_number = $this->getPrecedingInvoiceNumber($bill->id);
             $bill->subtotal = $subtotal;
-            $bill->tax = $tax;
+            $bill->vat_amount = $tax;
             $bill->total = $alltotal;
             $bill->remaining = $alltotal;
             $bill->customer_payment_number = format_id($bill->customer_id) . format_id($bill->id);
             $bill->save();
 
             DB::commit();
+
+            if($offer != true) {
+                $customer = Customer::find($customer_id);
+                Record::sendABill($bill, $customer, $alltotal, $vat);
+            }
 
             return array('bill_details' => $bill);
 
@@ -134,7 +144,6 @@ class Bill extends Model
                     $tax += $product_details->vat * 0.01 * $product_details->selling_price * $quantity[$key];
                     $subtotal += $product_details->selling_price * $quantity[$key];
                 }
-
             }
 
             $bill->subtotal = $subtotal;
@@ -222,7 +231,7 @@ class Bill extends Model
             if ($value->status == 1)
                 $value->status = '<span class="label label-success">Paid</span>';
             elseif ($value->status == 2)
-                $value->status = '<span class="label label-warning">Collection</span>';
+                $value->status = '<span class="label label-warning">Partially Paid</span>';
             else
                 $value->status = '<span class="label label-danger">Unpaid</span>';
 
@@ -364,7 +373,6 @@ class Bill extends Model
         if ($bill) {
             $bill->is_offer = 0;
             $bill->save();
-
             return $bill;
         } else
             return false;

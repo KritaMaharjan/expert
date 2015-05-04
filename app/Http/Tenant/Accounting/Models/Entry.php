@@ -50,7 +50,7 @@ class Entry extends Model {
 
     public function getVatEntries($request = null)
     {
-        $vat = \Config::get('accounts.vat');
+        $vat = \Config::get('accounts.vat_code');
         $query = $this->from('fb_entries as e')->select('e.account_code', 'e.description', 'e.amount', 't.created_at')->join('fb_transactions as t', 'e.transaction_id', '=', 't.id')->where('e.type', 1)->whereIn('e.account_code', $vat);
 
         if($request != null) {

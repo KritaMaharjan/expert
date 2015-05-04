@@ -52,6 +52,7 @@ class TenantTable {
         $this->accountCodes();
         $this->transactions();
         $this->entries();
+        $this->vatPeriod();
     }
 
     /**
@@ -312,7 +313,8 @@ class TenantTable {
                 $table->integer('customer_id')->index(); // customer id
                 $table->string('currency', 10);
                 $table->float('subtotal');
-                $table->float('tax');
+                $table->float('vat');
+                $table->float('vat_amount');
                 $table->float('shipping')->default(0);
                 $table->float('total');
                 $table->float('paid')->default(0);
@@ -566,10 +568,14 @@ class TenantTable {
     {
         if (!Schema::hasTable($this->tbl_profix . 'transactions')) {
             Schema::create($this->tbl_profix . 'transactions', function ($table) {
-                $table->increments('id'); // autoincrement value of a vacation
-                $table->integer('description'); //account id from account code table
+                $table->increments('id'); // autoincrement value
+                $table->integer('user_id'); // user id for entry user
+                $table->integer('accounting_year_id');
+                $table->string('description', 255); //account id from account code table
                 $table->decimal('amount', 11, 2); // Transaction amount
+                $table->float('vat'); // Transaction vat
                 $table->tinyInteger('type'); // 1: Bill , 2: Expenses
+                $table->integer('type_id'); // Transaction amount
                 // created_at, updated_at DATETIME
                 $table->timestamps();
             });
@@ -591,6 +597,25 @@ class TenantTable {
                 $table->decimal('amount', 11, 2); // Transaction amount
                 $table->text('description'); // transaction description
                 $table->tinyInteger('type'); // 1: Debit , 2: credit
+            });
+        }
+    }
+
+    /**
+     * Vat Period table
+     */
+    private function vatPeriod()
+    {
+        if (!Schema::hasTable($this->tbl_profix . 'vat_period')) {
+            Schema::create($this->tbl_profix . 'entries', function ($table) {
+                $table->increments('id'); // autoincrement value
+                $table->integer('period'); // period
+                $table->integer('year'); // account year
+                $table->tinyInteger('status'); // 0 : active, 1 : sent, 2 :paid
+                $table->date('sent_date'); // Sent date
+                $table->date('paid_date'); // Paid date
+                // created_at, updated_at DATETIME
+                $table->timestamps();
             });
         }
     }

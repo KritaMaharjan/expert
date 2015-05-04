@@ -84,7 +84,6 @@ class Record {
      */
     public static function billPayment(Bill $bill, Customer $customer, $amount)
     {
-
         $amount = new Amount($amount);
 
         // initialised entry object

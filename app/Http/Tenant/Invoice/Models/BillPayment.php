@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Tenant\Invoice\Models;
 
+use App\Http\Tenant\Accounting\Libraries\Record;
+use App\Models\Tenant\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 
@@ -45,6 +47,9 @@ class BillPayment extends Model
             $bill->save();
 
             \DB::commit();
+
+            $customer = Customer::find($bill->customer_id);
+            Record::billPayment($bill, $customer, $payment->amount);
             return array('payment_details' => $payment);
 
         } catch (\Exception $e) {
