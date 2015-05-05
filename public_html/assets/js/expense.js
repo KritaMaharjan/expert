@@ -151,7 +151,6 @@
     add_btn.on('click', function () {
         var html_product = '<tr class="position-r"><td><input type="text" name="text[]" class="form-control" required="required" /></td>' +
             '<td><input type="text" name="amount[]" class="form-control" id="amount" maxlength="7" required="required" /></td>' +
-            '<td><select name="vat[]" id="vat" class="form-control"><option value="8">8%</option><option value="15">15%</option><option value="25">25%</option><option value="0">Foreign/Domestic Exempt</option></select></td>' +
             '<td><span class="border-bx block total"> </span></td>' +
             '<td class="position-relative">' +
             '<div class="action-buttons"><a title="Delete" class="invoice-delete fa fa-close btn-danger delete" href="javascript:;"></a></div>' +

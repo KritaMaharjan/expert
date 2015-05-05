@@ -265,7 +265,7 @@ class Record {
      * @internal param AccountCode $code
      * @return array
      */
-    public static function createAnExpenseWithSupplier(Expense $expense, Supplier $supplier, $UserSelectedCode, $amount, $vat)
+    public static function createAnExpenseWithSupplier(Expense $expense, Supplier $supplier, array $UserSelectedCode, $amount, $vat)
     {
         $vat = new Vat($vat);
         $amount = new Amount($amount);
@@ -300,7 +300,7 @@ class Record {
     }
 
     /*
-     * Expense Paid (full or partial) with Bank  (When user select supplier)
+     * Expense Paid (full or partial) to supplier (When user select supplier)
      * --------------------
      * 2400+sub-ledger account       :   DEBIT PAID AMOUNT
      * BANK ACCOUNT                  :   CREDIT PAID AMOUNT

@@ -55,7 +55,14 @@
                      {!! $errors->first('invoice_number', '<label class="control-label error error-right" for="inputError">:message</label>') !!}
                 @endif
             </div>
+            <div class="form-group clearfix {{ ($errors->has('invoice_number'))? 'has-error': '' }}">
+                {!! Form::label('', 'Vat') !!}
+                {!! Form::select('vat', $vat, null, array('class' => 'form-control vat date-box')) !!}
 
+                @if($errors->has('invoice_number'))
+                     {!! $errors->first('invoice_number', '<label class="control-label error error-right" for="inputError">:message</label>') !!}
+                @endif
+            </div>
     </div>
 
     <div class="col-md-6">
@@ -89,7 +96,6 @@
                 <tr>
                     <th width="30%">Product</th>
                     <th width="10%">Amount</th>
-                    <th width="20%">VAT</th>
                     <th width="10%">Total amount</th>
                     <th width="30%">Expense account</th>
                 </tr>
@@ -103,13 +109,6 @@
                             </td>
                             <td>
                                 <input type="text" name="amount[]" class="form-control" id="amount" maxlength="7" required="required"  value="{{ $product['amount'] }}" />
-                            </td>
-                            <td>
-                                <select name="vat[]" class="form-control" id="vat">
-                                    @foreach($tax as $key => $vat)
-                                        <option value="{{$key}}" {{ ($product['vat'] == $key)?'select="selected"' : "" }}>{{$vat}}</option>
-                                    @endforeach
-                                </select>
                             </td>
                             <td>
                                 <span class="border-bx block total">{{ $product['total'] }}</span>
@@ -138,13 +137,6 @@
                         </td>
                         <td>
                             <input type="text" name="amount[]" class="form-control" id="amount" maxlength="7" required="required" />
-                        </td>
-                        <td>
-                            <select name="vat[]" class="form-control" id="vat">
-                                @foreach($tax as $key => $vat)
-                                    <option value="{{$key}}">{{$vat}}</option>
-                                @endforeach
-                            </select>
                         </td>
                         <td>
                             <span class="border-bx block total"> </span>

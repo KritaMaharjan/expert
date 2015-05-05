@@ -490,6 +490,8 @@ class TenantTable {
                 $table->integer('invoice_number'); // invoice number
                 $table->string('bill_image', 70)->nullable(); // bill image
                 $table->decimal('amount', 11, 2)->default(0);
+                $table->decimal('subtotal', 11, 2)->default(0);
+                $table->float('vat');
                 $table->decimal('paid', 11, 2)->default(0);
                 $table->decimal('remaining', 11, 2)->default(0);
                 $table->tinyInteger('is_paid')->default(0); // 0:unpaid 1 for paid

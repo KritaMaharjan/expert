@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Tenant\Accounting\Models;
 
+use App\Http\Tenant\Accounting\Libraries\Record;
+use App\Http\Tenant\Supplier\Models\Supplier;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -38,10 +40,12 @@ class Expense extends Model
                 'payment_due_date' => $request['payment_due_date'],
                 'invoice_number' => $request['invoice_number'],
                 'bill_image' => $request['bill_image'],
-                'is_paid' => ($request['is_paid'])? 1 : 0
+                'is_paid' => ($request['is_paid'])? 1 : 0,
+                'vat' => $request['vat']
             ]);
 
             $expense_total = 0;
+            $expense_subtotal = 0;
             $expense_paid = 0;
             $products = $request['text'];
             $amount = $request['amount'];
@@ -50,18 +54,18 @@ class Expense extends Model
 
             foreach ($products as $key => $product) {
                 if (isset($amount[$key]) && $amount[$key] > 0) {
-                    $total = $amount[$key] + ($vat[$key] * 0.01 * $amount[$key]);
-                    Product::create([
-                        'expense_id' => $expense->id,
-                        'text' => $product,
-                        'amount' => $amount[$key],
-                        'vat' => $vat[$key],
-                        'total' => $total,
-                        'account_code_id' => $account_code_id[$key],
-                    ]);
-                    $expense_total += $total;
+                    $total = $amount[$key] + ($vat * 0.01 * $amount[$key]);
                 }
-
+                Product::create([
+                    'expense_id' => $expense->id,
+                    'text' => $product,
+                    'amount' => $amount[$key],
+                    //'vat' => $vat[$key],
+                    'total' => $total,
+                    'account_code_id' => $account_code_id[$key],
+                ]);
+                $expense_total += $total;
+                $expense_total += $amount[$key];
             }
             $expense_remaining = $expense_total;
             if($request['is_paid']) {
@@ -76,12 +80,24 @@ class Expense extends Model
             }
 
             $expense->amount = $expense_total;
+            $expense->subtotal = $expense_subtotal;
             $expense->paid = $expense_paid;
             $expense->remaining = $expense_remaining;
             $expense->is_paid = ($expense->remaining == 0)? 1 : 0;
             $expense->save();
 
             DB::commit();
+
+            if(isset($request['supplier_id'])) {
+                $supplier = Supplier::find($request['supplier_id']);
+                Record::createAnExpenseWithSupplier($expense, $supplier, $account_code_id, $amount, $vat);
+                if($request['is_paid']) {
+                    Record::expensePaidToSupplier($expense, $supplier, $request['amount_paid']);
+                }
+            }
+            elseif(!isset($request['supplier_id']) && $request['is_paid'])
+                Record::expensePaidWithCash($expense, $account_code_id, $request['amount_paid'], $vat);
+
             return $expense->toArray();
 
         } catch (\Exception $e) {

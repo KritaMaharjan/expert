@@ -27,8 +27,9 @@ class ExpenseController extends BaseController {
     {
         $accounts = $this->getAccountCode('en');
         $tax = \Config::get('tenant.vat');
-        $months= \Config::get('tenant.month');
-        return view('tenant.accounting.expense.create', compact('accounts', 'tax', 'months'));
+        $months = \Config::get('tenant.month');
+        $vat = \Config::get('tenant.vat');
+        return view('tenant.accounting.expense.create', compact('accounts', 'tax', 'months', 'vat'));
     }
 
     public function createExpense()
