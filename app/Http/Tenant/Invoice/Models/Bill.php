@@ -35,7 +35,7 @@ class Bill extends Model {
      *
      * @var array
      */
-    protected $fillable = ['invoice_number', 'customer_id', 'currency', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'status', 'due_date', 'is_offer', 'customer_payment_number', 'vat'];
+    protected $fillable = ['invoice_number', 'customer_id', 'currency', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'payment', 'status', 'due_date', 'is_offer', 'customer_payment_number', 'vat'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -247,12 +247,13 @@ class Bill extends Model {
             $value->customer = $value->name;
             //else $value->customer = 'Undefined';
             $value->raw_status = $value->status;
-            if ($value->status == 1)
-                $value->status = '<span class="label label-success">Paid</span>';
+
+            if ($value->status == 0)
+                $value->status = '<span class="label label-success">Active</span>';
+            elseif ($value->status == 1)
+                $value->status = '<span class="label label-warning">Collection</span>';
             elseif ($value->status == 2)
-                $value->status = '<span class="label label-warning">Partially Paid</span>';
-            elseif ($value->status == 0)
-                $value->status = '<span class="label label-danger">Unpaid</span>';
+                $value->status = '<span class="label label-danger">Loss</span>';
             elseif ($value->status == 3)
                 $value->status = '<span class="label label-danger">Credited</span>';
 
@@ -271,77 +272,6 @@ class Bill extends Model {
 
         return $json;
     }
-
-
-    function dataTablePaginationCustomer(Request $request, array $select = array(), $customer_id)
-    {
-        if ((is_array($select) AND count($select) < 1)) {
-            $select = "*";
-        }
-
-        $take = ($request->input('length') > 0) ? $request->input('length') : 15;
-        $start = ($request->input('start') > 0) ? $request->input('start') : 0;
-
-        $search = $request->input('search');
-        $search = $search['value'];
-        $order = $request->input('order');
-        $column_id = $order[0]['column'];
-        $columns = $request->input('columns');
-        $orderColumn = $columns[$column_id]['data'];
-        $orderdir = $order[0]['dir'];
-
-        $invoices = array();
-        $query = $this->select($select);
-
-        // if ($is_offer == true)
-        //     $query = $query->where('is_offer', 1);
-        // else
-        //     $query = $query->where('is_offer', 0);
-
-        if ($orderColumn != '' AND $orderdir != '') {
-            $query = $query->orderBy($orderColumn, $orderdir);
-        }
-
-        if ($search != '') {
-            $query = $query->where('invoice_number', 'LIKE', "%$search%");
-        }
-        $invoices['total'] = $query->where('customer_id', $customer_id)->count();
-
-
-        $query->skip($start)->take($take);
-
-        $data = $query->where('customer_id', $customer_id)->get();
-
-        foreach ($data as $key => &$value) {
-
-            $value->total = number_format($value->total, 2);
-
-            $value->raw_status = $value->status;
-            if ($value->status == 1)
-                $value->status = '<span class="label label-success">Paid</span>';
-            elseif ($value->status == 2)
-                $value->status = '<span class="label label-warning">Partially Paid</span>';
-            elseif ($value->status == 0)
-                $value->status = '<span class="label label-danger">Unpaid</span>';
-            elseif ($value->status == 3)
-                $value->status = '<span class="label label-danger">Credited</span>';
-
-            $value->invoice_date = date('d-M-Y  h:i:s A', strtotime($value->created_at));
-
-            $value->DT_RowId = "row-" . $value->guid;
-        }
-
-        $invoices['data'] = $data->toArray();
-
-        $json = new \stdClass();
-        $json->draw = ($request->input('draw') > 0) ? $request->input('draw') : 1;
-        $json->recordsTotal = $invoices['total'];
-        $json->recordsFiltered = $invoices['total'];
-        $json->data = $invoices['data'];
-
-        return $json;
-    }
-
 
     function billDetails($id = '')
     {
@@ -431,6 +361,9 @@ class Bill extends Model {
         {
             $bill->status = 3;
             $bill->save();
+
+            $customer = Customer::find($bill->customer_id);
+            Record::billCredit($bill, $customer, $bill->remaining, $bill->vat);
             return true;
         }
         return false;

@@ -40,10 +40,10 @@ class BillPayment extends Model
             $bill->paid = $bill->paid + $request->input('paid_amount'); //do it for remaining too
             $bill->remaining = $bill->remaining - $request->input('paid_amount'); //do it for remaining too
 
-            if($bill-> remaining> 0)
-                $bill->status = 2;
+            if($bill-> remaining > 0)
+                $bill->payment = 2;
             else
-                $bill->status = 1;
+                $bill->payment = 1;
             $bill->save();
 
             \DB::commit();

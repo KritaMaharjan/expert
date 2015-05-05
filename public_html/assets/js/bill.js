@@ -60,7 +60,7 @@ $(function () {
             conv = '<li><a href="' + appUrl + 'invoice/offer/' + d.id + '/convert">Convert to Bill</a></li>';
         }
         else {
-            if(d.raw_status != 3 && d.raw_status != 1) {
+            if(d.raw_status == 3 && d.payment != 1) {
                 conv = '<li><a href="' + appUrl + 'invoice/bill/' + d.id + '/credit" class= "credit">Credit</a></li>';
                 payment = '<li><a class="link-block" href="#">Register payment</a></li>';
                 payment_option = '<div class="payment-info" style="display: none;">' +
