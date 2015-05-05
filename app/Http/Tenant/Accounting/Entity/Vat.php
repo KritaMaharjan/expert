@@ -16,12 +16,14 @@ class Vat {
 
     /**
      * Check for valid account number
+     * @param $code
+     * @return bool
      */
     public static function isValidVatPercentage($code)
     {
-        if($code =='') return false;
+        if ($code == '') return false;
 
-        $code = number_format($code,0);
+        $code = rtrim($code, '.00');
 
         $accounts = self::code();
         if (array_key_exists($code, $accounts)) {
@@ -35,6 +37,7 @@ class Vat {
     public static function code()
     {
         $codes = \Config::get('accounts.vat');
+
         return $codes;
     }
 
