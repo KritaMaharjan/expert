@@ -139,18 +139,18 @@ class Record {
         // Debit Amount without vat
         $credit1_account_code = new AccountCode(3000);
         $credit1_description = "Amount without Vat";
-        $entry->debit(new Credit($amount_without_vat, $credit1_account_code, $credit1_description));
+        $entry->debit(new Debit($amount_without_vat, $credit1_account_code, $credit1_description));
 
         // Debit Vat amount
         $credit2_account_code = new AccountCode($vat->accountCode());
         $credit2_description = "Vat Amount";
-        $entry->debit(new Credit($amount_vat, $credit2_account_code, $credit2_description));
+        $entry->debit(new Debit($amount_vat, $credit2_account_code, $credit2_description));
 
         // credit  a customer
         $debit1_description = $customer->name();
         $debit1_account_code = new AccountCode(1500);
         $subledger = $customer->account();
-        $entry->credit(new Debit($amount, $debit1_account_code, $debit1_description, $subledger));
+        $entry->credit(new Credit($amount, $debit1_account_code, $debit1_description, $subledger));
 
         // finally save everything
         return $entry->save();
@@ -182,13 +182,13 @@ class Record {
         // Debit Amount without vat
         $credit1_account_code = new AccountCode(7830);
         $credit1_description = "Loss Amount";
-        $entry->debit(new Credit($amount, $credit1_account_code, $credit1_description));
+        $entry->debit(new Debit($amount, $credit1_account_code, $credit1_description));
 
         // credit  a customer
         $debit1_description = $customer->name();
         $debit1_account_code = new AccountCode(1500);
         $subledger = $customer->account();
-        $entry->credit(new Debit($amount, $debit1_account_code, $debit1_description, $subledger));
+        $entry->credit(new Credit($amount, $debit1_account_code, $debit1_description, $subledger));
 
         // finally save everything
         return $entry->save();
@@ -229,55 +229,65 @@ class Record {
         // Debit Expense Account  - Amount without vat
         $credit1_account_code = new AccountCode($UserSelectedcode);
         $credit1_description = "Expense Account";
-        $entry->debit(new Credit($amount_without_vat, $credit1_account_code, $credit1_description));
+        $entry->debit(new Debit($amount_without_vat, $credit1_account_code, $credit1_description));
 
         // Debit Vat amount
         $credit2_account_code = new AccountCode($vat->accountCode());
         $credit2_description = "Vat Amount";
-        $entry->debit(new Credit($amount_vat, $credit2_account_code, $credit2_description));
+        $entry->debit(new Debit($amount_vat, $credit2_account_code, $credit2_description));
 
         // credit a customer
         $debit1_description = $supplier->name();
         $debit1_account_code = new AccountCode(1500);
         $subledger = $supplier->account();
-        $entry->credit(new Debit($amount, $debit1_account_code, $debit1_description, $subledger));
+        $entry->credit(new Credit($amount, $debit1_account_code, $debit1_description, $subledger));
 
         // finally save everything
         return $entry->save();
     }
 
     /*
-     * Expense Paid (full or partial)
+     * Expense Paid (full or partial) with Bank
      * --------------------
-     * DEBIT - 1920 Bank Account
-     * CREDIT - 2400 Supplier Name
+     * VAT ACCOUNT                   :   DEBIT VAT AMOUNT
+     * USER SELECTED EXPENSE ACCOUNT :   DEBIT AMOUNT WITHOUT VAT
+     * 2400+sub-ledger account       :   CREDIT FULL AMOUNT INCLUDING VAT
      * ------------------------
      * @param Expense $expense
      * @param Supplier $supplier
      * @param $amount
      */
-    public static function expensePaidWithBank(Expense $expense, Supplier $supplier, $amount)
+    public static function expensePaidWithBank(Expense $expense, Supplier $supplier, $userSelectedCode, $amount, $vat)
     {
 
+        $vat = new Vat($vat);
         $amount = new Amount($amount);
+        $amount_vat = $amount->vat($vat);
+        $amount_without_vat = $amount->withoutVat($vat);
 
         // initialised entry object
         $entry = new Entry();
 
         //Create a transaction
-        $transaction_description = "Expense Paid";
-        $entry->transaction(new Transaction($amount, $transaction_description, null, self::EXPENSE, $expense->id));
+        $transaction_description = "Expenses paid with bank account";
+        $entry->transaction(new Transaction($amount, $transaction_description, $vat, self::EXPENSE, $expense->id));
 
-        // Debit Bank Account
-        $credit1_account_code = new AccountCode(1920);
-        $credit1_description = "Bank Account";
-        $entry->debit(new Credit($amount, $credit1_account_code, $credit1_description));
+        // Debit Vat amount
+        $debit1_account_code = new AccountCode($vat->accountCode());
+        $debit1_description = "Vat Amount";
+        $entry->debit(new Debit($amount_vat, $debit1_account_code, $debit1_description));
+
+        // Debit User selected Expense Account  - Amount without vat
+        $debit2_account_code = new AccountCode($userSelectedCode);
+        $debit2_description = "User selected Expense Account";
+        $entry->debit(new Debit($amount_without_vat, $debit2_account_code, $debit2_description));
+
 
         // credit a supplier
         $credit1_description = $supplier->name();
         $credit1_account_code = new AccountCode(2400);
-        $subledger = $supplier->account();
-        $entry->credit(new Debit($amount, $credit1_account_code, $credit1_description, $subledger));
+        $subLedger = $supplier->account();
+        $entry->credit(new Credit($amount, $credit1_account_code, $credit1_description, $subLedger));
 
         // finally save everything
         return $entry->save();
@@ -292,13 +302,13 @@ class Record {
      * PAYMENT METHOD (BANK OR CREDIT)      CREDIT FULL AMOUNT INCLUDING VAT
      * ------------------------------------------------------
      * @param Expense $expense
-     * @param Supplier $supplier
      * @param AccountCode $userSelectedcode
      * @param $amount
      * @param $vat
+     * @internal param Supplier $supplier
      * @return array
      */
-    public static function expensePaidWithCash(Expense $expense, Supplier $supplier, AccountCode $userSelectedcode, $amount, $vat)
+    public static function expensePaidWithCash(Expense $expense, AccountCode $userSelectedcode, $amount, $vat)
     {
         $vat = new Vat($vat);
         $amount = new Amount($amount);

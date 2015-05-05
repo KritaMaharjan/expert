@@ -20,7 +20,7 @@ class Bill extends Model {
     const STATUS_PAID = 1;
     const STATUS_PARTIAL_PAID = 2;
     const STATUS_CREDITED = 3;
-    const STATUS_COLLECTION = 3;
+    const STATUS_COLLECTION = 4;
 
 
     /**

@@ -12,13 +12,13 @@ class Debit {
     protected $description;
     private $type;
 
-    function __construct(Amount $amount, AccountCode $accountCode, $description, $subledger = null)
+    function __construct(Amount $amount, AccountCode $accountCode, $description, $subLedger = null)
     {
         $this->amount = $amount;
         $this->amountCode = $accountCode;
         $this->description = $description;
         $this->type = Entry::DEBIT;
-        $this->subledger = $subledger;
+        $this->subledger = $subLedger;
     }
 
     public function save(TransactionModel $transaction)
