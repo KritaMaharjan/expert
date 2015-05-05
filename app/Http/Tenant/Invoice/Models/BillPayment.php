@@ -49,13 +49,14 @@ class BillPayment extends Model
             \DB::commit();
 
             $customer = Customer::find($bill->customer_id);
-            Record::billPayment($bill, $customer, $payment->amount);
+            Record::billPayment($bill, $customer, $payment->amount_paid);
             return array('payment_details' => $payment);
 
         } catch (\Exception $e) {
             \DB::rollback();
             throw $e;
         }
+        return false;
     }
 
 } 

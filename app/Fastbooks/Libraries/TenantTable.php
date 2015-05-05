@@ -573,7 +573,7 @@ class TenantTable {
                 $table->integer('accounting_year_id');
                 $table->string('description', 255); //account id from account code table
                 $table->decimal('amount', 11, 2); // Transaction amount
-                $table->float('vat'); // Transaction vat
+                $table->float('vat')->nullable(); // Transaction vat
                 $table->tinyInteger('type'); // 1: Bill , 2: Expenses
                 $table->integer('type_id'); // Transaction amount
                 // created_at, updated_at DATETIME

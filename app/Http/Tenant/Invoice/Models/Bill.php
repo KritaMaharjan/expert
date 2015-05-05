@@ -20,7 +20,7 @@ class Bill extends Model {
     const STATUS_PAID = 1;
     const STATUS_PARTIAL_PAID = 2;
     const STATUS_CREDITED = 3;
-    const STATUS_COLLECTION = 3;
+    const STATUS_COLLECTION = 4;
 
 
     /**
@@ -320,9 +320,11 @@ class Bill extends Model {
             if ($value->status == 1)
                 $value->status = '<span class="label label-success">Paid</span>';
             elseif ($value->status == 2)
-                $value->status = '<span class="label label-warning">Collection</span>';
-            else
+                $value->status = '<span class="label label-warning">Partially Paid</span>';
+            elseif ($value->status == 0)
                 $value->status = '<span class="label label-danger">Unpaid</span>';
+            elseif ($value->status == 3)
+                $value->status = '<span class="label label-danger">Credited</span>';
 
             $value->invoice_date = date('d-M-Y  h:i:s A', strtotime($value->created_at));
 
@@ -420,5 +422,17 @@ class Bill extends Model {
 
         return $invoices;
 
+    }
+
+    function creditBill($id)
+    {
+        $bill = Bill::find($id);
+        if(!empty($bill))
+        {
+            $bill->status = 3;
+            $bill->save();
+            return true;
+        }
+        return false;
     }
 }
