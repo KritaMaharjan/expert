@@ -174,7 +174,7 @@ class Record {
      * @param $vat
      * @return array
      */
-    public static function billCredit(Bill $bill, Customer $customer, Amount $amount, $vat)
+    public static function billCredit(Bill $bill, Customer $customer, $amount, $vat)
     {
         $vat = new Vat($vat);
         $amount = new Amount($amount);

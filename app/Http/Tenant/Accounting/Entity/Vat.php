@@ -21,6 +21,8 @@ class Vat {
     {
         if($code =='') return false;
 
+        $code = number_format($code,0);
+
         $accounts = self::code();
         if (array_key_exists($code, $accounts)) {
             return true;
