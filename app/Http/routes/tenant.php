@@ -123,6 +123,7 @@ Route::group($group_auth, function () {
         get('invoice/bill/{id}/print', ['as' => 'tenant.invoice.bill.download', 'uses' => 'BillController@printBill']);
         get('invoice/bill/{id}/mail', ['as' => 'tenant.invoice.bill.email', 'uses' => 'BillController@sendEmail']);
         post('invoice/bill/{id}/payment', ['as' => 'tenant.invoice.bill.payment', 'uses' => 'BillController@payment']);
+        get('invoice/bill/{id}/credit', ['as' => 'tenant.invoice.bill.credit', 'uses' => 'BillController@credit']);
 
         // invoice routes
         get('invoice', ['as' => 'tenant.invoice.index', 'uses' => 'InvoiceController@index']);

@@ -319,7 +319,8 @@ class TenantTable {
                 $table->float('total');
                 $table->float('paid')->default(0);
                 $table->float('remaining');
-                $table->boolean('status')->default(0); // 0: unpaid, 1: paid, 2: partially paid, 3: credit, 4: collection
+                $table->boolean('status')->default(0); // 0: unpaid, 1: paid, 2: partially paid
+                $table->boolean('payment')->default(0); // 0: active, 1: collection, 2: loss, 3: credit
                 $table->string('customer_payment_number', 60)->nullable();
                 $table->boolean('is_offer')->default(0); // 0: no (bill), 1: yes (offer)
                 $table->datetime('due_date');
@@ -573,7 +574,7 @@ class TenantTable {
                 $table->integer('accounting_year_id');
                 $table->string('description', 255); //account id from account code table
                 $table->decimal('amount', 11, 2); // Transaction amount
-                $table->float('vat'); // Transaction vat
+                $table->float('vat')->nullable(); // Transaction vat
                 $table->tinyInteger('type'); // 1: Bill , 2: Expenses
                 $table->integer('type_id'); // Transaction amount
                 // created_at, updated_at DATETIME

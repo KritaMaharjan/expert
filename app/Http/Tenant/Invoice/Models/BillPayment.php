@@ -40,22 +40,23 @@ class BillPayment extends Model
             $bill->paid = $bill->paid + $request->input('paid_amount'); //do it for remaining too
             $bill->remaining = $bill->remaining - $request->input('paid_amount'); //do it for remaining too
 
-            if($bill-> remaining> 0)
-                $bill->status = 2;
+            if($bill-> remaining > 0)
+                $bill->payment = 2;
             else
-                $bill->status = 1;
+                $bill->payment = 1;
             $bill->save();
 
             \DB::commit();
 
             $customer = Customer::find($bill->customer_id);
-            Record::billPayment($bill, $customer, $payment->amount);
+            Record::billPayment($bill, $customer, $payment->amount_paid);
             return array('payment_details' => $payment);
 
         } catch (\Exception $e) {
             \DB::rollback();
             throw $e;
         }
+        return false;
     }
 
 } 

@@ -60,16 +60,18 @@ $(function () {
             conv = '<li><a href="' + appUrl + 'invoice/offer/' + d.id + '/convert">Convert to Bill</a></li>';
         }
         else {
-            conv = '<li><a href="' + appUrl + 'invoice/bill/' + d.id + '/credit">Credit</a></li>';
-            payment = '<li><a class="link-block" href="#">Register payment</a></li>';
-            payment_option = '<div class="payment-info" style="display: none;">' +
-                '<form class="payment-form" id="'+d.id+'" method="post" action="">' +
-                '<input type="hidden" name="_token" value="'+token+'">'+
+            if(d.raw_status == 3 && d.payment != 1) {
+                conv = '<li><a href="' + appUrl + 'invoice/bill/' + d.id + '/credit" class= "credit">Credit</a></li>';
+                payment = '<li><a class="link-block" href="#">Register payment</a></li>';
+                payment_option = '<div class="payment-info" style="display: none;">' +
+                '<form class="payment-form" id="' + d.id + '" method="post" action="">' +
+                '<input type="hidden" name="_token" value="' + token + '">' +
                 '<div class="form-group"><label> Payment date </label><input name="payment_date" id="payment_date" type="text" class="datepicker form-control"></div>' +
                 '<div class="form-group"><label> Amount paid </label><input name="paid_amount" id="paid_amount" type="number" class="form-control"></div>' +
                 '<div class="bottom-section clearfix">' +
                 '<button class="btn-small btn btn-primary" id="payment-submit">Account as paid</button>' +
                 '</form></div>';
+            }
         }
 
         var token = $('meta[name="csrf-token"]').attr('content');
@@ -91,6 +93,46 @@ $(function () {
         'Salary: ' + d.due_date + '<br>' +
         'The child row can contain any data you wish, including links, images, inner tables etc.';
     }
+
+    $(document).on('click', '.credit', function (e) {
+        e.preventDefault();
+
+        if (!confirm('Are you sure, you want credit? This action will delete data permanently and can\'t be undo')) {
+            return false;
+        }
+
+        $this = $(this);
+        var parentUl = $this.parent().parent();
+        var parent = $this.parent();
+
+        $('.callout').remove();
+        $.ajax({
+            url: $(this).attr('href'),
+            type: 'GET',
+            dataType: 'json'
+        })
+            .done(function (response) {
+                if (response.success == true || response.status == 1) {
+                    parentUl.find('li:first').remove();
+                    parent.remove();
+
+                    $('.mainContainer .box-solid').before(notify('success', 'Bill Credited Successfully!'));
+                    setTimeout(function () {
+                        $('.callout').remove();
+                    }, 3000);
+                }
+                else {
+                    $('.mainContainer .box-solid').before(notify('error', 'Something went wrong!'));
+                    setTimeout(function () {
+                        $('.callout').remove();
+                    }, 3000);
+                }
+            })
+            .fail(function () {
+                alert('Something went wrong!');
+            })
+
+    });
 
     $(document).on('click', '#payment-submit', function (e) {
         e.preventDefault();

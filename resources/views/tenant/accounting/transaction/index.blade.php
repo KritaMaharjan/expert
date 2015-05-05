@@ -9,19 +9,9 @@ Transaction
     <div class="box-body">
         <div class="row">
             <div class="col-md-12 table-responsive">
-<<<<<<< HEAD
-               {!! Form::open(array('method' => 'get')) !!}
-                    <div class="row">
-                     <div class="col-xs-2">
-=======
-
-
-
-
                 {!! Form::open(array('method' => 'get')) !!}
                     <div class="row search-blk">
                      <div class="col-xs-3">
->>>>>>> 51fc7f6c6963ca23b7ed951f5afa819607ef18dc
                        <label>From</label>
                        <input type="text" name="from" value="<?php echo $get->from;?>" autocomplete="off" class="form-control date-from" placeholder="Date">
                      </div>
