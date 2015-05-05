@@ -6,7 +6,7 @@ $(function () {
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": appUrl + 'collection/data',
+            "url": appUrl + 'collection/waiting/data',
             "type": "POST"
         },
         "columnDefs": [{
@@ -33,14 +33,10 @@ $(function () {
     });
 
 
-    function notify(type, text) {
-        return '<div class="callout callout-' + type + '"><p>' + text + '</p></div>';
-    }
-
     function showActionbtn(row) {
         return '<div class="box-tools">' +
         '<a href="#" data-collection="' + row.id + '" title="Add to collection case" class="btn btn-box-tool addToCase">' +
-        '<i class="fa fa-plus"></i>' +
+        '<i class="fa fa-plus"></i> Add to collection' +
         '</a>' +
         '</div>';
 
@@ -48,15 +44,33 @@ $(function () {
 
     $(document).on('click', '.addToCase', function (e) {
         e.preventDefault();
+        $this = $(this);
         var id = $(this).data('collection');
+        $this.closest('tr').fadeOut('slow');
 
         $.ajax({
             url: appUrl + 'collection/case/' + id + '/create',
             type: 'GET',
             dataType: 'json',
-        }).done(function (data) {
-            alert(data);
+        }).done(function (response) {
+            if (response.status == 1) {
+                var alert = notify('success', response.data.message);
+                $this.closest('tr').show();
+            }
+            else {
+                $this.closest('tr').remove();
+                var alert = notify('danger', response.data.message);
+            }
+            $('.callout').remove();
+            $('.box-header').after(alert);
+
+        }).fail(function () {
+            alert('error');
         });
     })
+
+    function notify(type, text) {
+        return '<div class="callout callout-' + type + '"><p>' + text + '</p></div>';
+    }
 
 });

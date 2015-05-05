@@ -44,15 +44,22 @@ class CollectionController extends BaseController {
         if ($this->request->ajax()) {
             $id = $this->request->route('id');
             if ($this->repo->makeCase($id)) {
-                return "done";
+                return $this->success(['message' => 'Bill add to collection case']);
             }
-            else{
-                return "error";
-            }
+
+            return $this->fail(['message' => 'Bill couldn\'t converted to collection case']);
         }
     }
 
     public function data()
+    {
+        if ($this->request->ajax()) {
+            $collectionWaiting = $this->repo->billsOnCollection();
+            echo json_encode($collectionWaiting, JSON_PRETTY_PRINT);
+        }
+    }
+
+    public function waitingData()
     {
         if ($this->request->ajax()) {
             $collectionWaiting = $this->repo->billsWaitingCollection();

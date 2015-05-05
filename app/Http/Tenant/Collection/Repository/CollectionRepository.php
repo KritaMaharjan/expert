@@ -26,7 +26,6 @@ class CollectionRepository {
 
     function __construct(Request $request, Bill $bill, Collection $collection)
     {
-
         $this->bill = $bill;
         $this->collection = $collection;
         $this->request = $request;
@@ -34,8 +33,24 @@ class CollectionRepository {
 
     function billsWaitingCollection()
     {
+        $status = [BILL::STATUS_UNPAID, BILL::STATUS_PARTIAL_PAID];
         $select = ['b.id', 'c.name as customer_name', 'b.invoice_number', 'b.total', 'b.paid', 'b.remaining', DB::raw('DATE_FORMAT(b.due_date,"%Y-%m-%d") as due_date')];
 
+        return $this->getPagination($status, $select);
+    }
+
+
+    function billsOnCollection()
+    {
+        $status = [BILL::STATUS_COLLECTION];
+        $select = ['b.id', 'c.name as customer_name', 'b.invoice_number', 'b.total', 'b.paid', 'b.remaining', DB::raw('DATE_FORMAT(b.due_date,"%Y-%m-%d") as due_date')];
+
+        return $this->getPagination($status, $select);
+    }
+
+
+    private function getPagination(array $status, array $select = array())
+    {
         $take = ($this->request->input('length') > 0) ? $this->request->input('length') : 15;
         $start = ($this->request->input('start') > 0) ? $this->request->input('start') : 0;
 
@@ -52,8 +67,8 @@ class CollectionRepository {
         $query = $this->bill->select($select)->from('fb_bill as b')
             ->leftJoin('fb_customers as c', 'c.id', '=', 'b.customer_id')
             ->where(DB::raw('DATE_ADD(b.due_date,INTERVAL 14 DAY)'), '<', date('Y-m-d'))// get overdue bill
-            ->where('b.status', 0)// get only unpaid bill
-            ->where('b.is_offer', 0); // get only bill type
+            ->whereIn('b.status', $status)// get only unpaid bill
+            ->where('b.is_offer', BILL::TYPE_BILL); // get only bill type
 
 
         if ($orderColumn != '' AND $orderdir != '') {
@@ -80,13 +95,6 @@ class CollectionRepository {
         return $json;
     }
 
-
-    function convertToCurrency($num)
-    {
-        return '$' . number_format($num, 2);
-    }
-
-
     function makeCase($id)
     {
         $bill = $this->bill->find($id);
@@ -100,10 +108,5 @@ class CollectionRepository {
         return false;
     }
 
-
-    function billsOnCollection()
-    {
-
-    }
 
 } 
