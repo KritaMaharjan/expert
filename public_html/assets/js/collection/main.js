@@ -72,10 +72,10 @@ $(function () {
         '<td colspan="7"><div class="clearfix">' +
         '<ul class="links-td">' +
         '<li><a class="link-block" href="#">Register payment</a></li>' +
-        '<li><a href="' + appUrl + 'collection/purring/pdf?bill=' + bill + 'token=' + token + '">Create a Purring.pdf</a></li>' +
-        '<li><a href="' + appUrl + 'collection/gotostep/2?bill=' + bill + 'token=' + token + '">Skip this step</a></li>' +
-        '<li><a href="' + appUrl + 'collection/dispute?bill=' + bill + 'token=' + token + '">Register dispute</a></li>' +
-        '<li><a href="' + appUrl + 'collection/cancel?bill=' + bill + 'token=' + token + '">Cancel Collection Case</a></li>' +
+        '<li><a href="' + appUrl + 'collection/purring/pdf?bill=' + bill + '&token=' + token + '">Create a Purring.pdf</a></li>' +
+        '<li><a href="' + appUrl + 'collection/gotostep/inkassovarsel?bill=' + bill + '&token=' + token + '">Skip this step</a></li>' +
+        '<li><a href="' + appUrl + 'collection/dispute?bill=' + bill + '&token=' + token + '">Register dispute</a></li>' +
+        '<li><a href="' + appUrl + 'collection/cancel?bill=' + bill + '&token=' + token + '">Cancel Collection Case</a></li>' +
 
         '</ul>' +
         payment_option +

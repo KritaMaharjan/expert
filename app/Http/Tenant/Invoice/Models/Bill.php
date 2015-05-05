@@ -19,8 +19,12 @@ class Bill extends Model {
     const STATUS_UNPAID = 0;
     const STATUS_PAID = 1;
     const STATUS_PARTIAL_PAID = 2;
+
+
+    const STATUS_ACTIVE = 0;
+    const STATUS_COLLECTION = 1;
+    const STATUS_LOSS = 2;
     const STATUS_CREDITED = 3;
-    const STATUS_COLLECTION = 4;
 
 
     /**
@@ -59,6 +63,12 @@ class Bill extends Model {
         return $this->hasMany('App\Http\Tenant\Invoice\Models\BillPayment');
     }
 
+    /**
+     * BILL::add();
+     * @param Request $request
+     * @param bool $offer
+     * @throws \Exception
+     */
     function add(Request $request, $offer = false)
     {
         // Start transaction!
@@ -324,7 +334,7 @@ class Bill extends Model {
     {
         $bill = Bill::find($id);
         if ($bill) {
-            $bill->is_offer = 0;
+            $bill->is_offer = static::TYPE_BILL;
             $bill->save();
 
             return $bill;
@@ -357,16 +367,16 @@ class Bill extends Model {
     function creditBill($id)
     {
         $bill = Bill::find($id);
-        if(!empty($bill))
-        {
-            dd($bill->vat);
-            $bill->status = 3;
+        if (!empty($bill)) {
+            $bill->status = static::STATUS_CREDITED;
             $bill->save();
 
             $customer = Customer::find($bill->customer_id);
             Record::billCredit($bill, $customer, $bill->remaining, $bill->vat);
+
             return true;
         }
+
         return false;
     }
 }

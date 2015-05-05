@@ -5,6 +5,9 @@ Collections
 @stop
 
 @section('content')
+
+@include('flash::message')
+
     <div class="box box-solid">
         <div class="box-header">
               <a class="btn  btn-primary btn-flat" href="{{url('collection')}}">All Collection Cases</a>
