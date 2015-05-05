@@ -359,6 +359,7 @@ class Bill extends Model {
         $bill = Bill::find($id);
         if(!empty($bill))
         {
+            dd($bill->vat);
             $bill->status = 3;
             $bill->save();
 
