@@ -27,7 +27,7 @@ class Record {
     /**
      * Send a Bill to Customer
      * ------------------------
-     * Debit: 1500+subledger full amount including VAT
+     * Debit: 1500+subLedger full amount including VAT
      * Credit: 3010 the amount without VAT included:
      * Credit 2701(if 25% VAT)  with the VAT amount
      * ---------------------------------------------
@@ -101,20 +101,72 @@ class Record {
         // Credit Customer account
         $credit2_account_code = new AccountCode(1500);
         $credit2_description = $customer->name();
-        $subledger = $customer->account();
-        $entry->credit(new Credit($amount, $credit2_account_code, $credit2_description, $subledger));
+        $subLedger = $customer->account();
+        $entry->credit(new Credit($amount, $credit2_account_code, $credit2_description, $subLedger));
 
         // finally save everything
         return $entry->save();
 
     }
 
+
+    /**
+     *
+     * Bill paid including Fee and interest
+     * ------------------------------------------------------
+     * 1920 Bank Account            DEBIT - Total Amount Paid
+     * 1500 kundefordringer         CREDIT - The original bill amount
+     * 8055 Fees paid               CREDIT - only total fee and interest amount paid
+     * --------------------------------------------------------
+     * @param Bill $bill
+     * @param Customer $customer
+     * @param $billAmount
+     * @param $feeAndInterest
+     * @internal param $BillAmount
+     * @internal param $amount
+     * @return array
+     */
+    function billPaidWithFee(Bill $bill, Customer $customer, $billAmount, $feeAndInterest)
+    {
+        $billAmount = new Amount($billAmount);
+        $feeAndInterest = new Amount($feeAndInterest);
+        $totalAmount = new Amount($billAmount + $feeAndInterest);
+
+        // initialised entry object
+        $entry = new Entry();
+
+        //Create a transaction
+        $transaction_description = "Bill is paid including fee and interest";
+        $entry->transaction(new Transaction($totalAmount, $transaction_description, null, self::BILL, $bill->id));
+
+        // Debit Bank account
+        $debit1_description = 'Bank Account';
+        $debit1_account_code = new AccountCode(1920);
+        $entry->debit(new Debit($totalAmount, $debit1_account_code, $debit1_description));
+
+        // Credit Customer account
+        $credit1_account_code = new AccountCode(1500);
+        $credit1_description = $customer->name();
+        $subLedger = $customer->account();
+        $entry->credit(new Credit($billAmount, $credit1_account_code, $credit1_description, $subLedger));
+
+        // Credit Fee and interest Account
+        $credit2_account_code = new AccountCode(8055);
+        $credit2_description = 'Fees paid';
+        $entry->credit(new Credit($billAmount, $credit2_account_code, $credit2_description));
+
+        // finally save everything
+        return $entry->save();
+
+    }
+
+
     /**
      * Credit A Bill
      * --------------------------
      * Debit 2701 Tax amount
      * Debit 3000 Without tax
-     * Credit 1500 + subledger cutomer account
+     * Credit 1500 + subledger customer account
      * --------------------------
      * @param Bill $bill
      * @param Customer $customer
@@ -213,7 +265,7 @@ class Record {
      * @internal param AccountCode $code
      * @return array
      */
-    public static function createAnExpensePaidWithBank(Expense $expense, Supplier $supplier, $UserSelectedCode, $amount, $vat)
+    public static function createAnExpenseWithSupplier(Expense $expense, Supplier $supplier, $UserSelectedCode, $amount, $vat)
     {
         $vat = new Vat($vat);
         $amount = new Amount($amount);
@@ -257,7 +309,7 @@ class Record {
      * @param Supplier $supplier
      * @param $amount
      */
-    public static function expensePaidWithBank(Expense $expense, Supplier $supplier, $amount)
+    public static function expensePaidToSupplier(Expense $expense, Supplier $supplier, $amount)
     {
 
         $amount = new Amount($amount);
