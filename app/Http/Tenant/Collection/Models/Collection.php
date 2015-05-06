@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Tenant\Collection\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Collection extends Model {
@@ -38,7 +37,7 @@ class Collection extends Model {
     const STEP_COURT = 4;
     const STEP_UTLEGG = 5;
 
-    public static function  getStep($step = '')
+    public static function getStep($step = '')
     {
         $step = strtolower($step);
         switch ($step) {
@@ -63,9 +62,58 @@ class Collection extends Model {
                 break;
 
             default:
-                throw new \Exception('Invalid Case');
+                return NULL;
                 break;
         }
+    }
+
+    public static function nextStep($step = '')
+    {
+        $step = strtolower($step);
+        switch ($step) {
+            case 'purring':
+                return 'inkassovarsel';
+                break;
+
+            case 'inkassovarsel':
+                return 'betalingsappfording';
+                break;
+
+            case 'betalingsappfording':
+                return 'court';
+                break;
+
+            case 'court':
+                return 'utlegg';
+                break;
+
+            default:
+                return NULL;
+                break;
+        }
+    }
+
+    static function isValidStep($step)
+    {
+        if(!is_null(self::getStep($step)))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+
+    public static  function isGoToStep($created_at)
+    {
+        $dStart = new \DateTime();
+        $dEnd  = new \DateTime($created_at);
+        $dDiff = $dStart->diff($dEnd);
+        $diff = $dDiff->format('%R').$dDiff->days;
+       if($diff <= -14)
+           return true;
+        else
+            return false;
     }
 
     public static function boot()

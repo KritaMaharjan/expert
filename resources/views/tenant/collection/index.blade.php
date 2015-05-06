@@ -15,13 +15,15 @@ Collections
               <a class="btn  btn-default btn-flat pull-right" href="{{url('collection/new-case')}}">Add New Case</a>
         </div>
 
+        <?php $step = Input::get('step', 'purring');?>
+
         <div class="box-header">
             <ol class="breadcrumb">
-                <li class="active">Purring</li>
-                <li><a href="{{tenant()->url('/collection?step=inkassovarsel')}}">Inkassovarsel</a></li>
-                <li><a href="{{tenant()->url('/collection?step=betalingsappfording')}}">Betalingsappfording</a></li>
-                <li><a href="{{tenant()->url('/collection?step=court-case')}}">Court Case</a></li>
-                <li><a href="{{tenant()->url('/collection?step=utlegg')}}">Utlegg</a></li>
+                <li {{ $step == 'purring' ? 'class="active"': '' }}><a href="{{tenant()->url('/collection?step=purring')}}">Purring</a></li>
+                <li {{ $step == 'inkassovarsel' ? 'class="active"': '' }}><a href="{{tenant()->url('/collection?step=inkassovarsel')}}">Inkassovarsel</a></li>
+                <li {{ $step == 'betalingsappfording' ? 'class="active"': '' }}><a href="{{tenant()->url('/collection?step=betalingsappfording')}}">Betalingsappfording</a></li>
+                <li {{ $step == 'court' ? 'class="active"': '' }}><a href="{{tenant()->url('/collection?step=court')}}">Court Case</a></li>
+                <li {{ $step == 'utlegg' ? 'class="active"': '' }}><a href="{{tenant()->url('/collection?step=utlegg')}}">Utlegg</a></li>
             </ol>
         </div>
 
@@ -35,7 +37,7 @@ Collections
                        <th>Total</th>
                        <th>Paid</th>
                        <th>Remaining</th>
-                       <th>Due Date</th>
+                       <th>Invoice Date</th>
                      </tr>
                  </thead>
              <tbody></tbody>
