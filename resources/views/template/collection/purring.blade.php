@@ -15,7 +15,71 @@
      .fix-size{border:1px solid #dbdbdb;line-height:4;}
      .sm-box{line-height:1.5;}
      .footer{border-bottom: 3px solid #FFFF00;}
-  </style>
+     .center{text-align: center;}
+     .right{text-align: right;}
+     #purring-detail{
+     }
+      </style>
+
+      <table id="purring-detail">
+        <tr>
+          <td colspan="3" class="center"><h1>Logo</h1></td>          
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td><h2>Purring</h2></td>                    
+        </tr>
+        <tr>
+          <td>
+            <p>Firstname Lastname<br />
+            Street address + Number<br />
+            Postal code and town<br />
+            Country</p>
+          </td>
+          <td>
+            <p>Tlf Telephone number<br />
+              Fax Fax number<br />
+              Epost Email address<br />
+              Org.nr. Compant number<br />
+              Account number Account No.<br />
+              Swift - Swift<br />
+              IBAN - IBAN
+            </p>
+          </td>
+          <td>
+            <p>Note payment: Number<br />
+              Customer number Customer number<br />
+              Var ref. User sending out bills<br />
+              Invoice date Date produced<br />
+              Due date Due date<br />
+              Currency: Currency
+            </p>
+          </td>
+        </tr>
+      </table><br /><br />
+
+      <table>
+        <thead>
+          <tr>
+            <th>Invoice number</th>
+            <th>Description</th>
+            <th>Invoice date</th>
+            <th>Due date</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Bill number</td>
+            <td>Purring</td>
+            <td>Original invoice date</td>
+            <td>Due date of bill</td>
+            <td>Original sum outstanding</td>
+          </tr>
+        </tbody>
+
+      </table>
 
       <table id="print">
           <tr bgcolor="#FFFF00"><td colspan="4"><h1 style="text-indent: 5px;">Receipt</h1></td></tr>
