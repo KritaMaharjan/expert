@@ -14,7 +14,6 @@ class Amount {
     function vat(Vat $vat)
     {
         $amount = $this->amount * $vat->percentage();
-
         return new static($amount);
     }
 

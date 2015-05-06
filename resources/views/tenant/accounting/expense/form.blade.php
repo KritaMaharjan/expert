@@ -96,7 +96,6 @@
                 <tr>
                     <th width="30%">Product</th>
                     <th width="10%">Amount</th>
-                    <th width="10%">Total amount</th>
                     <th width="30%">Expense account</th>
                 </tr>
             </thead>
@@ -109,9 +108,6 @@
                             </td>
                             <td>
                                 <input type="text" name="amount[]" class="form-control" id="amount" maxlength="7" required="required"  value="{{ $product['amount'] }}" />
-                            </td>
-                            <td>
-                                <span class="border-bx block total">{{ $product['total'] }}</span>
                             </td>
                             <td class="position-relative">
                                 {{--{!! Form::select('account_code_id[]', $accounts, null, array('class' => 'select-product', 'id' => 'account-code')) !!}--}}
@@ -137,10 +133,6 @@
                         </td>
                         <td>
                             <input type="text" name="amount[]" class="form-control" id="amount" maxlength="7" required="required" />
-                        </td>
-                        <td>
-                            <span class="border-bx block total"> </span>
-
                         </td>
                         <td class="position-relative">
                             <select name="account_code_id[]" class="select-product" id="account-code" required="required" >

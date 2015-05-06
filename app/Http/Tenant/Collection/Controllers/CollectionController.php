@@ -1,8 +1,11 @@
 <?php
 namespace APP\Http\Tenant\Collection\Controllers;
 
+use App\Fastbooks\Libraries\Pdf;
 use App\Http\Controllers\Tenant\BaseController;
 use App\Http\Tenant\Collection\Repository\CollectionRepository;
+use App\Http\Tenant\Invoice\Models\Bill;
+use Ddeboer\Imap\Exception\Exception;
 use Illuminate\Http\Request;
 
 class CollectionController extends BaseController {
@@ -65,6 +68,44 @@ class CollectionController extends BaseController {
             $collectionWaiting = $this->repo->billsWaitingCollection();
             echo json_encode($collectionWaiting, JSON_PRETTY_PRINT);
         }
+    }
+
+    function cancel()
+    {
+        Bill::get();
+    }
+
+    function dispute()
+    {
+        return "dispute";
+    }
+
+    function goToStep()
+    {
+        $step = $this->request->route('step');
+        $id = $this->request->get('bill');
+        try {
+            $this->repo->changeCollectionStep($id, $step);
+            flash()->success('Collection case updated successfully');
+        } catch (\Exception $e) {
+            flash()->error($e->getMessage());
+        }
+
+
+        return redirect()->back();
+    }
+
+    function generatePdf(Pdf $pdf)
+    {
+        $id = $this->request->get('bill');
+        $data = $this->repo->getBillInfo($id);
+        $pdf->generate($data['invoice_number'], 'template.bill', compact('data'), true);
+    }
+
+
+    function disputeBill()
+    {
+        return "d";
     }
 
 

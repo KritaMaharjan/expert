@@ -19,7 +19,7 @@ class Record {
     * Define Types of records
     */
     const BILL = 1;
-    const EXPEMSE = 2;
+    const EXPENSE = 2;
 
 
     /* BILL RELATED TRANSACTION */
@@ -280,9 +280,12 @@ class Record {
         $entry->transaction(new Transaction($amount, $transaction_description, $vat, self::EXPENSE, $expense->id));
 
         // Debit User selected Expense Account  - Amount without vat
-        $credit1_account_code = new AccountCode($UserSelectedCode);
-        $credit1_description = "User selected expense account";
-        $entry->debit(new Debit($amount_without_vat, $credit1_account_code, $credit1_description));
+        foreach($UserSelectedCode as $code) {
+            $credit1_account_code = new AccountCode($code['code']);
+            $amount_without_vat = new Amount($code['amount']);
+            $credit1_description = "User selected expense account";
+            $entry->debit(new Debit($amount_without_vat, $credit1_account_code, $credit1_description));
+        }
 
         // Debit Vat amount
         $credit2_account_code = new AccountCode($vat->accountCode());
@@ -369,9 +372,12 @@ class Record {
         $entry->transaction(new Transaction($amount, $transaction_description, $vat, self::EXPENSE, $expense->id));
 
         // Debit User selected Expense Account  - Amount without vat
-        $debit1_account_code = new AccountCode($userSelectedCode);
-        $debit1_description = "Expense Account";
-        $entry->debit(new Debit($amount_without_vat, $debit1_account_code, $debit1_description));
+        foreach($userSelectedCode as $code) {
+            $amount_without_vat = new Amount($code['amount']);
+            $debit1_account_code = new AccountCode($code['code']);
+            $debit1_description = "Expense Account";
+            $entry->debit(new Debit($amount_without_vat, $debit1_account_code, $debit1_description));
+        }
 
         // Debit Vat amount
         $debit2_account_code = new AccountCode($vat->accountCode());

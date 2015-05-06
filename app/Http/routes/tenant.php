@@ -207,6 +207,13 @@ Route::group($group_auth, function () {
         post('collection/waiting/data', ['as' => 'tenant.collection.waiting.data', 'uses' => 'CollectionController@waitingData']);
         get('collection/case/{id}/create', ['as' => 'tenant.collection.case.make', 'uses' => 'CollectionController@makeCollectionCase']);
 
+        get('collection/{step}/pdf', ['as' => 'tenant.collection.pdf', 'uses' => 'CollectionController@generatePdf']);
+        get('collection/gotostep/{step}', ['as' => 'tenant.collection.goto', 'uses' => 'CollectionController@goToStep']);
+        get('collection/dispute', ['as' => 'tenant.collection.dispute', 'uses' => 'CollectionController@disputeBill']);
+        get('collection/cancel', ['as' => 'tenant.collection.cancel', 'uses' => 'CollectionController@cancel']);
+
+
+
 
         get('collection/purring', ['as' => 'tenant.collection.purring', 'uses' => 'CollectionController@purring']);
         get('collection/payment', ['as' => 'tenant.collection.payment', 'uses' => 'CollectionController@payment']);

@@ -52,6 +52,8 @@ class Expense extends Model
             $vat = $request['vat'];
             $account_code_id = $request['account_code_id'];
 
+            $UserSelectedCode = array();
+
             foreach ($products as $key => $product) {
                 if (isset($amount[$key]) && $amount[$key] > 0) {
                     $total = $amount[$key] + ($vat * 0.01 * $amount[$key]);
@@ -66,6 +68,8 @@ class Expense extends Model
                 ]);
                 $expense_total += $total;
                 $expense_total += $amount[$key];
+
+                $UserSelectedCode[] = array('code' => $account_code_id[$key], 'amount' => $amount[$key]);
             }
             $expense_remaining = $expense_total;
             if($request['is_paid']) {
@@ -88,15 +92,15 @@ class Expense extends Model
 
             DB::commit();
 
-            if(isset($request['supplier_id'])) {
+            if($request['type'] == 1 && isset($request['supplier_id'])) {
                 $supplier = Supplier::find($request['supplier_id']);
-                Record::createAnExpenseWithSupplier($expense, $supplier, $account_code_id, $amount, $vat);
+                Record::createAnExpenseWithSupplier($expense, $supplier, $UserSelectedCode, $expense_total, $vat);
                 if($request['is_paid']) {
                     Record::expensePaidToSupplier($expense, $supplier, $request['amount_paid']);
                 }
             }
-            elseif(!isset($request['supplier_id']) && $request['is_paid'])
-                Record::expensePaidWithCash($expense, $account_code_id, $request['amount_paid'], $vat);
+            elseif($request['type'] == 2 && $request['is_paid'])
+                Record::expensePaidWithCash($expense, $UserSelectedCode, $request['amount_paid'], $vat);
 
             return $expense->toArray();
 

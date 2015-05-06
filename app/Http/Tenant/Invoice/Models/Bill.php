@@ -19,9 +19,12 @@ class Bill extends Model {
     const STATUS_UNPAID = 0;
     const STATUS_PAID = 1;
     const STATUS_PARTIAL_PAID = 2;
-    const STATUS_CREDITED = 3;
-    const STATUS_COLLECTION = 4;
 
+
+    const STATUS_ACTIVE = 0;
+    const STATUS_COLLECTION = 1;
+    const STATUS_LOSS = 2;
+    const STATUS_CREDITED = 3;
 
     /**
      * The database table used by the model.
@@ -35,7 +38,7 @@ class Bill extends Model {
      *
      * @var array
      */
-    protected $fillable = ['invoice_number', 'customer_id', 'currency', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'payment', 'status', 'due_date', 'is_offer', 'customer_payment_number', 'vat'];
+    protected $fillable = ['invoice_number', 'customer_id', 'currency', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'payment', 'status', 'due_date', 'type', 'is_offer', 'customer_payment_number', 'vat'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -73,7 +76,8 @@ class Bill extends Model {
                 'due_date'       => $request->input('due_date'),
                 'currency'       => $request->input('currency'),
                 'vat'            => $vat,
-                'is_offer'       => ($offer == true) ? self::TYPE_OFFER : self::TYPE_BILL
+                'is_offer'       => ($offer == true) ? self::TYPE_OFFER : self::TYPE_BILL,
+                'type'       => ($offer == true) ? self::TYPE_OFFER : self::TYPE_BILL,
             ]);
 
             $products = $request->input('product');
@@ -248,15 +252,7 @@ class Bill extends Model {
             //else $value->customer = 'Undefined';
             $value->raw_status = $value->status;
 
-            if ($value->status == 0)
-                $value->status = '<span class="label label-success">Active</span>';
-            elseif ($value->status == 1)
-                $value->status = '<span class="label label-warning">Collection</span>';
-            elseif ($value->status == 2)
-                $value->status = '<span class="label label-danger">Loss</span>';
-            elseif ($value->status == 3)
-                $value->status = '<span class="label label-danger">Credited</span>';
-
+            $value->status = $this->getStatus($value->status, $value->payment);
             $value->invoice_date = $value->created_at->format('d-M-Y  h:i:s A');
             $value->view_url = tenant()->url('invoice/bill/' . $value->id);
             $value->DT_RowId = "row-" . $value->guid;
@@ -271,6 +267,27 @@ class Bill extends Model {
         $json->data = $products['data'];
 
         return $json;
+    }
+
+    function getStatus($status, $payment)
+    {
+        if ($status == static::STATUS_ACTIVE)
+        {
+            if ($payment == static::STATUS_PAID)
+                $status = '<span class="label label-success">Paid</span>';
+            elseif ($payment == static::STATUS_PARTIAL_PAID)
+                $status = '<span class="label label-warning">Partially Paid</span>';
+            elseif ($payment == static::STATUS_UNPAID)
+                $status = '<span class="label label-danger">Unpaid</span>';
+        }
+        elseif ($status == static::STATUS_COLLECTION)
+            $status = '<span class="label label-warning">Collection</span>';
+        elseif ($status == static::STATUS_LOSS)
+            $status = '<span class="label label-danger">Loss</span>';
+        elseif ($status == static::STATUS_CREDITED)
+            $status = '<span class="label label-danger">Credited</span>';
+
+        return $status;
     }
 
     function billDetails($id = '')
@@ -324,6 +341,7 @@ class Bill extends Model {
     {
         $bill = Bill::find($id);
         if ($bill) {
+            $bill->type = self::TYPE_BILL;
             $bill->is_offer = 0;
             $bill->save();
 
@@ -359,9 +377,8 @@ class Bill extends Model {
         $bill = Bill::find($id);
         if(!empty($bill))
         {
-            $bill->status = 3;
+            $bill->status = static::STATUS_CREDITED;;
             $bill->save();
-
             $customer = Customer::find($bill->customer_id);
             Record::billCredit($bill, $customer, $bill->remaining, $bill->vat);
             return true;

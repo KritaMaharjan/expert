@@ -4,6 +4,7 @@ namespace App\Http\Tenant\Collection\Repository;
 
 use App\Http\Tenant\Collection\Models\Collection;
 use App\Http\Tenant\Invoice\Models\Bill;
+use App\Models\Tenant\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -23,14 +24,22 @@ class CollectionRepository {
      * @var Request
      */
     private $request;
+    /**
+     * @var Setting
+     */
+    private $setting;
 
-    function __construct(Request $request, Bill $bill, Collection $collection)
+    function __construct(Request $request, Bill $bill, Collection $collection, Setting $setting)
     {
         $this->bill = $bill;
         $this->collection = $collection;
         $this->request = $request;
+        $this->setting = $setting;
     }
 
+    /**
+     * @return \stdClass
+     */
     function billsWaitingCollection()
     {
         $status = [BILL::STATUS_UNPAID, BILL::STATUS_PARTIAL_PAID];
@@ -40,6 +49,9 @@ class CollectionRepository {
     }
 
 
+    /**
+     * @return \stdClass
+     */
     function billsOnCollection()
     {
         $status = [BILL::STATUS_COLLECTION];
@@ -49,6 +61,11 @@ class CollectionRepository {
     }
 
 
+    /**
+     * @param array $status
+     * @param array $select
+     * @return \stdClass
+     */
     private function getPagination(array $status, array $select = array())
     {
         $take = ($this->request->input('length') > 0) ? $this->request->input('length') : 15;
@@ -95,6 +112,10 @@ class CollectionRepository {
         return $json;
     }
 
+    /**
+     * @param $id
+     * @return bool
+     */
     function makeCase($id)
     {
         $bill = $this->bill->find($id);
@@ -106,6 +127,72 @@ class CollectionRepository {
         }
 
         return false;
+    }
+
+
+    /**
+     * @param $id
+     * @return array
+     */
+    function getBillInfo($id)
+    {
+        $bill = $this->bill->billDetails($id);
+        $company = $this->setting->getCompany();
+        $business = $this->setting->getBusiness();
+        $fix = $this->setting->getFix();
+        $company_details = array_merge($company, $business, $fix);
+
+        $bill_details = array(
+            'id'                      => $bill->id,
+            'amount'                  => $bill->total,
+            'currency'                => $bill->currency,
+            'invoice_number'          => $bill->invoice_number,
+            'invoice_date'            => $bill->created_at,
+            'due_date'                => $bill->due_date,
+            'customer'                => $bill->customer,
+            'customer_payment_number' => $bill->customer_payment_number,
+            'customer_details'        => $bill->customer_details->toArray(),
+            'company_details'         => $company_details
+        );
+
+        return $bill_details;
+    }
+
+    /**
+     * @param $bill
+     * @param $step
+     * @return static
+     * @throws \Exception
+     */
+    function changeCollectionStep($bill, $step)
+    {
+        $bill = $this->bill->find($bill);
+        if ($bill && $this->isValidStep($bill, $step)) {
+            $data = [
+                'bill_id' => $bill->id,
+                'step'    => Collection::getStep($step)
+            ];
+
+            return $this->collection->create($data);
+        }
+
+        throw new \Exception('Invalid Bill ID');
+    }
+
+    /**
+     * @param Bill $bill
+     * @param $step
+     * @return bool
+     * @throws \Exception
+     */
+    public function isValidStep(Bill $bill, $step)
+    {
+        $collection = $this->collection->where('bill_id', $bill->id)->where('step', Collection::getStep($step))->first();
+
+       if (!empty($collection))
+            throw new \Exception('You can\'t change the case status');
+        else
+            return true;
     }
 
 

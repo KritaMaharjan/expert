@@ -38,9 +38,6 @@ $(function () {
         '<a href="#" title="View Payments" data-original-title="View" class="btn btn-box-tool" data-toggle="modal" data-url="' + appUrl + 'accounting/expense/'+ row.id + '" data-target="#fb-modal">' +
         '<i class="fa fa-eye"></i>' +
         '</a>' +
-        '<a href="' + appUrl + 'expense/'+ row.id + '/edit" title="Edit" class="btn btn-box-tool">' +
-        '<i class="fa fa-edit"></i>' +
-        '</a>' +
         '<button class="btn btn-box-tool btn-delete-expense" data-toggle="tooltip" link="'+appUrl+'delete/expense/'+row.id+'" data-id="' + row.id + '" data-original-title="Remove"><i class="fa fa-times"></i></button>' +
         '</div>';
     }
