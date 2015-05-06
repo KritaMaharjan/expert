@@ -1,12 +1,22 @@
 $(function () {
 
+
+    function input_get(name) {
+        name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+        var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+            results = regex.exec(location.search);
+        return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+
+
+
     var collectionDatatable = $("#table-collection").DataTable({
         "dom": '<"top"f>rt<"bottom"lip><"clear">',
         "order": [[6, "desc"]],
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": appUrl + 'collection/data',
+            "url": appUrl + 'collection/data?step='+input_get('step'),
             "type": "POST"
         },
         "columnDefs": [{
@@ -68,12 +78,18 @@ $(function () {
 
         var bill = d.id;
 
+        var goToStep ='';
+        if(d.isGoToStep==1)
+        {
+            goToStep = '<li><a href="' + appUrl + 'collection/gotostep/'+d.goToStep+'?bill=' + bill + '&token=' + token + '">Skip this step</a></li>' ;
+        }
+
         $hidden_child = '<tr class="temp_tr">' +
         '<td colspan="7"><div class="clearfix">' +
         '<ul class="links-td">' +
         '<li><a class="link-block" href="#">Register payment</a></li>' +
         '<li><a href="' + appUrl + 'collection/purring/pdf?bill=' + bill + '&token=' + token + '">Create a Purring.pdf</a></li>' +
-        '<li><a href="' + appUrl + 'collection/gotostep/inkassovarsel?bill=' + bill + '&token=' + token + '">Skip this step</a></li>' +
+        goToStep +
         '<li><a href="' + appUrl + 'collection/dispute?bill=' + bill + '&token=' + token + '">Register dispute</a></li>' +
         '<li><a href="' + appUrl + 'collection/cancel?bill=' + bill + '&token=' + token + '">Cancel Collection Case</a></li>' +
 

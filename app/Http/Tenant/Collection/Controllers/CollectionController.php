@@ -3,6 +3,7 @@ namespace APP\Http\Tenant\Collection\Controllers;
 
 use App\Fastbooks\Libraries\Pdf;
 use App\Http\Controllers\Tenant\BaseController;
+use App\Http\Tenant\Collection\Models\Collection;
 use App\Http\Tenant\Collection\Repository\CollectionRepository;
 use App\Http\Tenant\Invoice\Models\Bill;
 use Ddeboer\Imap\Exception\Exception;
@@ -72,7 +73,16 @@ class CollectionController extends BaseController {
 
     function cancel()
     {
-        Bill::get();
+        $id = $this->request->get('bill');
+        try {
+            $this->repo->cancelBillCollection($id);
+            flash()->success('Bill cancel successfully');
+        } catch (\Exception $e) {
+            flash()->error($e->getMessage());
+        }
+
+
+        return redirect()->back();
     }
 
     function dispute()
@@ -97,9 +107,18 @@ class CollectionController extends BaseController {
 
     function generatePdf(Pdf $pdf)
     {
-        $id = $this->request->get('bill');
-        $data = $this->repo->getBillInfo($id);
-        $pdf->generate($data['invoice_number'], 'template.bill', compact('data'), true);
+        $step = $this->request->route('step');
+        if(Collection::isValidStep($step))
+        {
+            $id = $this->request->get('bill');
+            $data = $this->repo->getBillInfo($id);
+            $pdf->generate($data['invoice_number'], 'template.collection.purring', compact('data'), true);
+        }
+        else
+        {
+            show_404();
+        }
+
     }
 
 
