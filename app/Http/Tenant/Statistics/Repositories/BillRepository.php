@@ -9,7 +9,7 @@ class BillRepository {
 
     /**
      * @return int
-     * Total number of customers
+     * Total number of bills created
      */
     function getBillsTotal() {
         $total = Bill::where('type', 0)->count();
@@ -17,8 +17,8 @@ class BillRepository {
     }
 
     /**
-     * @return int
-     * Total number of sent emails
+     * @return float
+     * Total amount in bills
      */
     function getTotalBilled() {
         $total = Bill::select('total')->where('type', 0)->sum('total');
@@ -26,8 +26,8 @@ class BillRepository {
     }
 
     /**
-     * @return int
-     * Total number of active customers
+     * @return float
+     * Total amount paid
      */
     function getAmountPaid() {
         $total = Bill::select('paid')->where('type', 0)->sum('paid');
@@ -35,27 +35,27 @@ class BillRepository {
     }
 
     /**
-     * @return array
-     * Total Statistics for customers
+     * @return int
+     * Average time for full payment from the date bill was issued (created)
      */
     function getAvgPaymentTime() {
-        $diff = Bill::select(DB::raw("(DATEDIFF(created_at, full_payment_date))AS days"))->whereNotNull('full_payment_date')->get();
-        return $diff->days;
+        $query = Bill::select(DB::raw("AVG(DATEDIFF(full_payment_date, created_at))AS days"))->whereNotNull('full_payment_date')->first();
+        return (int)$query->days;
     }
 
     /**
      * @return int
-     * Total number of active customers
+     * Total number of bills that past the due date and not paid yet
      */
     function getPastDue() {
         $today = Carbon::today();
-        $total = Bill::where('due_date', '>',  $today)->count();
+        $total = Bill::where('due_date', '>',  $today)->where('payment', '!=', 1)->count();
         return $total;
     }
 
     /**
      * @return int
-     * Total number of active customers
+     * Total number of bills that are not in collection
      */
     function getNotCollection() {
         $total = Bill::where('status', '!=', 1)->where('type', 0)->count();
@@ -64,7 +64,7 @@ class BillRepository {
 
     /**
      * @return int
-     * Total number of active customers
+     * Total number of offers
      */
     function getOffersTotal() {
         $total = Bill::where('type', 1)->count();
@@ -72,14 +72,15 @@ class BillRepository {
     }
 
     /**
-     * @return int
-     * Total number of active customers
+     * @return array
+     * Statistics for Bill section
      */
     function getBillStats() {
         $stats = array();
         $stats['total_bills'] = $this->getBillsTotal();
         $stats['total_billed'] = $this->getTotalBilled();
         $stats['total_paid'] = $this->getAmountPaid();
+        $stats['avg_payment_time'] = $this->getAvgPaymentTime();
         $stats['past_due'] = $this->getPastDue();
         $stats['not_collection'] = $this->getNotCollection();
         $stats['total_offers'] = $this->getOffersTotal();
