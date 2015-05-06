@@ -3,6 +3,7 @@ namespace App\Http\Tenant\Statistics\Repositories;
 
 use App\Http\Tenant\Invoice\Models\Bill;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class BillRepository {
 
@@ -38,7 +39,8 @@ class BillRepository {
      * Total Statistics for customers
      */
     function getAvgPaymentTime() {
-
+        $diff = Bill::select(DB::raw("(DATEDIFF(created_at, full_payment_date))AS days"))->whereNotNull('full_payment_date')->get();
+        return $diff->days;
     }
 
     /**

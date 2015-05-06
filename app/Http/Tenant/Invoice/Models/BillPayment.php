@@ -42,8 +42,10 @@ class BillPayment extends Model
 
             if($bill-> remaining > 0)
                 $bill->payment = 2;
-            else
+            else {
                 $bill->payment = 1;
+                $bill->full_payment_date = $request->input('payment_date');
+            }
             $bill->save();
 
             \DB::commit();

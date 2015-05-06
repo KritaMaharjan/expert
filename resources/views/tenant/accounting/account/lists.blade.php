@@ -25,22 +25,6 @@ Accounting List
                                 </thead>
                             </table>
                         </div>
-                        <table class="table product-table">
-                            <thead>
-                                <tr>
-                                    <th>Lists</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><a href="#" data-toggle="modal" data-url="#exp-modal-data" data-target="#fb-modal">Unpaid bill from expense</a></td>
-                                </tr>
-                                <tr>
-                                    <td><a href="#" data-toggle="modal" data-url="#collect-modal-data" data-target="#fb-modal">Unpaid bill from collection</a></td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
             </div>
