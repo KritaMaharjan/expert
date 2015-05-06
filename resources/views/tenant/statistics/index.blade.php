@@ -91,7 +91,7 @@ Statistics
                     </div>
                     <div class="form-group">
                      <label>Average payment time:</label>
-                     <span>19 days</span>                   
+                     <span>{{ $bill_stats['avg_payment_time'] }} days</span>
                   </div>  
                   <div class="form-group">
                      <label>Past due total:</label>

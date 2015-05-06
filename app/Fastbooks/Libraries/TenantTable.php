@@ -321,6 +321,7 @@ class TenantTable {
                 $table->float('remaining');
                 $table->boolean('status')->default(0); // 0: unpaid, 1: paid, 2: partially paid
                 $table->boolean('payment')->default(0); // 0: active, 1: collection, 2: loss, 3: credit
+                $table->date('full_payment_date')->nullable(); // Date for full payment
                 $table->string('customer_payment_number', 60)->nullable();
                 $table->boolean('is_offer')->default(0); // 0: no (bill), 1: yes (offer)
                 $table->date('due_date');

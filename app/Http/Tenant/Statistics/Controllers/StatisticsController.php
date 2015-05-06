@@ -16,7 +16,6 @@ class StatisticsController extends BaseController {
 
     public function index()
     {
-        dd($this->bill_repo->getAvgPaymentTime());
         $customer_stats = $this->customer_repo->getCustomerStats();
         $bill_stats = $this->bill_repo->getBillStats();
     	return view('tenant.statistics.index', compact('customer_stats', 'bill_stats'));
