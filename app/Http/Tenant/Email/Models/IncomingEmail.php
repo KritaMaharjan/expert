@@ -43,7 +43,7 @@ class IncomingEmail extends Model {
     function saveEmail($mails, $type = 0)
     {
         foreach ($mails as $mail) {
-            $exists = IncomingEmail::select('msid')->where('msid', 600)->where('user_id', current_user()->id)->exists();
+            $exists = IncomingEmail::select('msid')->where('msid', $mail->msid)->where('user_id', current_user()->id)->exists();
             if(!$exists) {
                 IncomingEmail::create([
                     'msid' => $mail->msid,

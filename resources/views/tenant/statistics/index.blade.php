@@ -150,7 +150,7 @@ Statistics
                    </div>   
                 </div>
                 <div class="col-md-3">
-                    <h3  class="line-red">Statistics</h3> 
+                    <h3  class="line-red">Accounts</h3>
                     <div class="form-group">
                      <label>Income:</label>
                      <span>15,000,000- NOK</span>                   
