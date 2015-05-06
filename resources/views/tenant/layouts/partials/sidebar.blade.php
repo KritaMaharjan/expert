@@ -92,6 +92,12 @@
             </li> 
             @endif--}}
 
+            <li class="<?php echo ($current_path =='statistics')? 'active' : '';?>">
+              <a href="{{tenant_route('tenant.statistics')}}" title="Statistics">
+                <i class="fa fa-bar-chart-o"></i> <span>Statistics</span>
+              </a>
+            </li>
+
             @if(FB::can_view('Users'))
             <li class="<?php echo ($current_path =='users')? 'active' : '';?>">
               <a href="{{tenant_route('tenant.users')}}" title="@lang('menu.user')">

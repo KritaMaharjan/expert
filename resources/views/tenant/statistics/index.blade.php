@@ -64,34 +64,30 @@ Statistics
                    <h3 class="line-yellow">Customers</h3> 
                    <div class="form-group">
                      <label>Customer total:</label>
-                     <span>475</span>                   
+                     <span>{{ $customer_stats['total_customers'] }}</span>
                    </div>
                    <div class="form-group">
                      <label>Emails:</label>
-                     <span>15000</span>                   
-                   </div>
-                   <div class="form-group">
-                     <label>Reply time:</label>
-                     <span>4 days</span>                   
+                     <span>{{ $customer_stats['total_emails'] }}</span>
                    </div>
                    <div class="form-group">
                      <label>Active customers:</label>
-                     <span>75</span>                   
+                     <span>{{ $customer_stats['total_active_customers'] }}</span>
                    </div>   
                 </div>
                 <div class="col-md-3">
                     <h3  class="line-green">Billing</h3> 
                     <div class="form-group">
                       <label>Number of bills:</label>
-                      <span>475</span>                   
+                      <span>{{ $bill_stats['total_bills'] }}</span>
                      </div>
                     <div class="form-group">
                        <label>Total billed:</label>
-                       <span>15,000,000</span>                   
+                       <span>{{ float_format($bill_stats['total_billed']) }}</span>
                     </div>
                     <div class="form-group">
                        <label>Total amount paid:</label>
-                       <span>13,000,000</span>                   
+                       <span>{{ float_format($bill_stats['total_paid']) }}</span>
                     </div>
                     <div class="form-group">
                      <label>Average payment time:</label>
@@ -99,15 +95,15 @@ Statistics
                   </div>  
                   <div class="form-group">
                      <label>Past due total:</label>
-                     <span>1500</span>                   
+                     <span>{{ $bill_stats['past_due'] }}</span>
                   </div>  
                   <div class="form-group">
                      <label>Not sent to collection:</label>
-                     <span>1500</span>                   
+                     <span>{{ $bill_stats['not_collection'] }}</span>
                   </div>  
                   <div class="form-group">
                      <label>Offers:</label>
-                     <span>123</span>                   
+                     <span>{{ $bill_stats['total_offers'] }}</span>
                   </div>  
                 </div>
                 <div class="col-md-3">

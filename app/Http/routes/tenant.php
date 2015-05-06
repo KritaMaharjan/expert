@@ -71,7 +71,7 @@ Route::group($group_auth, function () {
 
     // Registered by Krita
     Route::group(['namespace' => 'Tenant\Statistics\Controllers'], function () {
-        get('statistics', 'StatisticsController@index');
+        get('statistics', ['as' => 'tenant.statistics', 'uses' => 'StatisticsController@index']);
     });
 
     // Registered by Krita
