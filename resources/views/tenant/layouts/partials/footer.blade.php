@@ -12,11 +12,13 @@
     <script src="{{ asset('assets/js/wiselinkinit.js')}}" type="text/javascript"></script>--}}
     <script src="{{ asset('assets/js/common.js')}}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/select2.js')}}" type="text/javascript"></script>
+    <script src="{{ asset('assets/plugins/iCheck/icheck.min.js')}}" type="text/javascript"></script>
+    <script src="{{ asset('assets/plugins/slimScroll/jquery.slimscroll.min.js')}}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/app.min.js')}}" type="text/javascript"></script>
+
     {!! FB::loadJS() !!}
     {!! FB::loadModal() !!}
     
-    <script src="{{ asset('assets/plugins/iCheck/icheck.min.js')}}" type="text/javascript"></script>
-    <script src="{{ asset('assets/plugins/slimScroll/jquery.slimscroll.min.js')}}" type="text/javascript"></script>
-    
+
   </body>
 </html>

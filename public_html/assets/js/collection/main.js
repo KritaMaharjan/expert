@@ -1,6 +1,5 @@
 $(function () {
 
-
     function input_get(name) {
         name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
         var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
@@ -9,14 +8,13 @@ $(function () {
     }
 
 
-
     var collectionDatatable = $("#table-collection").DataTable({
         "dom": '<"top"f>rt<"bottom"lip><"clear">',
-        "order": [[6, "desc"]],
+        "order": [[1, "desc"]],
         "processing": true,
         "serverSide": true,
         "ajax": {
-            "url": appUrl + 'collection/data?step='+input_get('step'),
+            "url": appUrl + 'collection/data?step=' + input_get('step'),
             "type": "POST"
         },
         "columnDefs": [{
@@ -30,10 +28,13 @@ $(function () {
             {"data": "id"},
             {"data": "invoice_number"},
             {"data": "customer_name"},
-            {"data": "total"},
+            {"data": "bill_total"},
+            {"data": "fee"},
+            {"data": "interest"},
             {"data": "paid"},
             {"data": "remaining"},
-            {"data": "due_date"}
+            {"data": "due_date"},
+
         ],
         "fnRowCallback": function (nRow, aData, iDisplayIndex) {
             $(nRow).attr('id', 'collection-' + aData.id);
@@ -78,26 +79,23 @@ $(function () {
 
         var bill = d.id;
 
-        var goToStep ='';
-        if(d.isGoToStep==1)
-        {
-            goToStep = '<li><a href="' + appUrl + 'collection/gotostep/'+d.goToStep+'?bill=' + bill + '&token=' + token + '">Skip this step</a></li>' ;
+        var goToStep = '';
+        if (d.isGoToStep == 1) {
+            goToStep = '<li><a href="' + appUrl + 'collection/gotostep/' + d.goToStep + '?bill=' + bill + '&token=' + token + '">Take the case to the next step</a></li>';
         }
 
         $hidden_child = '<tr class="temp_tr">' +
         '<td colspan="7"><div class="clearfix">' +
         '<ul class="links-td">' +
         '<li><a class="link-block" href="#">Register payment</a></li>' +
-        '<li><a href="' + appUrl + 'collection/purring/pdf?bill=' + bill + '&token=' + token + '">Create a Purring.pdf</a></li>' +
+        '<li><a href="' + appUrl + 'collection/' + d.step + '/pdf?bill=' + bill + '&token=' + token + '">Create a ' + d.step + '.pdf</a></li>' +
         goToStep +
-        '<li><a href="' + appUrl + 'collection/dispute?bill=' + bill + '&token=' + token + '">Register dispute</a></li>' +
-        '<li><a href="' + appUrl + 'collection/cancel?bill=' + bill + '&token=' + token + '">Cancel Collection Case</a></li>' +
-
+        '<li><a href="#"  data-original-title="Register Dispute" class="btn btn-box-tool" data-target="#fb-modal" data-toggle="modal" data-url="' + appUrl + 'collection/dispute?bill=' + bill + '&token=' + token + '">Register dispute</a></li>' +
+        '<li><a data-confirm="yes" data-confirm-message="Collection progress will be canceled and Amount treated as loss. \nAre you sure, you want to perform this action?"  href="' + appUrl + 'collection/cancel?bill=' + bill + '&token=' + token + '">Cancel Case</a></li>' +
         '</ul>' +
         payment_option +
         '</div></td></tr>';
         return $hidden_child;
-
     }
 
     $(document).on('click', '#payment-submit', function (e) {
@@ -158,4 +156,13 @@ $(function () {
         e.preventDefault();
         $(this).parent().parent().parent().find('.payment-info').toggle();
     });
+
+    $(document).on('click', '[data-confirm="yes"]', function (e) {
+        var message = $(this).data('confirm-message');
+        if (!confirm(message)) {
+            e.preventDefault();
+        }
+
+    });
+
 });

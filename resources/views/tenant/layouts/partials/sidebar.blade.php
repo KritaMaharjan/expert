@@ -45,14 +45,6 @@
               </a>
               <ul class="treeview-menu">
                 <li><a data-push="true" href="{{tenant_route('tenant.collection.index')}}" title="Collections"><i class="fa fa-circle-o"></i> Collections</a></li>
-                <li><a data-push="true" href="{{tenant_route('tenant.collection.purring')}}" title="Purring"><i class="fa fa-circle-o"></i> Purring</a></li>
-                <li><a data-push="true" href="{{tenant_route('tenant.collection.payment')}}" title="Payments"><i class="fa fa-circle-o"></i> Payments</a></li>
-                <li><a data-push="true" href="{{tenant_route('tenant.collection.debt')}}" title="Debt"><i class="fa fa-circle-o"></i> Debt</a></li>
-                <li><a data-push="true" href="{{tenant_route('tenant.collection.options')}}" title="Options"><i class="fa fa-circle-o"></i> Options</a></li>
-                <li><a data-push="true" href="{{tenant_route('tenant.collection.case')}}" title="Court Case"><i class="fa fa-circle-o"></i> Court Case</a></li>
-                <li><a data-push="true" href="{{tenant_route('tenant.collection.case.followup')}}" title="Court Case Followup"><i class="fa fa-circle-o"></i> Court Case Followup</a></li>
-                <li><a data-push="true" href="{{tenant_route('tenant.collection.utlegg')}}" title="Utlegg"><i class="fa fa-circle-o"></i> Utlegg</a></li>
-                <li><a data-push="true" href="{{tenant_route('tenant.collection.utlegg.followup')}}" title="Utlegg Followup"><i class="fa fa-circle-o"></i> Utlegg Followup</a></li>
               </ul>
             </li>
             @endif

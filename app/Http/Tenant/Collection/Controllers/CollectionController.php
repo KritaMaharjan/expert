@@ -4,9 +4,7 @@ namespace APP\Http\Tenant\Collection\Controllers;
 use App\Fastbooks\Libraries\Pdf;
 use App\Http\Controllers\Tenant\BaseController;
 use App\Http\Tenant\Collection\Models\Collection;
-use App\Http\Tenant\Collection\Repository\CollectionRepository;
-use App\Http\Tenant\Invoice\Models\Bill;
-use Ddeboer\Imap\Exception\Exception;
+use App\Http\Tenant\Collection\Repositories\CollectionRepository;
 use Illuminate\Http\Request;
 
 class CollectionController extends BaseController {
@@ -73,102 +71,73 @@ class CollectionController extends BaseController {
 
     function cancel()
     {
-        $id = $this->request->get('bill');
-        try {
-            $this->repo->cancelBillCollection($id);
-            flash()->success('Bill cancel successfully');
-        } catch (\Exception $e) {
-            flash()->error($e->getMessage());
+        if($this->verifyCsrf()) {
+            $id = $this->request->get('bill');
+            try {
+                $this->repo->cancelBillCollection($id);
+                flash()->success('Bill cancel successfully');
+            } catch (\Exception $e) {
+                flash()->error($e->getMessage());
+            }
+
+            return redirect()->back();
         }
 
-
-        return redirect()->back();
-    }
-
-    function dispute()
-    {
-        return "dispute";
+        show_404();
     }
 
     function goToStep()
     {
-        $step = $this->request->route('step');
-        $id = $this->request->get('bill');
-        try {
-            $this->repo->changeCollectionStep($id, $step);
-            flash()->success('Collection case updated successfully');
-        } catch (\Exception $e) {
-            flash()->error($e->getMessage());
+        if($this->verifyCsrf())
+        {
+            $step = $this->request->route('step');
+            $id = $this->request->get('bill');
+            try {
+                $this->repo->changeCollectionStep($id, $step);
+                flash()->success('Collection case updated successfully');
+            } catch (\Exception $e) {
+                flash()->error($e->getMessage());
+            }
+
+
+            return redirect()->back();
         }
 
-
-        return redirect()->back();
+        show_404();
     }
+
+    private function verifyCsrf()
+    {
+        $token = $this->request->get('token');
+        $csrfToken = $this->request->session()->token();
+
+        return ($token == $csrfToken);
+    }
+
 
     function generatePdf(Pdf $pdf)
     {
         $step = $this->request->route('step');
-        if(Collection::isValidStep($step))
-        {
+
+        if (Collection::isValidStep($step) AND $this->verifyCsrf()) {
             $id = $this->request->get('bill');
             $data = $this->repo->getBillInfo($id);
-            $pdf->generate($data['invoice_number'], 'template.collection.purring', compact('data'), true);
-        }
-        else
-        {
+            $pdf->generate($data['invoice_number'] . '-' . $step, 'template.collection.' . $step, compact('data'), true);
+        } else {
             show_404();
         }
 
     }
 
-
     function disputeBill()
     {
-        return "d";
+        if($this->verifyCsrf())
+        {
+            $bill = $this->request->get('bill');
+            print_r($this->repo->getAllCollectionPDF($bill));
+            return view('tenant.collection.case');
+        }
+
+        show_404();
     }
-
-
-    /*
-
-    public function purring()
-    {
-        return view('tenant.collection.purring');
-    }
-
-    public function payment()
-    {
-        return view('tenant.collection.payment');
-    }
-
-    public function debt()
-    {
-        return view('tenant.collection.debt');
-    }
-
-    public function options()
-    {
-        return view('tenant.collection.options');
-    }
-
-    public function courtCase()
-    {
-        return view('tenant.collection.case');
-    }
-
-    public function followup()
-    {
-        return view('tenant.collection.followup');
-    }
-
-    public function utlegg()
-    {
-        return view('tenant.collection.utlegg');
-    }
-
-    public function utleggFollowup()
-    {
-        return view('tenant.collection.utleggFollowup');
-    }*/
-
-
 }

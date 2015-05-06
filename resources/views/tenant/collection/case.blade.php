@@ -1,5 +1,8 @@
 @extends('tenant.layouts.main')
 
+@section('breadcrumb')
+@stop
+
 @section('heading')
 Court Case
 @stop
@@ -10,7 +13,6 @@ Court Case
 	</div>
     <div class="box box-solid">
         <div class="box-body">
-        	
 
             <div class="row">
             	<div class="col-md-12">
@@ -65,7 +67,6 @@ Court Case
         					<p>Now let's make the case stick by adding all the communication relevant for the case</p>
         					<div class="list-bx">
         						<p><strong>List of emails filtered onto the customer</strong></p>
-
 	        					<ul class="pad-left-20">
 	        						<li>List 1</li>
 	        						<li>List 2</li>
@@ -75,9 +76,7 @@ Court Case
         				</li>
         				<li>
         					<p>Now let's make the case stick by adding all the communication relevant for the case</p>
-        					<textarea class="list-bx" placeholder="Write an explanation here about what happened">
-        						
-        					</textarea> 
+        					<textarea class="list-bx" placeholder="Write an explanation here about what happened"></textarea>
         				</li>
             		</ol>
             		<p class="col-md-6 align-right">

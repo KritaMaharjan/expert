@@ -217,7 +217,7 @@ class Record {
      * ---------------------------
      * @param Bill $bill
      * @param Customer $customer
-     * @param Amount $amount
+     * @param $amount
      * @return array
      */
     public static function billAsLoss(Bill $bill, Customer $customer, $amount)

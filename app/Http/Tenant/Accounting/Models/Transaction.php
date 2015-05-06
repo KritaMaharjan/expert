@@ -60,7 +60,8 @@ class Transaction extends Model {
             $q->where('created_at', '<', date('Y-m-d', strtotime($to . '+1day')));
         }
 
-        return $q->paginate($perPage);
+
+        return $q->orderBy('created_at', 'DESC')->paginate($perPage);
     }
 
 

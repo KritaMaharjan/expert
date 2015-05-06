@@ -34,7 +34,9 @@ Collections
                        <th>Bill ID</th>
                        <th>Invoice Number</th>
                        <th>Customer</th>
-                       <th>Total</th>
+                       <th>Bill Amount</th>
+                       <th>Fee</th>
+                       <th>Interest</th>
                        <th>Paid</th>
                        <th>Remaining</th>
                        <th>Invoice Date</th>
@@ -48,6 +50,7 @@ Collections
 
 
 {{--Load JS--}}
+{{ FB::registerModal() }}
 {{FB::js('assets/js/collection/main.js')}}
 
 @stop

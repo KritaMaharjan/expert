@@ -37,6 +37,11 @@ class Collection extends Model {
     const STEP_COURT = 4;
     const STEP_UTLEGG = 5;
 
+
+    const INTEERST_RATE = 9.5;
+
+
+
     public static function getStep($step = '')
     {
         $step = strtolower($step);
@@ -111,9 +116,37 @@ class Collection extends Model {
         $dDiff = $dStart->diff($dEnd);
         $diff = $dDiff->format('%R').$dDiff->days;
        if($diff <= -14)
+       {
            return true;
+       }
         else
             return false;
+    }
+
+
+    public static function fee($step)
+    {
+        return self::getStep($step) * 65;
+    }
+
+    public static function interest($invoice_date, $bill_amount)
+    {
+        $dStart = new \DateTime();
+        $dEnd  = new \DateTime($invoice_date);
+        $dDiff = $dStart->diff($dEnd);
+        $diff = $dDiff->days;
+        // Formula (9,5% / 365)*amount*days
+        $interest =((self::INTEERST_RATE/100) / 365) * $bill_amount * $diff;
+        return number_format($interest, 2);
+    }
+
+    public static function deadline($created_at)
+    {
+        $dStart = new \DateTime();
+        $dEnd  = new \DateTime($created_at);
+        $dDiff = $dStart->diff($dEnd);
+        $diff = $dDiff->days;
+        return $diff;
     }
 
     public static function boot()
