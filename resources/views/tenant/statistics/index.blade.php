@@ -114,11 +114,11 @@ Statistics
                    </div>
                    <div class="form-group">
                      <label>Number of bills:</label>
-                     <span>10</span>                   
+                     <span>{{ $collection_stats['total_bills'] }}</span>
                    </div>
                    <div class="form-group">
                      <label>Total amount:</label>
-                     <span>1,500,000</span>                   
+                     <span>{{ $collection_stats['total_amount'] }}</span>
                    </div>
                    <div class="form-group">
                      <label>Purring:</label>
@@ -157,15 +157,15 @@ Statistics
                    </div>
                    <div class="form-group">
                      <label>Expenses:</label>
-                     <span>12,500,000,- NOK</span>                   
+                     <span>{{ $account_stats['total_expenses'] }}- NOK</span>
                    </div>
                    <div class="form-group">
                      <label>Salaries:</label>
-                     <span>7,500,000,- NOK</span>                   
+                     <span>{{ $account_stats['total_paid_salary'] }}- NOK</span>
                    </div>
                    <div class="form-group">
                      <label>Advertising expenses:</label>
-                     <span>5,500,500,- NOK</span>                   
+                     <span>5,500,500- NOK</span>
                    </div>                 
                    <div class="form-group">
                      <label>Cost of sale:</label>
