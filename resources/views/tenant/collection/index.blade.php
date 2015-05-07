@@ -31,7 +31,6 @@ Collections
            <table id="table-collection" class="table table-hover">
                  <thead>
                      <tr>
-                       <th>Bill ID</th>
                        <th>Invoice Number</th>
                        <th>Customer</th>
                        <th>Bill Amount</th>
@@ -40,6 +39,9 @@ Collections
                        <th>Paid</th>
                        <th>Remaining</th>
                        <th>Invoice Date</th>
+                       @if(!in_array($step, ['court', 'utlegg']))
+                       <th> Next step in Days</th>
+                       @endif
                      </tr>
                  </thead>
              <tbody></tbody>

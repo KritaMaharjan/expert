@@ -5,6 +5,7 @@ namespace App\Http\Tenant\Collection\Repositories;
 use App\Fastbooks\Libraries\Pdf;
 use App\Http\Tenant\Accounting\Libraries\Record;
 use App\Http\Tenant\Collection\Models\Collection;
+use App\Http\Tenant\Email\Models\Email;
 use App\Http\Tenant\Invoice\Models\Bill;
 use App\Models\Tenant\Customer;
 use App\Models\Tenant\Setting;
@@ -12,8 +13,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CollectionRepository {
-
-    const CollectionGracePeriod = 14;
 
     /**
      * @var Bill
@@ -167,7 +166,7 @@ class CollectionRepository {
             $bill_value['fee'] = $fee;
             $bill_value['step'] = $step_string;
             $bill_value['remaining'] += ($fee + $interest);
-            $bill_value['deadline'] = Collection::deadline($bill_value['created_at']);;
+            $bill_value['deadline'] = Collection::GRACE_PERIOD - Collection::deadline($bill_value['created_at']);;
         }
 
 
@@ -286,14 +285,22 @@ class CollectionRepository {
 
     function getAllCollectionPDF($bill)
     {
-        $files =[];
+        $files = [];
+        $num = $this->getCurrentStep($bill);
+        $num = $num > 3 ? 3 : $num;
         $steps = ['purring', 'inkassovarsel', 'betalingsappfording'];
-        foreach($steps as $steps)
-        {
-           $files[] = $this->generatePDF($bill, $steps, false);
+        for ($i = 0; $i < $num; $i++) {
+            $files[$steps[$i]] = $this->generatePDF($bill, $steps[$i], false);
         }
 
         return $files;
+    }
+
+    function getCurrentStep($bill)
+    {
+        $bill = $this->collection->select('step')->where('bill_id', $bill)->orderBy('step', 'DESC')->first();
+
+        return $bill ? $bill->step : null;
     }
 
     function generatePDF($bill, $step, $download = true)
@@ -305,7 +312,16 @@ class CollectionRepository {
         $data = $this->getBillInfo($bill);
         $pdf = new Pdf();
 
-        return $pdf->generate($data['invoice_number'] . '-' . $step, 'template.collection.' . $step, compact('data'), $download . $save);
+        return $pdf->generate($data['invoice_number'] . '-' . $step, 'template.collection.' . $step, compact('data'), $download, $save);
+    }
+
+
+    function getEmailsByInvoice($bill)
+    {
+        $bill = $this->bill->find($bill);
+        $key = $bill->invoice_number;
+        $emails = Email::with('receivers')->select('id','subject', 'created_at')->where('subject', 'LIKE', '%'.$key.'%')->orWhere('message', 'LIKE','%'.$key.'%')->orWhere('note', 'LIKE','%'.$key.'%')->orderBy('created_at', 'DESC')->get();
+        return $emails;
     }
 
 }
