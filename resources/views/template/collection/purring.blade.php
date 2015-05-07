@@ -4,11 +4,15 @@
   }
      th, td {
       padding: 10px;
+      font-size: 9px;
   }
      h1{
-      font-size:20px;
+      font-size:15px;
       font-weight:600;
       line-height:2;
+     }
+     small{
+      font-size: 8px;
      }
      .border{border:1px solid #dbdbdb;}
      .border-block{border:1px solid #dbdbdb;line-height:2;}
@@ -19,6 +23,12 @@
      .right{text-align: right;}
      #purring-detail{
      }
+
+     table#inv-tab th,table#inv-tab2 th{
+        border-bottom: 1px solid #333;
+     }
+
+    
       </style>
 
       <table id="purring-detail">
@@ -41,7 +51,7 @@
             <p>Tlf Telephone number<br />
               Fax Fax number<br />
               Epost Email address<br />
-              Org.nr. Compant number<br />
+              Org.nr. Company number<br />
               Account number Account No.<br />
               Swift - Swift<br />
               IBAN - IBAN
@@ -57,37 +67,71 @@
             </p>
           </td>
         </tr>
-      </table><br /><br />
+      </table><br /><br /><br /><br />
 
-      <table>
+      <table id="inv-tab" cellpadding="4">
         <thead>
           <tr>
-            <th>Invoice number</th>
-            <th>Description</th>
-            <th>Invoice date</th>
-            <th>Due date</th>
-            <th>Total</th>
+            <th style="font-size:9px;"><b>Invoice number</b></th>
+            <th style="font-size:9px;"><b>Description</b></th>
+            <th style="font-size:9px;"><b>Invoice date</b></th>
+            <th style="font-size:9px;"><b>Due date</b></th>
+            <th style="font-size:9px;"><b>Total</b></th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Bill number</td>
-            <td>Purring</td>
-            <td>Original invoice date</td>
-            <td>Due date of bill</td>
-            <td>Original sum outstanding</td>
+            <td><small>Bill number</small></td>
+            <td><small>Purring</small></td>
+            <td><small>Original invoice date</small></td>
+            <td><small>Due date of bill</small></td>
+            <td><small>Original sum outstanding</small></td>
           </tr>
         </tbody>
 
       </table>
+      <br /><br />
+        <table>
+          <tr>
+            <td width="50%"></td>
+            <td>
+              <table id="inv-tab2" cellpadding="4" width="100%" style="float:right">
+                <tr>
+                  <th style="font-size:9px;"><b>late fee</b></th>
+                  <th style="font-size:9px;"><b>Paid amounts</b></th>
+                  <th style="font-size:9px;"><b>Gross</b></th>
+                </tr>
+                <tr>
+                  <td><small>Late fee</small></td>
+                  <td><small>Paid amounts</small></td>
+                  <td><small>Gross</small></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      <br /><br /><br />
+
+      <div>
+        <p style="font-size:8px"><b style="font-size:9px;">Terms</b><br />
+           Har du nylig betalt kan du use vekk ifra kravet 
+        </p>
+      </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+
 
       <table id="print">
           <tr bgcolor="#FFFF00"><td colspan="4"><h1 style="text-indent: 5px;">Receipt</h1></td></tr>
           <tr bgcolor="#FFFF00">
               <th> <span style="text-indent: 10px;">Paid till account</span></th>
-              <th style="font-size:11px;">Amounts</th>
-              <th style="font-size:11px;">Payer account number</th>
-              <th style="font-size:11px;">Blankettnr</th>
+              <th style="font-size:9px;">Amounts</th>
+              <th style="font-size:9px;">Payer account number</th>
+              <th style="font-size:9px;">Blankettnr</th>
           </tr>
       </table>
       <table cellpadding="4">
@@ -103,7 +147,7 @@
             <td colspan="2">
              <table>
               <tbody>
-               <tr><td colspan="2" style="font-size:11px;">Payment information</td></tr>
+               <tr><td colspan="2" style="font-size:9px;">Payment information</td></tr>
                <br />
                <tr>
                 <td style="text-indent:15px;">Kundenr:</td>
@@ -130,7 +174,7 @@
               </tbody>
              </table>
             <table cellpadding="0">
-              <tr><td style="font-size:11px;">Signature by Giro</td>
+              <tr><td style="font-size:9px;">Signature by Giro</td>
               </tr>
             </table>
             <table cellpadding="0">
