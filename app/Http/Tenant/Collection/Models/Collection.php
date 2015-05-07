@@ -41,6 +41,10 @@ class Collection extends Model {
     const INTEERST_RATE = 9.5;
 
 
+    const GRACE_PERIOD = 14;
+
+
+
 
     public static function getStep($step = '')
     {
@@ -115,7 +119,7 @@ class Collection extends Model {
         $dEnd  = new \DateTime($created_at);
         $dDiff = $dStart->diff($dEnd);
         $diff = $dDiff->format('%R').$dDiff->days;
-       if($diff <= -14)
+       if($diff <= -static::GRACE_PERIOD)
        {
            return true;
        }

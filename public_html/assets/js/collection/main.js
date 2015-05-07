@@ -8,24 +8,9 @@ $(function () {
     }
 
 
-    var collectionDatatable = $("#table-collection").DataTable({
-        "dom": '<"top"f>rt<"bottom"lip><"clear">',
-        "order": [[1, "desc"]],
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": appUrl + 'collection/data?step=' + input_get('step'),
-            "type": "POST"
-        },
-        "columnDefs": [{
-            "targets": 1,
-            "render": function (data, type, row) {
-                return '<a href="#" class="link">' + row.invoice_number + '</a>';
-            }
-        }],
-
-        "columns": [
-            {"data": "id"},
+    function getColumns()
+    {
+       var columns = [
             {"data": "invoice_number"},
             {"data": "customer_name"},
             {"data": "bill_total"},
@@ -34,8 +19,51 @@ $(function () {
             {"data": "paid"},
             {"data": "remaining"},
             {"data": "due_date"},
+            {"data": "deadline"}
+        ];
 
-        ],
+        if(input_get('step') == 'court' || input_get('step') == 'utlegg')
+        {
+            columns.splice(8, 1);
+        }
+
+        return columns;
+    }
+
+    function getDisableColumns()
+    {
+        var columns = [3,4,6,8];
+
+        if(input_get('step') == 'court' || input_get('step') == 'utlegg')
+        {
+            columns.splice(3, 1);
+        }
+
+        return columns;
+
+    }
+
+
+    var collectionDatatable = $("#table-collection").DataTable({
+        "dom": '<"top"f>rt<"bottom"lip><"clear">',
+        "order": [[0, "desc"]],
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": appUrl + 'collection/data?step=' + input_get('step'),
+            "type": "POST"
+        },
+        "columnDefs": [{
+            "targets": 0,
+            "render": function (data, type, row) {
+                return '<a href="#" class="link">' + row.invoice_number + '</a>';
+            }},
+            {
+                "targets": getDisableColumns(),
+                "orderable": false
+        }],
+
+        "columns": getColumns(),
         "fnRowCallback": function (nRow, aData, iDisplayIndex) {
             $(nRow).attr('id', 'collection-' + aData.id);
             return nRow;
@@ -76,22 +104,49 @@ $(function () {
             '<div class="bottom-section clearfix">' +
             '<button class="btn-small btn btn-primary" id="payment-submit">Account as paid</button>' +
             '</form></div>';
-
         var bill = d.id;
 
         var goToStep = '';
-        if (d.isGoToStep == 1) {
-            goToStep = '<li><a href="' + appUrl + 'collection/gotostep/' + d.goToStep + '?bill=' + bill + '&token=' + token + '">Take the case to the next step</a></li>';
+        var register_dispute = '';
+        var register_payment = '<li><a class="link-block" href="#">Register payment</a></li>';
+        var create_pdf = '<li><a href="' + appUrl + 'collection/' + d.step + '/pdf?bill=' + bill + '&token=' + token + '">Create a ' + d.step + '.pdf</a></li>' ;
+
+        if(d.step == 'betalingsappfording')
+        {
+            register_dispute =  '<li>' +
+            '<a href="#"  data-original-title="Court Case" data-target="#fb-modal" data-toggle="modal" data-url="' + appUrl + 'collection/dispute?bill=' + bill + '&token=' + token + '">Court Case</a>' +
+            ' OR ' +
+            '<a href="' + appUrl + 'collection/gotostep/utlegg?bill=' + bill + '&token=' + token + '">Send directly to sheriff </a>';
+            '</li>';
+        }
+        else if(d.step == 'court') {
+            register_dispute ='<li><a href="#"> Register court date </a> </li>' +
+            '<li><a href="#"> Register case history </a> </li>' +
+            '<li><a href="#"> Register case won</a> </li>';
+
+            register_payment= '';
+            create_pdf= '';
+        }
+        else if(d.step == 'utlegg') {
+            register_dispute =  '<li><a href="#"  data-original-title="Case is going to court" data-target="#fb-modal" data-toggle="modal" data-url="' + appUrl + 'collection/dispute?bill=' + bill + '&token=' + token + '">Case is going to court</a></li>';
+        }
+        else
+        {
+            register_dispute =  '<li><a href="#"  data-original-title="Register Dispute" data-target="#fb-modal" data-toggle="modal" data-url="' + appUrl + 'collection/dispute?bill=' + bill + '&token=' + token + '">Register dispute</a></li>';
+
+            if (d.isGoToStep == 1) {
+                goToStep = '<li><a href="' + appUrl + 'collection/gotostep/' + d.goToStep + '?bill=' + bill + '&token=' + token + '">Take the case to the next step</a></li>';
+            }
         }
 
         $hidden_child = '<tr class="temp_tr">' +
         '<td colspan="7"><div class="clearfix">' +
         '<ul class="links-td">' +
-        '<li><a class="link-block" href="#">Register payment</a></li>' +
-        '<li><a href="' + appUrl + 'collection/' + d.step + '/pdf?bill=' + bill + '&token=' + token + '">Create a ' + d.step + '.pdf</a></li>' +
+        register_payment +
+        create_pdf +
         goToStep +
-        '<li><a href="#"  data-original-title="Register Dispute" class="btn btn-box-tool" data-target="#fb-modal" data-toggle="modal" data-url="' + appUrl + 'collection/dispute?bill=' + bill + '&token=' + token + '">Register dispute</a></li>' +
-        '<li><a data-confirm="yes" data-confirm-message="Collection progress will be canceled and Amount treated as loss. \nAre you sure, you want to perform this action?"  href="' + appUrl + 'collection/cancel?bill=' + bill + '&token=' + token + '">Cancel Case</a></li>' +
+        register_dispute+
+        '<li><a data-confirm="yes" data-confirm-message="Collection progress will be canceled and Amount will be treated as loss. \nAre you sure, you want to perform this action?"  href="' + appUrl + 'collection/cancel?bill=' + bill + '&token=' + token + '">Cancel Case</a></li>' +
         '</ul>' +
         payment_option +
         '</div></td></tr>';
