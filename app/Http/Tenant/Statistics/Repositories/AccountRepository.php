@@ -4,6 +4,9 @@ namespace App\Http\Tenant\Statistics\Repositories;
 
 use App\Http\Tenant\Accounting\Models\Expense;
 use App\Http\Tenant\Accounting\Models\Payroll;
+use App\Http\Tenant\Inventory\Models\Product;
+use App\Http\Tenant\Invoice\Models\BillProducts;
+use Illuminate\Support\Facades\DB;
 
 class AccountRepository {
 
@@ -18,20 +21,20 @@ class AccountRepository {
 
     /**
      * @return float
-     * Total amount in bills
+     * Total amount in expenses
      */
     function getTotalExpenses() {
         $total = Expense::select('amount')->sum('amount');
-        return $total;
+        return float_format($total);
     }
 
     /**
      * @return float
-     * Total amount paid
+     * Total salary paid to the employees
      */
     function getSalaryPaid() {
         $total = Payroll::select('total_paid')->sum('total_paid');
-        return $total;
+        return float_format($total);
     }
 
     /**
@@ -44,13 +47,20 @@ class AccountRepository {
     }
 
     /**
-     * @return int
-     * Total number of bills that past the due date and not paid yet
+     * @return float
+     * Total purchase cost of products used in bills
      */
     function getSalesCost() {
-        $today = Carbon::today();
-        $total = Bill::where('due_date', '>',  $today)->where('payment', '!=', 1)->count();
-        return $total;
+        $bill_products = BillProducts::select('product_id', DB::raw('count(product_id) as total'))->groupBy('product_id')->get();
+
+        $sales_cost = 0;
+        foreach($bill_products as $product) {
+            $purchase_cost = Product::select('purchase_cost')->where('product_id', $product->product_id)->first();
+            $total_cost = $purchase_cost * $product->total;
+            $sales_cost += $total_cost;
+        }
+
+        return $sales_cost;
     }
 
     /**
@@ -61,6 +71,7 @@ class AccountRepository {
         $stats = array();
         $stats['total_expenses'] = $this->getTotalExpenses();
         $stats['total_paid_salary'] = $this->getSalaryPaid();
+        $stats['total_sales_cost'] = $this->getSalesCost();
         return $stats;
     }
 
