@@ -59,6 +59,7 @@ Court Case
                                         <td class="name">
                                           {!!Form::hidden('emails[]',$mail->id)!!}
                                           <?php $receiver = $mail->receivers;?>
+                                           To:
                                             @if(isset($mail->from_email))
                                                 {{$mail->from_email}}
                                             @else
@@ -73,7 +74,6 @@ Court Case
                                         </td>
                                         <td class="time" style="text-align: right">
                                         <small>{{email_date($mail->created_at)}}</small>
-                                        <a  class="cancel" href="#" data-id="{{$mail->id}}" > <i style="color: #F10505; margin-left: 10px; top: 1px; position: relative;" class="fa fa-times"></i> </a>
                                         </td>
                                         </tr>
                                     @endforeach

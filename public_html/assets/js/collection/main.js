@@ -120,10 +120,9 @@ $(function () {
             '</li>';
         }
         else if(d.step == 'court') {
-            register_dispute ='<li><a href="#"> Register court date </a> </li>' +
-            '<li><a href="#"> Register case history </a> </li>' +
+            register_dispute ='<li><a href="#" data-original-title="Register court date" data-target="#fb-modal" data-toggle="modal" data-url="' + appUrl + 'collection/case/register-date?bill=' + bill + '&token=' + token + '">Register court date </a> </li>' +
+            '<li><a href="#"  data-original-title="Case history" data-target="#fb-modal" data-toggle="modal" data-url="' + appUrl + 'collection/case/history?bill=' + bill + '&token=' + token + '">Case history</a></li>' +
             '<li><a href="#"> Register case won</a> </li>';
-
             register_payment= '';
             create_pdf= '';
         }
