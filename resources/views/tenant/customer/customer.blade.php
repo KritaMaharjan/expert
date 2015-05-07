@@ -64,7 +64,6 @@ Customers
     {{FB::registerModal()}}
    
     {{FB::js('assets/js/customer.js')}}
-
        
 	@stop
   

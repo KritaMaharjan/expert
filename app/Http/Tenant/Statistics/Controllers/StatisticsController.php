@@ -20,7 +20,6 @@ class StatisticsController extends BaseController {
 
     public function index()
     {
-        dd($this->account_repo->getSalesCost());
         $customer_stats = $this->customer_repo->getCustomerStats();
         $bill_stats = $this->bill_repo->getBillStats();
         $collection_stats = $this->collection_repo->getCollectionStats();
