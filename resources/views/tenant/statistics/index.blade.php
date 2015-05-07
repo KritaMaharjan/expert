@@ -34,20 +34,20 @@ Statistics
               </div>
               <div class="col-md-4 pad-top-100">
                 <form>
-                  <div class="form-group clearfix {{ ($errors->has('due_date'))? 'has-error': '' }}">
-                    {!! Form::label('due_date', 'Date from') !!}
+                  <div class="form-group clearfix {{ ($errors->has('start_date'))? 'has-error': '' }}">
+                    {!! Form::label('start_date', 'Date from') !!}
 
                     <div class='input-group date date-box2' id='due-date-picker'>
-                        {!! Form:: text('due_date', null, array('class' => 'form-control', 'id' =>'date-frm-date-pickers')) !!}
+                        {!! Form:: text('start_date', null, array('class' => 'form-control', 'id' =>'date-frm-date-pickers')) !!}
                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
                   </div>
-                  <div class="form-group clearfix {{ ($errors->has('due_date'))? 'has-error': '' }}">
-                    {!! Form::label('due_date', 'Date to') !!}
+                  <div class="form-group clearfix {{ ($errors->has('end_date'))? 'has-error': '' }}">
+                    {!! Form::label('end_date', 'Date to') !!}
 
                     <div class='input-group date date-box2' id='due-date-picker'>
-                        {!! Form:: text('due_date', null, array('class' => 'form-control', 'id' =>'date-to-date-pickers')) !!}
+                        {!! Form:: text('end_date', null, array('class' => 'form-control', 'id' =>'date-to-date-pickers')) !!}
                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
@@ -153,7 +153,7 @@ Statistics
                     <h3  class="line-red">Accounts</h3>
                     <div class="form-group">
                      <label>Income:</label>
-                     <span>15,000,000- NOK</span>                   
+                     <span>{{ $account_stats['total_income'] }} NOK</span>
                    </div>
                    <div class="form-group">
                      <label>Expenses:</label>
@@ -165,11 +165,11 @@ Statistics
                    </div>
                    <div class="form-group">
                      <label>Advertising expenses:</label>
-                     <span>5,500,500- NOK</span>
+                     <span>5,500,500 NOK</span>
                    </div>                 
                    <div class="form-group">
                      <label>Cost of sale:</label>
-                     <span>250,000,- NOK</span>                   
+                     <span>{{ $account_stats['total_sales_cost'] }} - NOK</span>
                    </div>   
                 </div>
               </div>
@@ -185,7 +185,7 @@ Statistics
     <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
     <script src="{{ asset('assets/plugins/morris/morris.min.js')}}" type="text/javascript"></script>
     <script src="{{ asset('assets/plugins/sparkline/jquery.sparkline.min.js')}}" type="text/javascript"></script>
-     <script src="{{ asset('assets/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js')}}" type="text/javascript"></script>
+    <script src="{{ asset('assets/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js')}}" type="text/javascript"></script>
     <script src="{{ asset('assets/plugins/jvectormap/jquery-jvectormap-world-mill-en.js')}}" type="text/javascript"></script>
     <script src="{{ asset('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js')}}" type="text/javascript"></script>
      <script type="text/javascript">
@@ -213,16 +213,6 @@ Statistics
         });
     </script>
 
-
- {{ FB::js('$(function(){
-        $("#date-frm-date-pickers").datepicker({
-        "format": "yyyy-mm-dd"
-        });
-        $("#date-to-date-pickers").datepicker({
-        "format": "yyyy-mm-dd"
-        });
-
-  })')}}
-
+{{ FB::js('assets/js/statistics.js') }}
 
 @stop
