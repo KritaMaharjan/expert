@@ -28,13 +28,13 @@
         </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group" id="file">
         {!! Form::label('file', 'File') !!}
         {!! Form::file('file') !!}
     </div>
 
     <div class="form-group">
-        {!! Form::label('body', 'Body') !!}
+        {!! Form::label('body', 'Description') !!}
         {!! Form::textarea('body',null,['class'=>'form-control']) !!}
     </div>
 
