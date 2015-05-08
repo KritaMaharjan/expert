@@ -120,16 +120,16 @@ $(function () {
             '</li>';
         }
         else if(d.step == 'court') {
-            register_dispute ='<li><a href="#" data-original-title="Register court date" data-target="#fb-modal" data-toggle="modal" data-url="' + appUrl + 'collection/case/register-date?bill=' + bill + '&token=' + token + '">Register court date </a> </li>' +
-            '<li><a href="#"  data-original-title="Case history" data-target="#fb-modal" data-toggle="modal" data-url="' + appUrl + 'collection/case/history?bill=' + bill + '&token=' + token + '">Case history</a></li>' +
-            '<li><a class="register-case-won" href="#"> Register case won</a>' +
-            '<form  class="case-won" id="' + d.id + '" method="post" action="">' +
+            register_dispute = '<li><a class="register-case-won" href="#"> Register case won</a>' +
+            '<form  class="case-won" data-id="' + d.id + '" method="post" action="">' +
             '<input type="hidden" name="_token" value="' + token + '">' +
             '<div class="form-group"><label> Payment date </label><input name="payment_date" id="payment_date" type="text" class="datepicker form-control"></div>' +
             '<div class="bottom-section clearfix">' +
             '<button class="btn-small btn btn-primary">Save</button>' +
             '</form>'+
-            ' </li>';
+            ' </li>' +
+            '<li><a href="#" data-original-title="Register court date" data-target="#fb-modal" data-toggle="modal" data-url="' + appUrl + 'collection/case/register-date?bill=' + bill + '&token=' + token + '">Register court date </a> </li>' +
+            '<li><a href="#"  data-original-title="Case history" data-target="#fb-modal" data-toggle="modal" data-url="' + appUrl + 'collection/case/history?bill=' + bill + '&token=' + token + '">Case history</a></li>';
             register_payment= '';
             create_pdf= '';
         }
@@ -166,7 +166,56 @@ $(function () {
 
     $(document).on('submit', '.case-won', function(e){
         e.preventDefault();
-        alert('submit');
+        var form = $(this);
+        var billId = form.data('id');
+        var formAction = appUrl + "collection/case/" + billId + "/payment-date";
+        var formData = form.serialize();
+        var submitBtn = form.find('.btn-primary');
+        var requestType = submitBtn.val();
+
+        submitBtn.val('loading...');
+        submitBtn.attr('disabled', true);
+
+        form.find('.has-error').removeClass('has-error');
+        form.find('label.error').remove();
+        form.find('.callout').remove();
+
+        $.ajax({
+            url: formAction,
+            type: 'POST',
+            dataType: 'json',
+            data: formData
+        })
+            .done(function (response) {
+                if (response.status == 1) {
+                    form.hide();
+                    $('#app-content .content').prepend(notify('success', 'Payment date added.'));
+                    setTimeout(function () {
+                        $('.callout').remove();
+                    }, 3000);
+
+                }
+                else {
+                    if ("errors" in response.data) {
+
+                        $.each(response.data.errors, function (id, error) {
+                            $('.modal-body #' + id).parent().addClass('has-error')
+                            $('.modal-body #' + id).after('<label class="error error-' + id + '">' + error[0] + '<label>');
+                        })
+                    }
+
+                    if ("error" in response.data) {
+                        form.prepend(notify('danger', response.data.error));
+                    }
+                }
+            })
+            .fail(function () {
+                form.prepend(notify('danger', 'Connection error!'));
+            })
+            .always(function () {
+                submitBtn.removeAttr('disabled');
+                submitBtn.val(requestType);
+            });
     })
 
     $(document).on('click', '#payment-submit', function (e) {

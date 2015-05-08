@@ -202,4 +202,12 @@ class CollectionController extends BaseController {
         }
         show_404();
     }
+
+    function casePaymentDate()
+    {
+        $bill = $this->request->route('bill');
+        $bill = $this->request->input('payment_date');
+
+        $this->repo->registerPaymentDate();
+    }
 }
