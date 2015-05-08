@@ -1,10 +1,11 @@
 <?php
 namespace APP\Http\Tenant\Collection\Controllers;
 
-use App\Fastbooks\Libraries\Pdf;
 use App\Http\Controllers\Tenant\BaseController;
 use App\Http\Tenant\Collection\Models\Collection;
+use App\Http\Tenant\Collection\Models\CourtCase;
 use App\Http\Tenant\Collection\Repositories\CollectionRepository;
+use App\Http\Tenant\Invoice\Models\Bill;
 use Illuminate\Http\Request;
 
 class CollectionController extends BaseController {
@@ -92,19 +93,28 @@ class CollectionController extends BaseController {
         {
             $step = $this->request->route('step');
             $id = $this->request->get('bill');
-            try {
-                $this->repo->changeCollectionStep($id, $step);
-                flash()->success('Collection case updated successfully');
-            } catch (\Exception $e) {
-                flash()->error($e->getMessage());
-            }
-
-
+            $this->changeStep($id, $step);
             return redirect()->back();
         }
 
         show_404();
     }
+
+    private function changeStep($id, $step)
+    {
+        try {
+            $this->repo->changeCollectionStep($id, $step);
+            if($step == 'court')
+                $message = 'Court Case created.';
+                else
+                $message = 'Collection case updated.';
+            flash()->success($message);
+
+        } catch (\Exception $e) {
+            flash()->error($e->getMessage());
+        }
+    }
+
 
     private function verifyCsrf()
     {
@@ -115,14 +125,13 @@ class CollectionController extends BaseController {
     }
 
 
-    function generatePdf(Pdf $pdf)
+    function generatePdf()
     {
         $step = $this->request->route('step');
 
         if (Collection::isValidStep($step) AND $this->verifyCsrf()) {
             $id = $this->request->get('bill');
-            $data = $this->repo->getBillInfo($id);
-            $pdf->generate($data['invoice_number'] . '-' . $step, 'template.collection.' . $step, compact('data'), true);
+            $this->repo->generatePDF($id, $step);
         } else {
             show_404();
         }
@@ -134,10 +143,39 @@ class CollectionController extends BaseController {
         if($this->verifyCsrf())
         {
             $bill = $this->request->get('bill');
-            print_r($this->repo->getAllCollectionPDF($bill));
-            return view('tenant.collection.case');
+            $pdf = $this->repo->getAllCollectionPDF($bill);
+            $emails = $this->repo->getEmailsByInvoice($bill);
+            return view('tenant.collection.case', compact('pdf', 'emails', 'bill'));
         }
 
+        show_404();
+    }
+
+
+    /**
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    function createCourtCase()
+    {
+        $bill = $this->request->input('bill');
+        $pdf = $this->request->input('pdf', []);
+        $emails = $this->request->input('emails', []);
+        $information = $this->request->input('information', []);
+
+        if(Bill::find($bill) AND !empty($pdf))
+            {
+                $case = [
+                    'bill_id'=> $bill,
+                    'pdf' => json_encode($pdf),
+                    'email' => json_encode($emails),
+                    'information' =>$information
+                ];
+                if(CourtCase::create($case))
+                {
+                    $this->changeStep($bill, 'court');
+                    return redirect()->back();
+                }
+            }
         show_404();
     }
 }

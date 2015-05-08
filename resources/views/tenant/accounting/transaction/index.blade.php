@@ -35,32 +35,35 @@ Transaction
 
                 <script>
          $(function(){
-                $.fn.datepicker.defaults.format = "yyyy-mm-dd";
-          // disabling dates
-          var nowTemp = new Date();
-          var now = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0);
+         var FromEndDate = new Date();
+         var startDate = new Date();
+         var today = new Date();
 
-          var checkin = $('.date-from').datepicker({
-              autoclose: true
+         $('.date-from').datepicker({
+             format: "yyyy-mm-dd",
+             endDate: FromEndDate,
+             autoclose: true
+         })
+             .on('changeDate', function(selected){
+                 startDate = new Date(selected.date.valueOf());
+                 startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())));
+                 $('.date-to').datepicker('setStartDate', startDate);
 
-          }).on('changeDate', function (ev) {
-              if (ev.date.valueOf() > checkout.datepicker("getDate").valueOf()) {
-                  var newDate = new Date(ev.date);
-                  newDate.setDate(newDate.getDate() + 1);
-                  checkout.setValue(newDate);
-                  checkout.setDate(newDate);
-                  checkout.update();
-              }
-          });
+             });
 
+         $('.date-to')
+             .datepicker({
+                 format: "yyyy-mm-dd",
+                 startDate: startDate,
+                 endDate: today,
+                 autoclose: true
+             })
+             .on('changeDate', function(selected){
+                 FromEndDate = new Date(selected.date.valueOf());
+                 FromEndDate.setDate(FromEndDate.getDate(new Date(selected.date.valueOf())));
+                 $('.date-from').datepicker('setEndDate', FromEndDate);
+             });
 
-          var checkout = $('.date-to').datepicker({
-              beforeShowDay: function (date) {
-                  return date.valueOf() > checkin.datepicker("getDate").valueOf();
-              },
-              autoclose: true
-
-          });
 
 });
 

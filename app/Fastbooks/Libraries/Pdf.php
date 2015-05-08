@@ -7,10 +7,13 @@ class Pdf {
     public $pdf;
 
     public $uploadPath;
+    public $uploadURL;
 
     function __construct()
     {
         $this->uploadPath = public_path().'/' .tenant()->folder('invoice', true)->path();
+        $this->uploadURL = tenant()->folder('invoice', true)->url();
+
         //$this->uploadPath = public_path() . '/assets/uploads/invoices/';
         $this->pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
         $this->setInfo();
@@ -76,7 +79,7 @@ class Pdf {
         {
             ob_clean();
             $this->pdf->Output($this->uploadPath . $filename . '.pdf', 'F');
-            return $this->uploadPath.$filename.'.pdf';
+            return $this->uploadURL.$filename.'.pdf';
         }
 
         //Close and output PDF document

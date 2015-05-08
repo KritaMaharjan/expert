@@ -8,7 +8,7 @@
     <script src="{{ asset('assets/plugins/datepicker/bootstrap-datepicker.js')}}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/moment.js')}}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/bootstrap-datetimepicker.min.js')}}" type="text/javascript"></script>
-  {{--  <script src="{{ asset('assets/js/wiselinks-1.2.2.min.js')}}" type="text/javascript"></script>
+    {{--  <script src="{{ asset('assets/js/wiselinks-1.2.2.min.js')}}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/wiselinkinit.js')}}" type="text/javascript"></script>--}}
     <script src="{{ asset('assets/js/common.js')}}" type="text/javascript"></script>
     <script src="{{ asset('assets/js/select2.js')}}" type="text/javascript"></script>
@@ -18,7 +18,5 @@
 
     {!! FB::loadJS() !!}
     {!! FB::loadModal() !!}
-    
-
   </body>
 </html>
