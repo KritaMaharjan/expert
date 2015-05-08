@@ -28,7 +28,8 @@ class TasksController extends BaseController {
     protected $rules = [
         'subject' => 'required|between:2,100',
         'body' => 'required',
-        'due_date' => 'required|date'
+        'due_date' => 'required|date',
+        'due_time' => 'required'
     ];
 
 

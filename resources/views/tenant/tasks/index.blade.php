@@ -88,16 +88,13 @@ Tasks
     {{--Load JS--}}
     {{ FB::registerModal() }}
     {{ FB::js('assets/js/tasks.js') }}
+    {{ FB::js('assets/plugins/timepicker/bootstrap-timepicker.min.js') }}
 
 <script type="text/javascript">
   $(function(){
     $(document).on('click', '.text', function (e) {
-    //$('.text').click(function(){
       $(this).parent().find('.todos-box').slideToggle('fast');
-
     });
-    
-   
   });
 </script>
 

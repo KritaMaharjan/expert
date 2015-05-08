@@ -31,10 +31,11 @@ class Tasks extends Model
 
     function add(Request $request)
     {
+        $time = date("H:i:s", strtotime($request->input('due_time')));
         $task = Tasks::create([
             'subject' => $request->input('subject'),
             'body' => $request->input('body'),
-            'due_date' => $request->input('due_date'),
+            'due_date' => $request->input('due_date').' '.$time,
             'is_complete' => 0,
             'user_id' => current_user()->id,
         ]);
@@ -47,10 +48,11 @@ class Tasks extends Model
 
     function edit(Request $request, $id)
     {
+        $time = date("H:i:s", strtotime($request->input('due_time')));
         $task = Tasks::find($id);
         $task->subject = $request->input('subject');
         $task->body = $request->input('body');
-        $task->due_date = $request->input('due_date');
+        $task->due_date = $request->input('due_date')." ".$time;
         $task->save();
         $task = $task->toArray();
         $task['template'] = $this->getTemplate($task, true);
