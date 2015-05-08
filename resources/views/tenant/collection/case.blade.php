@@ -1,17 +1,13 @@
-@extends('tenant.layouts.main')
 
-@section('breadcrumb')
-@stop
-
-@section('heading')
-Court Case
-@stop
-
-@section('content')
-    <div class="callout callout-info">
-	    <p>Creating a court case is easy just follow the steps below and we'll create all the documents you need to fill out. We have even completed step 1 for you already!</p>
-	</div>
     <div class="box box-solid">
+    <div class="box-header">
+        <h3 class="box-title">Court Case</h3>
+    </div>
+
+      <div class="callout callout-info">
+    	    <p>Creating a court case is easy just follow the steps below and we'll create all the documents you need to fill out. We have even completed step 1 for you already!</p>
+    	</div>
+
         <div class="box-body">
         {!!Form::open(['url'=>tenant()->url('collection/court-case/create')])!!}
 
@@ -59,6 +55,7 @@ Court Case
                                         <td class="name">
                                           {!!Form::hidden('emails[]',$mail->id)!!}
                                           <?php $receiver = $mail->receivers;?>
+                                           To:
                                             @if(isset($mail->from_email))
                                                 {{$mail->from_email}}
                                             @else
@@ -73,7 +70,6 @@ Court Case
                                         </td>
                                         <td class="time" style="text-align: right">
                                         <small>{{email_date($mail->created_at)}}</small>
-                                        <a  class="cancel" href="#" data-id="{{$mail->id}}" > <i style="color: #F10505; margin-left: 10px; top: 1px; position: relative;" class="fa fa-times"></i> </a>
                                         </td>
                                         </tr>
                                     @endforeach
@@ -97,8 +93,3 @@ Court Case
         {!!Form::close()!!}
         </div>
     </div>
-
-{{--Load JS--}}
-{{FB::registerModal()}}
-
-@stop</p>
