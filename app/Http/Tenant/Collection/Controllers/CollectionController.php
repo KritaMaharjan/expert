@@ -182,7 +182,10 @@ class CollectionController extends BaseController {
 
     function registerDate()
     {
-        return view('tenant.collection.register_date');
+        $bill = $this->request->input('bill');
+        if($this->verifyCsrf() AND !is_null($bill) AND $bill = Bill::with('customer')->find($bill)) {
+            return view('tenant.collection.register_date', compact('bill'));
+        }
     }
 
     function caseHistory()

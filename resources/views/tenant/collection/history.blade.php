@@ -1,26 +1,14 @@
-@extends('tenant.layouts.main')
-
-@section('heading')
-Court History
-@stop
-
-@section('breadcrumb')
-@stop
-
-
-@section('content')
     <div class="box box-solid">
+        <div class="box-header">
+            <h3 class="box-title">Court History</h3>
+        </div>
         <div class="box-body">
-			        <div class="row">
-
 			        <h5><strong>Collection steps:</strong></h5>
-
                     <ul>
                         @foreach($case->pdf as $pdf)
                             <li>{{$pdf}}</li>
                         @endforeach
                     </ul>
-
 
                      <h5><strong>Communication:</strong></h5>
                          @if(count($case->email) > 0)
@@ -57,5 +45,4 @@ Court History
                     <p>{{$case->information}}</p>
 
         </div>
-    </div>
-@stop
+</div>
