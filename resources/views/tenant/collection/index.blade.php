@@ -12,7 +12,7 @@ Collections
         <div class="box-header">
               <a class="btn  btn-primary btn-flat" href="{{url('collection')}}">All Collection Cases</a>
               <a class="btn  btn-default btn-flat" href="{{url('collection/waiting')}}">Waiting Update</a>
-              <a class="btn  btn-default btn-flat pull-right" href="{{url('collection/new-case')}}">Add New Case</a>
+              <a class="btn  btn-default btn-flat pull-right" data-original-title="Add New Case" data-target="#fb-modal" data-toggle="modal"  data-url=="{{url('collection/new-case')}}">Add New Case</a>
         </div>
 
         <?php $step = Input::get('step', 'purring');?>
@@ -54,5 +54,8 @@ Collections
 {{--Load JS--}}
 {{ FB::registerModal() }}
 {{FB::js('assets/js/collection/main.js')}}
+<link href="http://demo.mashbooks.app/assets/plugins/timepicker/bootstrap-timepicker.min.css" rel="stylesheet"/>
+{{FB::js('assets/plugins/timepicker/bootstrap-timepicker.min.js')}}
+
 
 @stop

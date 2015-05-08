@@ -7,12 +7,15 @@ use Illuminate\Support\Facades\DB;
 
 class BillRepository {
 
+    private $from;
+    private $to;
+
     /**
      * @return int
      * Total number of bills created
      */
     function getBillsTotal() {
-        $total = Bill::where('type', 0)->count();
+        $total = Bill::whereBetween('created_at', array($this->from, $this->to))->where('type', 0)->count();
         return $total;
     }
 
@@ -21,7 +24,7 @@ class BillRepository {
      * Total amount in bills
      */
     function getTotalBilled() {
-        $total = Bill::select('total')->where('type', 0)->sum('total');
+        $total = Bill::select('total')->where('type', 0)->whereBetween('created_at', array($this->from, $this->to))->sum('total');
         return $total;
     }
 
@@ -30,7 +33,7 @@ class BillRepository {
      * Total amount paid
      */
     function getAmountPaid() {
-        $total = Bill::select('paid')->where('type', 0)->sum('paid');
+        $total = Bill::select('paid')->where('type', 0)->whereBetween('created_at', array($this->from, $this->to))->sum('paid');
         return $total;
     }
 
@@ -39,7 +42,7 @@ class BillRepository {
      * Average time for full payment from the date bill was issued (created)
      */
     function getAvgPaymentTime() {
-        $query = Bill::select(DB::raw("AVG(DATEDIFF(full_payment_date, created_at))AS days"))->whereNotNull('full_payment_date')->first();
+        $query = Bill::select(DB::raw("AVG(DATEDIFF(full_payment_date, created_at))AS days"))->whereNotNull('full_payment_date')->whereBetween('created_at', array($this->from, $this->to))->first();
         return (int)$query->days;
     }
 
@@ -49,7 +52,7 @@ class BillRepository {
      */
     function getPastDue() {
         $today = Carbon::today();
-        $total = Bill::where('due_date', '>',  $today)->where('payment', '!=', 1)->count();
+        $total = Bill::where('due_date', '>',  $today)->where('payment', '!=', 1)->whereBetween('created_at', array($this->from, $this->to))->count();
         return $total;
     }
 
@@ -58,7 +61,7 @@ class BillRepository {
      * Total number of bills that are not in collection
      */
     function getNotCollection() {
-        $total = Bill::where('status', '!=', 1)->where('type', 0)->count();
+        $total = Bill::where('status', '!=', 1)->where('type', 0)->whereBetween('created_at', array($this->from, $this->to))->count();
         return $total;
     }
 
@@ -67,7 +70,7 @@ class BillRepository {
      * Total number of offers
      */
     function getOffersTotal() {
-        $total = Bill::where('type', 1)->count();
+        $total = Bill::where('type', 1)->whereBetween('created_at', array($this->from, $this->to))->count();
         return $total;
     }
 
@@ -75,7 +78,15 @@ class BillRepository {
      * @return array
      * Statistics for Bill section
      */
-    function getBillStats() {
+    function getBillStats($filter = null) {
+        if($filter != null) {
+            $this->from = $filter['start_date'];
+            $this->to = $filter['end_date'];
+        } else {
+            $this->from = '0000-00-00';
+            $this->to = Carbon::now();
+        }
+
         $stats = array();
         $stats['total_bills'] = $this->getBillsTotal();
         $stats['total_billed'] = $this->getTotalBilled();

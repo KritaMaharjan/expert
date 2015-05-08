@@ -1325,6 +1325,7 @@ textarea.list-bx {
     display: none;
 }
 
+<<<<<<< HEAD
 .breadcrumb.step-links li{
     margin-bottom: 0;
 }
@@ -1337,4 +1338,14 @@ textarea.list-bx {
 }
 .breadcrumb.step-links a:hover {
     color: #337ab7;
+=======
+.case-won {
+    position: absolute;
+    background: #fff;
+    padding: 12px;
+    border: 1px solid #ccc;
+    margin-top: 13px;
+    margin: 0px 21px;
+    display: none;
+>>>>>>> 4d3ba95439770a37cda0407f614f4672b97f4634
 }

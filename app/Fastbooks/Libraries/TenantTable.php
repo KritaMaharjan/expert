@@ -383,6 +383,7 @@ class TenantTable {
                 $table->string('subject', 100);
                 $table->text('body'); // customer id
                 $table->datetime('due_date');
+                $table->text('files')->nullable();
                 $table->boolean('is_complete')->default(0); // 0: not complete, 1: complete
                 $table->datetime('completion_date');
                 // created_at, updated_at DATETIME

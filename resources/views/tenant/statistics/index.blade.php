@@ -33,12 +33,16 @@ Statistics
 
               </div>
               <div class="col-md-4 pad-top-100">
-                <form>
+                @if(!isset($filter))
+                    {!!Form::open(['id'=>'filter-form', 'method'=>'get'])!!}
+                @else
+                    {!!Form::model($filter, ['id'=>'filter-form', 'method'=>'get'])!!}
+                @endif
                   <div class="form-group clearfix {{ ($errors->has('start_date'))? 'has-error': '' }}">
                     {!! Form::label('start_date', 'Date from') !!}
 
                     <div class='input-group date date-box2' id='due-date-picker'>
-                        {!! Form:: text('start_date', null, array('class' => 'form-control', 'id' =>'date-frm-date-pickers')) !!}
+                        {!! Form:: text('start_date', null, array('class' => 'form-control', 'id' =>'date-frm-date-pickers', 'required' => 'required')) !!}
                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
@@ -47,12 +51,16 @@ Statistics
                     {!! Form::label('end_date', 'Date to') !!}
 
                     <div class='input-group date date-box2' id='due-date-picker'>
-                        {!! Form:: text('end_date', null, array('class' => 'form-control', 'id' =>'date-to-date-pickers')) !!}
+                        {!! Form:: text('end_date', null, array('class' => 'form-control', 'id' =>'date-to-date-pickers', 'required' => 'required')) !!}
                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
                   </div>
-                </form>
+
+                  <div class="form-group clearfix">
+                       <button class="btn btn-primary pull-right filter-submit" type="submit">Filter</button>
+                  </div>
+                {!! Form::close() !!}
               </div>
             </div>
             <!-- <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"></div> -->

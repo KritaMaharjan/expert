@@ -18,7 +18,7 @@ class CourtCase extends Model {
      *
      * @var array
      */
-    protected $fillable = ['id', 'collection_id', 'pdf', 'emails'];
+    protected $fillable = ['id', 'bill_id', 'pdf', 'email', 'information'];
 
 
     /**

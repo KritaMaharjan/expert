@@ -170,12 +170,36 @@ class CollectionController extends BaseController {
                     'email' => json_encode($emails),
                     'information' =>$information
                 ];
+
                 if(CourtCase::create($case))
                 {
                     $this->changeStep($bill, 'court');
                     return redirect()->back();
                 }
             }
+        show_404();
+    }
+
+    function registerDate()
+    {
+        $bill = $this->request->input('bill');
+        if($this->verifyCsrf() AND !is_null($bill) AND $bill = Bill::with('customer')->find($bill)) {
+            $due_amount = $bill->remaining + Collection::totalCharge($bill->due_date, $bill->total,'court');
+            $body = "Invoice Number : {$bill->invoice_number} \nCustomer Name: {$bill->customer->name} \nDue Amount: {$due_amount}";
+            return view('tenant.collection.register_date', compact('body'));
+        }
+    }
+
+    function caseHistory()
+    {
+        $bill = $this->request->input('bill');
+
+        if($this->verifyCsrf() AND !is_null($bill) AND Bill::find($bill)) {
+
+            $case = $this->repo->caseHistoryDetail($bill);
+
+            return view('tenant.collection.history', compact('case'));
+        }
         show_404();
     }
 }

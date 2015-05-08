@@ -19,7 +19,7 @@ class Tasks extends Model
      *
      * @var array
      */
-    protected $fillable = ['subject', 'body', 'due_date', 'is_complete', 'completion_date', 'user_id'];
+    protected $fillable = ['subject', 'body', 'due_date', 'files', 'is_complete', 'completion_date', 'user_id'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -31,14 +31,17 @@ class Tasks extends Model
 
     function add(Request $request)
     {
-        $task = Tasks::create([
+        $files = $request->input('file');
+        $time = date("H:i:s", strtotime($request->input('due_time')));
+        $data = [
             'subject' => $request->input('subject'),
             'body' => $request->input('body'),
-            'due_date' => $request->input('due_date'),
+            'due_date' => $request->input('due_date').' '.$time,
+            'files' => (is_array($files)) ? serialize($files) : null,
             'is_complete' => 0,
             'user_id' => current_user()->id,
-        ]);
-
+        ];
+        $task = Tasks::create($data);
         $task = $task->toArray();
         $task['template'] = $this->getTemplate($task);
         return $task;
@@ -47,10 +50,13 @@ class Tasks extends Model
 
     function edit(Request $request, $id)
     {
+        $files = $request->input('file');
+        $time = date("H:i:s", strtotime($request->input('due_time')));
         $task = Tasks::find($id);
         $task->subject = $request->input('subject');
         $task->body = $request->input('body');
-        $task->due_date = $request->input('due_date');
+        $task->files = (is_array($files)) ? serialize($files) : null;
+        $task->due_date = $request->input('due_date')." ".$time;
         $task->save();
         $task = $task->toArray();
         $task['template'] = $this->getTemplate($task, true);
@@ -63,16 +69,21 @@ class Tasks extends Model
     function getTemplate(array $task = array(), $update = false)
     {
         $complete = ($task['is_complete'] == 1)? 'checked="checked"' : '';
+
         $edit = ($task['is_complete'] == 0)? '<a href="#" title="Edit" data-original-title="Edit" class="btn btn-box-tool"  data-toggle="modal" data-url="'.tenant()->url('tasks/' . $task['id'] . '/edit').'" data-target="#fb-modal" data-url="" >
                             <i class="fa fa-edit"></i>
                         </a>' : '';
+
         $completed_date = ($task['is_complete'] == 1)? '<div>
                           <label>Completed date:</label>
                           <span>'.format_datetime($task['completion_date']).'</span>
                         </div>' : '';
+
+        $display_date = ($task['is_complete'] == 1)? $task['completion_date'] : $task['due_date'];
+
         $template = '<input type="checkbox" value="" name="" class="icheck"'.$complete.' />
                       <span class="text">'.$task['subject'].'</span>
-                      '.calculate_todo_time($task['due_date']).'
+                      '.calculate_todo_time($display_date).'
                       <div class="tools">
                         '.$edit.'
                         <i class="fa fa-trash-o btn-delete-task" data-id="'.$task['id'].'"></i>
@@ -86,7 +97,7 @@ class Tasks extends Model
                           <label>Due date:</label>
                           <span>'.format_datetime($task['due_date']).'</span>
                         </div>'.$completed_date.'
-                        <p>'.$task['body'].'</p>
+                        <p>'.nl2br($task['body']).'</p>
                       </div>';
         if($update == false)
             return "<li id='".$task['id']."'>".$template."</li>";
@@ -118,7 +129,7 @@ class Tasks extends Model
         /*$tasks['upcoming_tasks'] = Tasks::where('due_date', '>', $today)->get();
         $tasks['overdue_tasks'] = Tasks::where('due_date', '<=', $today)->get();*/
         $tasks['upcoming_tasks'] = Tasks::where('is_complete', 0)->where('user_id', current_user()->id)->orderBy('due_date', 'asc')->paginate($per_page);
-        $tasks['completed_tasks'] = Tasks::where('is_complete', 1)->where('user_id', current_user()->id)->orderBy('completion_date', 'asc')->paginate($per_page);
+        $tasks['completed_tasks'] = Tasks::where('is_complete', 1)->where('user_id', current_user()->id)->orderBy('completion_date', 'desc')->paginate($per_page);
         $tasks['todo_tasks'] = Tasks::where('is_complete', 0)->where('user_id', current_user()->id)->where('due_date', '>=', $today)->where('due_date', '<', $tomorrow)->orderBy('due_date', 'asc')->paginate($per_page);
         return $tasks;
     }

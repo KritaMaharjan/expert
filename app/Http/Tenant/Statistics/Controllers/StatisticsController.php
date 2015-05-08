@@ -2,6 +2,7 @@
 namespace App\Http\Tenant\Statistics\Controllers;
 use App\Http\Controllers\Tenant\BaseController;
 
+use Illuminate\Http\Request;
 use App\Http\Tenant\Statistics\Repositories\CustomerRepository;
 use App\Http\Tenant\Statistics\Repositories\BillRepository;
 use App\Http\Tenant\Statistics\Repositories\CollectionRepository;
@@ -18,12 +19,13 @@ class StatisticsController extends BaseController {
         $this->account_repo = $account_repo;
 	}
 
-    public function index()
+    public function index(Request $request)
     {
-        $customer_stats = $this->customer_repo->getCustomerStats();
-        $bill_stats = $this->bill_repo->getBillStats();
-        $collection_stats = $this->collection_repo->getCollectionStats();
-        $account_stats = $this->account_repo->getAccountStats();
-    	return view('tenant.statistics.index', compact('customer_stats', 'bill_stats', 'account_stats', 'collection_stats'));
+        $filter = $request->all();
+        $customer_stats = $this->customer_repo->getCustomerStats($filter);
+        $bill_stats = $this->bill_repo->getBillStats($filter);
+        $collection_stats = $this->collection_repo->getCollectionStats($filter);
+        $account_stats = $this->account_repo->getAccountStats($filter);;
+    	return view('tenant.statistics.index', compact('customer_stats', 'bill_stats', 'account_stats', 'collection_stats', 'filter'));
     }
 }

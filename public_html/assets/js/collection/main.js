@@ -120,10 +120,16 @@ $(function () {
             '</li>';
         }
         else if(d.step == 'court') {
-            register_dispute ='<li><a href="#"> Register court date </a> </li>' +
-            '<li><a href="#"> Register case history </a> </li>' +
-            '<li><a href="#"> Register case won</a> </li>';
-
+            register_dispute ='<li><a href="#" data-original-title="Register court date" data-target="#fb-modal" data-toggle="modal" data-url="' + appUrl + 'collection/case/register-date?bill=' + bill + '&token=' + token + '">Register court date </a> </li>' +
+            '<li><a href="#"  data-original-title="Case history" data-target="#fb-modal" data-toggle="modal" data-url="' + appUrl + 'collection/case/history?bill=' + bill + '&token=' + token + '">Case history</a></li>' +
+            '<li><a class="register-case-won" href="#"> Register case won</a>' +
+            '<form  class="case-won" id="' + d.id + '" method="post" action="">' +
+            '<input type="hidden" name="_token" value="' + token + '">' +
+            '<div class="form-group"><label> Payment date </label><input name="payment_date" id="payment_date" type="text" class="datepicker form-control"></div>' +
+            '<div class="bottom-section clearfix">' +
+            '<button class="btn-small btn btn-primary">Save</button>' +
+            '</form>'+
+            ' </li>';
             register_payment= '';
             create_pdf= '';
         }
@@ -152,6 +158,16 @@ $(function () {
         '</div></td></tr>';
         return $hidden_child;
     }
+
+    $(document).on('click', '.register-case-won', function(e){
+        e.preventDefault();
+        $('.case-won').toggle();
+    })
+
+    $(document).on('submit', '.case-won', function(e){
+        e.preventDefault();
+        alert('submit');
+    })
 
     $(document).on('click', '#payment-submit', function (e) {
         e.preventDefault();

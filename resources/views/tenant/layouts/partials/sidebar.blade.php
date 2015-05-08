@@ -40,12 +40,9 @@
 
             @if(FB::can_view('Collections'))
             <li class="treeview">
-              <a href="#" title="Collections">
-                <i class="fa fa-files-o"></i> <span>Collections</span> <i class="fa fa-angle-left pull-right"></i>
+              <a href="{{tenant_route('tenant.collection.index')}}" title="Collections">
+                <i class="fa fa-files-o"></i> <span>Collections</span></i>
               </a>
-              <ul class="treeview-menu">
-                <li><a data-push="true" href="{{tenant_route('tenant.collection.index')}}" title="Collections"><i class="fa fa-circle-o"></i> Collections</a></li>
-              </ul>
             </li>
             @endif
 
