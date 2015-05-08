@@ -4,7 +4,7 @@
   }
      th, td {
       padding: 10px;
-      font-size:9px; 
+      font-size: 9px;
   }
      h1{
       font-size:15px;
@@ -21,7 +21,8 @@
      .footer{border-bottom: 3px solid #FFFF00;}
      .center{text-align: center;}
      .right{text-align: right;}
-     
+     #purring-detail{
+     }
 
      table#inv-tab th,table#inv-tab2 th{
         border-bottom: 1px solid #333;
@@ -30,14 +31,14 @@
     
       </style>
 
-      <table id="inkassovarsel-detail">
+      <table id="purring-detail">
         <tr>
           <td colspan="3" class="center"><h1>Logo</h1></td>          
         </tr>
         <tr>
           <td></td>
           <td></td>
-          <td><h2>Inkassovarsel</h2></td>                    
+          <td><h2>Purring</h2></td>                    
         </tr>
         <tr>
           <td>
@@ -60,7 +61,7 @@
             <p>Note payment: Number<br />
               Customer number Customer number<br />
               Var ref. User sending out bills<br />
-              Warning date Date produced<br />
+              Invoice date Date produced<br />
               Due date Due date<br />
               Currency: Currency
             </p>
@@ -71,24 +72,20 @@
       <table id="inv-tab" cellpadding="4">
         <thead>
           <tr>
-            <th style="font-size:9px;"><b>Code</b></th>
-            <th style="font-size:9px;"><b>Name</b></th>
-            <th style="font-size:9px;"><b>No.</b></th>
-            <th style="font-size:9px;"><b>Price</b></th>
-            <th style="font-size:9px;"><b>Discount</b></th>
-            <th style="font-size:9px;"><b>Tax</b></th>
+            <th style="font-size:9px;"><b>Invoice number</b></th>
+            <th style="font-size:9px;"><b>Description</b></th>
+            <th style="font-size:9px;"><b>Invoice date</b></th>
+            <th style="font-size:9px;"><b>Due date</b></th>
             <th style="font-size:9px;"><b>Total</b></th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><small>Code</small></td>
-            <td><small>Name of product</small></td>
-            <td><small>Amount</small></td>
-            <td><small>Price</small></td>
-            <td><small>Discount</small></td>
-            <td><small>Tax</small></td>
-            <td><small>Total amount</small></td>
+            <td><small>Bill number</small></td>
+            <td><small>Purring</small></td>
+            <td><small>Original invoice date</small></td>
+            <td><small>Due date of bill</small></td>
+            <td><small>Original sum outstanding</small></td>
           </tr>
         </tbody>
 
@@ -100,14 +97,14 @@
             <td>
               <table id="inv-tab2" cellpadding="4" width="100%" style="float:right">
                 <tr>
-                  <th style="font-size:9px;"><b>Late fee</b></th>
+                  <th style="font-size:9px;"><b>late fee</b></th>
                   <th style="font-size:9px;"><b>Paid amounts</b></th>
-                  <th style="font-size:9px;"><b>Total</b></th>
+                  <th style="font-size:9px;"><b>Gross</b></th>
                 </tr>
                 <tr>
                   <td><small>Late fee</small></td>
                   <td><small>Paid amounts</small></td>
-                  <td><small>Total</small></td>
+                  <td><small>Gross</small></td>
                 </tr>
               </table>
             </td>
@@ -126,7 +123,6 @@
       <br />
       <br />
       <br />
-
 
 
       <table id="print">
