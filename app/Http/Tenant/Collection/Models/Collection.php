@@ -144,6 +144,12 @@ class Collection extends Model {
         return number_format($interest, 2);
     }
 
+
+    public static function totalCharge($invoice_date, $bill_amount, $step)
+    {
+          return self::fee($step) + self::interest($invoice_date, $bill_amount);
+    }
+
     public static function deadline($created_at)
     {
         $dStart = new \DateTime();

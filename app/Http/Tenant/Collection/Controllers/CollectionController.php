@@ -184,7 +184,9 @@ class CollectionController extends BaseController {
     {
         $bill = $this->request->input('bill');
         if($this->verifyCsrf() AND !is_null($bill) AND $bill = Bill::with('customer')->find($bill)) {
-            return view('tenant.collection.register_date', compact('bill'));
+            $due_amount = $bill->remaining + Collection::totalCharge($bill->due_date, $bill->total,'court');
+            $body = "Invoice Number : {$bill->invoice_number} \nCustomer Name: {$bill->customer->name} \nDue Amount: {$due_amount}";
+            return view('tenant.collection.register_date', compact('body'));
         }
     }
 

@@ -19,7 +19,7 @@ class Tasks extends Model
      *
      * @var array
      */
-    protected $fillable = ['subject', 'body', 'due_date', 'is_complete', 'completion_date', 'user_id'];
+    protected $fillable = ['subject', 'body', 'due_date', 'files', 'is_complete', 'completion_date', 'user_id'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -31,17 +31,17 @@ class Tasks extends Model
 
     function add(Request $request)
     {
-        $files = $request->input('files');
+        $files = $request->input('file');
         $time = date("H:i:s", strtotime($request->input('due_time')));
-        $task = Tasks::create([
+        $data = [
             'subject' => $request->input('subject'),
             'body' => $request->input('body'),
             'due_date' => $request->input('due_date').' '.$time,
-            'files' => ($files != null)? serialize($request->input('files')) : null,
+            'files' => (is_array($files)) ? serialize($files) : null,
             'is_complete' => 0,
             'user_id' => current_user()->id,
-        ]);
-
+        ];
+        $task = Tasks::create($data);
         $task = $task->toArray();
         $task['template'] = $this->getTemplate($task);
         return $task;
@@ -50,10 +50,12 @@ class Tasks extends Model
 
     function edit(Request $request, $id)
     {
+        $files = $request->input('file');
         $time = date("H:i:s", strtotime($request->input('due_time')));
         $task = Tasks::find($id);
         $task->subject = $request->input('subject');
         $task->body = $request->input('body');
+        $task->files = (is_array($files)) ? serialize($files) : null;
         $task->due_date = $request->input('due_date')." ".$time;
         $task->save();
         $task = $task->toArray();

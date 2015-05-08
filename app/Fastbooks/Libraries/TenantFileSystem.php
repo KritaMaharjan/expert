@@ -91,14 +91,14 @@ class TenantFileSystem {
      * @return $this
      * @throws Exception
      */
-    function folder($folder, $create = false)
+    function folder($folder, $create = true)
     {
         if ($this->isFolderExist($folder)) {
             $this->folder = $folder;
         } else {
             if ($create) {
-                $this->folder = $folder;
                 $this->create();
+                $this->folder = $folder;
             } else {
                 throw new Exception('Folder not exist');
             }

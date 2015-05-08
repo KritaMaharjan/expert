@@ -22,7 +22,7 @@ class FileController extends BaseController {
         $file = $this->request->input('file');
         $file = ($file == '') ? 'file' : $file;
 
-        if ($return = tenant()->folder($folder)->upload($file)) {
+        if ($return = tenant()->folder($folder, true)->upload($file)) {
             return $this->success($return);
         }
 
