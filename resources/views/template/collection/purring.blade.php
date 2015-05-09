@@ -61,7 +61,7 @@
 
       <table>
         <tr>
-          <td width="50%">
+          <td width="40%">
             <table cellpadding="4" class="border-table">
               <tr>
                 <th bgcolor="#ececec">
@@ -73,7 +73,7 @@
               </tr>
             </table>
           </td>
-          <td width="20%"></td>
+          <td width="30%"></td>
           <td width="30%">
             <table cellpadding="4" class="border-table">
               <tr>
@@ -94,23 +94,78 @@
           <td>
             <table cellpadding="4" class="border-table">
               <tr>
-                <th width="20%"><b>Plaintiff / complaints</b></th>
+                <th width="20%" bgcolor="#ececec"><b>Plaintiff / complaints</b></th>
                 <td width="40%">User company name</td>
-                <th width="15%" align="right" rowspan="3"><b>Org.nr</b></th>
+                <th width="15%" align="right" rowspan="3" bgcolor="#ececec"><b>Org.nr</b></th>
                 <td width="25%">Company number</td>
               </tr>
               <tr>
-                <th width="20%">Address</th>
+                <th width="20%" bgcolor="#ececec">Address:</th>
                 <td width="40%">Company address</td>
                 <td width="25%" rowspan="2"></td>
               </tr>
               <tr>
-                <th>City</th>
+                <th bgcolor="#ececec">City:</th>
                 <td>Postal code + Town</td>
               </tr>
+
+              <tr>
+                <th width="20%" bgcolor="#ececec"><b>Counsel</b></th>
+                <td width="40%"></td>
+                <th width="15%" align="right" bgcolor="#ececec"><b>Tlf.nr</b></th>
+                <td width="25%">Company phone number</td>
+              </tr>
+              <tr>
+                <th width="20%" bgcolor="#ececec">Address:</th>
+                <td width="40%"></td>
+                <th width="15%" rowspan="2" align="right" bgcolor="#ececec"><b>Bank account</b></th>
+                <td width="25%">Bank account number</td>
+              </tr>
+              <tr>
+                <th bgcolor="#ececec">City:</th>
+                <td>Postal code + Town</td>
+                <td></td>
+              </tr>
+
+              <tr>
+                <th width="20%" bgcolor="#ececec"><b>Sued / complaint counterpart</b></th>
+                <td width="40%">Customer names</td>
+                <th width="15%" align="right" bgcolor="#ececec"><b>National identity</b></th>
+                <td width="25%">Birth date</td>
+              </tr>
+              <tr>
+                <th width="20%" bgcolor="#ececec">Address:</th>
+                <td width="40%">Customer street address</td>
+                <th width="15%" rowspan="2" align="right" bgcolor="#ececec"><b>Business registration</b></th>
+                <td width="25%" rowspan="2">Business number</td>
+              </tr>
+              <tr>
+                <th bgcolor="#ececec">City</th>
+                <td>Postal code + Town</td>
+              </tr>
+
+              <tr>
+                <th width="20%" bgcolor="#ececec"><b>Counsel</b></th>
+                <td width="40%"></td>
+                <th width="15%" align="right" rowspan="3" bgcolor="#ececec"><b></b></th>
+                <td width="25%"></td>
+              </tr>
+              <tr>
+                <th width="20%" bgcolor="#ececec">Address:</th>
+                <td width="40%"></td>
+                <td width="25%"></td>
+              </tr>
+              <tr>
+                <th bgcolor="#ececec">City:</th>
+                <td></td>
+                <td></td>
+              </tr>
+
             </table>
           </td>
 
 
         </tr>
       </table>
+
+      <br /><br />
