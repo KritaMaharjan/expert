@@ -323,7 +323,8 @@ class TenantTable {
                 $table->boolean('payment')->default(0); // 0: active, 1: collection, 2: loss, 3: credit
                 $table->date('full_payment_date')->nullable(); // Date for full payment
                 $table->string('customer_payment_number', 60)->nullable();
-                $table->boolean('is_offer')->default(0); // 0: no (bill), 1: yes (offer)
+                $table->boolean('type')->default(0); // 0: bill, 1: offer
+                $table->boolean('is_offer')->default(0); // 0: no (bill), 1: yes (offer) - to indicate if it was previously an offer
                 $table->date('due_date');
                 // created_at, updated_at DATETIME
                 $table->timestamps();
