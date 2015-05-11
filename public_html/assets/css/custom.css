@@ -1325,6 +1325,19 @@ textarea.list-bx {
     display: none;
 }
 
+.breadcrumb.step-links li{
+    margin-bottom: 0;
+}
+.breadcrumb.step-links li.active a{
+    font-weight: bold;
+    color: #337ab7;
+}
+.breadcrumb.step-links a {
+    color: #777;
+}
+.breadcrumb.step-links a:hover {
+    color: #337ab7;
+}
 .case-won {
     position: absolute;
     background: #fff;
