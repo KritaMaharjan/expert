@@ -1,12 +1,7 @@
   <style>
-
     table, th, td {
       border-collapse: collapse;
   }
-  }
-    th{
-      font-weight: bold;
-    }
      th, td {
       padding: 10px;
       font-size: 9px;
@@ -19,153 +14,283 @@
      small{
       font-size: 8px;
      }
-     .border,.border-table2,.border-table2 th{border:1px solid #333;}
-     .border-table2 th
+     .border{border:1px solid #dbdbdb;}
      .border-block{border:1px solid #dbdbdb;line-height:2;}
      .fix-size{border:1px solid #dbdbdb;line-height:4;}
      .sm-box{line-height:1.5;}
      .footer{border-bottom: 3px solid #FFFF00;}
      .center{text-align: center;}
      .right{text-align: right;}
-     .border-table th,.border-table td{
-      border: 1px solid #333;
+     #purring-detail{
      }
-     
+
+     table#inv-tab th,table#inv-tab2 th{
+        border-bottom: 1px solid #333;
+     }
 
     
       </style>
 
-   
-      <table width="30%" cellpadding="4">        
+      <table id="purring-detail">
         <tr>
-          <td class="border"><small>To (enforcement authorities)</small><br /><br />
-                                Name of Sheriff<br />
-                                Street address<br />
-                                Postal code + Town                      
-          </td>
-        </tr>
-      </table>
-      <br /><br />
-
-      <table>
-        <tr>
-          <td align="center" bgcolor="#ececec"><h1><b>The claim for repayment / conciliation proceedings</b></h1></td>
+          <td colspan="3" class="center"><h1>Logo</h1></td>          
         </tr>
         <tr>
-          <td align="center">Enforcement Act §7-2 f and Dispute Act §6-3 (4)</td>
+          <td></td>
+          <td></td>
+          <td><h2>Purring</h2></td>                    
         </tr>
-      </table>
-
-      <br /><br />
-
-
-      <table>
-        <tr>
-          <td width="40%">
-            <table cellpadding="4" class="border-table">
-              <tr>
-                <th bgcolor="#ececec">
-                  <b>Customer number:</b>
-                </th>
-                <td>
-                  
-                </td>
-              </tr>
-            </table>
-          </td>
-          <td width="30%"></td>
-          <td width="30%">
-            <table cellpadding="4" class="border-table">
-              <tr>
-                <th bgcolor="#ececec">
-                  <b>Our ref.:</b>
-                </th>
-                <td></td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-       
-      </table>
-      <br /><br /><br />      
-
-      <table>
         <tr>
           <td>
-            <table cellpadding="4" class="border-table">
-              <tr>
-                <th width="20%" bgcolor="#ececec"><b>Plaintiff / complaints</b></th>
-                <td width="40%">User company name</td>
-                <th width="15%" align="right" rowspan="3" bgcolor="#ececec"><b>Org.nr</b></th>
-                <td width="25%">Company number</td>
-              </tr>
-              <tr>
-                <th width="20%" bgcolor="#ececec">Address:</th>
-                <td width="40%">Company address</td>
-                <td width="25%" rowspan="2"></td>
-              </tr>
-              <tr>
-                <th bgcolor="#ececec">City:</th>
-                <td>Postal code + Town</td>
-              </tr>
-
-              <tr>
-                <th width="20%" bgcolor="#ececec"><b>Counsel</b></th>
-                <td width="40%"></td>
-                <th width="15%" align="right" bgcolor="#ececec"><b>Tlf.nr</b></th>
-                <td width="25%">Company phone number</td>
-              </tr>
-              <tr>
-                <th width="20%" bgcolor="#ececec">Address:</th>
-                <td width="40%"></td>
-                <th width="15%" rowspan="2" align="right" bgcolor="#ececec"><b>Bank account</b></th>
-                <td width="25%">Bank account number</td>
-              </tr>
-              <tr>
-                <th bgcolor="#ececec">City:</th>
-                <td>Postal code + Town</td>
-                <td></td>
-              </tr>
-
-              <tr>
-                <th width="20%" bgcolor="#ececec"><b>Sued / complaint counterpart</b></th>
-                <td width="40%">Customer names</td>
-                <th width="15%" align="right" bgcolor="#ececec"><b>National identity</b></th>
-                <td width="25%">Birth date</td>
-              </tr>
-              <tr>
-                <th width="20%" bgcolor="#ececec">Address:</th>
-                <td width="40%">Customer street address</td>
-                <th width="15%" rowspan="2" align="right" bgcolor="#ececec"><b>Business registration</b></th>
-                <td width="25%" rowspan="2">Business number</td>
-              </tr>
-              <tr>
-                <th bgcolor="#ececec">City</th>
-                <td>Postal code + Town</td>
-              </tr>
-
-              <tr>
-                <th width="20%" bgcolor="#ececec"><b>Counsel</b></th>
-                <td width="40%"></td>
-                <th width="15%" align="right" rowspan="3" bgcolor="#ececec"><b></b></th>
-                <td width="25%"></td>
-              </tr>
-              <tr>
-                <th width="20%" bgcolor="#ececec">Address:</th>
-                <td width="40%"></td>
-                <td width="25%"></td>
-              </tr>
-              <tr>
-                <th bgcolor="#ececec">City:</th>
-                <td></td>
-                <td></td>
-              </tr>
-
-            </table>
+            <p>Firstname Lastname<br />
+            Street address + Number<br />
+            Postal code and town<br />
+            Country</p>
           </td>
+          <td>
+            <p>Tlf Telephone number<br />
+              Fax Fax number<br />
+              Epost Email address<br />
+              Org.nr. Company number<br />
+              Account number Account No.<br />
+              Swift - Swift<br />
+              IBAN - IBAN
+            </p>
+          </td>
+          <td>
+            <p>Note payment: Number<br />
+              Customer number Customer number<br />
+              Var ref. User sending out bills<br />
+              Invoice date Date produced<br />
+              Due date Due date<br />
+              Currency: Currency
+            </p>
+          </td>
+        </tr>
+      </table><br /><br /><br /><br />
+
+      <table id="inv-tab" cellpadding="4">
+        <thead>
+          <tr>
+            <th style="font-size:9px;"><b>Invoice number</b></th>
+            <th style="font-size:9px;"><b>Description</b></th>
+            <th style="font-size:9px;"><b>Invoice date</b></th>
+            <th style="font-size:9px;"><b>Due date</b></th>
+            <th style="font-size:9px;"><b>Total</b></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><small>Bill number</small></td>
+            <td><small>Purring</small></td>
+            <td><small>Original invoice date</small></td>
+            <td><small>Due date of bill</small></td>
+            <td><small>Original sum outstanding</small></td>
+          </tr>
+        </tbody>
+
+      </table>
+      <br /><br />
+        <table>
+          <tr>
+            <td width="50%"></td>
+            <td>
+              <table id="inv-tab2" cellpadding="4" width="100%" style="float:right">
+                <tr>
+                  <th style="font-size:9px;"><b>late fee</b></th>
+                  <th style="font-size:9px;"><b>Paid amounts</b></th>
+                  <th style="font-size:9px;"><b>Gross</b></th>
+                </tr>
+                <tr>
+                  <td><small>Late fee</small></td>
+                  <td><small>Paid amounts</small></td>
+                  <td><small>Gross</small></td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      <br /><br /><br />
+
+      <div>
+        <p style="font-size:8px"><b style="font-size:9px;">Terms</b><br />
+           Har du nylig betalt kan du use vekk ifra kravet 
+        </p>
+      </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
 
 
+      <table id="print">
+          <tr bgcolor="#FFFF00"><td colspan="4"><h1 style="text-indent: 5px;">Receipt</h1></td></tr>
+          <tr bgcolor="#FFFF00">
+              <th> <span style="text-indent: 10px;">Paid till account</span></th>
+              <th style="font-size:9px;">Amounts</th>
+              <th style="font-size:9px;">Payer account number</th>
+              <th style="font-size:9px;">Blankettnr</th>
+          </tr>
+      </table>
+      <table cellpadding="4">
+          <tr bgcolor="#FFFF00" >
+            <td> <span style="text-indent: 10px;">9879879879789</span></td>
+            <td><p class="border-block" bgcolor="#ffffff" >&nbsp; {{ $data['amount'] }}</p></td>
+            <td><p class="border-block" bgcolor="#ffffff"></p></td>
+            <td><p class="border-block" bgcolor="#ffffff"></p></td>
+          </tr>
+      </table>
+      <table cellpadding="5">
+          <tr>
+            <td colspan="2">
+             <table>
+              <tbody>
+               <tr><td colspan="2" style="font-size:9px;">Payment information</td></tr>
+               <br />
+               <tr>
+                <td style="text-indent:15px;">Kundenr:</td>
+                <td>4785007</td>
+               </tr>
+               <tr>
+                <td style="text-indent:15px;">Invoice:</td>
+                <td>{{ $data['invoice_number']}}</td>
+               </tr>
+               <tr>
+                <td style="text-indent:15px;">Invoice date:</td>
+                <td><?php echo date('d-m-y', strtotime($data['invoice_date'])) ?></td>
+               </tr>
+              </tbody>
+             </table>
+            </td>
+            <td colspan="2"><table cellpadding="0">
+              <tbody>
+               <tr>
+                <td style="font-size:13px;">GIRO</td>
+                <td style="font-size:11px;">Payment first</td>
+                <td class="border-block" bgcolor="#ffffff"></td>
+               </tr>
+              </tbody>
+             </table>
+            <table cellpadding="0">
+              <tr><td style="font-size:9px;">Signature by Giro</td>
+              </tr>
+            </table>
+            <table cellpadding="0">
+              <tr>
+                <td class="fix-size"></td>
+               </tr>
+            </table>
+            </td>
+          </tr>
+      </table>
+      <table cellpadding="6">
+        <tr>
+          <td><table><tr><td>Paid</td></tr></table>
+             <table class="border" cellpadding="2">
+              <tbody>
+               <tr>
+                <td style="text-indent:15px;">{{ $data['customer_details']['name'] }}</td>
+               </tr>
+               <tr>
+                <td style="text-indent:15px;">{{ $data['customer_details']['street_number'] or '' }} {{ $data['customer_details']['street_address'] or '' }}</td>
+               </tr>
+               <tr>
+                <td style="text-indent:15px;">{{ $data['customer_details']['town'] or '' }}</td>
+               </tr>
+               <tr>
+                <td style="text-indent:15px;">{{ $data['customer_details']['address'] or ''}}</td>
+               </tr>
+              </tbody>
+             </table>
+            </td>
+            <td><table><tr><td>Paid to</td></tr></table>
+                <table class="border" cellpadding="2">
+                  <tbody>
+                   <tr>
+                    <td style="text-indent:15px;">{{ $data['company_details']['company_name'] }}</td>
+                   </tr>
+                   <tr>
+                    <td style="text-indent:15px;">{{ $data['company_details']['postal_code'] }} {{ $data['company_details']['town'] }}</td>
+                    </tr>
+                   <tr>
+                    <td style="text-indent:15px;">{{ $data['company_details']['address'] }}</td>
+                    </tr>
+                   <tr>
+                    <td style="text-indent:15px;">{{ $data['company_details']['telephone'] }}</td>
+                    </tr>
+                   <tr>
+                    <td style="text-indent:15px;">Email: {{ $data['company_details']['service_email'] or 'Mangler informasjon, se instillinger' }}</td>
+                    </tr>
+                   <tr>
+                    <td style="text-indent:15px;">Website: {{ $data['company_details']['website'] or 'Mangler informasjon, se instillinger' }}</td>
+                    </tr>
+                  </tbody>
+                </table>
+            </td>
         </tr>
       </table>
+      <table cellpadding="3">
+        <tr bgcolor="#FFFF00">
+          <td width="75%">
+              <table>
+                <tr>
+                  <td width="50px">Charge account</td>
+                  <td width="30px"><p class="sm-box border" bgcolor="#ffffff"></p></td>
+                  <td width="30px"><p class="sm-box border" bgcolor="#ffffff"></p></td>
+                  <td width="30px"><p class="sm-box border" bgcolor="#ffffff"></p></td>
+                  <td width="30px"><p class="sm-box border" bgcolor="#ffffff"></p></td>
+                  <td width="30px"><p class="sm-box border" bgcolor="#ffffff"></p></td>
+                  <td width="30px"><p class="sm-box border" bgcolor="#ffffff"></p></td>
+                  <td width="30px"><p class="sm-box border" bgcolor="#ffffff"></p></td>
+                  <td width="30px"><p class="sm-box border" bgcolor="#ffffff"></p></td>
+                  <td width="30px"><p class="sm-box border" bgcolor="#ffffff"></p></td>
+                </tr>
+              </table>
+          </td>
 
-      <br /><br />
+          <td width="25%">
+            <table>
+              <tr>
+                <td width="120px">
+                    Receipt back
+                </td>
+                <td width="30px"><p class="sm-box border" bgcolor="#ffffff"></p></td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+      <table class="footer" cellpadding="6">
+        <tr>
+          <td width="30%" style="border-right:1px solid #ccc;">
+            <table><tr><td>Customer Payment Number</td></tr></table>
+            <table cellpadding="5"><tr style="text-align: right;">
+              <td>{{ $data['customer_payment_number'] }}</td>
+              </tr>
+            </table>
+          </td>
+          <td width="20%" style="border-right:1px solid #fff000;">
+            <table><tr><td>Crowns</td></tr></table>
+            <table  cellpadding="5"><tr style="text-align: right;">
+              <td>296</td>
+              </tr>
+            </table>
+          </td>
+          <td width="11%">
+            <table><tr><td>Ore</td></tr></table>
+            <table  cellpadding="5"><tr>
+              <td>56 &lt; 6 &gt;</td>
+              </tr>
+            </table>
+          </td>
+          <td width="39%">
+            <table><tr><td>To account</td></tr></table>
+            <table  cellpadding="5"><tr>
+              <td>60050625977</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
