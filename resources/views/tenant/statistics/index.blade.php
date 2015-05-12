@@ -118,7 +118,7 @@ Statistics
                    <h3  class="line-purple">Collection</h3> 
                    <div class="form-group">
                      <label>Number of cases:</label>
-                     <span>45</span>                   
+                     <span>{{ $collection_stats['total_cases'] }}</span>
                    </div>
                    <div class="form-group">
                      <label>Number of bills:</label>
@@ -131,29 +131,22 @@ Statistics
                    <div class="form-group">
                      <label>Purring:</label>
                      <div>
-                       <span>0 cases</span>                   
-                       <span>0,00 NOK</span>   
+                       <span>{{ $collection_stats['total_purring']['total'] }} cases</span>
+                       <span>{{ $collection_stats['total_purring']['amount'] }} NOK</span>
                      </div>                
                    </div>
                    <div class="form-group">
-                     <label>Inkassovarsel:</label>
+                     <label>Inkassovarsel :</label>
                      <div>
-                       <span>0 cases</span>                   
-                       <span>0,00 NOK</span>   
-                     </div>                
-                   </div>
-                   <div class="form-group">
-                     <label>Betalingsoppfordring :</label>
-                     <div>
-                       <span>0 cases</span>                   
-                       <span>0,00 NOK</span>   
+                       <span>{{ $collection_stats['total_inkassovarsel']['total'] }} cases</span>
+                       <span>{{ $collection_stats['total_inkassovarsel']['amount'] }} NOK</span>
                      </div>                
                    </div>
                    <div class="form-group">
                      <label>Betalingsoppfordring :</label>
                      <div>
-                       <span>0 cases</span>                   
-                       <span>0,00 NOK</span>   
+                       <span>{{ $collection_stats['total_betalingsappfording']['total'] }} cases</span>
+                       <span>{{ $collection_stats['total_betalingsappfording']['amount'] }} NOK</span>
                      </div>                
                    </div>   
                 </div>
@@ -188,6 +181,12 @@ Statistics
        </div> 
   </div>
 </div>
+
+<script type="text/javascript">
+    //var customerChart = <?php echo json_encode($customer_stats['customers_chart_data']) ?>;
+    //var customerChart = <?php echo json_encode($bill_stats['bill_chart_data']) ?>;
+    var customerChart = <?php echo json_encode($collection_stats['collection_chart_data']) ?>;
+</script>
 
 <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 {{ FB::js('assets/plugins/morris/morris.min.js') }}
