@@ -18,7 +18,7 @@ Collections
         <?php $step = Input::get('step', 'purring');?>
 
         <div class="box-header">
-            <ol class="breadcrumb step-links">
+            <ol class="breadcrumb step-links clearfix">
                 <li {{ $step == 'purring' ? 'class=active': '' }}><a href="{{tenant()->url('/collection?step=purring')}}">Purring</a></li>
                 <li {{ $step == 'inkassovarsel' ? 'class=active': '' }}><a href="{{tenant()->url('/collection?step=inkassovarsel')}}">Inkassovarsel</a></li>
                 <li {{ $step == 'betalingsappfording' ? 'class=active': '' }}><a href="{{tenant()->url('/collection?step=betalingsappfording')}}">Betalingsappfording</a></li>

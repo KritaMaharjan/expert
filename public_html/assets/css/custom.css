@@ -1347,3 +1347,48 @@ textarea.list-bx {
     margin: 0px 21px;
     display: none;
 }
+
+
+
+.breadcrumb.step-links {
+    padding: 15px 10px;
+}
+
+.breadcrumb.step-links li {
+    float: left;
+    margin-bottom: 0;
+}
+
+
+.breadcrumb.step-links > li + li::before {
+    color: #ccc;
+    content: "";
+    padding: 0;
+}
+.breadcrumb.step-links a {
+    border: 1px solid;
+    border-radius: 20px;
+    color: #777;
+    padding: 3px 20px;
+}
+.breadcrumb.step-links li:nth-child(2) a,.breadcrumb.step-links li:nth-child(3) a,.breadcrumb.step-links li:nth-child(4) a,.breadcrumb.step-links li:nth-child(5) a {
+    border-bottom-left-radius: 0;
+    border-left: medium none !important;
+    border-top-left-radius: 0;
+    margin-left: -20px;
+    padding-left: 30px;
+}
+.breadcrumb.step-links li.active:nth-child(2) a,.breadcrumb.step-links li.active:nth-child(3) a,.breadcrumb.step-links li.active:nth-child(4) a,.breadcrumb.step-links li.active:nth-child(5) a {
+    margin-left: -20px;
+    border: 1px solid!important;
+    border-radius: 20px; 
+    padding-left: 20px;
+}
+.breadcrumb.step-links li.active a {
+    background: none repeat scroll 0 0 #fff;
+    color: #337ab7;
+    font-weight: bold;
+}
+
+
+
