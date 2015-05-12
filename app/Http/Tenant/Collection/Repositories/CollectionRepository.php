@@ -167,7 +167,13 @@ class CollectionRepository {
             $bill_value['fee'] = $fee;
             $bill_value['step'] = $step_string;
             $bill_value['remaining'] += ($fee + $interest);
-            $bill_value['deadline'] = Collection::GRACE_PERIOD - Collection::deadline($bill_value['created_at']);;
+            $bill_value['deadline'] = Collection::GRACE_PERIOD - Collection::deadline($bill_value['created_at']);
+            if($step_string == 'court')
+            {
+                $date = CourtCase::where('bill_id', $bill_value['id'])->first()->payment_date;
+                $bill_value['payment_date'] = is_null($date) ?  '' : $date;
+                $bill_value['is_payment_date_exceed'] = is_null($date) ?  '' : $this->isExpired($date);
+            }
         }
 
 
@@ -180,6 +186,15 @@ class CollectionRepository {
         $json->data = $bill['data'];
 
         return $json;
+    }
+
+
+    function isExpired($date)
+    {
+        if(strtotime($date) < time())
+            return true;
+        else
+            return false;
     }
 
     /**
@@ -344,6 +359,13 @@ class CollectionRepository {
 
         $case['email'] = $emails;
         return (object) $case;
+    }
+
+    function registerPaymentDate(Bill $bill, $payment_date)
+    {
+        $case  = CourtCase::where('bill_id', $bill->id)->first();
+        $case->payment_date = $payment_date;
+        return $case->save();
     }
 
 }

@@ -89,7 +89,7 @@ $(function () {
         else {
             // Open this row
             row.child(format(row.data())).show();
-            $('.datepicker').datepicker({format: 'yyyy-mm-dd', endDate: new Date(), todayHighlight: true});
+            $('.datepickerGreater').datepicker({format: 'yyyy-mm-dd', startDate: new Date(), todayHighlight: true});
             tr.addClass('shown');
         }
     });
@@ -120,17 +120,27 @@ $(function () {
             '</li>';
         }
         else if(d.step == 'court') {
-            register_dispute = '<li><a class="register-case-won" href="#"> Register case won</a>' +
-            '<form  class="case-won" data-id="' + d.id + '" method="post" action="">' +
-            '<input type="hidden" name="_token" value="' + token + '">' +
-            '<div class="form-group"><label> Payment date </label><input name="payment_date" id="payment_date" type="text" class="datepicker form-control"></div>' +
-            '<div class="bottom-section clearfix">' +
-            '<button class="btn-small btn btn-primary">Save</button>' +
-            '</form>'+
-            ' </li>' +
-            '<li><a href="#" data-original-title="Register court date" data-target="#fb-modal" data-toggle="modal" data-url="' + appUrl + 'collection/case/register-date?bill=' + bill + '&token=' + token + '">Register court date </a> </li>' +
-            '<li><a href="#"  data-original-title="Case history" data-target="#fb-modal" data-toggle="modal" data-url="' + appUrl + 'collection/case/history?bill=' + bill + '&token=' + token + '">Case history</a></li>';
-            register_payment= '';
+            if(d.payment_date =='')
+            {
+                register_dispute = '<li><a class="register-case-won" href="#"> Register case won</a>' +
+                '<form  class="case-won" data-id="' + d.id + '" method="post" action="">' +
+                '<input type="hidden" name="_token" value="' + token + '">' +
+                '<div class="form-group"><label> Payment date </label><input name="payment_date" id="payment_date" type="text" class="datepickerGreater form-control"></div>' +
+                '<div class="bottom-section clearfix">' +
+                '<button class="btn-small btn btn-primary">Save</button>' +
+                '</form>'+
+                ' </li>' +
+                '<li><a href="#" data-original-title="Register court date" data-target="#fb-modal" data-toggle="modal" data-url="' + appUrl + 'collection/case/register-date?bill=' + bill + '&token=' + token + '">Register court date </a> </li>' ;
+                register_payment='';
+            }
+            else
+            {
+                if(d.is_payment_date_exceed == true)
+                {
+                    register_payment='<li><a href="' + appUrl + 'collection/gotostep/utlegg?bill=' + bill + '&token=' + token + '">Send directly to sheriff </a></li>';
+                }
+            }
+            register_dispute += '<li><a href="#"  data-original-title="Case history" data-target="#fb-modal" data-toggle="modal" data-url="' + appUrl + 'collection/case/history?bill=' + bill + '&token=' + token + '">Case history</a></li>';
             create_pdf= '';
         }
         else if(d.step == 'utlegg') {
@@ -188,7 +198,7 @@ $(function () {
         })
             .done(function (response) {
                 if (response.status == 1) {
-                    form.hide();
+                    form.parent().html('<a class="link-block" href="#">Register payment</a>');
                     $('#app-content .content').prepend(notify('success', 'Payment date added.'));
                     setTimeout(function () {
                         $('.callout').remove();
@@ -199,8 +209,8 @@ $(function () {
                     if ("errors" in response.data) {
 
                         $.each(response.data.errors, function (id, error) {
-                            $('.modal-body #' + id).parent().addClass('has-error')
-                            $('.modal-body #' + id).after('<label class="error error-' + id + '">' + error[0] + '<label>');
+                            form.find('#' + id).parent().addClass('has-error')
+                            form.find('#' + id).after('<label class="error error-' + id + '">' + error[0] + '<label>');
                         })
                     }
 
@@ -284,5 +294,6 @@ $(function () {
         }
 
     });
+
 
 });
