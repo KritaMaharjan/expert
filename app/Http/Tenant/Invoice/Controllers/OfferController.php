@@ -49,7 +49,7 @@ class OfferController extends BaseController {
     public function dataJson()
     {
         if ($this->request->ajax()) {
-            $select = ['id', 'invoice_number', 'customer_id', 'total', 'due_date', 'created_at', 'status'];
+            $select = ['b.invoice_number', 'b.customer_id', 'b.total', 'b.due_date', 'b.created_at', 'b.status'];
             $json = $this->bill->dataTablePagination($this->request, $select, true);
             echo json_encode($json, JSON_PRETTY_PRINT);
         } else {

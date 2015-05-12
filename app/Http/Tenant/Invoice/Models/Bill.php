@@ -218,6 +218,7 @@ class Bill extends Model {
 
         $products = array();
         array_push($select, 'c.name');
+        array_push($select, 'b.id');
 
         $query = $this->from('fb_bill as b')->select($select)->join('fb_customers as c', 'b.customer_id', '=', 'c.id');
 

@@ -9,6 +9,7 @@ class BillRepository {
 
     private $from;
     private $to;
+    private $chartData;
 
     /**
      * @return int
@@ -76,6 +77,107 @@ class BillRepository {
 
     /**
      * @return array
+     * Total number of bill activity each day
+     */
+    function getChartData() {
+
+        $totalBills = $this->getTotalChartData();
+        $chartData = array();
+        foreach($totalBills as $data) {
+            $chartData[] = ['x' => $data->date, 'value1' => $data->total, 'value2' => 0, 'value3' => 0];
+        }
+        $this->chartData = $chartData;
+        //$paymentsBills = $this->getAveragePaymentChartData();
+        //$this->addOrCreateArray($paymentsBills, 2);
+
+        //$pastDueBills = $this->getPastDueChartData();
+        $notCollectionBills = $this->getNotCollectionChartData();
+        $this->addOrCreateArray($notCollectionBills, 2);
+
+        $totalOffers = $this->getOffersChartData();
+        $this->addOrCreateArray($totalOffers, 3);
+
+        return ($this->chartData);
+    }
+
+    function addOrCreateArray($new_data, $index) {
+        foreach($new_data as $data) {
+            $exists = $this->in_assoc($data->date, $this->chartData);
+            if($exists  !== false)
+                $this->chartData[$exists]['value'.$index] = $data->total;
+            else {
+                $this->chartData[]['x'] = $data->date;
+                end($this->chartData);
+                //get key of the last array
+                $key = key($this->chartData);
+
+                for($i = 1; $i <= 3; $i++)
+                {
+                    if($i == $index)
+                        $this->chartData[$key]['value'.$i] = $data->total;
+                    else
+                        $this->chartData[$key]['value'.$i] = 0;
+                }
+            }
+        }
+    }
+
+    //check if a value exists in associative array
+    function in_assoc($needle, $array)
+    {
+        foreach ($array as $key => $val) {
+            if ($val['x'] == $needle) {
+                return $key;
+            }
+        }
+        return false;
+    }
+
+    /*
+     * total bills
+     */
+    function getTotalChartData() {
+        $chartDatas = Bill::select([
+            DB::raw('DATE(created_at) AS date'),
+            DB::raw('COUNT(id) AS total'),
+        ])
+            ->whereBetween('created_at', array($this->from, $this->to))
+            ->where('type', 0) // type bill
+            ->groupBy('date')
+            ->orderBy('date', 'ASC')
+            ->get();
+        return $chartDatas;
+    }
+
+    function getNotCollectionChartData() {
+        $chartDatas = Bill::select([
+            DB::raw('DATE(created_at) AS date'),
+            DB::raw('COUNT(id) AS total'),
+        ])
+            ->where('status', '!=', 1) // status not collection
+            ->where('type', 0)
+            ->whereBetween('created_at', array($this->from, $this->to))
+            ->groupBy('date')
+            ->orderBy('date', 'ASC')
+            ->get();
+        return $chartDatas;
+    }
+
+    function getOffersChartData() {
+        $chartDatas = Bill::select([
+            DB::raw('DATE(created_at) AS date'),
+            DB::raw('COUNT(id) AS total'),
+        ])
+            ->where('type', 1) // type offer
+            ->whereBetween('created_at', array($this->from, $this->to))
+            ->groupBy('date')
+            ->orderBy('date', 'ASC')
+            ->get();
+        return $chartDatas;
+    }
+
+    /**
+     * @return array
      * Statistics for Bill section
      */
     function getBillStats($filter = null) {
@@ -88,6 +190,7 @@ class BillRepository {
         }
 
         $stats = array();
+        $stats['bill_chart_data'] = $this->getChartData();
         $stats['total_bills'] = $this->getBillsTotal();
         $stats['total_billed'] = $this->getTotalBilled();
         $stats['total_paid'] = $this->getAmountPaid();

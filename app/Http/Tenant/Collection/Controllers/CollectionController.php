@@ -202,4 +202,25 @@ class CollectionController extends BaseController {
         }
         show_404();
     }
+
+    function casePaymentDate()
+    {
+        $bill = $this->request->route('bill');
+        $payment_date = $this->request->input('payment_date');
+        $validator = \Validator::make($this->request->all(),  ['payment_date' => 'required|date']);
+        if ($validator->fails())
+            return $this->fail(['errors' => $validator->getMessageBag()]);
+
+        if($bill = Bill::find($bill))
+        {
+            if($this->repo->registerPaymentDate($bill, $payment_date))
+            {
+              return $this->success(['message' => 'Payment date added.']);
+            }
+            return $this->faile(['error' => 'unable to add payment date.']);
+        }
+
+        return $this->fail(['error' => 'Invalid payment date.']);
+
+    }
 }
