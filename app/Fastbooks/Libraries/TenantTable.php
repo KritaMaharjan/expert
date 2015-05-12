@@ -141,7 +141,7 @@ class TenantTable {
     {
         if (!Schema::hasTable($this->tbl_profix . 'profile')) {
             Schema::create($this->tbl_profix . 'profile', function (Blueprint $table) {
-                // $table->increments('id'); // autoincrement value of a profile
+                $table->increments('id'); // autoincrement value of a profile
                 $table->integer('user_id')->unsign()->unique(); // user id from user table
                 $table->text('smtp')->nullable(); // serialized value of personal email setting
                 $table->integer('social_security_number')->nullable(); // social security number of a user

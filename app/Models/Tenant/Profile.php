@@ -21,6 +21,8 @@ class Profile extends Model {
 
     protected $fillable = ['user_id', 'smtp', 'social_security_number', 'phone', 'address', 'postcode', 'town', 'comment', 'tax_card', 'vacation_fund_percentage', 'photo'];
 
+    protected $primaryKey = "id";
+
 
     public function updateProfile($user_id, $details, $flieds)
     {
