@@ -104,7 +104,7 @@ class BaseController extends Controller {
         View::share('current_path', Request::path());
         View::share('domain', session()->get('domain'));
         View::share('current_lang', $this->current_lang);
-        View::share('current_accounting_year', $this->accountingYear());
+      //  View::share('current_accounting_year', $this->accountingYear());
 
         /* View::composer('tenant.layouts.partials.header', function ($view) {
              $view->with('company_logo', $this->getCompanyLogo());
