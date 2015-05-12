@@ -188,6 +188,7 @@ class Tenant {
 
         // add profile
         $profile = App\Models\Tenant\Profile::findOrNew($user->id);
+        $profile->user_id = $user->id;
         $profile->save();
 
         // update company name in setting table
