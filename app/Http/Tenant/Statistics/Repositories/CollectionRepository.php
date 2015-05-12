@@ -130,33 +130,10 @@ class CollectionRepository {
         return false;
     }
 
-    /*
-     * SELECT * FROM (SELECT b.id, max(c.step) as step, max(c.created_at) as ddate FROM `fb_bill` as b
-    join fb_collection as c on b.id = c.bill_id
-    group by b.id
-    having step = 1) as collector
-    WHERE ddate > '2015-05-06 05:07'
-    */
     function getCasesByStepChartData($step = '')
     {
-        $status = [BILL::STATUS_COLLECTION];
-        $select = [
-                    DB::raw('MAX(col.step) as step'),
-                    DB::raw('DATE(col.created_at) AS date'),
-                    DB::raw('COUNT(b.id) AS total')];
-
         $step_string = $step == '' ? 'purring' : $step;
         $step = Collection::getStep($step_string);
-
-        /*$query = Bill::select($select)->from('fb_bill as b')
-            ->leftJoin('fb_collection as col', 'col.bill_id', '=', 'b.id')
-            ->whereIn('b.status', $status)// get bills having collection status
-            ->where('b.is_offer', BILL::TYPE_BILL)// get only bill type
-            ->whereBetween('col.created_at', array($this->from, $this->to))
-            ->groupBy('b.id', 'date')
-            ->having('step', '=', $step)
-            ->orderBy('date', 'ASC')
-            ->get();*/
 
         $select = [
             'b.id',
@@ -177,11 +154,17 @@ class CollectionRepository {
         foreach ($allCollections as $collection) {
             $dates[] = $collection['ddate'];
         }
+        //count duplicate entries for a date
         $total_values = array_count_values($dates);
-        $unique_date = array_unique($dates);
-        dd(($total_values));
-        //$result = array('total' => count($query), 'amount' => float_format($query->sum('total')));
-        return $query;
+
+        $chartDatas = array();
+        foreach($total_values as $key => $val) {
+            //$chartData = array('date' => $key, 'total' => $val);
+            $chartData = array('date' => $key, 'total' => $val);
+            $chartData = (object)$chartData;
+            array_push($chartDatas, $chartData);
+        }
+        return $chartDatas;
     }
 
     /*
