@@ -54,7 +54,7 @@ Collections
 {{--Load JS--}}
 {{ FB::registerModal() }}
 {{FB::js('assets/js/collection/main.js')}}
-<link href="http://demo.mashbooks.app/assets/plugins/timepicker/bootstrap-timepicker.min.css" rel="stylesheet"/>
+<link href="{{tenant()->url('assets/plugins/timepicker/bootstrap-timepicker.min.css')}}" rel="stylesheet"/>
 {{FB::js('assets/plugins/timepicker/bootstrap-timepicker.min.js')}}
 
 

@@ -62,7 +62,7 @@ class Tenant {
     }
 
     /**
-     *
+     * initialized Tenant Database
      */
     function init()
     {
@@ -211,10 +211,10 @@ class Tenant {
         $this->folder('customer', true);
         $this->folder('attachment', true);
         $this->folder('invoice', true);
-        $this->folder('offer', true);
         $this->folder('user', true);
         $this->folder('temp', true);
         $this->folder('expense', true);
+        $this->folder('todo', true);
     }
 
     /**
@@ -336,7 +336,7 @@ class Tenant {
      */
     function rememberAppUrl()
     {
-        // i an using php native cookie function to set cookie i tried laravel functions but not working at this time
+        // i an using php native cookie function to set cookie. i tried laravel functions but not working at this time
         setcookie("APPURL", $this->domain, time() + (86400 * 2.5), '');
     }
 

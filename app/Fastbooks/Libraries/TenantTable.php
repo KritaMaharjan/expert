@@ -33,26 +33,43 @@ class TenantTable {
         $this->passwordReset();
         $this->profile();
         $this->customers();
+
+        //Emails
         $this->emails();
         $this->emailReceivers();
         $this->attachmentsEmail();
         $this->incomingEmails();
+
+        //Inventory
         $this->products();
         $this->inventory();
+        //Bill
         $this->bill();
         $this->billProducts();
         $this->billPayment();
+
+        //Tasks
         $this->tasks();
-        $this->vacation();
-        $this->payroll();
-        $this->suppliers();
+
+        //Expense
         $this->expenses();
         $this->expenseProducts();
         $this->expensePayment();
+        $this->suppliers();
+
+        //Accounting
         $this->accountCodes();
         $this->transactions();
         $this->entries();
         $this->vatPeriod();
+        $this->vacation();
+        $this->payroll();
+
+        //Collection
+        $this->collection();
+        $this->courtCase();
+
+
     }
 
     /**
@@ -581,7 +598,7 @@ class TenantTable {
                 $table->decimal('amount', 11, 2); // Transaction amount
                 $table->float('vat')->nullable(); // Transaction vat
                 $table->tinyInteger('type'); // 1: Bill , 2: Expenses
-                $table->integer('type_id'); // Transaction amount
+                $table->integer('type_id'); // Bill or expense id
                 // created_at, updated_at DATETIME
                 $table->timestamps();
             });
@@ -599,7 +616,7 @@ class TenantTable {
                 $table->increments('id'); // autoincrement value of a vacation
                 $table->integer('transaction_id'); //transaction id from account code table
                 $table->integer('account_code'); //account code from config
-                $table->integer('subledger'); // sub-ledger
+                $table->string('subledger',10); // sub-ledger
                 $table->decimal('amount', 11, 2); // Transaction amount
                 $table->text('description'); // transaction description
                 $table->tinyInteger('type'); // 1: Debit , 2: credit
@@ -613,7 +630,7 @@ class TenantTable {
     private function vatPeriod()
     {
         if (!Schema::hasTable($this->tbl_profix . 'vat_period')) {
-            Schema::create($this->tbl_profix . 'entries', function ($table) {
+            Schema::create($this->tbl_profix . 'vat_period', function ($table) {
                 $table->increments('id'); // autoincrement value
                 $table->integer('period'); // period
                 $table->integer('year'); // account year
@@ -621,6 +638,35 @@ class TenantTable {
                 $table->date('sent_date'); // Sent date
                 $table->date('paid_date'); // Paid date
                 // created_at, updated_at DATETIME
+                $table->timestamps();
+            });
+        }
+    }
+
+
+    function collection()
+    {
+        if (!Schema::hasTable($this->tbl_profix . 'collection')) {
+            Schema::create($this->tbl_profix . 'collection', function ($table) {
+                $table->increments('id'); // autoincrement value
+                $table->integer('bill_id')->index(); // Bill ID
+                $table->tinyInteger('step')->index(); // Bill ID
+                $table->timestamps('created_at'); // created date
+            });
+        }
+    }
+
+
+    function courtCase()
+    {
+        if (!Schema::hasTable($this->tbl_profix . 'court_case')) {
+            Schema::create($this->tbl_profix . 'court_case', function ($table) {
+                $table->increments('id'); // autoincrement value
+                $table->integer('bill_id')->index(); // Bill ID
+                $table->text('pdf'); // Bill ID
+                $table->text('information')->nullable(); // Bill ID
+                $table->text('email'); // Bill ID
+                $table->date('payment_date')->nullable(); // Bill ID
                 $table->timestamps();
             });
         }

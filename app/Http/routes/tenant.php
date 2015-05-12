@@ -209,6 +209,7 @@ Route::group($group_auth, function () {
         post('collection/court-case/create', [ 'uses' => 'CollectionController@createCourtCase']);
         get('collection/case/register-date', [ 'uses' => 'CollectionController@registerDate']);
         get('collection/case/history', [ 'uses' => 'CollectionController@caseHistory']);
+        post('collection/case/{bill}/payment-date', [ 'uses' => 'CollectionController@casePaymentDate']);
 
 
 
