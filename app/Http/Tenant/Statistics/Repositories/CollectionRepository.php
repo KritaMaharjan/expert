@@ -43,11 +43,6 @@ class CollectionRepository {
     }
 
     /**
-     * SELECT * FROM (SELECT b.id, max(c.step) as step, max(c.created_at) as ddate FROM `fb_bill` as b
-    join fb_collection as c on b.id = c.bill_id
-    group by b.id
-    having step = 1) as collector
-    WHERE ddate > '2015-05-06 05:07'
      *
      * @return int
      * Total cases in particular stage
@@ -135,6 +130,13 @@ class CollectionRepository {
         return false;
     }
 
+    /*
+     * SELECT * FROM (SELECT b.id, max(c.step) as step, max(c.created_at) as ddate FROM `fb_bill` as b
+    join fb_collection as c on b.id = c.bill_id
+    group by b.id
+    having step = 1) as collector
+    WHERE ddate > '2015-05-06 05:07'
+    */
     function getCasesByStepChartData($step = '')
     {
         $status = [BILL::STATUS_COLLECTION];
@@ -155,19 +157,22 @@ class CollectionRepository {
             ->having('step', '=', $step)
             ->orderBy('date', 'ASC')
             ->get();*/
-        $query = DB::raw('select count(*) from (SELECT b.id, max(c.step) as step, max(c.created_at) as ddate FROM `fb_bill` as b
-join fb_collection as c on b.id = c.bill_id
-group by b.id
-having step = 1) as counter');
-        dd($query);
 
-        $query = DB::select([DB::raw('count(*)')])
-                    ->from(DB::raw('SELECT b.id, max(c.step) as step, max(c.created_at) as ddate FROM `fb_bill` as b
-join fb_collection as c on b.id = c.bill_id
-group by b.id
-having step = 1'));
+        $select = [
+            'b.id',
+            DB::raw('MAX(c.step) as step'),
+            DB::raw('MAX(c.created_at) AS ddate')];
 
-        dd($query);
+        $query = Bill::select($select)
+                    ->from('fb_bill as b')
+                    ->join('fb_collection as c', 'c.bill_id', '=', 'b.id')
+                    ->where('b.is_offer', BILL::TYPE_BILL)// get only bill type
+                    ->whereBetween('c.created_at', array($this->from, $this->to))
+                    ->groupBy('b.id')
+                    ->having('step', '=', $step)
+                    ->get()
+                    ->toArray();
+        dd(($query));
         //$result = array('total' => count($query), 'amount' => float_format($query->sum('total')));
         return $query;
     }
