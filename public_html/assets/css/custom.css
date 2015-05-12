@@ -1380,14 +1380,17 @@ textarea.list-bx {
 }
 .breadcrumb.step-links li.active:nth-child(2) a,.breadcrumb.step-links li.active:nth-child(3) a,.breadcrumb.step-links li.active:nth-child(4) a,.breadcrumb.step-links li.active:nth-child(5) a {
     margin-left: -20px;
-    border: 1px solid!important;
+    border: 1px solid #337ab7!important;
     border-radius: 20px; 
     padding-left: 20px;
+    background: none repeat scroll 0 0 #337ab7;
+    color: #fff;
 }
 .breadcrumb.step-links li.active a {
-    background: none repeat scroll 0 0 #fff;
-    color: #337ab7;
     font-weight: bold;
+    background: none repeat scroll 0 0 #337ab7;
+    border: 1px solid #337ab7;
+    color: #fff;
 }
 
 
