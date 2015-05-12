@@ -2,6 +2,7 @@
 namespace App\Fastbooks\Libraries;
 
 use App;
+use App\Models\Tenant\Profile;
 use DB;
 use Illuminate\Auth\Guard;
 use Illuminate\Http\Request;
@@ -187,9 +188,8 @@ class Tenant {
         $user->save();
 
         // add profile
-        $profile = App\Models\Tenant\Profile::findOrNew($user->id);
-        $profile->user_id = $user->id;
-        $profile->save();
+        $profile = ['user_id' => $user->id];
+        Profile::create($profile);
 
         // update company name in setting table
         $setting = $this->tenantSettings->firstOrNew(['name' => 'company']);
