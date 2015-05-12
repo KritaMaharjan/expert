@@ -161,9 +161,9 @@ class CollectionRepository {
         $select = [
             'b.id',
             DB::raw('MAX(c.step) as step'),
-            DB::raw('MAX(c.created_at) AS ddate')];
+            DB::raw('DATE(MAX(c.created_at)) AS ddate')];
 
-        $query = Bill::select($select)
+        $allCollections = Bill::select($select)
                     ->from('fb_bill as b')
                     ->join('fb_collection as c', 'c.bill_id', '=', 'b.id')
                     ->where('b.is_offer', BILL::TYPE_BILL)// get only bill type
@@ -172,7 +172,14 @@ class CollectionRepository {
                     ->having('step', '=', $step)
                     ->get()
                     ->toArray();
-        dd(($query));
+
+        $dates = array();
+        foreach ($allCollections as $collection) {
+            $dates[] = $collection['ddate'];
+        }
+        $total_values = array_count_values($dates);
+        $unique_date = array_unique($dates);
+        dd(($total_values));
         //$result = array('total' => count($query), 'amount' => float_format($query->sum('total')));
         return $query;
     }
