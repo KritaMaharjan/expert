@@ -3,6 +3,7 @@
 namespace App\Http\Tenant\Invoice\Models;
 
 use App\Http\Tenant\Accounting\Libraries\Record;
+use App\Http\Tenant\Collection\Models\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Tenant\Customer;
@@ -77,7 +78,7 @@ class Bill extends Model {
                 'currency'       => $request->input('currency'),
                 'vat'            => $vat,
                 'is_offer'       => ($offer == true) ? self::TYPE_OFFER : self::TYPE_BILL,
-                'type'       => ($offer == true) ? self::TYPE_OFFER : self::TYPE_BILL,
+                'type'           => ($offer == true) ? self::TYPE_OFFER : self::TYPE_BILL,
             ]);
 
             $products = $request->input('product');
@@ -272,16 +273,14 @@ class Bill extends Model {
 
     function getStatus($status, $payment)
     {
-        if ($status == static::STATUS_ACTIVE)
-        {
+        if ($status == static::STATUS_ACTIVE) {
             if ($payment == static::STATUS_PAID)
                 $status = '<span class="label label-success">Paid</span>';
             elseif ($payment == static::STATUS_PARTIAL_PAID)
                 $status = '<span class="label label-warning">Partially Paid</span>';
             elseif ($payment == static::STATUS_UNPAID)
                 $status = '<span class="label label-danger">Unpaid</span>';
-        }
-        elseif ($status == static::STATUS_COLLECTION)
+        } elseif ($status == static::STATUS_COLLECTION)
             $status = '<span class="label label-warning">Collection</span>';
         elseif ($status == static::STATUS_LOSS)
             $status = '<span class="label label-danger">Loss</span>';
@@ -376,14 +375,15 @@ class Bill extends Model {
     function creditBill($id)
     {
         $bill = Bill::find($id);
-        if(!empty($bill))
-        {
+        if (!empty($bill)) {
             $bill->status = static::STATUS_CREDITED;;
             $bill->save();
             $customer = Customer::find($bill->customer_id);
             Record::billCredit($bill, $customer, $bill->remaining, $bill->vat);
+
             return true;
         }
+
         return false;
     }
 
@@ -453,4 +453,5 @@ class Bill extends Model {
 
         return $json;
     }
+
 }

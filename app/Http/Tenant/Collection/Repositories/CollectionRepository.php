@@ -368,4 +368,26 @@ class CollectionRepository {
         return $case->save();
     }
 
+    function getBillRemainingAmount(Bill $bill)
+    {
+        $step = $this->getStepByBill($bill->id);
+        return  $this->collection->totalCharge($bill->due_date, $bill->total, $step) +  $bill->remaining;
+    }
+
+    function getStepByBill($bill_id)
+    {
+        $status = [BILL::STATUS_COLLECTION];
+        $select = [DB::raw('MAX(col.step) as step')];
+
+        $row = $this->bill->select($select)->from('fb_bill as b')
+            ->leftJoin('fb_collection as col', 'col.bill_id', '=', 'b.id')
+            ->whereIn('b.status', $status)// get bills having collection status
+            ->where('b.payment', '!=', BILL::STATUS_PAID)// get only unpaid bill
+            ->where('b.is_offer', BILL::TYPE_BILL)// get only bill type
+            ->where('b.id', $bill_id)
+            ->groupBy('b.id')
+            ->first();
+        return $row->step;
+    }
+
 }

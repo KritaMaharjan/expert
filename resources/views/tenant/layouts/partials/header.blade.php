@@ -21,7 +21,7 @@
               <li><a href="<?php echo Request::url().'/?lang=en';?>" class="flag_english"><i class="fa fa-flag-en"></i>English</a></li>
             </ul>
           </li>
-          <li class="dropdown messages-menu">
+          <!-- <li class="dropdown messages-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-envelope-o"></i>
               <span class="label label-success">4</span>
@@ -46,7 +46,7 @@
               </li>
               <li class="footer"><a href="#">See All Messages</a></li>
             </ul>
-          </li>
+          </li> -->
 
           <li class="dropdown user user-menu">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">

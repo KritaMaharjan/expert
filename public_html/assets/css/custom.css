@@ -1351,7 +1351,8 @@ textarea.list-bx {
 
 
 .breadcrumb.step-links {
-    padding: 15px 10px;
+  padding: 20px 0 0;
+  background: none;
 }
 
 .breadcrumb.step-links li {
@@ -1366,16 +1367,16 @@ textarea.list-bx {
     padding: 0;
 }
 .breadcrumb.step-links a {
-    border: 1px solid;
+    border: 1px solid #D5DFE7;
     border-radius: 20px;
-    color: #777;
-    padding: 3px 20px;
+    color: #6F7B86;
+    padding: 7px 30px;
 }
 .breadcrumb.step-links li:nth-child(2) a,.breadcrumb.step-links li:nth-child(3) a,.breadcrumb.step-links li:nth-child(4) a,.breadcrumb.step-links li:nth-child(5) a {
     border-bottom-left-radius: 0;
     border-left: medium none !important;
     border-top-left-radius: 0;
-    margin-left: -20px;
+    margin-left: -12px;
     padding-left: 30px;
 }
 .breadcrumb.step-links li.active:nth-child(2) a,.breadcrumb.step-links li.active:nth-child(3) a,.breadcrumb.step-links li.active:nth-child(4) a,.breadcrumb.step-links li.active:nth-child(5) a {
