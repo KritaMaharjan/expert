@@ -253,7 +253,7 @@ class AccountRepository {
      * Statistics for Accounts section
      */
     function getAccountStats($filter = null) {
-        if($filter != null) {
+        if($filter != null && $filter['start_date'] != '' && $filter['end_date'] != '') {
             $this->from = $filter['start_date'];
             $this->to = $filter['end_date'];
         } else {

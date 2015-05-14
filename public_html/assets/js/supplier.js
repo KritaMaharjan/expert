@@ -154,9 +154,7 @@ $(function () {
         e.preventDefault();
         var form = $(this);
         var formAction = form.attr('action');
-
         var formData = new FormData(form[0]);
-
         var requestType = form.find('.supplier-submit').val();
         form.find('.supplier-submit').val('loading...');
         form.find('.supplier-submit').attr('disabled', true);

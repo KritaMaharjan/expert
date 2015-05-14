@@ -29,6 +29,8 @@ Statistics
                   <div class="box-body chart-box">
 
                   </div><!-- /.box-body -->
+
+                  <div class="processing" style="display: none"></div>
                 </div><!-- /.box -->
 
               </div>
@@ -182,12 +184,6 @@ Statistics
   </div>
 </div>
 
-<script type="text/javascript">
-    //var customerChart = <?php echo json_encode($customer_stats['customers_chart_data']) ?>;
-    //var customerChart = <?php echo json_encode($bill_stats['bill_chart_data']) ?>;
-    //var customerChart = <?php echo json_encode($collection_stats['collection_chart_data']) ?>;
-    var customerChart = <?php echo json_encode($account_stats['accounts_chart_data']) ?>;
-</script>
 
 <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 {{ FB::js('assets/plugins/morris/morris.min.js') }}

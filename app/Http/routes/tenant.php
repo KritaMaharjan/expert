@@ -72,6 +72,7 @@ Route::group($group_auth, function () {
     // Registered by Krita
     Route::group(['namespace' => 'Tenant\Statistics\Controllers'], function () {
         get('statistics', ['as' => 'tenant.statistics', 'uses' => 'StatisticsController@index']);
+        get('statistics/graph', ['as' => 'tenant.statistics.graph', 'uses' => 'StatisticsController@graph']);
     });
 
     // Registered by Krita
@@ -211,15 +212,10 @@ Route::group($group_auth, function () {
         get('collection/case/history', [ 'uses' => 'CollectionController@caseHistory']);
         post('collection/case/{bill}/payment-date', [ 'uses' => 'CollectionController@casePaymentDate']);
 
-
-
         get('collection/{step}/pdf', ['as' => 'tenant.collection.pdf', 'uses' => 'CollectionController@generatePdf']);
         get('collection/gotostep/{step}', ['as' => 'tenant.collection.goto', 'uses' => 'CollectionController@goToStep']);
         get('collection/dispute', ['as' => 'tenant.collection.dispute', 'uses' => 'CollectionController@disputeBill']);
         get('collection/cancel', ['as' => 'tenant.collection.cancel', 'uses' => 'CollectionController@cancel']);
-
-
-
 
         get('collection/purring', ['as' => 'tenant.collection.purring', 'uses' => 'CollectionController@purring']);
         get('collection/payment', ['as' => 'tenant.collection.payment', 'uses' => 'CollectionController@payment']);

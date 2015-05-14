@@ -31,6 +31,31 @@ $('#date-to-date-pickers')
 $(document).on('click', '.graph-heading', function (e) {
     e.preventDefault();
     var selected = $(this).html();
+    var date_from = $('#date-frm-date-pickers').val();
+    var date_to = $('#date-to-date-pickers').val();
+    var doing = false;
+    $('.processing').show();
 
+    if (doing == false) {
+        doing = true;
+
+        $.ajax({
+            url: appUrl + 'statistics/graph',
+            type: 'GET',
+            dataType: 'json',
+            data : {selected: selected, start_date: date_from, end_date: date_to}
+        })
+            .done(function (response) {
+                if (response.status === 1) {
+                    $('.chart-box').html(response.data.template);
+                }
+            })
+            .fail(function () {
+                alert('Something went wrong! Please try again later.');
+            })
+            .always(function () {
+                $('.processing').hide();
+                doing = false;
+            });
+    }
 });
-//chart-box

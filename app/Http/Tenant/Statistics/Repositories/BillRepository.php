@@ -181,7 +181,7 @@ class BillRepository {
      * Statistics for Bill section
      */
     function getBillStats($filter = null) {
-        if($filter != null) {
+        if($filter != null && $filter['start_date'] != '' && $filter['end_date'] != '') {
             $this->from = $filter['start_date'];
             $this->to = $filter['end_date'];
         } else {
