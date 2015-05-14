@@ -26,8 +26,8 @@ Statistics
                 <!-- LINE CHART -->
                 <div class="box box-solid">
                   
-                  <div class="box-body chart-responsive">
-                    <div class="chart" id="line-chart" style="height: 300px;"></div>
+                  <div class="box-body chart-box">
+
                   </div><!-- /.box-body -->
                 </div><!-- /.box -->
 
@@ -69,7 +69,7 @@ Statistics
             <div class="col-md-12">
               <div class="stat-info">
                 <div class="col-md-3 ">
-                   <h3 class="line-yellow">Customers</h3> 
+                   <h3 class="line-yellow graph-heading">Customers</h3>
                    <div class="form-group">
                      <label>Customer total:</label>
                      <span>{{ $customer_stats['total_customers'] }}</span>
@@ -84,7 +84,7 @@ Statistics
                    </div>   
                 </div>
                 <div class="col-md-3">
-                    <h3  class="line-green">Billing</h3> 
+                    <h3 class="line-green graph-heading">Billing</h3>
                     <div class="form-group">
                       <label>Number of bills:</label>
                       <span>{{ $bill_stats['total_bills'] }}</span>
@@ -115,7 +115,7 @@ Statistics
                   </div>  
                 </div>
                 <div class="col-md-3">
-                   <h3  class="line-purple">Collection</h3> 
+                   <h3 class="line-purple graph-heading">Collection</h3>
                    <div class="form-group">
                      <label>Number of cases:</label>
                      <span>{{ $collection_stats['total_cases'] }}</span>
@@ -151,7 +151,7 @@ Statistics
                    </div>   
                 </div>
                 <div class="col-md-3">
-                    <h3  class="line-red">Accounts</h3>
+                    <h3 class="line-red graph-heading">Accounts</h3>
                     <div class="form-group">
                      <label>Income:</label>
                      <span>{{ $account_stats['total_income'] }} NOK</span>
@@ -185,7 +185,8 @@ Statistics
 <script type="text/javascript">
     //var customerChart = <?php echo json_encode($customer_stats['customers_chart_data']) ?>;
     //var customerChart = <?php echo json_encode($bill_stats['bill_chart_data']) ?>;
-    var customerChart = <?php echo json_encode($collection_stats['collection_chart_data']) ?>;
+    //var customerChart = <?php echo json_encode($collection_stats['collection_chart_data']) ?>;
+    var customerChart = <?php echo json_encode($account_stats['accounts_chart_data']) ?>;
 </script>
 
 <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
