@@ -7,7 +7,7 @@ Payroll Report
 
 @section('breadcrumb')
     @parent
-    <li><i class="fa fa-circle-o"></i> Payroll Report</li>
+    <li>Payroll Report</li>
 @stop
 
 @section('content')

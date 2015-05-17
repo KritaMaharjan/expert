@@ -5,8 +5,8 @@
 
 @section('breadcrumb')
     @parent
-    <li><a data-push="true" href="{{tenant_route('tenant.invoice.index')}}"><i class="fa fa-cog"></i> Invoice</a></li>
-    <li><i class="fa fa-money"></i> {{ ucfirst($type) }}</li>
+    <li><a data-push="true" href="{{tenant_route('tenant.invoice.index')}}">Invoice</a></li>
+    <li>{{ ucfirst($type) }}</li>
 @stop
 
 @section('content')

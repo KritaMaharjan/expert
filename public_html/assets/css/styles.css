@@ -3060,3 +3060,14 @@ table.text-center, table.text-center td, table.text-center th {
     float: right;
     width: 60%;
 }
+
+.ui-widget-content {
+    background: none repeat scroll 0 0 #fff!important;
+    border: 1px solid #dddddd;
+    color: #333333;
+}
+
+.ui-menu-item.ui-state-focus{
+    background: #3875d7!important;
+    color: #fff!important;
+}

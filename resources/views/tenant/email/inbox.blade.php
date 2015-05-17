@@ -7,7 +7,7 @@ Email
 
 @section('breadcrumb')
     @parent
-    <li><i class="fa fa-cog"></i> <a href="{{tenant_route('tenant.profile')}}">Email</a></li>
+    <li><a href="{{tenant_route('tenant.profile')}}">Email</a></li>
 @stop
 
 @section('content')

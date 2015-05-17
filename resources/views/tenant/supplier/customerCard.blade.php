@@ -11,8 +11,8 @@ Customers
 
 @section('breadcrumb')
     @parent
-    <li><i class="fa fa-cog"></i> Customers</li>
-    <li><i class="fa fa-cog"></i> Customer Card</li>
+    <li>Customers</li>
+    <li>Customer Card</li>
 @stop
 
 
