@@ -1375,7 +1375,7 @@ textarea.list-bx {
 }
 .breadcrumb.step-links li:nth-child(2) a,.breadcrumb.step-links li:nth-child(3) a,.breadcrumb.step-links li:nth-child(4) a,.breadcrumb.step-links li:nth-child(5) a {
     border-bottom-left-radius: 0;
-    border-left: medium none !important;
+    border-left: medium none;
     border-top-left-radius: 0;
     margin-left: -12px;
     padding-left: 30px;

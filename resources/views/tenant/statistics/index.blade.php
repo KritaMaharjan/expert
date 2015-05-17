@@ -29,7 +29,7 @@ Statistics
                   <div class="box-body chart-box">
 
                   </div><!-- /.box-body -->
-                  <div class="processing" style="display: none"><i class="fa fa-spinner"></i></div>
+                  <div class="processing" style="display: none"><img src="{{ asset('assets/images/loader.gif')}}"></div>
                   <div class="info-graph">Click on the titles below to view the graph.</div>
                 </div><!-- /.box -->
 
