@@ -30,6 +30,7 @@ $('#date-to-date-pickers')
 //change graph on click
 $(document).on('click', '.graph-heading', function (e) {
     e.preventDefault();
+    var $this = $(this);
     var selected = $(this).html();
     var date_from = $('#date-frm-date-pickers').val();
     var date_to = $('#date-to-date-pickers').val();
@@ -48,6 +49,9 @@ $(document).on('click', '.graph-heading', function (e) {
             .done(function (response) {
                 if (response.status === 1) {
                     $('.chart-box').html(response.data.template);
+                    // make heading active
+                    $('.graph-heading').removeClass('.active');
+                    $this.addClass('.active');
                 }
             })
             .fail(function () {

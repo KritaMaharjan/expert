@@ -42,18 +42,17 @@
         </tr>
         <tr>
           <td>
-            <p>Firstname Lastname<br />
-            Street address + Number<br />
-            Postal code and town<br />
-            Country</p>
+            <p>{{ $data['customer'] }}<br />
+            {{ $data['customer_details']['street_name'] }} {{ $data['customer_details']['street_number'] }}<br />
+            {{ $data['customer_details']['postcode'] }} {{ $data['customer_details']['town'] }}<br />
+            {{--Country--}}</p>
           </td>
           <td>
-            <p>Tlf Telephone number<br />
-              Fax Fax number<br />
-              Epost Email address<br />
-              Org.nr. Company number<br />
-              Account number Account No.<br />
-              Swift - Swift<br />
+            <p>{{ $data['company_details']['telephone'] }}<br />
+              {{ $data['company_details']['service_email'] }}<br />
+              {{ $data['company_details']['company_number'] }}<br />
+              {{ $data['company_details']['account_no'] }}<br />
+              Swift - {{ $data['company_details']['swift_'] }}<br />
               IBAN - IBAN
             </p>
           </td>
