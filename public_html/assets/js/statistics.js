@@ -52,6 +52,7 @@ $(document).on('click', '.graph-heading', function (e) {
                     // make heading active
                     $('.graph-heading').removeClass('active');
                     $this.addClass('active');
+                    $('.info-graph').hide();
                 }
             })
             .fail(function () {

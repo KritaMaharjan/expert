@@ -1231,6 +1231,7 @@ img.bill_image {max-width: 100%}
 }
 .stat-info h3{
     padding-bottom: 10px;
+    cursor: pointer;
     border-bottom: 1px solid #dbdbdb;
 }
 .stat-info h3.line-yellow{
@@ -1374,7 +1375,7 @@ textarea.list-bx {
 }
 .breadcrumb.step-links li:nth-child(2) a,.breadcrumb.step-links li:nth-child(3) a,.breadcrumb.step-links li:nth-child(4) a,.breadcrumb.step-links li:nth-child(5) a {
     border-bottom-left-radius: 0;
-    border-left: medium none !important;
+    border-left: medium none;
     border-top-left-radius: 0;
     margin-left: -12px;
     padding-left: 30px;
@@ -1395,4 +1396,27 @@ textarea.list-bx {
 }
 
 
+.processing{
+    display: block;
+    left: 50%;
+    position: absolute;
+    top: 42%;
+    color: #ccc;
+}
+.box-body.chart-box{
+    min-height: 340px;
+    border: 1px solid #ddd;
+}
 
+.info-graph {
+    color: #ccc;
+    font-size: 30px;
+    position: absolute;
+    text-align: center;
+    top: 41%;
+    width: 100%;
+}
+
+.graph-heading.active {
+    color: #00a65a;
+}

@@ -5,7 +5,7 @@ Tasks
 
 @section('breadcrumb')
     @parent
-    <li><a data-push="true" href="{{tenant_route('tenant.invoice.index')}}"><i class="fa fa-tasks"></i> Tasks</a></li>
+    <li><a data-push="true" href="{{tenant_route('tenant.invoice.index')}}">Tasks</a></li>
 @stop
 
 @section('content')

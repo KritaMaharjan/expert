@@ -29,8 +29,8 @@ Statistics
                   <div class="box-body chart-box">
 
                   </div><!-- /.box-body -->
-
-                  <div class="processing" style="display: none"></div>
+                  <div class="processing" style="display: none"><img src="{{ asset('assets/images/loader.gif')}}"></div>
+                  <div class="info-graph">Click on the titles below to view the graph.</div>
                 </div><!-- /.box -->
 
               </div>
@@ -71,7 +71,7 @@ Statistics
             <div class="col-md-12">
               <div class="stat-info">
                 <div class="col-md-3 ">
-                   <h3 class="line-yellow graph-heading">Customers</h3>
+                   <h3 class="graph-heading">Customers</h3>
                    <div class="form-group">
                      <label>Customer total:</label>
                      <span>{{ $customer_stats['total_customers'] }}</span>
@@ -86,7 +86,7 @@ Statistics
                    </div>   
                 </div>
                 <div class="col-md-3">
-                    <h3 class="line-green graph-heading">Billing</h3>
+                    <h3 class="graph-heading">Billing</h3>
                     <div class="form-group">
                       <label>Number of bills:</label>
                       <span>{{ $bill_stats['total_bills'] }}</span>
@@ -117,7 +117,7 @@ Statistics
                   </div>  
                 </div>
                 <div class="col-md-3">
-                   <h3 class="line-purple graph-heading">Collection</h3>
+                   <h3 class="graph-heading">Collection</h3>
                    <div class="form-group">
                      <label>Number of cases:</label>
                      <span>{{ $collection_stats['total_cases'] }}</span>
@@ -153,7 +153,7 @@ Statistics
                    </div>   
                 </div>
                 <div class="col-md-3">
-                    <h3 class="line-red graph-heading">Accounts</h3>
+                    <h3 class="graph-heading">Accounts</h3>
                     <div class="form-group">
                      <label>Income:</label>
                      <span>{{ $account_stats['total_income'] }} NOK</span>

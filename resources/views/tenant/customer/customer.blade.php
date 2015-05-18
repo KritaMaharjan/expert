@@ -6,7 +6,7 @@ Customers
 
 @section('breadcrumb')
     @parent
-    <li><i class="fa fa-cog"></i> Customers</li>
+    <li>Customers</li>
 @stop
 
 
