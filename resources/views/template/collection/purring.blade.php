@@ -28,17 +28,17 @@
         border-bottom: 1px solid #333;
      }
 
-    
+
       </style>
 
       <table id="purring-detail">
         <tr>
-          <td colspan="3" class="center"><h1>Logo</h1></td>          
+          <td colspan="3" class="center">{!! (isset($data['company_details']['logo']))? '<img src ="'.tenant()->folder('system')->url($data['company_details']['logo']).' "/>' : "<h1>Logo</h1>" !!}</td>
         </tr>
         <tr>
           <td></td>
           <td></td>
-          <td><h2>Purring</h2></td>                    
+          <td><h2>Purring</h2></td>
         </tr>
         <tr>
           <td>
@@ -48,21 +48,22 @@
             {{--Country--}}</p>
           </td>
           <td>
-            <p>{{ $data['company_details']['telephone'] }}<br />
-              {{ $data['company_details']['service_email'] }}<br />
-              {{ $data['company_details']['company_number'] }}<br />
-              {{ $data['company_details']['account_no'] }}<br />
-              Swift - {{ $data['company_details']['swift_'] }}<br />
-              IBAN - IBAN
+            <p><strong>Tlf </strong>{{ $data['company_details']['telephone'] }}<br />
+              <strong>Fax </strong>{{ $data['company_details']['fax'] }}<br />
+              <strong>Epost </strong>{{ $data['company_details']['service_email'] }}<br />
+              <strong>Org.nr.</strong> {{ $data['company_details']['company_number'] }}<br />
+              <strong>Account Number</strong> {{ $data['company_details']['account_no'] }}<br />
+              <strong>Swift -</strong> {{ $data['company_details']['swift_num'] }}<br />
+              <strong>IBAN -</strong> {{ $data['company_details']['iban_num'] }}
             </p>
           </td>
           <td>
-            <p>Note payment: Number<br />
-              Customer number Customer number<br />
-              Var ref. User sending out bills<br />
-              Invoice date Date produced<br />
-              Due date Due date<br />
-              Currency: Currency
+            <p><strong>Note payment:</strong> {{ $data['id'] }}<br />
+              <strong>Customer number</strong> {{ $data['customer_details']['id'] }}<br />
+              <strong>Var ref.</strong> User sending out bills<br />
+              <strong>Invoice date</strong> {{ date('d-m-y', strtotime($data['invoice_date'])) }}<br />
+              <strong>Due date</strong> {{ date('d-m-y', strtotime($data['due_date'])) }}<br />
+              <strong>Currency:</strong> {{ $data['currency'] }}
             </p>
           </td>
         </tr>
@@ -80,11 +81,11 @@
         </thead>
         <tbody>
           <tr>
-            <td><small>Bill number</small></td>
+            <td><small>{{ $data['invoice_number'] }}</small></td>
             <td><small>Purring</small></td>
-            <td><small>Original invoice date</small></td>
-            <td><small>Due date of bill</small></td>
-            <td><small>Original sum outstanding</small></td>
+            <td><small>{{ date('d-m-y', strtotime($data['invoice_date'])) }}</small></td>
+            <td><small>{{ date('d-m-y', strtotime($data['due_date'])) }}</small></td>
+            <td><small>{{ $data['remaining'] }}</small></td>
           </tr>
         </tbody>
 
@@ -101,9 +102,9 @@
                   <th style="font-size:9px;"><b>Gross</b></th>
                 </tr>
                 <tr>
-                  <td><small>Late fee</small></td>
-                  <td><small>Paid amounts</small></td>
-                  <td><small>Gross</small></td>
+                  <td><small>{{ $data['late_fee'] }}</small></td>
+                  <td><small>{{ $data['paid'] }}</small></td>
+                  <td><small>{{ $data['gross'] }}</small></td>
                 </tr>
               </table>
             </td>
@@ -113,7 +114,7 @@
 
       <div>
         <p style="font-size:8px"><b style="font-size:9px;">Terms</b><br />
-           Har du nylig betalt kan du use vekk ifra kravet 
+           Har du nylig betalt kan du use vekk ifra kravet
         </p>
       </div>
       <br />
@@ -136,9 +137,9 @@
       <table cellpadding="4">
           <tr bgcolor="#FFFF00" >
             <td> <span style="text-indent: 10px;">9879879879789</span></td>
-            <td><p class="border-block" bgcolor="#ffffff" >&nbsp; {{ $data['amount'] }}</p></td>
-            <td><p class="border-block" bgcolor="#ffffff"></p></td>
-            <td><p class="border-block" bgcolor="#ffffff"></p></td>
+            <td><p class="border-block" bgcolor="#ffffff">&nbsp; {{ $data['amount'] }}</p></td>
+            <td><p class="border-block" bgcolor="#ffffff">{{ $data['customer_payment_number'] }}</p></td>
+            <td><p class="border-block" bgcolor="#ffffff">form number</p></td>
           </tr>
       </table>
       <table cellpadding="5">

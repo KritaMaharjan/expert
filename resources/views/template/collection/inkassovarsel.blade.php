@@ -27,69 +27,69 @@
         border-bottom: 1px solid #333;
      }
 
-    
       </style>
 
+
       <table id="inkassovarsel-detail">
-        <tr>
-          <td colspan="3" class="center"><h1>Logo</h1></td>          
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td><h2>Inkassovarsel</h2></td>                    
-        </tr>
-        <tr>
-          <td>
-            <p>Firstname Lastname<br />
-            Street address + Number<br />
-            Postal code and town<br />
-            Country</p>
-          </td>
-          <td>
-            <p>Tlf Telephone number<br />
-              Fax Fax number<br />
-              Epost Email address<br />
-              Org.nr. Company number<br />
-              Account number Account No.<br />
-              Swift - Swift<br />
-              IBAN - IBAN
-            </p>
-          </td>
-          <td>
-            <p>Note payment: Number<br />
-              Customer number Customer number<br />
-              Var ref. User sending out bills<br />
-              Warning date Date produced<br />
-              Due date Due date<br />
-              Currency: Currency
-            </p>
-          </td>
-        </tr>
-      </table><br /><br /><br /><br />
+          <tr>
+            <td colspan="3" class="center">{!! (isset($data['company_details']['logo']))? '<img src ="'.tenant()->folder('system')->url($data['company_details']['logo']).' "/>' : "<h1>Logo</h1>" !!}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td></td>
+            <td><h2>Inkassovarsel</h2></td>
+          </tr>
+          <tr>
+            <td>
+              <p>{{ $data['customer'] }}<br />
+              {{ $data['customer_details']['street_name'] }} {{ $data['customer_details']['street_number'] }}<br />
+              {{ $data['customer_details']['postcode'] }} {{ $data['customer_details']['town'] }}<br />
+              {{--Country--}}</p>
+            </td>
+            <td>
+              <p><strong>Tlf </strong>{{ $data['company_details']['telephone'] }}<br />
+                <strong>Fax </strong>{{ $data['company_details']['fax'] }}<br />
+                <strong>Epost </strong>{{ $data['company_details']['service_email'] }}<br />
+                <strong>Org.nr.</strong> {{ $data['company_details']['company_number'] }}<br />
+                <strong>Account Number</strong> {{ $data['company_details']['account_no'] }}<br />
+                <strong>Swift -</strong> {{ $data['company_details']['swift_num'] }}<br />
+                <strong>IBAN -</strong> {{ $data['company_details']['iban_num'] }}
+              </p>
+            </td>
+            <td>
+              <p><strong>Note payment:</strong> {{ $data['id'] }}<br />
+                <strong>Customer number</strong> {{ $data['customer_details']['id'] }}<br />
+                <strong>Var ref.</strong> User sending out bills<br />
+                <strong>Invoice date</strong> {{ date('d-m-y', strtotime($data['invoice_date'])) }}<br />
+                <strong>Due date</strong> {{ date('d-m-y', strtotime($data['due_date'])) }}<br />
+                <strong>Currency:</strong> {{ $data['currency'] }}
+              </p>
+            </td>
+          </tr>
+        </table><br /><br /><br /><br />
 
       <table id="inv-tab" cellpadding="4">
         <thead>
           <tr>
             <th style="font-size:9px;"><b>Code</b></th>
             <th style="font-size:9px;"><b>Name</b></th>
-            <th style="font-size:9px;"><b>No.</b></th>
+            <th style="font-size:9px;"><b>Quantity</b></th>
             <th style="font-size:9px;"><b>Price</b></th>
-            <th style="font-size:9px;"><b>Discount</b></th>
             <th style="font-size:9px;"><b>Tax</b></th>
             <th style="font-size:9px;"><b>Total</b></th>
           </tr>
         </thead>
         <tbody>
-          <tr>
+          @foreach($data['products'] as $product)
+            <tr>
             <td><small>Code</small></td>
-            <td><small>Name of product</small></td>
-            <td><small>Amount</small></td>
-            <td><small>Price</small></td>
-            <td><small>Discount</small></td>
-            <td><small>Tax</small></td>
-            <td><small>Total amount</small></td>
+            <td><small>{{ $product->product_name }}</small></td>
+            <td><small>{{ $product->quantity }}</small></td>
+            <td><small>{{ $product->price }}</small></td>
+            <td><small>{{ $product->vat }}</small></td>
+            <td><small>{{ $product->total }}</small></td>
           </tr>
+          @endforeach
         </tbody>
 
       </table>
@@ -105,9 +105,9 @@
                   <th style="font-size:9px;"><b>Total</b></th>
                 </tr>
                 <tr>
-                  <td><small>Late fee</small></td>
-                  <td><small>Paid amounts</small></td>
-                  <td><small>Total</small></td>
+                  <td><small>{{ $data['late_fee'] }}</small></td>
+                  <td><small>{{ $data['paid'] }}</small></td>
+                  <td><small>{{ $data['gross'] }}</small></td>
                 </tr>
               </table>
             </td>

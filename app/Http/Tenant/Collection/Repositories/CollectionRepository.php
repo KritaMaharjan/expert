@@ -7,7 +7,9 @@ use App\Http\Tenant\Accounting\Libraries\Record;
 use App\Http\Tenant\Collection\Models\Collection;
 use App\Http\Tenant\Collection\Models\CourtCase;
 use App\Http\Tenant\Email\Models\Email;
+use App\Http\Tenant\Inventory\Models\Product;
 use App\Http\Tenant\Invoice\Models\Bill;
+use App\Http\Tenant\Invoice\Models\BillProducts;
 use App\Models\Tenant\Customer;
 use App\Models\Tenant\Setting;
 use Illuminate\Http\Request;
@@ -220,17 +222,21 @@ class CollectionRepository {
      * @param $id
      * @return array
      */
-    function getBillInfo($id)
+    function getBillInfo($id, $step = 'purring')
     {
         $bill = $this->bill->billDetails($id);
         $company = $this->setting->getCompany();
         $business = $this->setting->getBusiness();
         $fix = $this->setting->getFix();
         $company_details = array_merge($company, $business, $fix);
+        $late_charge = $this->collection->totalCharge($bill->due_date, $bill->total, $step); //with interest
+        $bill_products = $this->getBillProducts($bill->id);
 
         $bill_details = array(
             'id'                      => $bill->id,
             'amount'                  => $bill->total,
+            'remaining'               => $bill->remaining + $late_charge,
+            'paid'                    => $bill->paid,
             'currency'                => $bill->currency,
             'invoice_number'          => $bill->invoice_number,
             'invoice_date'            => $bill->created_at,
@@ -238,10 +244,25 @@ class CollectionRepository {
             'customer'                => $bill->customer,
             'customer_payment_number' => $bill->customer_payment_number,
             'customer_details'        => $bill->customer_details->toArray(),
-            'company_details'         => $company_details
+            'company_details'         => $company_details,
+            'late_fee'                => $late_charge,
+            'gross'                   => $bill->total + $late_charge,
+            'products'                => $bill_products,
         );
 
         return $bill_details;
+    }
+
+    function getBillProducts($bill_id)
+    {
+        $bill_products = BillProducts::where('bill_id', $bill_id)->get();
+        if ($bill_products) {
+            foreach ($bill_products as $bill_product) {
+                $bill_product->product_name = Product::find($bill_product->product_id)->name;
+            }
+            $products = $bill_products;
+            return $products;
+        }
     }
 
     /**
@@ -326,12 +347,11 @@ class CollectionRepository {
         if ($download) {
             $save = false;
         }
-        $data = $this->getBillInfo($bill);
-        dd($data);
+        $data = $this->getBillInfo($bill, $step);
         $pdf = new Pdf();
         $fileName = $data['invoice_number'] . '-' . $step;
-        $filePath = $pdf->generate($fileName, 'template.collection.' . $step, compact('data'));
         //$filePath = $pdf->generate($fileName, 'template.collection.' . $step, compact('data'), $download, $save);
+        $filePath = $pdf->generate($fileName, 'template.collection.' . $step, compact('data'));
         return [$fileName, $filePath];
     }
 

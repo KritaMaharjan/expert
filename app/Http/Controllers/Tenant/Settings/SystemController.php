@@ -19,7 +19,6 @@ class SystemController extends BaseController {
         $this->setting = $setting;
     }
 
-
     public function index($value='')
     {
     	$company = $this->setting->getCompany();
@@ -54,7 +53,6 @@ class SystemController extends BaseController {
                                             
                                             )
                                         );
-
         if ($validator->fails())
             return  tenant()->route('tenant.setting.system')->withErrors($validator)->withInput();
         
@@ -96,9 +94,7 @@ class SystemController extends BaseController {
                                 'telephone' => 'numeric',
                                 'fax' => 'numeric',
                                 'website' => 'between:5,45',
-                                'service_email' => 'email|between:2,50',
-                                'logo' => 'image'
-                                                    
+                                'service_email' => 'email|between:2,50'
                             )
                     );
             if($validator->fails())
@@ -124,32 +120,16 @@ class SystemController extends BaseController {
         }
 
 
-
-      
-        
-
         $all = $request->except('_token', 'group');
         $group = $request->input('group');
 
-        if($group == 'fix')
-        {
-                $fileName = NULL;
-                if(FacadeRequest::hasFile('photo'))
-                {
-                    $file = FacadeRequest::file('photo');
-                    $fileName = \FB::uploadFile($file);
-                }
+        if ($group != '') {
+            $this->setting->addOrUpdate([$group => $all], $group);
+        } else {
+           // dd($all);
+            $this->setting->addOrUpdate($all);
         }
-             
 
-            if ($group != '') {
-                $this->setting->addOrUpdate([$group => $all], $group);
-            } else {
-               // dd($all);
-                $this->setting->addOrUpdate($all);
-            }
-
-            return \Response::json(array('status' => 'true', 'message' => 'Setting Updated successfully'));
-       
+        return \Response::json(array('status' => 'true', 'message' => 'Setting Updated successfully'));
     }
 }

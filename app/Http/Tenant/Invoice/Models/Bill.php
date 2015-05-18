@@ -131,7 +131,6 @@ class Bill extends Model {
         }
     }
 
-
     function edit(Request $request, $id)
     {
         // Start transaction!

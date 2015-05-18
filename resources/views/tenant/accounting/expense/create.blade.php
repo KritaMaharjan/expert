@@ -7,7 +7,7 @@ Accounting Expenses
     <div class="box box-solid">
         <div class="box-body">
         	<div class="box-header pad-0">
-                <h3 class="box-title">Accounting expenses</h3>
+                <h3 class="box-title"></h3>
             </div>
 
             {!!Form::open(['id'=>'expense-form', 'enctype'=>'multipart/form-data', 'files'=>true])!!}

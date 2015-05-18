@@ -50,8 +50,8 @@ $(document).on('click', '.graph-heading', function (e) {
                 if (response.status === 1) {
                     $('.chart-box').html(response.data.template);
                     // make heading active
-                    $('.graph-heading').removeClass('.active');
-                    $this.addClass('.active');
+                    $('.graph-heading').removeClass('active');
+                    $this.addClass('active');
                 }
             })
             .fail(function () {
