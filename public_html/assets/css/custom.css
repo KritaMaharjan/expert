@@ -1437,3 +1437,8 @@ textarea.list-bx {
 .sel-2-wrap .select2,.half-width2 .select2,.supplier .select2{
     width: 100%!important;
 }
+
+.case-won .callout {
+    margin: 0 0 10px;
+    padding: 5px 30px 5px 15px;
+}
