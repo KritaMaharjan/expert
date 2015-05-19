@@ -8,4 +8,3 @@
         <input type="submit" class="btn btn-primary task-submit" value="Add" />
     </div>
 {!! Form::close() !!}
-

@@ -5,7 +5,7 @@ Tasks
 
 @section('breadcrumb')
     @parent
-    <li><a data-push="true" href="{{tenant_route('tenant.invoice.index')}}">Tasks</a></li>
+    <li>Tasks</li>
 @stop
 
 @section('content')
@@ -20,26 +20,16 @@ Tasks
                   <i class="fa fa-clipboard"></i>
                   <h3 class="box-title">Upcoming Tasks</h3>
                   <div class="box-tools pull-right">
-                    <a class="btn btn-primary" data-toggle="modal" data-url="#task-modal-data" data-target="#fb-modal">
-                        <i class="fa fa-plus"></i> Add New Task
+                    <a href="#" title="New Task" data-original-title="New Task" class="btn btn-primary" data-toggle="modal" data-type="personal" data-target="#task-modal-data">
+                        <i class="fa fa-pencil"></i> New Task
                     </a>
-                    {{--<a class="btn btn-primary" data-toggle="modal" data-url="#todo-modal-data" data-target="#fb-modal">
-                        <i class="fa fa-tasks"></i> To Do List
-                    </a>--}}
                   </div>
                 </div><!-- /.box-header -->
                 <div class="box-body task-list" id="task-list">
                  @include('tenant.tasks.taskList')
                 </div><!-- /.box-body -->
                 <div class="box-footer clearfix no-border">
-                
-                  {{-- <ul class="pagination pagination-sm inline pull-right">
-                    <li><a href="#">&laquo;</a></li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">&raquo;</a></li>
-                  </ul> --}}
+
                 </div>
               </div><!-- /.box -->
 
@@ -53,19 +43,12 @@ Tasks
             <div class="box box-solid">
               <div class="box-header">
                 <i class="fa fa-clipboard"></i>
-                <h3 class="box-title">Completed List</h3>
+                <h3 class="box-title">Completed Tasks</h3>
               </div><!-- /.box-header -->
               <div class="box-body" id="completed-list">
               @include('tenant.tasks.completedList')
               </div><!-- /.box-body -->
               <div class="box-footer clearfix no-border">
-                {{-- <ul class="pagination pagination-sm inline pull-right">
-                  <li><a href="#">&laquo;</a></li>
-                  <li><a href="#">1</a></li>
-                  <li><a href="#">2</a></li>
-                  <li><a href="#">3</a></li>
-                  <li><a href="#">&raquo;</a></li>
-                </ul> --}}  
                 
               </div>
             </div><!-- /.box -->
@@ -73,26 +56,24 @@ Tasks
         </div><!-- /.box -->
         </div>
 </div>
-<div id="task-modal-data" class="hide">
-     <div class="box box-solid">
-        @include('tenant.tasks.create')
-     </div>
+<div class="modal modal-right fade" id="task-modal-data" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            @include('tenant.tasks.create')
+        </div>
+    </div>
  </div>
 
- <div id="todo-modal-data" class="hide">
-     <div class="box box-solid">
-        @include('tenant.tasks.todo')
-     </div>
- </div>
-
-    {{--Load JS--}}
-    {{ FB::registerModal() }}
-    {{ FB::js('assets/js/tasks.js') }}
-    {{ FB::js('assets/plugins/timepicker/bootstrap-timepicker.min.js') }}
+{{--Load JS--}}
+{{ FB::registerModal() }}
+{{ FB::js('assets/js/tasks.js') }}
+{{ FB::js('assets/plugins/timepicker/bootstrap-timepicker.min.js') }}
 
 <script type="text/javascript">
   $(function(){
     $(document).on('click', '.text', function (e) {
+      var $this = $(this).parent().find('.todos-box');
+      $(".todos-box").not($this).hide();
       $(this).parent().find('.todos-box').slideToggle('fast');
     });
   });

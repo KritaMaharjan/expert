@@ -329,7 +329,7 @@ class CollectionRepository {
         $files = [];
         $num = $this->getCurrentStep($bill);
         $num = $num > 3 ? 3 : $num;
-        $steps = ['purring', 'inkassovarsel', 'betalingsappfording'];
+        $steps = ['purring', 'inkassovarsel', 'betalingsoppfording'];
         for ($i = 0; $i < $num; $i++) {
             list($key, $value) = $this->generatePDF($bill, $steps[$i], false);
             $files[$key] = $value;

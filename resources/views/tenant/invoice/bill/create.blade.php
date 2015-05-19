@@ -5,7 +5,7 @@
 
 @section('breadcrumb')
     @parent
-    <li><a data-push="true" href="{{tenant_route('tenant.invoice.index')}}">Invoice</a></li>
+    <li>Invoice</li>
     <li>{{ ucfirst($type) }}</li>
 @stop
 

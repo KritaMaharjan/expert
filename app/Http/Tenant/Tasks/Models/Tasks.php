@@ -134,63 +134,6 @@ class Tasks extends Model
         return $tasks;
     }
 
-    function dataTablePagination(Request $request, array $select = array())
-    {
-        if ((is_array($select) AND count($select) < 1)) {
-            $select = "*";
-        }
-
-        $take = ($request->input('length') > 0) ? $request->input('length') : 15;
-        $start = ($request->input('start') > 0) ? $request->input('start') : 0;
-
-        $search = $request->input('search');
-        $search = $search['value'];
-        $order = $request->input('order');
-        $column_id = $order[0]['column'];
-        $columns = $request->input('columns');
-        $orderColumn = $columns[$column_id]['data'];
-        $orderdir = $order[0]['dir'];
-
-        $tasks = array();
-        $query = $this->select($select);
-
-        if ($orderColumn != '' AND $orderdir != '') {
-            $query = $query->orderBy($orderColumn, $orderdir);
-        }
-
-        if ($search != '') {
-            $query = $query->where('subject', 'LIKE', "%$search%");
-        }
-        $tasks['total'] = $query->count();
-
-
-        $query->skip($start)->take($take);
-
-        $data = $query->get();
-
-        foreach ($data as $key => &$value) {
-            $value->raw_status = $value->status;
-            if ($value->is_complete == 1)
-                $value->is_complete = '<span class="label label-success">Complete</span>';
-            else
-                $value->is_complete = '<span class="label label-danger">Incomplete</span>';
-
-            $value->due_date = date('d-M-Y  h:i:s A', strtotime($value->due_date));
-            //$value->created_at->format('d-M-Y  h:i:s A');
-            $value->DT_RowId = "row-" . $value->id;
-        }
-
-        $tasks['data'] = $data->toArray();
-
-        $json = new \stdClass();
-        $json->draw = ($request->input('draw') > 0) ? $request->input('draw') : 1;
-        $json->recordsTotal = $tasks['total'];
-        $json->recordsFiltered = $tasks['total'];
-        $json->data = $tasks['data'];
-
-        return $json;
-    }
-
 
     function billDetails($id = '')
     {

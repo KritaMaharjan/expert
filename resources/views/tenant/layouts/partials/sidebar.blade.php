@@ -27,7 +27,7 @@
             @endif
 
             @if(FB::can_view('Invoice'))
-            <li class="treeview" <?php echo (strpos($current_path, 'invoice') !==false)? 'active' : '' ?>>
+            <li class="treeview <?php echo (strpos($current_path, 'invoice') !==false)? 'active' : '' ?>" >
               <a href="#" title="Invoices">
                 <i class="fa fa-file"></i> <span>Invoices</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
@@ -39,7 +39,7 @@
             @endif 
 
             @if(FB::can_view('Collections'))
-            <li class="treeview">
+            <li class="treeview <?php echo (strpos($current_path, 'collection') !==false)? 'active' : '';?>">
               <a href="{{tenant_route('tenant.collection.index')}}" title="Collections">
                 <i class="fa fa-files-o"></i> <span>Collections</span></i>
               </a>
