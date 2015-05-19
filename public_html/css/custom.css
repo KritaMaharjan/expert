@@ -80,6 +80,22 @@ h3.subtitle {text-transform: lowercase;
 	right: 0;	
 }    
 
+
+
+@media screen and (max-width: 979px){
+	.slider-info.custom-content > li{
+		margin-top: 0!important;
+	}
+	.slider-cta.custom-btn-block{
+		float:none;
+		left: 0!important;
+	}
+
+}	
+
+
+
+
 @media screen and (max-width: 767px){
 	.slider-info.custom-content{
 		padding: 10px!important;
@@ -91,6 +107,10 @@ h3.subtitle {text-transform: lowercase;
 			left: 23px!important;
 		    top: 109%!important;
 		}
+
+	.slider-info.custom-content > li {
+	    margin-left: -10px !important;
+	}
 
 }	
 

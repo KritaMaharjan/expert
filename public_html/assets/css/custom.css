@@ -1420,3 +1420,20 @@ textarea.list-bx {
 .graph-heading.active {
     color: #00a65a;
 }
+.graph-heading:hover {
+    color: #00a65a;
+}
+
+
+#background-table td{
+    word-break: break-all;
+    word-wrap: break-word;
+}
+
+.btn-primary {
+    vertical-align: top;
+}
+
+.sel-2-wrap .select2,.half-width2 .select2,.supplier .select2{
+    width: 100%!important;
+}

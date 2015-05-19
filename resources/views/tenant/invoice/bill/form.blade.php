@@ -181,7 +181,7 @@
   <div class="row">
     <!-- accepted payments column -->
 
-    <div class="col-xs-6 pull-right pad-0-40">
+    <div class="col-xs-6 pull-right pad-0-40 full-wdth-485">
       <p class="lead">Summary</p>
       <div class="table-responsive">
         <table class="table">

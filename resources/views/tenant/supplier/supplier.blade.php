@@ -22,17 +22,19 @@ Suppliers
             </p>
          
 		    <div class="box-body">
-		      <table id="table-supplier" class="table table-hover">
-               <thead>
-                   <tr>
-                     <th>ID</th>
-                     <th>Supplier name</th>
-                     <th>Email</th>
-                     <th>Added Date</th>
-                     <th>Action</th>
-                   </tr>
-               </thead>
-             </table>
+                <div class="table-responsive">
+    		      <table id="table-supplier" class="table table-hover">
+                   <thead>
+                       <tr>
+                         <th>ID</th>
+                         <th>Supplier name</th>
+                         <th>Email</th>
+                         <th>Added Date</th>
+                         <th>Action</th>
+                       </tr>
+                   </thead>
+                 </table>
+                 </div>
 		    </div><!-- /.box-body -->
 		 </div><!-- /.box -->
 	  	</div>

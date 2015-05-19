@@ -21,7 +21,7 @@ Collections
             <ol class="breadcrumb step-links clearfix">
                 <li {{ $step == 'purring' ? 'class=active': '' }}><a href="{{tenant()->url('/collection?step=purring')}}">Purring</a></li>
                 <li {{ $step == 'inkassovarsel' ? 'class=active': '' }}><a href="{{tenant()->url('/collection?step=inkassovarsel')}}">Inkassovarsel</a></li>
-                <li {{ $step == 'betalingsappfording' ? 'class=active': '' }}><a href="{{tenant()->url('/collection?step=betalingsappfording')}}">Betalingsappfording</a></li>
+                <li {{ $step == 'betalingsappfording' ? 'class=active': '' }}><a href="{{tenant()->url('/collection?step=betalingsappfording')}}">Betalingsoppfording</a></li>
                 <li {{ $step == 'court' ? 'class=active': '' }}><a href="{{tenant()->url('/collection?step=court')}}">Court Case</a></li>
                 <li {{ $step == 'utlegg' ? 'class=active': '' }}><a href="{{tenant()->url('/collection?step=utlegg')}}">Utlegg</a></li>
             </ol>

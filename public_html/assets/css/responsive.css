@@ -15,7 +15,12 @@
     .mailbox .mg-top-10 {
         margin-top: 50px !important;
     }
+    .width-sm{width: 100%!important;}
+    .pad-0-sm{padding: 0!important}
+
 }
+
+
 
 @media screen and (max-width:900px){
 .breadcrumb.step-links a {
@@ -32,6 +37,13 @@
     padding: 7px 23px !important;
     font-size: 12px!important;
 }
+}
+@media screen and (max-width:768px){
+
+.search-blk .col-xs-3{width: 33%!important;margin-bottom: 15px;}
+.search-blk .col-xs-2{text-align: right;width: 100%!important;}
+
+
 }
 @media screen and (max-width:767px){
 
@@ -197,6 +209,13 @@
         width: 100% !important;
     }
 
+    .search-blk .col-xs-3 {
+        width: 50% !important;
+    }
+    .search-blk .col-xs-2 {
+        width: 50% !important;
+    }
+
 }
 @media screen and (max-width:520px){
     .half-width{
@@ -259,6 +278,46 @@
     }
 
 }
+
+@media screen and (max-width:516px){
+
+.form-group .two-inputs input {
+    width: 49.5% !important;
+}
+
+.two-inputs input {
+    width: 49.5% !important;
+}
+
+}
+@media screen and (max-width:485px){
+div.dataTables_paginate {
+    float: none!important;
+    width: 100%;
+}
+.total-block {
+    padding: 10px 0 20px !important;
+}
+
+.full-wdth-485{width: 100%!important;}
+}
+@media screen and (max-width:480px){
+.form-list > li {width: 50% !important;}
+
+}
+@media screen and (max-width:460px){
+.form-group.f-width{width: 100%!important;}
+.form-group.f-width .input-group.input-custom{margin: 0!important;}
+
+}
+
+@media screen and (max-width:440px){
+
+.nav-tabs-custom .nav > li > a {
+    padding: 10px 7px;
+}
+
+}
 @media screen and (max-width:420px){
     .input-custom{
         width: 100%!important;
@@ -266,10 +325,30 @@
         margin-bottom: 10px;
     }
 }
-@media screen and (max-width:480px){
-.form-list > li {width: 50% !important;}
+
+@media screen and (max-width:403px){
+.form-group.dob_div select.form-control {
+    width: 32.5% !important;
+}
 
 }
+
+
+@media screen and (max-width:380px){
+    .search-blk .col-xs-3,.search-blk .col-xs-2 {
+        width: 100% !important;
+    }
+
+}
+
+@media screen and (max-width:370px){
+
+.nav-tabs-custom .nav > li > a {
+    font-size: 13px;
+    padding: 10px 4px;
+}
+}
+
 @media screen and (max-width:360px){
     .top .dataTables_filter {
         width: 100%!important;
@@ -278,6 +357,13 @@
         width: 100%!important;
         margin-left: 0!important;
     }
+
+    .date-box {float: none!important;width: 100%!important;}
+    .form-control.half-width2.pull-left.source {
+        margin-bottom: 20px!important;
+        width: 100%!important;
+    }
+
 }
 @media screen and (max-width:300px){
 
