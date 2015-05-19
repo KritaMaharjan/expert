@@ -3050,7 +3050,7 @@ table.text-center, table.text-center td, table.text-center th {
 }
 .search-blk input {
     float: right;
-    width: auto;
+    width: 60%;
 }
 .row.search-blk label {
     float: left;

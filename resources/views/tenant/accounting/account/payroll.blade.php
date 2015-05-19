@@ -50,7 +50,7 @@ Payroll Report
                 </div>
                 <div class="form-group"> 
                     {!! Form::label('user_id', 'Name of Employee') !!}
-                    <div class="date-box">{!! Form::select('user_id', array('' => 'Select Employee'), null, array('class' => 'form-control pull-left', 'id' => 'select-employee')) !!}</div>
+                    <div class="date-box sel-2-wrap">{!! Form::select('user_id', array('' => 'Select Employee'), null, array('class' => 'form-control pull-left', 'id' => 'select-employee')) !!}</div>
                   </div>
                 </form>
               </div>              

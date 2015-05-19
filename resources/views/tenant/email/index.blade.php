@@ -70,7 +70,7 @@ $(function(){
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-10 position-relative">
+                      <div class="col-md-10 position-relative clearfix">
                             <div class="email-loader" style="display: none">
                                 
                             </div>
@@ -87,7 +87,7 @@ $(function(){
                             </div><!-- /.box -->
                           </div><!-- bg-white -->
                           </div>
-                          <div id="email-single" class="col-md-7">
+                          <div id="email-single" class="col-md-7 pad-0-sm">
 
                           </div><!-- bg-white -->
                       </div>
