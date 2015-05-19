@@ -67,7 +67,7 @@ $(function () {
         "fnRowCallback": function (nRow, aData, iDisplayIndex) {
             $(nRow).attr('id', 'collection-' + aData.id);
             return nRow;
-        },
+        }
 
     });
 

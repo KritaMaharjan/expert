@@ -93,7 +93,6 @@ class AuthController extends BaseController {
             return \Response::json(array('fail' => true, 'errors' => $validator->getMessageBag()->toArray()));
         else {
             $this->createTenant($request);
-
             return \Response::json(array('success' => true, 'redirect_url' => \URL::to('registration/success')));
         }
     }

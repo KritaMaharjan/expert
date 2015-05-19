@@ -2,8 +2,6 @@
 
 namespace App\Http\Tenant\Accounting\Models;
 
-
-use Ddeboer\Imap\Exception\Exception;
 use Illuminate\Database\Eloquent\Model;
 
 class AccountingYear extends Model {
@@ -41,7 +39,7 @@ class AccountingYear extends Model {
             if ($row) {
                 return $row;
             }
-            throw new Exception('Accounting year not setup yet.');
+            throw new \Exception('Accounting year not setup yet.');
         }
 
         return self::$current_year;

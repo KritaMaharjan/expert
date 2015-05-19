@@ -231,6 +231,8 @@ class CollectionRepository {
         $company_details = array_merge($company, $business, $fix);
         $late_charge = $this->collection->totalCharge($bill->due_date, $bill->total, $step); //with interest
         $bill_products = $this->getBillProducts($bill->id);
+        $interest = $this->collection->interest($bill->due_date, $bill->total);
+        $fee = $this->collection->fee($step);
 
         $bill_details = array(
             'id'                      => $bill->id,
@@ -248,6 +250,8 @@ class CollectionRepository {
             'late_fee'                => $late_charge,
             'gross'                   => $bill->total + $late_charge,
             'products'                => $bill_products,
+            'interest'                => $interest,
+            'fee'                     => $fee
         );
 
         return $bill_details;
