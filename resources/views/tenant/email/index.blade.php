@@ -20,6 +20,7 @@ Email
 {{FB::js('assets/plugins/plupload/js/plupload.full.min.js')}}
 {{FB::registerModal()}}
 {{FB::js('assets/js/desk/email.js')}}
+
 <?php
 $successCallback ="
   var response = JSON.parse(object.response);

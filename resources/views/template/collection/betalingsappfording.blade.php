@@ -27,27 +27,30 @@
       </style>
 
    
-      <table>
+      <table width="800px">
+        <tr>
+            <td colspan="3" class="center">{!! (isset($data['company_details']['logo']))? '<img src ="'.tenant()->folder('system')->url($data['company_details']['logo']).' "/>' : "<h1>Logo</h1>" !!}</td>
+        </tr>
         <tr>
           <td></td>
           <td width="50%">
             <table>
               <tr>
-                <td><p>Date: date<br />
-                       Org.nr: Company number<br />
-                       Telefon: Phone number                        
+                <td><p><strong>Date:</strong> {{ date('d-m-y') }}<br />
+                       <strong>Org.nr:</strong> {{ $data['company_details']['company_number'] }}<br />
+                       <strong>Telefon:</strong> {{ $data['company_details']['telephone'] }}
                     </p>
                 </td>
-                <td><p>Due date: Due date<br />
-                       Account no: Account no.<br />
-                       Case number: case number                      
+                <td><p><strong>Due date:</strong> {{ format_date($data['due_date']) }}<br />
+                       <strong>Account no:</strong> {{ $data['company_details']['account_no'] }}<br />
+                       <strong>Case number:</strong> case number
                     </p>                  
                 </td>
               </tr>  
               <tr>
-                <td colspan="2"><p>Fullname: Fullname of user<br />
-                                   E-post: Email address<br />
-                                   Website: Website                  
+                <td colspan="2"><p>Fullname: {{ $data['customer'] }}<br />
+                                   E-post: {{ $data['customer_details']['email'] }}<br />
+                                   {{--Website: Website--}}
                                 </p>                  
                 </td>
               </tr>
@@ -59,19 +62,18 @@
       <br />
       <table>
         <tr>
-          <td><p>Firstname Lastname<br />
-                 Street address + Number<br />
-                 Postal code and town<br />
-                 Country
-              </p>
+          <td><p>{{ $data['customer'] }}<br />
+            {{ $data['customer_details']['street_name'] }} {{ $data['customer_details']['street_number'] }}<br />
+            {{ $data['customer_details']['postcode'] }} {{ $data['customer_details']['town'] }}<br />
+            {{--Country--}}</p>
           </td>
-          <td><P><b style="font-size:10px">Business name</b><br />
+          {{--<td><P><b style="font-size:10px">Business name</b><br />
                     Street + Number<br />
                     Postalcode + Town<br />
                     Country
                   
               </P>
-          </td>
+          </td>--}}
         </tr>
       </table>
       <br /><br /><br />
@@ -91,24 +93,24 @@
                 <th width="20%"><b style="font-size:10px">Amounts</b></th>
               </tr>
               <tr>
-                <td width="80%"><p>Invoice number: Invoice number</p></td>
-                <td width="20%">amount NOK</td>
+                <td width="80%"><p>Invoice number: {{ $data['invoice_number'] }}</p></td>
+                <td width="20%"><strong>amount </strong>{{ $data['amount'] }} {{ $data['currency'] }}</td>
               </tr>
               <tr>
                 <td width="80%"><p>9.50% rate of Interest date even Interest date: </p></td>
-                <td width="20%">interest NOK</td>
+                <td width="20%"><strong>interest </strong>{{ $data['interest'] }} {{ $data['currency'] }}</td>
               </tr>
               <tr>
                 <td width="80%"><p>Reminder fee according to regulations:</p></td>
-                <td width="20%">fees NOK</td>
+                <td width="20%"><strong>fees </strong>{{ $data['fee'] }} {{ $data['currency'] }}</td>
               </tr>
               <tr>
                 <td width="80%"><p>Paid:</p></td>
-                <td width="20%">paid NOK</td>
+                <td width="20%"><strong>paid </strong>{{ $data['paid'] }} {{ $data['currency'] }}</td>
               </tr>
               <tr>
                 <td><b>To pay:</b></td>
-                <td>sum NOK</td>
+                <td><strong>remaining </strong>{{ $data['remaining'] }} {{ $data['currency'] }}</td>
               </tr><br />
               <tr>
                 <td colspan="2" style="border-top:1px solid #444;">If the claim is paid, please disregard this notice.</td>

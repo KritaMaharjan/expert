@@ -12,6 +12,9 @@ Class Plupload {
     protected $mimeTypes = '';
     protected $autoStart = true;
     protected $url = '';
+    protected $resizeHeight = '';
+    protected $resizeWidth = '';
+    protected $resize = false;
     protected $flashUrl = "/assets/plugins/plupload/js/Moxie.swf";
     protected $silverlightUrl = "/assets/plugins/plupload/js/Moxie.xap";
 
@@ -96,7 +99,7 @@ Class Plupload {
             max_file_count : 2,
 
             filters : {
-                    max_file_size : '$this->maxSize',
+                max_file_size : '$this->maxSize',
                 mime_types: [
                    $this->mimeTypes
                 ]
@@ -106,9 +109,16 @@ Class Plupload {
             flash_swf_url : '$this->flashUrl',
 
             // Silverlight settings
-            silverlight_xap_url : '$this->silverlightUrl',
+            silverlight_xap_url : '$this->silverlightUrl',";
+
+        if($this->resize === true)
+            $html .="resize: {
+                width: '$this->resizeWidth',
+                height: '$this->resizeHeight'
+            },";
 
 
+        $html .= "
             init: {
                     PostInit: function() {
                         document.getElementById('$this->filelist').innerHTML = '';";
@@ -236,8 +246,15 @@ Class Plupload {
         $render = "<div id='$this->filelist'>Your browser doesn't have Flash, Silverlight or HTML5 support.</div>";
 
         //   $render .= "<pre id='console'></pre>";
-
         return $render;
+    }
+
+    function resize($height, $width)
+    {
+        $this->resizeHeight = $height;
+        $this->resizeWidth = $width;
+        $this->resize = true;
+        return $this;
     }
 
 }

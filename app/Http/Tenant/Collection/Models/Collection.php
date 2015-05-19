@@ -38,7 +38,7 @@ class Collection extends Model {
     const STEP_UTLEGG = 5;
 
 
-    const INTEERST_RATE = 9.5;
+    const INTEREST_RATE = 9.5;
 
 
     const GRACE_PERIOD = 14;
@@ -140,7 +140,7 @@ class Collection extends Model {
         $dDiff = $dStart->diff($dEnd);
         $diff = $dDiff->days;
         // Formula (9,5% / 365)*amount*days
-        $interest =((self::INTEERST_RATE/100) / 365) * $bill_amount * $diff;
+        $interest =((self::INTEREST_RATE/100) / 365) * $bill_amount * $diff;
         return number_format($interest, 2);
     }
 

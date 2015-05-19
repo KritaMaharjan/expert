@@ -30,7 +30,7 @@
           <tr bgcolor="#FFFF00" >
             <td> <span style="text-indent: 10px;">9879879879789</span></td>
             <td><p class="border-block" bgcolor="#ffffff" >&nbsp; {{ $data['amount'] }}</p></td>
-            <td><p class="border-block" bgcolor="#ffffff"></p></td>
+            <td><p class="border-block" bgcolor="#ffffff">{{ $data['customer_payment_number'] }}</p></td>
             <td><p class="border-block" bgcolor="#ffffff"></p></td>
           </tr>
       </table>

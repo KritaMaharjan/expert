@@ -29,52 +29,51 @@
    
       <table>
         <tr>
-          <td colspan="2">Logo</td>
+          <td colspan="2">{!! (isset($data['company_details']['logo']))? '<img src ="'.tenant()->folder('system')->url($data['company_details']['logo']).' "/>' : "<h1>Logo</h1>" !!}</td>
         </tr>
         <tr>
           <td></td>
           <td width="50%">
-            <table>
-              <tr>
-                <td><p>Date: date<br />
-                       Org.nr: Company number<br />
-                       Telefon: Phone number                        
-                    </p>
-                </td>
-                <td><p>Due date: Due date<br />
-                       Account no: Account no.<br />
-                       Case number: case number                      
-                    </p>                  
-                </td>
-              </tr>  
-              <tr>
-                <td colspan="2"><p>Fullname: Fullname of user<br />
-                                   E-post: Email address<br />
-                                   Website: Website                  
-                                </p>                  
-                </td>
-              </tr>
-            </table>
-          </td>
+              <table>
+                <tr>
+                  <td><p><strong>Date:</strong> {{ date('d-m-y') }}<br />
+                         <strong>Org.nr:</strong> {{ $data['company_details']['company_number'] }}<br />
+                         <strong>Telefon:</strong> {{ $data['company_details']['telephone'] }}
+                      </p>
+                  </td>
+                  <td><p><strong>Due date:</strong> {{ format_date($data['due_date']) }}<br />
+                         <strong>Account no:</strong> {{ $data['company_details']['account_no'] }}<br />
+                         <strong>Case number:</strong> case number
+                      </p>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2"><p>Fullname: {{ $data['customer'] }}<br />
+                                     E-post: {{ $data['customer_details']['email'] }}<br />
+                                     {{--Website: Website--}}
+                                  </p>
+                  </td>
+                </tr>
+              </table>
+            </td>
         </tr>
       </table>
       <br />
       <br />
       <table>
         <tr>
-          <td><p>Firstname Lastname<br />
-                 Street address + Number<br />
-                 Postal code and town<br />
-                 Country
-              </p>
-          </td>
-          <td><P><b style="font-size:10px">Business name</b><br />
+          <td><p>{{ $data['customer'] }}<br />
+                      {{ $data['customer_details']['street_name'] }} {{ $data['customer_details']['street_number'] }}<br />
+                      {{ $data['customer_details']['postcode'] }} {{ $data['customer_details']['town'] }}<br />
+                      {{--Country--}}</p>
+                    </td>
+          {{--<td><P><b style="font-size:10px">Business name</b><br />
                     Street + Number<br />
                     Postalcode + Town<br />
                     Country
                   
               </P>
-          </td>
+          </td>--}}
         </tr>
       </table>
       <br /><br /><br />
@@ -93,13 +92,13 @@
                 <td>This requirement applies: </td>
               </tr>
               <tr>
-                <td>Principal invoice: Invoice number </td>
+                <td>Principal invoice: {{ $data['invoice_number'] }} </td>
               </tr>
               <tr>
-                <td>Interest: 9.50% basis of bill DUE DATE until payment</td>
+                <td>Interest: 9.50% basis of bill DUE DATE {{ $data['due_date'] }} until payment</td>
               </tr>
               <tr>
-                <td>Reminder fee: Fees,-</td>
+                <td>Reminder fee: Fees,- {{ $data['remaining'] }}</td>
               </tr>
               <tr>
                 <td>Writing this petition: 860,-</td>
@@ -111,16 +110,16 @@
                 <td>Meeting fee: 430</td>
               </tr>
               <tr>
-                <td><b>Total:</b> Sum NOK + Interest</td>
+                <td><b>Total:</b> {{ $data['amount'] }} {{ $data['currency'] }} + Interest</td>
               </tr><br /><br /><br />
               <tr>
-                <td><b>Plaintiff:</b> Company name and address</td>
+                <td><b>Plaintiff:</b> {{ $data['company_details']['company_name'] }}<br/>{{ $data['company_details']['address'] }}</td>
               </tr><br /><br />
               <tr>
-                <td><b>Defendant:</b> Receipients name and address</td>
+                <td><b>Defendant:</b> {{ $data['customer'] }}<br/>{{ $data['customer_details']['street_name'] }} {{ $data['customer_details']['street_number'] }}</td>
               </tr><br /><br /><br />
               <tr>
-                <td>It is submitted herewith a conciliation Appeals framot Name of receipient.</td>
+                <td>It is submitted herewith a conciliation Appeals framot {{ $data['customer'] }}.</td>
               </tr><br /><br /><br />
               <tr>
                 <td>Emphasis the claim following: </td>
@@ -129,13 +128,13 @@
                 <td>Defendant sentenced within 14 days to pay. <b>Following:</b> </td>
               </tr><br /><br />
               <tr>
-                <td>Principal invoice: invoice number</td>
+                <td>Principal invoice: {{ $data['invoice_number'] }}</td>
               </tr>
               <tr>
                 <td>Interest: 9.50% advise the payment takes place</td>
               </tr>
               <tr>
-                <td>Reminder fee: Fees(all fees collected from pervious steps(max total 130 NOK))</td>
+                <td>Reminder fee: {{ $data['remaining'] }} {{ $data['currency'] }}</td>
               </tr>
               <tr>
                 <td>Writing this petition: 860</td>
@@ -147,7 +146,7 @@
                 <td>Meeting fee: 430</td>
               </tr>
               <tr>
-                <td>Total: Sum NOK + interest</td>
+                <td>Total: {{ $data['amount'] }} {{ $data['currency'] }} + interest</td>
               </tr>
               <tr>
                 <td>A brief report:</td>

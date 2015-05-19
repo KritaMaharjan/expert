@@ -58,11 +58,16 @@
 
     <div class="form-group no-mg">
       <label class="control-label">Upload Logo</label>
-      <div class="@if($errors->has('logo')) {{'has-error'}} @endif">
-        {!! Form::file('logo') !!}
-        @if($errors->has('logo'))
-       		{!! $errors->first('logo', '<label class="control-label" for="inputError">:message</label>') !!}
-      	@endif
+      <div id="container">
+            <div id="uploader">
+                <a id="attachment" href="javascript:;" class="btn btn-success btn-file">
+                    Select File
+                </a>
+            </div>
+      </div>
+
+      <div id='filelist'>
+          Your browser doesn't have Flash, Silverlight or HTML5 support.
       </div>
     </div>
     
@@ -121,4 +126,57 @@ $(document).ready(function () {
   });
 });
 </script>
+
+{{FB::js('assets/plugins/plupload/js/plupload.full.min.js')}}
+<?php
+$successCallback ="
+  var response = JSON.parse(object.response);
+  var wrap = $('#'+file.id);
+  wrap.append('<input type=\"hidden\" class=\"attachment\" name=\"logo\" value=\"'+response.data.fileName+'\" />');
+  wrap.append('<a href=\"#\" data-action=\"compose\" data-url=\"'+response.data.fileName+'\" class=\"cancel_upload\" ><i class=\"fa fa-times\"></i></a>');
+  $('#container').hide();
+  $('.logo').remove();
+  $('#container').before('<img class=\"logo\" src='+response.data.pathName+'/>');
+";
+FB::js(plupload()->button('uploader')->maxSize('2mb')->mimeTypes('image')->resize(90, 90)->url(url('file/upload/data?folder=system'))->autoStart(true)->success($successCallback)->init());
+
+$js ="$(document).on('click', '.cancel_upload', function (e) {
+              e.preventDefault();
+              var url = $(this).data('url');
+              var wrap = $(this).parent();
+              var action = $(this).data('action');
+
+              if (!confirm('Are you sure, you want to delete file?')) return false;
+
+              if (action == 'compose') {
+                  $.ajax({
+                      url: appUrl + 'file/delete',
+                      type: 'GET',
+                      dataType: 'json',
+                      data: {file: url, folder:'expense'}
+                  })
+                      .done(function (response) {
+                          if (response.status == 1) {
+                              wrap.remove();
+                              $('.logo').remove();
+                              $('#container').show();
+                          }
+                          else {
+                              alert(response.data.error);
+                          }
+                      })
+                      .fail(function () {
+                          alert('Connect error!');
+                      })
+              }
+              else {
+                  $('#edit-filelist').remove();
+                  wrap.remove();
+                  $('.logo').remove();
+                  $('#container').show();
+              }
+          });";
+FB::js($js);
+
+?>
 
