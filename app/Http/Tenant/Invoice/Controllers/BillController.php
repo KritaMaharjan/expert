@@ -4,6 +4,7 @@ namespace App\Http\Tenant\Invoice\Controllers;
 
 use App\Fastbooks\Libraries\Pdf;
 use App\Http\Controllers\Tenant\BaseController;
+use App\Http\Tenant\Collection\Models\Collection;
 use App\Http\Tenant\Invoice\Models\Bill;
 use App\Http\Tenant\Invoice\Models\BillProducts;
 use App\Models\Tenant\Customer;
@@ -19,13 +20,14 @@ class BillController extends BaseController {
     protected $bill;
     protected $request;
 
-    public function __construct(Bill $bill, Request $request, Setting $setting)
+    public function __construct(Bill $bill, Request $request, Setting $setting, Collection $collection)
     {
         \FB::can('Invoice');
         parent::__construct();
         $this->bill = $bill;
         $this->request = $request;
         $this->setting = $setting;
+        $this->collection = $collection;
     }
 
     protected $rules = [
@@ -226,7 +228,16 @@ class BillController extends BaseController {
     {
         if($this->request->ajax()) {
             $id = $this->request->route('id');
-            $bill_remaining = Bill::find($id, ['remaining'])->remaining;
+            //$bill_remaining = Bill::find($id, ['remaining'])->remaining;
+            $bill = Bill::find($id);
+
+            $bill_remaining = $bill->remaining;
+
+            if($bill->status == Bill::STATUS_COLLECTION) {
+                $step = $this->request->input('step');
+                $bill_remaining += $this->collection->totalCharge($bill->due_date, $bill->total, $step);
+            }
+
             $payment_rules = [
                 'payment_date' => 'required|date',
                 'paid_amount' => 'required|numeric|maxValue:'.$bill_remaining

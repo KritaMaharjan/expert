@@ -88,7 +88,7 @@
             		    <button class="btn btn-primary" type="submit">Create</button>
             			<a href="#"  data-dismiss="modal" aria-hidden="true" class="btn btn-danger" title="Cancel">Cancel</a>
             		</p>
-            	</div>		
+            	</div>
         	</div>
         {!!Form::close()!!}
         </div>

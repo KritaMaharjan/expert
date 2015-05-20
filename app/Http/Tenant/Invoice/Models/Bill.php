@@ -220,7 +220,7 @@ class Bill extends Model {
         array_push($select, 'c.name');
         array_push($select, 'b.id');
 
-        $query = $this->from('fb_bill as b')->select($select)->join('fb_customers as c', 'b.customer_id', '=', 'c.id');
+        $query = $this->from('fb_bill as b')->select($select)->join('fb_customers as c', 'b.customer_id', '=', 'c.id')->where('b.status','!=', Bill::STATUS_COLLECTION);
 
         if ($is_offer == true)
             $query = $query->where('is_offer', 1);

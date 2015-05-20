@@ -44,7 +44,7 @@
               <p>{{ $data['customer'] }}<br />
               {{ $data['customer_details']['street_name'] }} {{ $data['customer_details']['street_number'] }}<br />
               {{ $data['customer_details']['postcode'] }} {{ $data['customer_details']['town'] }}<br />
-              {{--Country--}}</p>
+              Norway</p>
             </td>
             <td>
               <p><strong>Tlf </strong>{{ $data['company_details']['telephone'] }}<br />
@@ -57,10 +57,10 @@
               </p>
             </td>
             <td>
-              <p><strong>Note payment:</strong> {{ $data['id'] }}<br />
+              <p><strong>Invoice Number:</strong> {{ $data['invoice_number'] }}<br />
                 <strong>Customer number</strong> {{ $data['customer_details']['id'] }}<br />
                 <strong>Var ref.</strong> User sending out bills<br />
-                <strong>Invoice date</strong> {{ date('d-m-y', strtotime($data['invoice_date'])) }}<br />
+                <strong>Fate produced</strong> {{ date('d-m-y', strtotime($data['invoice_date'])) }}<br />
                 <strong>Due date</strong> {{ date('d-m-y', strtotime($data['due_date'])) }}<br />
                 <strong>Currency:</strong> {{ $data['currency'] }}
               </p>
@@ -101,7 +101,7 @@
               <table id="inv-tab2" cellpadding="4" width="100%" style="float:right">
                 <tr>
                   <th style="font-size:9px;"><b>Late fee</b></th>
-                  <th style="font-size:9px;"><b>Paid amounts</b></th>
+                  <th style="font-size:9px;"><b>Amount Paid</b></th>
                   <th style="font-size:9px;"><b>Total</b></th>
                 </tr>
                 <tr>
@@ -115,11 +115,6 @@
         </table>
       <br /><br /><br />
 
-      <div>
-        <p style="font-size:8px"><b style="font-size:9px;">Terms</b><br />
-           Har du nylig betalt kan du use vekk ifra kravet 
-        </p>
-      </div>
       <br />
       <br />
       <br />

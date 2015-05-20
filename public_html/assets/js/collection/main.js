@@ -89,7 +89,11 @@ $(function () {
         else {
             // Open this row
             row.child(format(row.data())).show();
-            $('.datepickerGreater').datepicker({format: 'yyyy-mm-dd', startDate: new Date(), todayHighlight: true});
+            $('#payment_date').datepicker({
+                format: 'yyyy-mm-dd',
+                endDate: new Date(),
+                todayHighlight: true
+            });
             tr.addClass('shown');
         }
     });
@@ -99,6 +103,7 @@ $(function () {
         var payment_option = '<div class="payment-info" style="display: none;">' +
             '<form class="payment-form" id="' + d.id + '" method="post" action="">' +
             '<input type="hidden" name="_token" value="' + token + '">' +
+            '<input type="hidden" name="step" value="' + d.step + '">' +
             '<div class="form-group"><label> Payment date </label><input name="payment_date" id="payment_date" type="text" class="datepicker form-control"></div>' +
             '<div class="form-group"><label> Amount paid </label><input name="paid_amount" id="paid_amount" type="number" class="form-control"></div>' +
             '<div class="bottom-section clearfix">' +
@@ -172,7 +177,7 @@ $(function () {
     $(document).on('click', '.register-case-won', function(e){
         e.preventDefault();
         $('.case-won').toggle();
-    })
+    });
 
     $(document).on('submit', '.case-won', function(e){
         e.preventDefault();

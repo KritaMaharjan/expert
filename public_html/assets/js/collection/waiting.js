@@ -28,7 +28,7 @@ $(function () {
         "fnRowCallback": function (nRow, aData, iDisplayIndex) {
             $(nRow).attr('id', 'collection-' + aData.id);
             return nRow;
-        },
+        }
 
     });
 
@@ -51,23 +51,26 @@ $(function () {
         $.ajax({
             url: appUrl + 'collection/case/' + id + '/create',
             type: 'GET',
-            dataType: 'json',
+            dataType: 'json'
         }).done(function (response) {
             if (response.status == 1) {
                 var alert = notify('success', response.data.message);
-                $this.closest('tr').show();
+                $this.closest('tr').remove();
             }
             else {
-                $this.closest('tr').remove();
                 var alert = notify('danger', response.data.message);
+                $this.closest('tr').show();
             }
-            $('.callout').remove();
-            $('.box-header').after(alert);
+            $('.box-body').prepend(alert);
+            setTimeout(function () {
+                $('.callout').remove();
+            }, 3000);
 
         }).fail(function () {
             alert('error');
+            $this.closest('tr').show();
         });
-    })
+    });
 
     function notify(type, text) {
         return '<div class="callout callout-' + type + '"><p>' + text + '</p></div>';

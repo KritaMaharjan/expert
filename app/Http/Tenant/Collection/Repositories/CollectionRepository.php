@@ -354,8 +354,8 @@ class CollectionRepository {
         $data = $this->getBillInfo($bill, $step);
         $pdf = new Pdf();
         $fileName = $data['invoice_number'] . '-' . $step;
-        //$filePath = $pdf->generate($fileName, 'template.collection.' . $step, compact('data'), $download, $save);
-        $filePath = $pdf->generate($fileName, 'template.collection.' . $step, compact('data'));
+        $filePath = $pdf->generate($fileName, 'template.collection.' . $step, compact('data'), $download, $save);
+        //$filePath = $pdf->generate($fileName, 'template.collection.' . $step, compact('data'));
         return [$fileName, $filePath];
     }
 

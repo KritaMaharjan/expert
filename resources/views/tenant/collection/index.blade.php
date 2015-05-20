@@ -62,5 +62,4 @@ Collections
 <link href="{{tenant()->url('assets/plugins/timepicker/bootstrap-timepicker.min.css')}}" rel="stylesheet"/>
 {{FB::js('assets/plugins/timepicker/bootstrap-timepicker.min.js')}}
 
-
 @stop
