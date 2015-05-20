@@ -1,49 +1,5 @@
 $(function () {
 
-    var tasksDatatable = $("#table-tasks").dataTable({
-        "dom": '<"top"f>rt<"bottom"lip><"clear">',
-        "order": [[0, "desc"]],
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": appUrl + 'tasks/data',
-            "type": "POST"
-        },
-
-
-        "columnDefs": [{
-            "orderable": false,
-            "targets": 4,
-            "render": function (data, type, row) {
-                return showActionbtn(row);
-            }
-        },
-            {
-                "targets": 2,
-                "render": function (data, type, row) {
-                    return '<a href="#" data-toggle="modal" data-url="' + row.show_url + '" data-target="#fb-modal">' +
-                    data + '</a>';
-                }
-            }
-        ],
-        "columns": [
-            {"data": "id"},
-            {"data": "subject"},
-            {"data": "due_date"},
-            {"data": "is_complete"}
-
-        ],
-
-        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
-
-            $(nRow).attr('id', 'tasks-' + aData.id);
-            return nRow;
-        }
-
-    });
-
-  
-
     function loadTaskList(type,page) {
 
         if (type != 0 && type != 1)
@@ -86,8 +42,6 @@ $(function () {
     });
 
 
-
-
 $(document).on('submit', '#task-form', function (e) {
         e.preventDefault();
         var form = $(this);
@@ -110,7 +64,7 @@ $(document).on('submit', '#task-form', function (e) {
         })
             .done(function (response) {
                 if (response.status === 1) {
-                    $('#fb-modal').modal('hide');
+                    $('#task-modal-data').modal('hide');
                     var ul = $('.box-body ul');
                     if (requestType == 'Add') {
                         $('.mainContainer .main-box-solid').before(notify('success', 'Task added Successfully'));

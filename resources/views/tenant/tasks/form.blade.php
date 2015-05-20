@@ -42,25 +42,21 @@
     </div>
 
 </div>
-
-<link href="http://demo.mashbooks.app/assets/plugins/timepicker/bootstrap-timepicker.min.css" rel="stylesheet"/>
-<script type="text/javascript">
-  $(function(){
-    $('.due_date').datepicker({format: 'yyyy-mm-dd',startDate :new Date()});
-    $('.timepicker').timepicker({ showInputs: false});
-  });
-</script>
-
 <?php
-$successCallback ="
-  var response = JSON.parse(object.response);
-  var wrap = $('#'+file.id);
-  wrap.append('<input type=\"hidden\" class=\"attachment\" name=\"file[]\" value=\"'+response.data.fileName+'\" />');
-  wrap.append('<a href=\"#\" data-action=\"compose\" data-url=\"'+response.data.fileName+'\" class=\"cancel_upload\" ><i class=\"fa fa-times\"></i></a>');
-";
-FB::js(plupload()->button('attachment')->maxSize('20mb')->mimeTypes('file')->url(url('file/upload/data?folder=todo'))->autoStart(true)->success($successCallback)->init());
+    $successCallback ="
+        var response = JSON.parse(object.response);
+        var wrap = $('#'+file.id);
+        wrap.append('<input type=\"hidden\" class=\"attachment\" name=\"file[]\" value=\"'+response.data.fileName+'\" />');
+        wrap.append('<a href=\"#\" data-action=\"compose\" data-url=\"'+response.data.fileName+'\" class=\"cancel_upload\" ><i class=\"fa fa-times\"></i></a>');
+    ";
+?>
 
-$js ="$(document).on('click', '.cancel_upload', function (e) {
+<script type="text/javascript">
+    $(function(){
+        {!! plupload()->button('attachment')->maxSize('20mb')->mimeTypes('file')->url(url('file/upload/data?folder=todo'))->autoStart(true)->success($successCallback)->init() !!}
+    });
+
+    $(document).on('click', '.cancel_upload', function (e) {
               e.preventDefault();
               var url = $(this).data('url');
               var wrap = $(this).parent();
@@ -94,8 +90,17 @@ $js ="$(document).on('click', '.cancel_upload', function (e) {
                   $('.edit-attachment').remove();
                   $('#container').show();
               }
-          });";
-FB::js($js);
+          });
+</script>
+
+
+<link href="http://demo.mashbooks.app/assets/plugins/timepicker/bootstrap-timepicker.min.css" rel="stylesheet"/>
+<script type="text/javascript">
+  $(function(){
+    $('.due_date').datepicker({format: 'yyyy-mm-dd',startDate :new Date()});
+    $('.timepicker').timepicker({ showInputs: false});
+  });
+</script>
 
 
 

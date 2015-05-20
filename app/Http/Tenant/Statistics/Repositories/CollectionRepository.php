@@ -91,8 +91,8 @@ class CollectionRepository {
         $totalInkassovarsel = $this->getCasesByStepChartData('inkassovarsel');
         $this->addOrCreateArray($totalInkassovarsel, 4);
 
-        $totalBetalingsappfording = $this->getCasesByStepChartData('betalingsappfording');
-        $this->addOrCreateArray($totalBetalingsappfording, 5);
+        $totalBetalingsoppfording = $this->getCasesByStepChartData('betalingsappfording');
+        $this->addOrCreateArray($totalBetalingsoppfording, 5);
 
         return ($this->chartData);
     }

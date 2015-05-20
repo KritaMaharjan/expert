@@ -33,7 +33,7 @@ class Collection extends Model {
 
     const STEP_PURRING = 1;
     const STEP_INKASSOVARSEL = 2;
-    const STEP_BETALINGSAPPFORDING = 3;
+    const STEP_BETALINGSOPPFORDING = 3;
     const STEP_COURT = 4;
     const STEP_UTLEGG = 5;
 
@@ -59,7 +59,7 @@ class Collection extends Model {
                 break;
 
             case 'betalingsappfording':
-                return self::STEP_BETALINGSAPPFORDING;
+                return self::STEP_BETALINGSOPPFORDING;
                 break;
 
             case 'court':
@@ -85,10 +85,10 @@ class Collection extends Model {
                 break;
 
             case 'inkassovarsel':
-                return 'betalingsappfording';
+                return 'betalingsoppfording';
                 break;
 
-            case 'betalingsappfording':
+            case 'betalingsoppfording':
                 return 'court';
                 break;
 
