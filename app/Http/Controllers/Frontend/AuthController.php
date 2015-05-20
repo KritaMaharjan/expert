@@ -129,7 +129,7 @@ class AuthController extends BaseController {
         $string = explode(' ', $string);
         $string = strtolower($string[0]);
         $clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $string);
-        $domain = preg_replace("/[\/_|+ -]+/", '-', $clean);
+        $domain = preg_replace("/[\/_|+ -]+/", '', $clean);
 
         $domain = $this->checkDomainExists($domain);
 
@@ -144,7 +144,6 @@ class AuthController extends BaseController {
     public function getDomainSuggestion($company_name = '')
     {
         $domain = $this->createDomain($company_name);
-
         return \Response::json($domain);
     }
 
