@@ -1442,3 +1442,8 @@ textarea.list-bx {
     margin: 0 0 10px;
     padding: 5px 30px 5px 15px;
 }
+
+
+.datepicker-dropdown::before,.datepicker-dropdown::after{
+    display: none!important;
+}
