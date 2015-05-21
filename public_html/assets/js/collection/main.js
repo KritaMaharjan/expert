@@ -116,13 +116,17 @@ $(function () {
         var register_payment = '<li><a class="link-block" href="#">Register payment</a></li>';
         var create_pdf = '<li><a href="' + appUrl + 'collection/' + d.step + '/pdf?bill=' + bill + '&token=' + token + '">Create a ' + d.step + '.pdf</a></li>' ;
 
-        if(d.step == 'betalingsappfording')
+        if(d.step == 'betalingsoppfording')
         {
-            register_dispute =  '<li>' +
-            '<a href="#"  data-original-title="Court Case" data-target="#fb-modal" data-toggle="modal" data-url="' + appUrl + 'collection/dispute?bill=' + bill + '&token=' + token + '">Court Case</a>' +
-            ' OR ' +
-            '<a href="' + appUrl + 'collection/gotostep/utlegg?bill=' + bill + '&token=' + token + '">Send directly to sheriff </a>';
-            '</li>';
+            if(d.deadline < 1) {
+                register_dispute = '<li>' +
+                '<a href="#"  data-original-title="Court Case" data-target="#fb-modal" data-toggle="modal" data-url="' + appUrl + 'collection/dispute?bill=' + bill + '&token=' + token + '">Court Case</a>' +
+                ' OR ' +
+                '<a href="' + appUrl + 'collection/gotostep/utlegg?bill=' + bill + '&token=' + token + '">Send directly to sheriff </a>';
+                '</li>';
+            }
+            else
+                register_dispute = ' OR ';
         }
         else if(d.step == 'court') {
             if(d.payment_date =='')

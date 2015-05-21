@@ -97,7 +97,10 @@ class Tasks extends Model
                           <label>Due date:</label>
                           <span>'.format_datetime($task['due_date']).'</span>
                         </div>'.$completed_date.'
-                        <p>'.nl2br($task['body']).'</p>
+                        <div>
+                          <label>Description:</label>
+                          <span>'.nl2br($task['body']).'</span>
+                        </div>
                       </div>';
         if($update == false)
             return "<li id='".$task['id']."'>".$template."</li>";

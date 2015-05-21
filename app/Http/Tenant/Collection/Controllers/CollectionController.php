@@ -94,9 +94,8 @@ class CollectionController extends BaseController {
             $step = $this->request->route('step');
             $id = $this->request->get('bill');
             $this->changeStep($id, $step);
-            return redirect()->back();
+            return tenant()->redirect('collection?step='.$step);
         }
-
         show_404();
     }
 
@@ -174,7 +173,8 @@ class CollectionController extends BaseController {
                 if(CourtCase::create($case))
                 {
                     $this->changeStep($bill, 'court');
-                    return redirect()->back();
+                    return tenant()->redirect('collection?step=court');
+                    //return redirect()->back();
                 }
             }
         show_404();

@@ -39,7 +39,7 @@ class Bill extends Model {
      *
      * @var array
      */
-    protected $fillable = ['invoice_number', 'customer_id', 'currency', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'payment', 'full_payment_date', 'status', 'due_date', 'type', 'is_offer', 'customer_payment_number', 'vat'];
+    protected $fillable = ['user_id', 'invoice_number', 'customer_id', 'currency', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'payment', 'full_payment_date', 'status', 'due_date', 'type', 'is_offer', 'customer_payment_number', 'vat'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -63,7 +63,7 @@ class Bill extends Model {
         return $this->hasMany('App\Http\Tenant\Invoice\Models\BillPayment');
     }
 
-    function add(Request $request, $offer = false)
+    function add(Request $request, $user_id, $offer = false)
     {
         // Start transaction!
         DB::beginTransaction();
@@ -72,6 +72,7 @@ class Bill extends Model {
             $vat = $request->input('vat');
 
             $bill = Bill::create([
+                'user_id'        => $user_id,
                 'invoice_number' => $this->getPrecedingInvoiceNumber($customer_id),
                 'customer_id'    => $customer_id,
                 'due_date'       => $request->input('due_date'),

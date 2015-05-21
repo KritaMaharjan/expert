@@ -58,7 +58,7 @@ class Collection extends Model {
                 return self::STEP_INKASSOVARSEL;
                 break;
 
-            case 'betalingsappfording':
+            case 'betalingsoppfording':
                 return self::STEP_BETALINGSOPPFORDING;
                 break;
 
@@ -138,7 +138,7 @@ class Collection extends Model {
         $dStart = new \DateTime();
         $dEnd  = new \DateTime($invoice_date);
         $dDiff = $dStart->diff($dEnd);
-        $diff = $dDiff->days;
+        $diff = $dDiff->days + 1; // including the due date
         // Formula (9,5% / 365)*amount*days
         $interest =((self::INTEREST_RATE/100) / 365) * $bill_amount * $diff;
         return number_format($interest, 2);

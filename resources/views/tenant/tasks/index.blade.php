@@ -20,8 +20,8 @@ Tasks
                   <i class="fa fa-clipboard"></i>
                   <h3 class="box-title">Upcoming Tasks</h3>
                   <div class="box-tools pull-right">
-                    <a href="#" title="New Task" data-original-title="New Task" class="btn btn-primary" data-toggle="modal" data-type="personal" data-target="#task-modal-data">
-                        <i class="fa fa-pencil"></i> New Task
+                    <a class="btn btn-primary" data-toggle="modal" data-url="#task-modal-data" data-target="#fb-modal">
+                        <i class="fa fa-plus"></i> Add New Task
                     </a>
                   </div>
                 </div><!-- /.box-header -->
@@ -56,12 +56,10 @@ Tasks
         </div><!-- /.box -->
         </div>
 </div>
-<div class="modal modal-right fade" id="task-modal-data" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            @include('tenant.tasks.create')
-        </div>
-    </div>
+<div id="task-modal-data" class="hide">
+     <div class="box box-solid">
+        @include('tenant.tasks.create')
+     </div>
  </div>
 
 {{--Load JS--}}

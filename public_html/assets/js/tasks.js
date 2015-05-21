@@ -64,7 +64,7 @@ $(document).on('submit', '#task-form', function (e) {
         })
             .done(function (response) {
                 if (response.status === 1) {
-                    $('#task-modal-data').modal('hide');
+                    $('#fb-modal').modal('hide');
                     var ul = $('.box-body ul');
                     if (requestType == 'Add') {
                         $('.mainContainer .main-box-solid').before(notify('success', 'Task added Successfully'));

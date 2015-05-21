@@ -27,7 +27,10 @@
                   <label>Due date:</label>
                   <span>{{ format_datetime($task->due_date) }}</span>
                 </div>
-                <p>{!! nl2br($task->body) !!}</p>
+                <div>
+                  <label>Description:</label>
+                  <span>{!! nl2br($task->body) !!}</span>
+                </div>
               </div>
             </li>
             @endforeach

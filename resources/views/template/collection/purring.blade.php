@@ -38,7 +38,7 @@
         <tr>
           <td></td>
           <td></td>
-          <td><h2>Purring</h2></td>
+          <td><h2>PURRING</h2></td>
         </tr>
         <tr>
           <td>
@@ -58,9 +58,9 @@
             </p>
           </td>
           <td>
-            <p><strong>Note payment:</strong> {{ $data['id'] }}<br />
+            <p><strong>Note payment:</strong> <br />
               <strong>Customer number</strong> {{ $data['customer_details']['id'] }}<br />
-              <strong>Var ref.</strong> User sending out bills<br />
+              <strong>Var ref.</strong> {{ $data['invoice_number'] }}<br />
               <strong>Invoice date</strong> {{ date('d-m-y', strtotime($data['invoice_date'])) }}<br />
               <strong>Due date</strong> {{ date('d-m-y', strtotime($data['due_date'])) }}<br />
               <strong>Currency:</strong> {{ $data['currency'] }}
@@ -82,7 +82,7 @@
         <tbody>
           <tr>
             <td><small>{{ $data['invoice_number'] }}</small></td>
-            <td><small>Purring</small></td>
+            <td><small>PURRING</small></td>
             <td><small>{{ date('d-m-y', strtotime($data['invoice_date'])) }}</small></td>
             <td><small>{{ date('d-m-y', strtotime($data['due_date'])) }}</small></td>
             <td><small>{{ $data['remaining'] }}</small></td>
@@ -114,7 +114,7 @@
 
       <div>
         <p style="font-size:8px"><b style="font-size:9px;">Terms</b><br />
-           Har du nylig betalt kan du use vekk ifra kravet
+            Har du nylig betalt kan du se vekk ifra kravet.
         </p>
       </div>
       <br />
@@ -139,7 +139,7 @@
             <td> <span style="text-indent: 10px;">9879879879789</span></td>
             <td><p class="border-block" bgcolor="#ffffff">&nbsp; {{ $data['amount'] }}</p></td>
             <td><p class="border-block" bgcolor="#ffffff">{{ $data['customer_payment_number'] }}</p></td>
-            <td><p class="border-block" bgcolor="#ffffff">form number</p></td>
+            <td><p class="border-block" bgcolor="#ffffff"></p></td>
           </tr>
       </table>
       <table cellpadding="5">
@@ -194,13 +194,10 @@
                 <td style="text-indent:15px;">{{ $data['customer_details']['name'] }}</td>
                </tr>
                <tr>
-                <td style="text-indent:15px;">{{ $data['customer_details']['street_number'] or '' }} {{ $data['customer_details']['street_address'] or '' }}</td>
+                <td style="text-indent:15px;">{{ $data['customer_details']['street_address'] or '' }} {{ $data['customer_details']['street_number'] or '' }}</td>
                </tr>
                <tr>
-                <td style="text-indent:15px;">{{ $data['customer_details']['town'] or '' }}</td>
-               </tr>
-               <tr>
-                <td style="text-indent:15px;">{{ $data['customer_details']['address'] or ''}}</td>
+                <td style="text-indent:15px;">{{ $data['customer_details']['postcode'] or ''}} {{ $data['customer_details']['town'] or '' }}</td>
                </tr>
               </tbody>
              </table>
@@ -217,7 +214,10 @@
                    <tr>
                     <td style="text-indent:15px;">{{ $data['company_details']['address'] }}</td>
                     </tr>
-                   <tr>
+                    <tr>
+                    <td style="text-indent:15px;">{{ $data['company_details']['country'] }}</td>
+                    </tr>
+                   {{--<tr>
                     <td style="text-indent:15px;">{{ $data['company_details']['telephone'] }}</td>
                     </tr>
                    <tr>
@@ -225,7 +225,7 @@
                     </tr>
                    <tr>
                     <td style="text-indent:15px;">Website: {{ $data['company_details']['website'] or 'Mangler informasjon, se instillinger' }}</td>
-                    </tr>
+                    </tr>--}}
                   </tbody>
                 </table>
             </td>
@@ -263,34 +263,34 @@
         </tr>
       </table>
       <table class="footer" cellpadding="6">
-        <tr>
-          <td width="30%" style="border-right:1px solid #ccc;">
-            <table><tr><td>Customer Payment Number</td></tr></table>
-            <table cellpadding="5"><tr style="text-align: right;">
-              <td>{{ $data['customer_payment_number'] }}</td>
+              <tr>
+                <td width="30%" style="border-right:1px solid #ccc;">
+                  <table><tr><td>Note Payment</td></tr></table>
+                  <table cellpadding="5"><tr style="text-align: right;">
+                    <td>{{ $data['invoice_number'] }}</td>
+                    </tr>
+                  </table>
+                </td>
+                <td width="20%" style="border-right:1px solid #fff000;">
+                  <table><tr><td>Crowns</td></tr></table>
+                  <table  cellpadding="5"><tr style="text-align: right;">
+                    <td>{{ $data['currency'] }}</td>
+                    </tr>
+                  </table>
+                </td>
+                <td width="11%">
+                  <table><tr><td>Ore</td></tr></table>
+                  <table  cellpadding="5"><tr>
+                    <td>{{ $data['amount'] * 100 }}</td>
+                    </tr>
+                  </table>
+                </td>
+                <td width="39%">
+                  <table><tr><td>To account</td></tr></table>
+                  <table  cellpadding="5"><tr>
+                    <td>{{ $data['customer_payment_number'] }}</td>
+                    </tr>
+                  </table>
+                </td>
               </tr>
             </table>
-          </td>
-          <td width="20%" style="border-right:1px solid #fff000;">
-            <table><tr><td>Crowns</td></tr></table>
-            <table  cellpadding="5"><tr style="text-align: right;">
-              <td>296</td>
-              </tr>
-            </table>
-          </td>
-          <td width="11%">
-            <table><tr><td>Ore</td></tr></table>
-            <table  cellpadding="5"><tr>
-              <td>56 &lt; 6 &gt;</td>
-              </tr>
-            </table>
-          </td>
-          <td width="39%">
-            <table><tr><td>To account</td></tr></table>
-            <table  cellpadding="5"><tr>
-              <td>60050625977</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>

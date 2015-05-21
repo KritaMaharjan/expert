@@ -137,7 +137,7 @@
           <tr bgcolor="#FFFF00" >
             <td> <span style="text-indent: 10px;">9879879879789</span></td>
             <td><p class="border-block" bgcolor="#ffffff" >&nbsp; {{ $data['amount'] }}</p></td>
-            <td><p class="border-block" bgcolor="#ffffff"></p></td>
+            <td><p class="border-block" bgcolor="#ffffff">{{ $data['customer_payment_number'] }}</p></td>
             <td><p class="border-block" bgcolor="#ffffff"></p></td>
           </tr>
       </table>
@@ -167,8 +167,8 @@
               <tbody>
                <tr>
                 <td style="font-size:13px;">GIRO</td>
-                <td style="font-size:11px;">Payment first</td>
-                <td class="border-block" bgcolor="#ffffff"></td>
+                <td style="font-size:11px;">Payment deadline</td>
+                <td class="border-block" bgcolor="#ffffff">{{ $data['due_date'] }}</td>
                </tr>
               </tbody>
              </table>
@@ -262,34 +262,34 @@
         </tr>
       </table>
       <table class="footer" cellpadding="6">
-        <tr>
-          <td width="30%" style="border-right:1px solid #ccc;">
-            <table><tr><td>Customer Payment Number</td></tr></table>
-            <table cellpadding="5"><tr style="text-align: right;">
-              <td>{{ $data['customer_payment_number'] }}</td>
+              <tr>
+                <td width="30%" style="border-right:1px solid #ccc;">
+                  <table><tr><td>Note Payment</td></tr></table>
+                  <table cellpadding="5"><tr style="text-align: right;">
+                    <td>{{ $data['invoice_number'] }}</td>
+                    </tr>
+                  </table>
+                </td>
+                <td width="20%" style="border-right:1px solid #fff000;">
+                  <table><tr><td>Crowns</td></tr></table>
+                  <table  cellpadding="5"><tr style="text-align: right;">
+                    <td>{{ $data['currency'] }}</td>
+                    </tr>
+                  </table>
+                </td>
+                <td width="11%">
+                  <table><tr><td>Ore</td></tr></table>
+                  <table  cellpadding="5"><tr>
+                    <td>{{ $data['amount'] * 100 }}</td>
+                    </tr>
+                  </table>
+                </td>
+                <td width="39%">
+                  <table><tr><td>To account</td></tr></table>
+                  <table  cellpadding="5"><tr>
+                    <td>{{ $data['customer_payment_number'] }}</td>
+                    </tr>
+                  </table>
+                </td>
               </tr>
             </table>
-          </td>
-          <td width="20%" style="border-right:1px solid #fff000;">
-            <table><tr><td>Crowns</td></tr></table>
-            <table  cellpadding="5"><tr style="text-align: right;">
-              <td>296</td>
-              </tr>
-            </table>
-          </td>
-          <td width="11%">
-            <table><tr><td>Ore</td></tr></table>
-            <table  cellpadding="5"><tr>
-              <td>56 &lt; 6 &gt;</td>
-              </tr>
-            </table>
-          </td>
-          <td width="39%">
-            <table><tr><td>To account</td></tr></table>
-            <table  cellpadding="5"><tr>
-              <td>60050625977</td>
-              </tr>
-            </table>
-          </td>
-        </tr>
-      </table>

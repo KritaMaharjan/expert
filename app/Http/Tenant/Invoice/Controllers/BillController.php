@@ -95,7 +95,7 @@ class BillController extends BaseController {
         if ($validator->fails())
             return redirect()->back()->withErrors($validator)->withInput();
 
-        $this->bill->add($this->request);
+        $this->bill->add($this->request, $this->current_user()->id);
 
         Flash::success('Bill added successfully!');
         return tenant()->route('tenant.invoice.bill.index');

@@ -326,6 +326,7 @@ class TenantTable {
         if (!Schema::hasTable($this->tbl_profix . 'bill')) {
             Schema::create($this->tbl_profix . 'bill', function ($table) {
                 $table->increments('id'); // autoincrement value of a tenant admin
+                $table->integer('user_id'); // user who issued the bill
                 $table->string('invoice_number', 25);
                 $table->integer('customer_id')->index(); // customer id
                 $table->string('currency', 10);
