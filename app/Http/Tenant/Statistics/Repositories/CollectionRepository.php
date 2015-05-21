@@ -205,8 +205,8 @@ class CollectionRepository {
      */
     function getCollectionStats($filter = null) {
         if($filter != null && $filter['start_date'] != '' && $filter['end_date'] != '') {
-            $this->from = $filter['start_date'];
-            $this->to = $filter['end_date'];
+            $this->from = Carbon::createFromFormat('Y-m-d', $filter['start_date'])->subDay();
+            $this->to = Carbon::createFromFormat('Y-m-d', $filter['end_date'])->addDay();
         } else {
             $this->from = '0000-00-00';
             $this->to = Carbon::now();

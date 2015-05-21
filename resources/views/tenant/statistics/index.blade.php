@@ -166,10 +166,10 @@ Statistics
                      <label>Salaries:</label>
                      <span>{{ $account_stats['total_paid_salary'] }}- NOK</span>
                    </div>
-                   <div class="form-group">
+                   {{--<div class="form-group">
                      <label>Advertising expenses:</label>
                      <span>5,500,500 NOK</span>
-                   </div>                 
+                   </div>--}}
                    <div class="form-group">
                      <label>Cost of sale:</label>
                      <span>{{ $account_stats['total_sales_cost'] }} - NOK</span>

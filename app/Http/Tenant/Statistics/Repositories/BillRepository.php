@@ -43,7 +43,8 @@ class BillRepository {
      * Average time for full payment from the date bill was issued (created)
      */
     function getAvgPaymentTime() {
-        $query = Bill::select(DB::raw("AVG(DATEDIFF(full_payment_date, created_at))AS days"))->whereNotNull('full_payment_date')->whereBetween('created_at', array($this->from, $this->to))->first();
+        $query = Bill::select(DB::raw("(DATEDIFF(full_payment_date, created_at))AS days, full_payment_date, created_at"))->whereNotNull('full_payment_date')->whereBetween('created_at', array($this->from, $this->to))->first();
+        //$query = Bill::select(DB::raw("AVG(DATEDIFF(full_payment_date, DATE(created_at)))AS days"))->whereNotNull('full_payment_date')->whereBetween('created_at', array($this->from, $this->to))->first();
         return (int)$query->days;
     }
 
@@ -182,8 +183,8 @@ class BillRepository {
      */
     function getBillStats($filter = null) {
         if($filter != null && $filter['start_date'] != '' && $filter['end_date'] != '') {
-            $this->from = $filter['start_date'];
-            $this->to = $filter['end_date'];
+            $this->from = Carbon::createFromFormat('Y-m-d', $filter['start_date'])->subDay();
+            $this->to = Carbon::createFromFormat('Y-m-d', $filter['end_date'])->addDay();
         } else {
             $this->from = '0000-00-00';
             $this->to = Carbon::now();

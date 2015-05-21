@@ -7,6 +7,7 @@ use App\Http\Tenant\Accounting\Models\Payroll;
 use App\Http\Tenant\Inventory\Models\Product;
 use App\Http\Tenant\Invoice\Models\Bill;
 use App\Http\Tenant\Invoice\Models\BillProducts;
+use App\Http\Tenant\Statistics\Repositories\BillRepository;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
@@ -21,12 +22,13 @@ class AccountRepository {
      * Total income after removing all the expenditures
      */
     function getTotalIncome() {
-        $bill_paid = $this->getAmountPaid();
+        $bill_repo = new BillRepository;
+        $total_billed = $bill_repo->getTotalBilled();
         $sales_cost = $this->getSalesCost();
         $expenses = $this->getTotalExpenses();
         $salaries = $this->getSalaryPaid();
 
-        $total = $bill_paid - $sales_cost - $expenses - $salaries;
+        $total = $total_billed - $sales_cost - $expenses - $salaries;
         return $total;
     }
 
@@ -254,8 +256,8 @@ class AccountRepository {
      */
     function getAccountStats($filter = null) {
         if($filter != null && $filter['start_date'] != '' && $filter['end_date'] != '') {
-            $this->from = $filter['start_date'];
-            $this->to = $filter['end_date'];
+            $this->from = Carbon::createFromFormat('Y-m-d', $filter['start_date'])->subDay();
+            $this->to = Carbon::createFromFormat('Y-m-d', $filter['end_date'])->addDay();
         } else {
             $this->from = '0000-00-00';
             $this->to = Carbon::now();
