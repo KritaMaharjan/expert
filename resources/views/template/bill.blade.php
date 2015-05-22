@@ -4,18 +4,128 @@
   }
      th, td {
       padding: 10px;
+      font-size: 9px;
   }
      h1{
-      font-size:20px;
+      font-size:15px;
       font-weight:600;
       line-height:2;
-     }         
+     }
+     small{
+      font-size: 8px;
+     }
      .border{border:1px solid #dbdbdb;}
      .border-block{border:1px solid #dbdbdb;line-height:2;}
      .fix-size{border:1px solid #dbdbdb;line-height:4;}
      .sm-box{line-height:1.5;}
      .footer{border-bottom: 3px solid #FFFF00;}
+     .center{text-align: center;}
+     .right{text-align: right;}
+   
+     table#inv-tab th,table#inv-tab2 th{
+        border-bottom: 1px solid #333;
+     }
   </style>
+
+
+          <table width="100%">
+        <tr>
+          <td colspan="3">{!! (isset($data['company_details']['logo']))? '<img src ="'.tenant()->folder('system')->url($data['company_details']['logo']).' "/>' : "<h1>Logo</h1>" !!}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><p>Centco Corporate Services<br />
+                Middelthunsgate 25B<br />
+                0368
+          </p></td>
+          <td style="vertical-align:top;"><h3 style="margin:0;">Invoice <small>00172</small></h3> </td>
+        </tr>
+        <tr>
+          <td style="vertical-align:top;">
+            <p>Remy Andre Johansen<br />
+            Mannsverk 63 BERGEN 5094<br />
+            Norway</p>
+          </td>
+          <td>
+            <p><strong>Tlf </strong>{{ $data['company_details']['telephone'] }}<br />
+              <strong>Fax </strong>{{ $data['company_details']['fax'] }}<br />
+              <strong>Epost </strong>{{ $data['company_details']['service_email'] }}<br />
+              <strong>Org.nr.</strong> {{ $data['company_details']['company_number'] }}<br />
+              <strong>Account Number</strong> {{ $data['company_details']['account_no'] }}<br />
+              <strong>Swift -</strong> {{ $data['company_details']['swift_num'] }}<br />
+              <strong>IBAN -</strong> {{ $data['company_details']['iban_num'] }}
+            </p>
+          </td>
+          <td>
+            <p><strong>Note payment:</strong> <br />
+              <strong>Customer number</strong> {{ $data['customer_details']['id'] }}<br />
+              <strong>Var ref.</strong> {{ $data['invoice_number'] }}<br />
+              <strong>Invoice date</strong> {{ date('d-m-y', strtotime($data['invoice_date'])) }}<br />
+              <strong>Due date</strong> {{ date('d-m-y', strtotime($data['due_date'])) }}<br />
+              <strong>Currency:</strong> {{ $data['currency'] }}
+            </p>
+          </td>
+        </tr>
+      </table><br /><br /><br /><br />
+
+      <table id="inv-tab" cellpadding="4" width="100%">
+        <thead>
+          <tr>
+            <th style="font-size:10px;padding:6px 0px;"><b>Code</b></th>
+            <th style="font-size:10px;padding:6px 0px;"><b>Name</b></th>
+            <th style="font-size:10px;padding:6px 0px;"><b>No.</b></th>
+            <th style="font-size:10px;padding:6px 0px;"><b>Price</b></th>
+            <th style="font-size:10px;padding:6px 0px;"><b>MVA</b></th>
+            <th style="font-size:10px;padding:6px 0px;"><b>Total</b></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+            <td>NUF New registration</td>
+            <td>1</td>
+            <td>1,399.00</td>
+            <td>0.00</td>
+            <td>1,399.00</td>
+          </tr>
+        </tbody>
+
+      </table>
+      <br /><br />
+        <table width="100%">
+          <tr>
+            <td width="50%"></td>
+            <td>
+              <table id="inv-tab2" cellpadding="4" width="100%" style="float:right">
+                <tr>
+                  <th style="font-size:10px;"><b></b></th>
+                  <th style="font-size:10px;"><b>Net</b></th>
+                  <th style="font-size:10px;"><b>MVA</b></th>
+                  <th style="font-size:10px;"><b>Gross</b></th>
+                </tr>
+                <tr>
+                  <td><b>Sum</b></td>
+                  <td>1,399.00</td>
+                  <td>0.00</td>
+                  <td>1,399.00</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      <br /><br /><br />
+
+      <div>
+        <p style="font-size:10px"><b style="font-size:10px;">Terms</b><br />
+            As soon as the invoice is paid, we will commence the registration.
+        </p>
+      </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
 
       <table id="print">
           <tr bgcolor="#FFFF00"><td colspan="4"><h1 style="text-indent: 5px;">Receipt</h1></td></tr>
