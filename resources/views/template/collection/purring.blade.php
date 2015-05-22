@@ -21,9 +21,7 @@
      .footer{border-bottom: 3px solid #FFFF00;}
      .center{text-align: center;}
      .right{text-align: right;}
-     #purring-detail{
-     }
-
+   
      table#inv-tab th,table#inv-tab2 th{
         border-bottom: 1px solid #333;
      }
