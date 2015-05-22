@@ -45,7 +45,9 @@
     }
 
     $("#paidout-date-pickers").datepicker({
-        "format": "yyyy-mm-dd"
+        "format": "yyyy-mm-dd",
+        endDate: new Date(),
+        todayHighlight:true
     });
 
     // on change for type

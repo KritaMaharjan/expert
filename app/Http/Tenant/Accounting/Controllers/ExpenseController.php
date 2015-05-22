@@ -39,7 +39,7 @@ class ExpenseController extends BaseController {
 
         $total = $this->getTotal($this->request->all());
 
-        $this->expense_rules['amount_paid'] = 'numeric|maxValue:'.$total;
+        $this->expense_rules['amount_paid'] = 'numeric|maxValue:'.$total.'|minPaymentValue';
 
         $validator = \Validator::make($this->request->all(), $this->expense_rules);
         if ($validator->fails())

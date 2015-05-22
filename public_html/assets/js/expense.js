@@ -68,7 +68,15 @@
     }
 
     $(".date-picker").datepicker({
-        "format": "yyyy-mm-dd"
+        "format": "yyyy-mm-dd",
+        startDate:new Date(),
+        todayHighlight:true
+    });
+
+    $("#payment-date-picker, #billing-date-picker").datepicker({
+        "format": "yyyy-mm-dd",
+        endDate:new Date(),
+        todayHighlight:true
     });
 
     function selectProduct() {
@@ -125,7 +133,7 @@
                     if (response.status == 'fail') {
                         $.each(response.errors, function (i, v) {
                             $('.modal-body #' + i).parent().addClass('has-error');
-                            $('.modal-body #' + i).after('<label class="error error-' + i + '">' + v + '<label>');
+                            $('.modal-body #' + i).after('<label class="error error-' + i + '">' + v[0] + '<label>');
                         });
                     }
                 }
@@ -214,7 +222,7 @@
                     $.each(response.data.errors, function( index, value ) {
                         var errorDiv = '.box-body #'+index;
                         $(errorDiv).closest( ".form-group" ).addClass('has-error');
-                        $('.box-body #'+index).after('<label class="error error-'+index+'">'+value+'<label>');
+                        $('.box-body #'+index).after('<label class="error error-frm error-'+index+'">'+value[0]+'<label>');
                     });
                 }
 

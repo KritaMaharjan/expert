@@ -26,3 +26,10 @@ Validator::extend('maxValue', function ($attribute, $value, $parameters) {
     else
         return false;
 });
+
+Validator::extend('minPaymentValue', function ($attribute, $value) {
+    if(0 < $value)
+        return true;
+    else
+        return false;
+});

@@ -54,7 +54,7 @@ class AccountingController extends BaseController {
             return redirect()->back()->withErrors($validator)->withInput();
         $this->payroll->createPayroll($this->request);
         Flash::success('Payslip added successfully!');
-        return tenant()->route('tenant.accounting.account.payroll');
+        return tenant()->route('tenant.accounting.payroll');
     }
 
     public function employeePayrollDetails()

@@ -75,6 +75,7 @@ return [
     "timezone"             => "The :attribute must be a valid zone.",
     'valid_array_email'    => 'Invalid Emails',
     'max_value' => 'The amount exceeds required payment amount.',
+    'min_payment_value' => 'The amount cannot be less than 1.',
 
     /*
     |--------------------------------------------------------------------------

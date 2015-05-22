@@ -13,6 +13,7 @@ Payroll Report
 @section('content')
     <div class="box box-solid">
         <div class="box-body">
+            @include('flash::message')
             <div class="box-header pad-0">
                 <h3 class="box-title">Payroll overview</h3>
                 <a class="btn btn-primary pull-right" href="{{tenant_route('tenant.accounting.payroll.add')}}">
@@ -57,8 +58,6 @@ Payroll Report
             </div>
             <div class="row">
               <div class="col-xs-12 mainContainer">
-                @include('flash::message')
-               
                   <div class="box-body table-responsive pad-lt-0">
                   
                   <div class="payout-info"></div>

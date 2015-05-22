@@ -43,9 +43,12 @@ class BillRepository {
      * Average time for full payment from the date bill was issued (created)
      */
     function getAvgPaymentTime() {
-        $query = Bill::select(DB::raw("(DATEDIFF(full_payment_date, created_at))AS days, full_payment_date, created_at"))->whereNotNull('full_payment_date')->whereBetween('created_at', array($this->from, $this->to))->first();
+        $query = Bill::select(DB::raw("(DATEDIFF(full_payment_date, created_at))AS days"))->whereNotNull('full_payment_date')->whereBetween('created_at', array($this->from, $this->to))->first();
         //$query = Bill::select(DB::raw("AVG(DATEDIFF(full_payment_date, DATE(created_at)))AS days"))->whereNotNull('full_payment_date')->whereBetween('created_at', array($this->from, $this->to))->first();
-        return (int)$query->days;
+        if(!empty($query))
+            return (int)$query->days;
+        else
+            return 0;
     }
 
     /**

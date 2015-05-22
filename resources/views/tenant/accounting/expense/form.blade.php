@@ -23,7 +23,7 @@
             <div class="form-group clearfix {{ ($errors->has('billing_date'))? 'has-error': '' }}">
                 {!! Form::label('billing_date', 'Billing date') !!}
                 <div class='input-group date date-box' id='billing_date'>
-                      {!! Form:: text('billing_date', null, array('class' => 'form-control date-picker', 'id' =>'')) !!}
+                      {!! Form:: text('billing_date', null, array('class' => 'form-control', 'id' =>'billing-date-picker')) !!}
                       <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                       </span>
                 </div>
@@ -179,7 +179,7 @@
                         {!! Form::label('payment_date', 'Paid date') !!}
 
                         <div class='input-group date date-box' id='payment_date'>
-                            {!! Form:: text('payment_date', null, array('class' => 'form-control date-picker', 'id' =>'')) !!}
+                            {!! Form:: text('payment_date', null, array('class' => 'form-control', 'id' =>'payment-date-picker')) !!}
                             <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>

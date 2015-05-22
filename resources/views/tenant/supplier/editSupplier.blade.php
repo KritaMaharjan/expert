@@ -12,20 +12,20 @@
                         <input type="email" placeholder="Email" name="email" value="{{$supplier->email}}" id="email" class="form-control">
                         
                       </div>
-                   
-                      <div class="form-group dob_div">
+
+                      <div class="form-group dob_div" style="{{ ($supplier->type == 2)? 'display:none' : ''}}">
                         <label for="">Date of birth</label>
                         <?php $dob = explode("-",$supplier->dob); ?>
                          <select name="day" class="form-control" id="day">
                             <?php for ($i = 1; $i <= 32; $i++): ?>
                                 <option value='<?php echo $i; ?>' <?php if($i == $dob['2']) echo 'selected = selected'; ?>><?php echo $i; ?></option>
                             <?php endfor; ?>
-                        </select> 
-                          <select name="month" class="form-control" id="month">
-                            <?php for ($i = 1; $i <= 12; $i++): ?>
-                                <option value='<?php echo $i; ?>' <?php if($i == $dob['1']) echo 'selected = selected'; ?>><?php echo $i; ?></option>
-                            <?php endfor; ?>
-                          </select>
+                        </select>
+                        <select name="month" class="form-control" id="month">
+                            <?php foreach ($months as $num => $name) { ?>
+                                <option value='<?php echo $num; ?>' <?php if($num == $dob['1']) echo 'selected = selected'; ?>><?php echo $name; ?></option>
+                            <?php } ?>
+                        </select>
                         <?php
                            $now1 = Carbon::create();
                             $now2 = Carbon::create();
@@ -42,14 +42,14 @@
                       </div>
                   
                       <div class="form-group business_div">
-                          <input type="text" placeholder="Company Number" name="company_number" value="{{$supplier->company_number}}" class="form-control">
+                          {{--<input type="text" placeholder="Company Number" name="company_number" value="{{$supplier->company_number}}" class="form-control">--}}
                       </div>
                  
-                        <input type="hidden" name="type" id="type" value="{{$supplier->type}}">
+                      <input type="hidden" name="type" id="type" value="{{$supplier->type}}">
                       <div class="col-md-12 pad-0">
                         <div class="input-group">
                        
-                          <input type="checkbox" name="business" id="business">Business
+                          <input type="checkbox" name="business" id="business" {{ ($supplier->type == 2)? 'checked="checked"' : ''}}>Business
                         </div><!-- /input-group -->
                      </div>
                       <div class="form-group">
@@ -65,9 +65,9 @@
                       <div class="form-group two-inputs">
                         <label for="">Postal code/Town</label>
                        
-                         <input type="text" placeholder="postcode"  id="postcode" name="postcode"  value="{{$supplier->postcode}}" class="form-control postal_code">
-                        <input type="text" placeholder="Town"  id="town" name="town"  value="{{$supplier->town}}" class="form-control city">
-                    
+                        <input type="text" placeholder="Town"  id="town" name="town"  value="{{$supplier->town}}" class="form-control city pull-right">
+                         <input type="text" placeholder="Postcode"  id="postcode" name="postcode"  value="{{$supplier->postcode}}" class="form-control postal_code">
+
                       </div>
                       <div class="form-group">
                         <label for="">Telephone</label>
@@ -101,28 +101,22 @@
                    
 {!! Form::close() !!}
 
-           <script type="text/javascript">
-           $(function () {
-
-           var modal = $('.modal-body');
-           var type = $('#type').val();
-           if(type == 1){
-            modal.find('business').prop('checked',false);
-             modal.find('.dob_div').show();
-            modal.find('.business_div').hide();
-
-           }else if(type == 2){
-
-            modal.find('business').prop('checked',true);
-             modal.find('.dob_div').hide();
-            modal.find('.business_div').show();
-           }
-
-
-      });
-
-
-           </script>
+<script type="text/javascript">
+   /*$(function () {
+       var modal = $('.modal-body');
+       var type = $('#type').val();
+       if(type == 1){
+        modal.find('business').prop('checked',false);
+        modal.find('.dob_div').show();
+        modal.find('.business_div').hide();
+        alert('no');
+       } else {
+        modal.find('business').prop('checked',true);
+        modal.find('.dob_div').hide();
+        modal.find('.business_div').show();        alert('yes');
+       }
+   });*/
+</script>
 
            <script type="text/javascript">
 $(function () {

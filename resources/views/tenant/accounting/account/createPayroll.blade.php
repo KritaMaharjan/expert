@@ -15,7 +15,14 @@ Pay an employee
             		{!! Form::open(array('method'=>'POST', 'id'=>'payroll-form')) !!}
 		            	<div class="form-group clearfix  {{ ($errors->has('user_id'))? 'has-error': '' }}">
 		            	    <label class="half-width2">
-                                {!! Form::select('user_id', array('' => 'Select Employee'), null, array('class' => 'form-control pull-left', 'id' => 'select-employee')) !!}
+		            	        <select name="user_id" class="form-control pull-left" id="select-employee">
+		            	            @if(Input::old('user_id'))
+		            	                <option value="{{ Input::old('user_id') }}">{{ get_name(Input::old('user_id')) }}</option>
+		            	            @else
+		            	                <option value="">Select Employee</option>
+		            	            @endif
+		            	        </select>
+                                {{--{!! Form::select('user_id', array('' => 'Select Employee'), null, array('class' => 'form-control pull-left', 'id' => 'select-employee')) !!}--}}
                                 @if($errors->has('user_id'))
                                     {!! $errors->first('user_id', '<label class="control-label" for="inputError">:message</label>') !!}
                                 @endif

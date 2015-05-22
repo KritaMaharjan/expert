@@ -56,7 +56,7 @@ class SupplierController extends BaseController {
                 'telephone'     => 'numeric',
                 'mobile'        => 'numeric',
                 'postcode'      => 'required|numeric',
-                'town'          => 'alpha|between:2,50',
+                'town'          => 'between:2,50',
             )
         );
 
@@ -72,12 +72,13 @@ class SupplierController extends BaseController {
     function edit()
     {
         $id = $this->request->route('id');
+        $months = \Config::get('tenant.month');
         $supplier = $this->supplier->find($id);
         if ($supplier == null) {
             show_404();
         }
 
-        return view('tenant.supplier.editSupplier', compact('supplier'));
+        return view('tenant.supplier.editSupplier', compact('supplier', 'months'));
     }
 
     public function testUpload(Request $request)
@@ -97,9 +98,9 @@ class SupplierController extends BaseController {
             return $this->fail(['error' => 'Invalid Supplier ID']);
 
 
-        if ($this->request['type'] == 2)
+        if ($this->request['business'])
             $dob = '';
-        elseif ($this->request['type'] == 1)
+        else
             $dob = $this->request['year'] . '-' . $this->request['month'] . '-' . $this->request['day'];
 
         $validator = \Validator::make($this->request->all(),

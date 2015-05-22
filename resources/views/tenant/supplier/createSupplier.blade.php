@@ -12,7 +12,7 @@
                         
                       </div>
                       <div class="form-group business_div">
-                            <input type="text" placeholder="Company Number" name="company_number" value="{{old('company_number')}}" class="form-control">
+                            {{--<input type="text" placeholder="Company Number" name="company_number" value="{{old('company_number')}}" class="form-control">--}}
                       </div>
                       <input type="hidden" name="type" id="type" value="1">
                     <div class="col-md-12 pad-0">
@@ -58,13 +58,8 @@
                       </div>
                       <div class="form-group two-inputs">
                         <label for="">Postal code/Town</label>
-
-
-                    
- <input type="text" placeholder="postcode"  id="postcode" name="postcode"  value="{{old('postcode')}}" class="form-control postal_code">
-                        <input type="text" placeholder="Town"  id="city" name="town"  value="{{old('town')}}" class="form-control city">
-
-                    
+                        <input type="text" placeholder="Town"  id="city" name="town"  value="{{old('town')}}" class="form-control city pull-right">
+                        <input type="text" placeholder="Postcode"  id="postcode" name="postcode"  value="{{old('postcode')}}" class="form-control postal_code">
                       </div>
                       <div class="form-group">
                         <label for="">Telephone</label>

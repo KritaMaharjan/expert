@@ -78,9 +78,9 @@ class Supplier extends Model {
 
     public function createSupplier($request, $user_id)
     {
-        if ($request['type'] == 2)
+        if ($request['business'])
             $dob = '';
-        elseif ($request['type'] == 1)
+        else
             $dob = $request['year'] . '-' . $request['month'] . '-' . $request['day'];
 
         $postal_code = explode(',', $request['postcode']);

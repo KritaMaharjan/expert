@@ -97,7 +97,7 @@ $(function () {
         var id = $this.attr('data-id');
         var doing = false;
 
-        if (!confirm('Are you sure, you want delete? This action will delete data permanently and can\'t be undo')) {
+        if (!confirm('Are you sure you want to delete? This action will delete data permanently and can\'t be undone.')) {
             return false;
         }
 
