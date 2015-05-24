@@ -39,17 +39,21 @@ class RedirectTenantUser {
 	{
         $this->validateTenant();
 
-        if($this->auth->user()->status ==0)
+        if($this->auth->check())
         {
-            $this->auth->logout();
-            flash()->error(lang('Your account has not been activated.'));
-        } elseif ($this->auth->user()->status == 2) {
-            $this->auth->logout();
-            flash()->error(lang('Your account has been suspended.'));
-        } elseif ($this->auth->user()->status == 3) {
-            $this->auth->logout();
-            flash()->error(lang('Your account has been permanently blocked.'));
+            if($this->auth->user()->status ==0)
+            {
+                $this->auth->logout();
+                flash()->error(lang('Your account has not been activated.'));
+            } elseif ($this->auth->user()->status == 2) {
+                $this->auth->logout();
+                flash()->error(lang('Your account has been suspended.'));
+            } elseif ($this->auth->user()->status == 3) {
+                $this->auth->logout();
+                flash()->error(lang('Your account has been permanently blocked.'));
+            }
         }
+
 
         if ($this->auth->guest())
         {
