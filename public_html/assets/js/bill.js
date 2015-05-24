@@ -45,7 +45,7 @@ $(function () {
         else {
             // Open this row
             row.child(format(row.data())).show();
-            $('.datepicker').datepicker({format: 'yyyy-mm-dd',endDate:new Date(),todayHighlight:true});
+            $('.datepicker').datepicker({format: 'yyyy-mm-dd', endDate:new Date(),todayHighlight:true});
             tr.addClass('shown');
         }
     });
@@ -162,6 +162,8 @@ $(function () {
                 if (response.success == true || response.status == 1) {
                     $('.error').remove();
                     form.parent().hide();
+                    var template = response.data.bill_details;
+                    $('#row-'+response.data.id).html(template);
                     $('.mainContainer .box-solid').before(notify('success', 'Payment Added Successfully!'));
                     format(response);
                     setTimeout(function () {

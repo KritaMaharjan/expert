@@ -160,7 +160,7 @@ $(function () {
             register_dispute =  '<li><a href="#"  data-original-title="Register Dispute" data-target="#fb-modal" data-toggle="modal" data-url="' + appUrl + 'collection/dispute?bill=' + bill + '&token=' + token + '">Register dispute</a></li>';
 
             if (d.isGoToStep == 1) {
-                goToStep = '<li><a href="' + appUrl + 'collection/gotostep/' + d.goToStep + '?bill=' + bill + '&token=' + token + '">Take the case to the next step</a></li>';
+                goToStep = '<li><a href="' + appUrl + 'collection/gotostep/' + d.goToStep + '?bill=' + bill + '&token=' + token + '">Take to '+ d.goToStep.charAt(0).toUpperCase() + d.goToStep.substring(1)+' step</a></li>';
             }
         }
 

@@ -257,7 +257,7 @@ class Bill extends Model {
             $value->status = $this->getStatus($value->status, $value->payment);
             $value->invoice_date = $value->created_at->format('d-M-Y  h:i:s A');
             $value->view_url = tenant()->url('invoice/bill/' . $value->id);
-            $value->DT_RowId = "row-" . $value->guid;
+            $value->DT_RowId = "row-" . $value->id;
         }
 
         $products['data'] = $data->toArray();

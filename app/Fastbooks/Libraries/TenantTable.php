@@ -64,12 +64,11 @@ class TenantTable {
         $this->vatPeriod();
         $this->vacation();
         $this->payroll();
+        $this->accountingYear();
 
         //Collection
         $this->collection();
         $this->courtCase();
-
-
     }
 
     /**
@@ -668,6 +667,17 @@ class TenantTable {
                 $table->text('information')->nullable(); // Bill ID
                 $table->text('email'); // Bill ID
                 $table->date('payment_date')->nullable(); // Bill ID
+                $table->timestamps();
+            });
+        }
+    }
+
+    function accountingYear()
+    {
+        if (!Schema::hasTable($this->tbl_profix . 'accounting_year')) {
+            Schema::create($this->tbl_profix . 'accounting_year', function ($table) {
+                $table->increments('id'); // autoincrement value
+                $table->year('year');
                 $table->timestamps();
             });
         }

@@ -16,8 +16,8 @@
     @endif
     @if(Session::has('message_success'))
         <div class="callout callout-success">
-          <p>{{Session::get('message_success')}}</p>
-      </div>
+            <p>{{Session::pull('message_success')}}</p>
+        </div>
     @endif
 
 
