@@ -33,7 +33,7 @@
 
 </div>
 
-<link href="http://demo.mashbooks.app/assets/plugins/timepicker/bootstrap-timepicker.min.css" rel="stylesheet"/>
+<link href="{{ asset('assets/plugins/timepicker/bootstrap-timepicker.min.css')}}" rel="stylesheet"/>
 <script type="text/javascript">
   $(function(){
     $('.due_date').datepicker({format: 'yyyy-mm-dd',startDate :new Date()});
