@@ -143,9 +143,8 @@ class AuthController extends BaseController {
 
         if (!$subuser)
             return view('errors.404');
-
-
-        $subuser = $this->activateSubUser($subuser);
+        $this->activateSubUser($subuser);
+        Session::put('message_success', 'Your account has been activated!');
         return tenant()->redirect();
     }
 

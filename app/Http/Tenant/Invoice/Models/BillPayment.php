@@ -40,7 +40,7 @@ class BillPayment extends Model
             $bill->paid = $bill->paid + $request->input('paid_amount'); //do it for remaining too
             $bill->remaining = $bill->remaining - $request->input('paid_amount'); //do it for remaining too
 
-            if($bill-> remaining > 0)
+            if ($bill->remaining > 0)
                 $bill->payment = 2;
             else {
                 $bill->payment = 1;
@@ -52,7 +52,10 @@ class BillPayment extends Model
 
             $customer = Customer::find($bill->customer_id);
             Record::billPayment($bill, $customer, $payment->amount_paid);
-            return array('payment_details' => $payment);
+
+            $template = $this->getBillTemplate($bill);
+            return array('bill_details' => $template, 'id' => $bill->id);
+            //return array('payment_details' => $payment);
 
         } catch (\Exception $e) {
             \DB::rollback();
@@ -61,4 +64,30 @@ class BillPayment extends Model
         return false;
     }
 
-} 
+    function getBillTemplate(Bill $bill)
+    {
+        if ($bill->status == 1)
+            $status = '<span class="label label-success">Paid</span>';
+        elseif ($bill->status == 2)
+            $status = '<span class="label label-warning">Collection</span>';
+        else
+            $status = '<span class="label label-danger">Unpaid</span>';
+
+        $template = '
+            <td class="sorting_1"><a href="#" class="link">'.$bill->invoice_number.'</a></td>
+            <td>'.$bill->customer->name.'</td>
+            <td>'.number_format($bill->total, 2).'</td>
+            <td>'.date('d-M-Y  h:i:s A', strtotime($bill->created_at)).'</td>
+            <td>'.$status.'</td>
+            <td>
+            <div class="box-tools"><a data-target="#fb-modal" data-url="'.tenant()->url("'invoice/bill/".$bill->id).'"
+                                      data-toggle="modal" class="btn btn-box-tool" data-original-title="View"
+                                      title="View Payments" href="#"><i class="fa fa-eye"></i></a>
+                <button data-original-title="Remove" data-id="'.$bill->id.'" data-toggle="tooltip"
+                        class="btn btn-box-tool btn-delete-bill"><i class="fa fa-times"></i></button>
+            </div>
+            </td>';
+        return $template;
+    }
+
+}
