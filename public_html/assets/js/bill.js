@@ -2,7 +2,7 @@ $(function () {
 
     var billDatatable = $("#table-bill").DataTable({
         "dom": '<"top"f>rt<"bottom"lip><"clear">',
-        "order": [[0, "desc"]],
+        "order": [[3, "desc"]],
 
         //custom processing message
         "oLanguage": {
@@ -163,6 +163,7 @@ $(function () {
                     $('.error').remove();
                     form.parent().hide();
                     $('.mainContainer .box-solid').before(notify('success', 'Payment Added Successfully!'));
+                    format(response);
                     setTimeout(function () {
                         $('.callout').remove();
                     }, 3000);
