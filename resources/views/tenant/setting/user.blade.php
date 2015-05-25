@@ -26,7 +26,8 @@ Profile Settings
 							<div class="clear"></div>
 							<div class="col-md-3 uplod">
 
-							<div id="container" style="{{ ($edit && isset($expense['bill_image']))? 'display:none':'' }}">
+                            {!! (!empty($setting['photo']))? '<img src='.tenant()->folder("system")->url().$setting["photo"].' class="photo"><input type="hidden" class="edit-attachment" name="photo" value='.$setting["photo"].' />' : '' !!}
+							<div id="container" style="{{ (!empty($setting['photo']))? 'display:none':'' }}">
                                   <div id="uploader">
                                         <div class="image-section">
                                             Drop your file
@@ -37,23 +38,15 @@ Profile Settings
                             @if(!empty($setting['photo']))
                                 <div id='edit-filelist'>
                                     {{ $setting['photo'] }}
-                                    <a class="cancel_upload" data-url="{{$expense['bill_image']}}" href="#"><i class="fa fa-times"></i></a>
+                                    <a class="cancel_upload" data-url="{{ $setting['photo'] }}" href="#"><i class="fa fa-times"></i></a>
                                 </div>
                             @endif
 
                             <div id='filelist'>
                                 Your browser doesn't have Flash, Silverlight or HTML5 support.
                             </div>
-								
-						  @if(file_exists(base_path('public_html/assets/uploads/'.$setting['photo'])))
-							   <img src="{{ asset('assets/uploads/'.$setting['photo'])}}" class="uploaded-img">
-						  @else
-							     <img src="{{ asset('assets/images/no_image.jpg') }}" class="uploaded-img">
-						
-						 @endif
-						       <input type="file" name="photo">						       
 
-						  	  </div>
+						  	</div>
 						     						      
 						</div>
 					</div>
@@ -169,3 +162,57 @@ Profile Settings
 </div>
 
 @stop
+
+{{FB::js('assets/plugins/plupload/js/plupload.full.min.js')}}
+<?php
+$successCallback ="
+  var response = JSON.parse(object.response);
+  var wrap = $('#'+file.id);
+  wrap.append('<input type=\"hidden\" class=\"attachment\" name=\"photo\" value=\"'+response.data.fileName+'\" />');
+  wrap.append('<a href=\"#\" data-action=\"compose\" data-url=\"'+response.data.fileName+'\" class=\"cancel_upload\" ><i class=\"fa fa-times\"></i></a>');
+  $('#container').hide();
+  $('.photo').remove();
+  $('#container').before('<img class=\"photo\" src='+response.data.pathName+'/>');
+";
+FB::js(plupload()->button('uploader')->maxSize('20mb')->mimeTypes('image')->url(url('file/upload/data?folder=system'))->autoStart(true)->success($successCallback)->init());
+
+$js ="$(document).on('click', '.cancel_upload', function (e) {
+              e.preventDefault();
+              var url = $(this).data('url');
+              var wrap = $(this).parent();
+              var action = $(this).data('action');
+
+              if (!confirm('Are you sure, you want to delete file?')) return false;
+
+              if (action == 'compose') {
+                  $.ajax({
+                      url: appUrl + 'file/delete',
+                      type: 'GET',
+                      dataType: 'json',
+                      data: {file: url, folder:'expense'}
+                  })
+                      .done(function (response) {
+                          if (response.status == 1) {
+                              wrap.remove();
+                              $('.photo').remove();
+                              $('#container').show();
+                          }
+                          else {
+                              alert(response.data.error);
+                          }
+                      })
+                      .fail(function () {
+                          alert('Connect error!');
+                      })
+              }
+              else {
+                  $('#edit-filelist').remove();
+                  wrap.remove();
+                  $('.photo').remove();
+                  $('.edit-attachment').remove();
+                  $('#container').show();
+              }
+          });";
+FB::js($js);
+
+?>
