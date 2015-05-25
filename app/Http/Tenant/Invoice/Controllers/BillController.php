@@ -240,7 +240,7 @@ class BillController extends BaseController {
 
             $payment_rules = [
                 'payment_date' => 'required|date',
-                'paid_amount' => 'required|numeric|maxValue:'.$bill_remaining
+                'paid_amount' => 'required|numeric|maxValue:'.$bill_remaining.'|minPaymentValue'
             ];
 
             $validator = Validator::make($this->request->all(), $payment_rules);

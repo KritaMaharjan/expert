@@ -29,7 +29,7 @@ class Record {
      * ------------------------
      * Debit: 1500+subLedger full amount including VAT
      * Credit: 3010 the amount without VAT included:
-     * Credit 2701(if 25% VAT)  with the VAT amount
+     * Credit 2701(if 25% VAT)  VAT amount
      * ---------------------------------------------
      * @param Bill $bill
      * @param Customer $customer
@@ -37,10 +37,12 @@ class Record {
      * @param $vat
      * @return array
      */
+
     public static function sendABill(Bill $bill, Customer $customer, $amount, $vat)
     {
         $vat = new Vat($vat);
         $amount = new Amount($amount);
+
         $amount_vat = $amount->vat($vat);
         $amount_without_vat = $amount->withoutVat($vat);
 

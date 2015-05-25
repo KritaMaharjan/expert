@@ -177,6 +177,7 @@ function calculate_todo_time($date, $completed = false)
 function force_redirect($url)
 {
     header('location:' . $url);
+    exit;
 }
 
 function float_format($number, $digits = 2)
