@@ -60,7 +60,7 @@ class CustomerController extends BaseController {
                 //'street_name'   => 'required',
                 'street_number' => 'max:200',
                 'telephone'     => 'numeric|unique:fb_customers,telephone',
-                'mobile'        => 'numeric',
+                'mobile'        => 'numeric|unique:fb_customers,telephone',
                 'postcode'      => 'required|numeric'
             )
         );
@@ -116,7 +116,7 @@ class CustomerController extends BaseController {
                 //'street_name'   => 'required',
                 'street_number' => 'max:200',
                 'telephone'     => 'numeric|unique:fb_customers,telephone,'.$id,
-                'mobile'        => 'numeric',
+                'mobile'        => 'numeric|unique:fb_customers,telephone,'.$id,
                 'postcode'      => 'required|numeric'
             )
         );
