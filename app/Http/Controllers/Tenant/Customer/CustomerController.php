@@ -58,7 +58,7 @@ class CustomerController extends BaseController {
                 'email'         => 'required|unique:fb_customers',
                 'dob'           => '',
                 //'street_name'   => 'required',
-                //'street_number' => 'required',
+                'street_number' => 'max:200',
                 'telephone'     => 'numeric',
                 'mobile'        => 'numeric',
                 'postcode'      => 'required|numeric',

@@ -232,7 +232,7 @@ class Bill extends Model {
             if ($orderColumn != 'invoice_date')
                 $query = $query->orderBy($orderColumn, $orderdir);
             else
-                $query = $query->orderBy('created_at', $orderdir);
+                $query = $query->orderBy('b.created_at', $orderdir);
         }
 
         if ($search != '') {
