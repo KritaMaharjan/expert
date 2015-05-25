@@ -7,7 +7,7 @@ Profile Settings
 @section('breadcrumb')
     @parent
      <li><i class="fa fa-cog"></i><a href="{{tenant_route('tenant.profile')}}">Profile</a></li>
-    <li><i class="fa fa-cog"></i>Edit Profile</li>
+     <li><i class="fa fa-cog"></i>Edit Profile</li>
 @stop
 
 @section('content')

@@ -11,7 +11,7 @@ Customers
 
 @section('breadcrumb')
     @parent
-    <li>Customers</li>
+    <li><a href="{{ tenant()->url('customer') }}"> Customers</a></li>
     <li>Customer Card</li>
 @stop
 
