@@ -41,23 +41,23 @@ class UserController extends BaseController {
     public function update(Request $request)
     {
              $validator = Validator::make($request->all(),
-                                        array(
-                                            'name' => 'required',
-                                            'email' => 'required',
-                                            'postcode' => 'required',
-                                            'social_security_number' => 'required|numeric',
-                                            'phone' => 'required|numeric',
-                                            'address' => 'required',
-                                            'comment' => 'required',
-                                            'tax_card' =>'required',
-                                            'town' =>'required'
-                                            )
-                                        );
+                array(
+                    'name' => 'required',
+                    'email' => 'required',
+                    'postcode' => 'required',
+                    'social_security_number' => 'required|numeric',
+                    'phone' => 'required|numeric',
+                    'address' => 'required',
+                    'comment' => 'required',
+                    'tax_card' =>'required',
+                    'town' =>'required'
+                    )
+                );
 
         if ($validator->fails())
             return  tenant()->route('tenant.edit.profile')->withErrors($validator)->withInput();
 
-         //$all = $request->except('_token', 'group','photo');
+             //$all = $request->except('_token', 'group','photo');
             $group = $request->input('group');
 
                 $fileName = NULL;
@@ -66,8 +66,6 @@ class UserController extends BaseController {
                     $file = FacadeRequest::file('photo');
                     $fileName = \FB::uploadFile($file);
                 }
-
-            
 
               $user = User::find(current_user()->id);
               $user->fullname=$request['name'];

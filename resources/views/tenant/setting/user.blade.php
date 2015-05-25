@@ -25,6 +25,25 @@ Profile Settings
 							<label>Upload Photo</label>
 							<div class="clear"></div>
 							<div class="col-md-3 uplod">
+
+							<div id="container" style="{{ ($edit && isset($expense['bill_image']))? 'display:none':'' }}">
+                                  <div id="uploader">
+                                        <div class="image-section">
+                                            Drop your file
+                                        </div>
+                                  </div>
+                            </div>
+
+                            @if(!empty($setting['photo']))
+                                <div id='edit-filelist'>
+                                    {{ $setting['photo'] }}
+                                    <a class="cancel_upload" data-url="{{$expense['bill_image']}}" href="#"><i class="fa fa-times"></i></a>
+                                </div>
+                            @endif
+
+                            <div id='filelist'>
+                                Your browser doesn't have Flash, Silverlight or HTML5 support.
+                            </div>
 								
 						  @if(file_exists(base_path('public_html/assets/uploads/'.$setting['photo'])))
 							   <img src="{{ asset('assets/uploads/'.$setting['photo'])}}" class="uploaded-img">
