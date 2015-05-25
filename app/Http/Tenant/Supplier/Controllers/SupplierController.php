@@ -54,7 +54,7 @@ class SupplierController extends BaseController {
                 'name'          => 'required|between:2,30',
                 'email'         => 'required|unique:fb_suppliers',
                 'telephone'     => 'numeric|unique:fb_suppliers,telephone',
-                'mobile'        => 'numeric|unique:fb_suppliers,telephone',
+                'mobile'        => 'numeric|unique:fb_suppliers,mobile',
                 'postcode'      => 'required|numeric'
             )
         );
