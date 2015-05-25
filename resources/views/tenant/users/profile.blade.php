@@ -6,7 +6,7 @@ User Details
 
 @section('breadcrumb')
     @parent
-    <li><i class="fa fa-users"></i> User</li>
+    <li><a href="{{ tenant()->url('users') }}"> <i class="fa fa-users"></i> User</a></li>
     <li><i class="fa fa-user"></i> Profile</li>
 @stop
 

@@ -53,10 +53,9 @@ class SupplierController extends BaseController {
             array(
                 'name'          => 'required|between:2,30',
                 'email'         => 'required|unique:fb_suppliers',
-                'telephone'     => 'numeric',
+                'telephone'     => 'numeric|unique:fb_suppliers,telephone',
                 'mobile'        => 'numeric',
-                'postcode'      => 'required|numeric',
-                'town'          => 'between:2,50',
+                'postcode'      => 'required|numeric'
             )
         );
 
@@ -108,10 +107,10 @@ class SupplierController extends BaseController {
                 'name'          => 'required|between:2,30',
                 'email'         => 'required',
                 'dob'           => '',
-                'telephone'     => 'numeric',
+                'telephone'     => 'numeric|unique:fb_suppliers,telephone,'.$id,
                 'mobile'        => 'numeric',
                 'postcode'      => 'required|numeric',
-                'town'          => 'between:2,50',
+                'street_number' => 'max:200',
             )
         );
 
