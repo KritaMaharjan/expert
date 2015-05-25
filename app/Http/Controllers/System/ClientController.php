@@ -175,9 +175,6 @@ class ClientController extends BaseController {
                 ->select('users.*')
                // ->where('user_id',1)// Admin profile / later weill join table get profile by guid
                 ->count();
-
-
-
         }
 
         return view('system.user.details', compact('tenant'));
@@ -205,9 +202,6 @@ class ClientController extends BaseController {
                 //dd($folder_path);
 
                 $this->rrmdir($folder_path);
-
-           
-           
 
             $client = Tenant::where('id', $tenant->basic->id)->first();
              $client->delete();
