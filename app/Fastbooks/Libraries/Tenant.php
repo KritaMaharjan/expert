@@ -13,6 +13,7 @@ use App\Fastbooks\Libraries\TenantTable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
+use App\Http\Tenant\Accounting\Models\AccountingYear;
 
 /**
  * Class Tenant
@@ -204,6 +205,7 @@ class Tenant {
         $setting = $this->tenantSettings->firstOrNew(array('name' => 'folder'));
         $setting->value = $tenantInfoInSystem->guid;
         $setting->save();
+
     }
 
 

@@ -39,7 +39,10 @@ class AccountingYear extends Model {
             if ($row) {
                 return $row;
             }
-            throw new \Exception('Accounting year not setup yet.');
+            else {
+                AccountingYear::create(['year', date("Y")]);
+            }
+            //throw new \Exception('Accounting year not setup yet.');
         }
 
         return self::$current_year;
