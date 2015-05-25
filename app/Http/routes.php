@@ -33,3 +33,8 @@ Validator::extend('minPaymentValue', function ($attribute, $value) {
     else
         return false;
 });
+
+Validator::extend('passcheck', function ($attribute, $value, $parameters)
+{
+    return Hash::check($value, Auth::user()->getAuthPassword());
+});

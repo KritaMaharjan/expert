@@ -35,11 +35,9 @@ Client
                                             
                                          </tr>
 
-                                        
-
                                          <tr>
                                             <td>Business Name</td>
-                                             <td>{{$tenant->company['company_name'] or ''}}</td>
+                                             <td>{{$tenant->basic->company or ''}}</td>
                                             
                                          </tr>
 

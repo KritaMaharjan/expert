@@ -21,6 +21,12 @@ Change Password
     <input type="hidden" name="group" class="form-control" value="email">
 
         <div class="box-body">
+            @if(Session::has('message_success'))
+                <div class="callout callout-success">
+                    <p>{{Session::pull('message_success')}}</p>
+                </div>
+            @endif
+
             <div class="form-group has-feedback @if($errors->has('password')) {{'has-error'}} @endif" >
                 <label for="exampleInputEmail1">Old password</label>
                 <input type="password" name="password" class="form-control" value="">

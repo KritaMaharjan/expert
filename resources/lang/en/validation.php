@@ -76,6 +76,7 @@ return [
     'valid_array_email'    => 'Invalid Emails',
     'max_value' => 'The amount exceeds required payment amount.',
     'min_payment_value' => 'The amount cannot be less than 1.',
+    'passcheck' => 'The password does not match with the old password.',
 
     /*
     |--------------------------------------------------------------------------

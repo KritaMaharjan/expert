@@ -102,23 +102,17 @@ class AuthController extends BaseController {
 
     public function postUserPasswordChange()
     {
-
+        $user = Auth::user();
         $rules = array(
-            'password'                  => 'required',
+            'password'                  => 'required|passcheck',
             'new_password'              => 'required|min:6',
             'new_password_confirmation' => 'required|same:new_password|min:6'
         );
 
-        $user = Auth::user();
         $validator = Validator::make(\Input::all(), $rules);
 
         //Is the input valid? new_password confirmed and meets requirements
         if ($validator->fails()) {
-            return \Redirect::back()->withErrors($validator)->withInput();
-        }
-
-        //Is the old password correct?
-        if (!Hash::check(\Input::get('password'), $user->password)) {
             return \Redirect::back()->withErrors($validator)->withInput();
         }
 
@@ -127,7 +121,7 @@ class AuthController extends BaseController {
 
         $user->save();
 
-        return tenant()->route('tenant.login')->with('message', 'Password has been changed.');
+        return tenant()->route('tenant.auth.changePassword')->with('message_success', 'Password has been changed.');
     }
 
     /**
