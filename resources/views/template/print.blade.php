@@ -181,7 +181,7 @@ Print Invoice
                             <div class="col-md-7 col-sm-7 col-xs-7">
                               <div id="giro-block" class="row">
                                 <label class="col-md-6 col-sm-5 col-xs-5">Betalings-first</label>
-                                <span class="font-mid border col-md-6 col-sm-7 col-xs-7">{{ format_date($data['invoice_date']) }}</span>
+                                <span class="font-mid border col-md-6 col-sm-7 col-xs-7">{{ format_date($data['due_date']) }}</span>
                               </div>
                             </div>
                           </div>

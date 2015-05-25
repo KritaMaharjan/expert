@@ -116,6 +116,12 @@ function format_datetime($date)
     return $formatted_date;
 }
 
+function format_only_date($date)
+{
+    $formatted_date = date('M d, Y', strtotime($date));
+    return $formatted_date;
+}
+
 function short_date($date)
 {
     $formatted_date = date('jS M', strtotime($date));

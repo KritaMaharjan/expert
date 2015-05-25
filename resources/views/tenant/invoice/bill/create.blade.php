@@ -27,12 +27,12 @@
     </div><!-- /.col -->
   </div>
 
-  {!! Form::open(array('method'=>'POST')) !!}
+  {!! Form::open(array('method'=>'POST', 'id'=>'bill-form')) !!}
   <input type="hidden" name="customer_id" value="{{$customer_id}}" id="customer_id"/>
     @include('tenant.invoice.bill.form')
   <div class="row no-print">
     <div class="col-xs-12">
-        {!! Form::button('Submit', array('class'=>'btn btn-primary pull-right', 'type'=>'submit')) !!}
+        {!! Form::button('Submit', array('class'=>'btn btn-primary pull-right bill-submit', 'type'=>'submit')) !!}
     </div>
   </div>
 
