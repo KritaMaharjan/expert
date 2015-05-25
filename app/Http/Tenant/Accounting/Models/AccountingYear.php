@@ -36,7 +36,7 @@ class AccountingYear extends Model {
         if(is_null(self::$current_year))
         {
             $row = self::select('id','year')->orderBy('year', 'DESC')->first();
-            if ($row) {
+            if (!empty($row)) {
                 return $row;
             }
             else {
