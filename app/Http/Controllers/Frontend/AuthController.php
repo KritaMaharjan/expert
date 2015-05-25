@@ -227,7 +227,7 @@ class AuthController extends BaseController {
     {
         $user = Client::where('email', $to_email)->first();
         if ($user) {
-            return \FB::sendEmail($to_email, $user->fullname, 'request_url', ['{{NAME}}' => 'name', '{{APP_URL}}' => \URL::to($user->domain)]);
+            return \FB::sendEmail($to_email, $user->fullname, 'request_url', ['{{NAME}}' => 'name', '{{APP_URL}}' => tenant($user->domain)->url('login')]);
         } else {
             return false;
         }

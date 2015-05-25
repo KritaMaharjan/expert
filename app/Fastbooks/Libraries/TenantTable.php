@@ -677,7 +677,7 @@ class TenantTable {
         if (!Schema::hasTable($this->tbl_profix . 'accounting_year')) {
             Schema::create($this->tbl_profix . 'accounting_year', function ($table) {
                 $table->increments('id'); // autoincrement value
-                $table->year('year');
+                $table->integer('year');
                 $table->timestamps();
             });
         }

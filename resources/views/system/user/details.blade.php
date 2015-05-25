@@ -27,7 +27,6 @@ Client
                                 <div class="box-body table-responsive no-padding">
                                     <table class="table table-hover">
                                         <tbody>
-                                     
                                       
                                          <tr>
                                             <td>Email</td>
@@ -35,11 +34,9 @@ Client
                                             
                                          </tr>
 
-                                        
-
                                          <tr>
                                             <td>Business Name</td>
-                                             <td>{{$tenant->company['company_name'] or ''}}</td>
+                                             <td>{{$tenant->basic->company or ''}}</td>
                                             
                                          </tr>
 

@@ -128,8 +128,6 @@ class AuthController extends BaseController {
         $user->save();
 
         return tenant()->route('tenant.login')->with('message', 'Password has been changed.');
-
-
     }
 
     /**
