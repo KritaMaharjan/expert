@@ -4,9 +4,7 @@
     $("#invoice-date-picker").datepicker({
         'format': 'yyyy-mm-dd'
     });
-    $("#due-date-picker").datepicker({
-        'format': 'yyyy-mm-dd'
-    });
+    $('#due-date-pickers').datepicker({format: 'yyyy-mm-dd',startDate :new Date()});
 
     var invoice_tr = $('.product-table .position-r');
     var invoice_tr_html = invoice_tr.html();
@@ -249,6 +247,10 @@
         $('#tax-amount').html(vatTotal.toFixed(2));
         $('#all-total').html(allTotal.toFixed(2));
     }
+
+    $(document).on('submit', '#bill-form', function (e) {
+        $('.bill-submit').val('loading...').attr('disabled', true);
+    });
 
     //creation of customer
     $(document).on('submit', '#customer-form', function (e) {

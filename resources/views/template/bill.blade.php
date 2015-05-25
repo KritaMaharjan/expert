@@ -153,11 +153,11 @@
                <br />
                <tr>
                 <td style="text-indent:15px;">Kundenr:</td>
-                <td>4785007</td>
+                <td>{{ format_id($data['customer_details']['id'], 4) }}</td>
                </tr>
                <tr>
                 <td style="text-indent:15px;">Invoice:</td>
-                <td>{{ $data['invoice_number']}}</td>
+                <td>{{ $data['invoice_number'] }}</td>
                </tr>
                <tr>
                 <td style="text-indent:15px;">Invoice date:</td>
@@ -170,8 +170,8 @@
               <tbody>
                <tr>
                 <td style="font-size:13px;">GIRO</td>
-                <td style="font-size:11px;">Payment first</td>
-                <td class="border-block" bgcolor="#ffffff"></td>
+                <td style="font-size:11px;">Payment due date</td>
+                <td class="border-block" bgcolor="#ffffff">{{ date('d-m-y', strtotime($data['due_date'])) }}</td>
                </tr>               
               </tbody>
              </table>

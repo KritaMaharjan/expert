@@ -77,13 +77,11 @@
         </div>--}}
         <div class="form-group clearfix {{ ($errors->has('due_date'))? 'has-error': '' }}">
           {!! Form::label('due_date', 'Due date') !!}
-
-          <div class='input-group date date-box' id='due-date-picker'>
-              {!! Form:: text('due_date', null, array('class' => 'form-control', 'id' =>'due-date-pickers')) !!}
-              <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-              </span>
-          </div>
-
+              <div id="due_date" class="input-group date date-box">
+                  {!! Form::text('due_date', null,['class'=>'form-control due_date', 'id' =>'due-date-pickers']) !!}
+                  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+              </div>
         </div>
          @if($errors->has('due_date'))
                       {!! $errors->first('due_date', '<label class="control-label error" style="position: relative;top: -10px;" for="inputError">:message</label>') !!}

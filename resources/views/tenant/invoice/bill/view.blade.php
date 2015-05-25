@@ -43,7 +43,7 @@
                     </tr>
                     <tr>
                         <td>Due Date</td>
-                        <td>{{ format_datetime($bill->due_date) }}</td>
+                        <td>{{ format_only_date($bill->due_date) }}</td>
                     </tr>
                     <tr>
                         <td>Issued on</td>
@@ -65,7 +65,7 @@
                 @foreach($bill->payments as $payment)
                     <tr>
                         <td>{{$payment->amount_paid}}</td>
-                        <td>{{ format_datetime($payment->payment_date) }}</td>
+                        <td>{{ format_only_date($payment->payment_date) }}</td>
                     </tr>
                 @endforeach
                 </tbody>
