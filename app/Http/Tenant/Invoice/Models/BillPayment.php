@@ -77,10 +77,11 @@ class BillPayment extends Model
             <td class="sorting_1"><a href="#" class="link">'.$bill->invoice_number.'</a></td>
             <td>'.$bill->customer->name.'</td>
             <td>'.number_format($bill->total, 2).'</td>
+            <td>'.number_format($bill->remaining, 2).'</td>
             <td>'.date('d-M-Y  h:i:s A', strtotime($bill->created_at)).'</td>
             <td>'.$status.'</td>
             <td>
-            <div class="box-tools"><a data-target="#fb-modal" data-url="'.tenant()->url("'invoice/bill/".$bill->id).'"
+            <div class="box-tools"><a data-target="#fb-modal" data-url="'.tenant()->url("invoice/bill/".$bill->id).'"
                                       data-toggle="modal" class="btn btn-box-tool" data-original-title="View"
                                       title="View Payments" href="#"><i class="fa fa-eye"></i></a>
                 <button data-original-title="Remove" data-id="'.$bill->id.'" data-toggle="tooltip"

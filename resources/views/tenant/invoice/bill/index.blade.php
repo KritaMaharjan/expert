@@ -28,7 +28,8 @@
                     <tr>
                       <th>Invoice Number</th>
                       <th>Name of recipient</th>
-                      <th>Amount</th>
+                      <th>Total Amount</th>
+                      <th>Remaining Amount</th>
                       <th>Invoice Date</th>
                       @if($type == 'bill') <th>Status</th> @endif
                       <th>Action</th>

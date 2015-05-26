@@ -616,7 +616,7 @@ class TenantTable {
                 $table->increments('id'); // autoincrement value of a vacation
                 $table->integer('transaction_id'); //transaction id from account code table
                 $table->integer('account_code'); //account code from config
-                $table->string('subledger',10); // sub-ledger
+                $table->string('subledger',10)->nullable(); // sub-ledger
                 $table->decimal('amount', 11, 2); // Transaction amount
                 $table->text('description'); // transaction description
                 $table->tinyInteger('type'); // 1: Debit , 2: credit

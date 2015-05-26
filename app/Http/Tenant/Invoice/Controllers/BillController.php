@@ -49,7 +49,7 @@ class BillController extends BaseController {
     public function dataJson()
     {
         if ($this->request->ajax()) {
-            $select = ['b.id', 'b.invoice_number', 'b.customer_id', 'b.total', 'b.due_date', 'b.created_at', 'b.status', 'b.payment'];
+            $select = ['b.id', 'b.invoice_number', 'b.customer_id', 'b.total', 'b.due_date', 'b.created_at', 'b.status', 'b.payment', 'b.remaining'];
             $json = $this->bill->dataTablePagination($this->request, $select);
             echo json_encode($json, JSON_PRETTY_PRINT);
         } else {
@@ -71,7 +71,11 @@ class BillController extends BaseController {
             $customer_id ='';
          
         $currencies = \Config::get('tenant.currencies');
-        $vat = \Config::get('tenant.vat');
+
+        if($this->getCompanyVatRule() == true)
+            $vat = \Config::get('tenant.vat');
+        else
+            $vat = false;
         $data = array('months' => $months, 'currencies' => \Config::get('tenant.currencies'));
         $company_details = $this->getCompanyDetails();
 

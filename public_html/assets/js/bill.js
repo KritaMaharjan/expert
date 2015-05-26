@@ -17,7 +17,7 @@ $(function () {
         },
         "columnDefs": [{
             "orderable": false,
-            "targets": (thisUrl == 'offer')? 4: 5,
+            "targets": (thisUrl == 'offer')? 5: 6,
             "render": function (data, type, row) {
                 return showActionbtn(row);
             }
@@ -26,6 +26,7 @@ $(function () {
             {"data": "invoice_number"},
             {"data": "customer"},
             {"data": "total"},
+            {"data": "remaining"},
             {"data": "invoice_date"},
             (thisUrl == 'bill')? {"data": "status"} : ''
         ]
