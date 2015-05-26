@@ -65,7 +65,7 @@
                       <div class="form-group two-inputs">
                         <label for="">Postal code/Town</label>
                        
-                         <input type="text" placeholder="postcode"  id="postcode" name="postcode"  value="{{$customer->postcode}}" class="form-control postal_code">
+                         <input type="text" placeholder="Postcode"  id="postcode" name="postcode"  value="{{$customer->postcode}}" class="form-control postal_code">
                         <input type="text" placeholder="Town"  id="town" name="town"  value="{{$customer->town}}" class="form-control city">
                     
                       </div>
