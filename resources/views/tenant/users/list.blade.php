@@ -6,7 +6,7 @@ All Users
 
 @section('breadcrumb')
     @parent
-    <li><i class="fa fa-users"></i> &nbsp;All Users</li>
+    <li>Users</li>
 @stop
 
 @section('content')

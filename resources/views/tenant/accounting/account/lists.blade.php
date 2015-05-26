@@ -3,6 +3,11 @@
 @section('heading')
 Accounting List
 @stop
+@section('breadcrumb')
+    @parent
+    <li>Accounting</li>
+    <li>Accounting List</li>
+@stop
 
 @section('content')
 <div class="row">    <div class="col-xs-12 mainContainer">

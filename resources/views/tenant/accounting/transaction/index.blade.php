@@ -3,7 +3,11 @@
 @section('heading')
 Transaction
 @stop
-
+@section('breadcrumb')
+    @parent
+    <li>Accounting</li>
+    <li>Transactions</li>
+@stop
 @section('content')
 <div class="box box-solid">
     <div class="box-body">

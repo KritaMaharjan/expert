@@ -5,7 +5,7 @@ Statistics
 
 @section('breadcrumb')
     @parent
-    <li><i class="fa fa-bar-chart"></i> Statistics</li>
+    <li>Statistics</li>
 @stop
 
 @section('content')

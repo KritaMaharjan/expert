@@ -6,8 +6,8 @@ SMTP Settings
 
 @section('breadcrumb')
     @parent
-    <li><i class="fa fa-cog"></i> Setting</li>
-    @if(current_user()->isAdmin)<li><i class="fa fa-cog"></i> Email</li>@endif
+    <li>Setting</li>
+    @if(current_user()->isAdmin)<li>Email</li>@endif
 @stop
 
 @section('content')
