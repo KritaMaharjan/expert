@@ -74,7 +74,7 @@ class Tasks extends Model
                             <i class="fa fa-edit"></i>
                         </a>' : '';
 
-        $completed_date = ($task['is_complete'] == 1)? '<div>
+        $completed_date = ($task['is_complete'] == 1)? '<div class="clearfix">
                           <label>Completed date:</label>
                           <span>'.format_datetime($task['completion_date']).'</span>
                         </div>' : '';
@@ -89,21 +89,21 @@ class Tasks extends Model
                         <i class="fa fa-trash-o btn-delete-task" data-id="'.$task['id'].'"></i>
                       </div>
                       <div class="todos-box pad-lr-29">
-                        <div>
+                        <div class="clearfix">
                           <label>Added date:</label>
                           <span>'.format_datetime($task['created_at']).'</span>
                         </div>
-                        <div>
+                        <div class="clearfix">
                           <label>Due date:</label>
                           <span>'.format_datetime($task['due_date']).'</span>
                         </div>'.$completed_date.'
-                        <div>
+                        <div class="clearfix">
                           <label>Description:</label>
                           <span>'.nl2br($task['body']).'</span>
                         </div>
                       </div>';
         if($update == false)
-            return "<li id='".$task['id']."'>".$template."</li>";
+            return "<li class='clearfix' id='".$task['id']."'>".$template."</li>";
         return $template;
     }
 

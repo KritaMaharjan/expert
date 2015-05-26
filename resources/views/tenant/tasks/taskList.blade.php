@@ -3,7 +3,7 @@
             <p class="no-results">No upcoming tasks</p>
         @else
             @foreach($tasks['upcoming_tasks'] as $task)
-            <li id = {{$task->id}}>
+            <li id = {{$task->id}} class="clearfix">
               <!-- checkbox -->
               <input type="checkbox" value="" name="" class="icheck"/>
               <!-- todo text -->
@@ -19,15 +19,15 @@
                 <i class="fa fa-trash-o btn-delete-task" data-id="{{ $task->id }}"></i>
               </div>
               <div class="todos-box pad-lr-29">
-                <div>
+                <div class="clearfix">
                   <label>Added date:</label>
                   <span>{{ format_datetime($task->created_at) }}</span>
                 </div>
-                <div>
+                <div class="clearfix">
                   <label>Due date:</label>
                   <span>{{ format_datetime($task->due_date) }}</span>
                 </div>
-                <div>
+                <div class="clearfix">
                   <label>Description:</label>
                   <span>{!! nl2br($task->body) !!}</span>
                 </div>

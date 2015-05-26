@@ -31,7 +31,6 @@ Class Plupload {
     function url($url)
     {
         $this->url = $url;
-
         return $this;
     }
 

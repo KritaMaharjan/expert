@@ -96,12 +96,12 @@ class TenantFileSystem {
         if ($this->isFolderExist($folder)) {
             $this->folder = $folder;
         } else {
-            if ($create) {
+            //if ($create) {
                 $this->folder = $folder;
                 $this->create();
-            } else {
+            //} else {
                 throw new Exception('Folder not exist');
-            }
+            //}
         }
         return $this;
     }
