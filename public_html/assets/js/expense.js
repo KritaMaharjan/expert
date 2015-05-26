@@ -73,11 +73,43 @@
         todayHighlight:true
     });
 
-    $("#payment-date-picker, #billing-date-picker").datepicker({
+    var FromEndDate = new Date();
+    var startDate = new Date();
+    var today = new Date();
+
+    $('#billing-date-picker').datepicker({
+        format: "yyyy-mm-dd",
+        endDate: today,
+        autoclose: true,
+        minDate: 0,
+        maxDate: '+90D'
+    })
+        .on('changeDate', function(selected){
+            startDate = new Date(selected.date.valueOf());
+            startDate.setDate(startDate.getDate(new Date(selected.date.valueOf())));
+            $('#payment-date-picker').datepicker('setStartDate', startDate);
+
+        });
+
+    $('#payment-date-picker').datepicker({
+            format: "yyyy-mm-dd",
+            startDate: startDate,
+            endDate: today,
+            autoclose: true,
+            minDate: 0,
+            maxDate: '+90D'
+        })
+        .on('changeDate', function(selected){
+            FromEndDate = new Date(selected.date.valueOf());
+            FromEndDate.setDate(FromEndDate.getDate(new Date(selected.date.valueOf())));
+            $('#billing-date-picker').datepicker('setEndDate', FromEndDate);
+        });
+
+    /*$("#payment-date-picker, #billing-date-picker").datepicker({
         "format": "yyyy-mm-dd",
         endDate:new Date(),
         todayHighlight:true
-    });
+    });*/
 
     function selectProduct() {
         $(".select-product").select2({
@@ -161,7 +193,7 @@
             '<td><input type="text" name="amount[]" class="form-control" id="amount" maxlength="7" required="required" /></td>' +
             '<td class="position-relative">' +
             '<div class="action-buttons"><a title="Delete" class="invoice-delete fa fa-close btn-danger delete" href="javascript:;"></a></div>' +
-            '<select class="select-product form-control" required="required" >'+account_code_html+'</select></td></tr>';
+            '<select id="account-code" name="account_code_id[]" class="select-product form-control" >'+account_code_html+'</select></td></tr>';
             // invoice_tr.after(invoice_tr_html_wrap);
             var $this = $('.expense-table tr:last').after(html_product);
             $('.expense-table tr:last .select-product option:selected').removeAttr('selected');
@@ -199,46 +231,59 @@
     $(document).on('submit', '#expense-form', function (e) {
         e.preventDefault();
         var form = $(this);
-        var formAction = form.attr('action');
-        var formData = form.serialize();
+        var doing = true;
+        //checking if the expense code is selected
+        form.find('select[name="account_code_id[]"]').each(function() {
+            if($(this).val() == '') {
+                alert('Please select expense code for all purchased products.');
+                doing = false;
+                return false;
+            }
+        });
 
-        $('.error').remove();
-        form.find('.expense-submit').html('Loading...');
-        form.find('.expense-submit').attr('disabled', 'disabled');
+        if(doing == true) {
+            var formAction = form.attr('action');
+            var formData = form.serialize();
 
-        form.find('.has-error').removeClass('has-error');
-        form.find('label.error').remove();
-        $('.callout').remove();
+            $('.error').remove();
+            form.find('.expense-submit').html('Loading...');
+            form.find('.expense-submit').attr('disabled', 'disabled');
 
-        $.ajax({
-            url: formAction,
-            type: 'POST',
-            dataType: 'json',
-            data: formData
-        })
-            .done(function (response) {
-                if(response.status == 0)
-                {
-                    $.each(response.data.errors, function( index, value ) {
-                        var errorDiv = '.box-body #'+index;
-                        $(errorDiv).closest( ".form-group" ).addClass('has-error');
-                        $('.box-body #'+index).after('<label class="error error-frm error-'+index+'">'+value[0]+'<label>');
-                    });
-                }
+            form.find('.has-error').removeClass('has-error');
+            form.find('label.error').remove();
+            $('.callout').remove();
 
-                else {
-                    //$('.mainContainer .box-solid').before(notify('success', 'Payment added Successfully!'));
-                    window.location.replace(appUrl + 'accounting');
-                } //success
+            $.ajax({
+                url: formAction,
+                type: 'POST',
+                dataType: 'json',
+                data: formData
             })
-            .fail(function () {
-                alert('Something went wrong! Please try again later!');
-            })
-            .always(function () {
-                form.find('.expense-submit').removeAttr('disabled');
-                form.find('.expense-submit').html('Register expense');
+                .done(function (response) {
+                    if (response.status == 0) {
+                        $.each(response.data.errors, function (index, value) {
+                            var errorDiv = '.box-body #' + index;
+                            $(errorDiv).closest(".form-group").addClass('has-error');
+                            $('.box-body #' + index).after('<label class="error error-frm error-' + index + '">' + value[0] + '<label>');
+                        });
+                    }
 
-            });
+                    else {
+                        //$('.mainContainer .box-solid').before(notify('success', 'Payment added Successfully!'));
+                        window.location.replace(appUrl + 'accounting');
+                    } //success
+                })
+                .fail(function () {
+                    alert('Something went wrong! Please try again later!');
+                })
+                .always(function () {
+                    form.find('.expense-submit').removeAttr('disabled');
+                    form.find('.expense-submit').html('Register expense');
+
+                });
+        }
+        else
+        return false;
     });
 
 })();

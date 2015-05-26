@@ -67,7 +67,7 @@ class ListController extends BaseController
         if ($validator->fails())
             return $this->fail(['errors' => $validator->messages()]);
 
-        $result = $this->expense->payExpense($this->request, $id);
+        $result = $this->expense->payExpense($this->request, $id, $this->current_user()->id);
         return ($result) ? $this->success(['result' => $result]) : $this->fail(['errors' => 'Something went wrong!']);
     }
 

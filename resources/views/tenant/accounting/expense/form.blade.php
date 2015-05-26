@@ -111,7 +111,7 @@
                             </td>
                             <td class="position-relative">
                                 {{--{!! Form::select('account_code_id[]', $accounts, null, array('class' => 'select-product', 'id' => 'account-code')) !!}--}}
-                                <select name="account_code_id[]" class="select-product" id="account-code" required="required" >
+                                <select name="account_code_id[]" class="select-product" id="account-code" >
                                     @foreach($accounts as $key => $account)
                                         <option value="{{$key}}" {{ ($product['account_code_id'] == $key)?'selected=selected' : "" }}>{{$account}}</option>
                                     @endforeach
@@ -135,7 +135,7 @@
                             <input type="text" name="amount[]" class="form-control" id="amount" maxlength="7" required="required" />
                         </td>
                         <td class="position-relative">
-                            <select name="account_code_id[]" class="select-product" id="account-code" required="required" >
+                            <select name="account_code_id[]" class="select-product" id="account-code">
                                 @foreach($accounts as $key => $account)
                                     <option value="{{$key}}">{{$account}}</option>
                                 @endforeach

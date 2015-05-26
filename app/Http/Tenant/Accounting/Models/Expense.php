@@ -28,7 +28,7 @@ class Expense extends Model
         return $this->hasMany('App\Http\Tenant\Accounting\Models\ExpenseProduct');
     }
 
-    public function createExpense(Request $request)
+    public function createExpense(Request $request, $user_id)
     {
         // Start transaction!
         DB::beginTransaction();
@@ -74,6 +74,7 @@ class Expense extends Model
             $expense_remaining = $expense_total;
             if($request['is_paid']) {
                 Payment::create([
+                    'user_id' => $user_id,
                     'expense_id' => $expense->id,
                     'amount_paid' => $request['amount_paid'],
                     'payment_method' => $request['payment_method'],
@@ -171,8 +172,9 @@ class Expense extends Model
         return false;
     }
 
-    public function payExpense(Request $request, $id) {
+    public function payExpense(Request $request, $id, $user_id) {
         $payment_info = Payment::create([
+            'user_id' => $user_id,
             'expense_id' => $id,
             'amount_paid' => $request['amount_paid'],
             'payment_method' => $request['payment_method'],

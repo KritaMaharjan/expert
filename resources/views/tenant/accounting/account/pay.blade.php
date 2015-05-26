@@ -12,13 +12,14 @@
                 {!! Form::label('', 'Amount paid') !!}
                 {!! Form:: text('amount_paid', null, array('class' => 'form-control date-box', 'id' => 'amount_paid')) !!}
             </div>
-            <div class="form-group clearfix {{ ($errors->has('due_date'))? 'has-error': '' }}">
-                {!! Form::label('payment_date', 'Paid date') !!}
-                <div class='input-group date-picker date date-box' id='payment_date'>
-                    {!! Form:: text('payment_date', null, array('class' => 'form-control', 'id' =>'pay-date-picker')) !!}
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
+
+            <div class="form-group clearfix {{ ($errors->has('payment_date'))? 'has-error': '' }}">
+              {!! Form::label('payment_date', 'Paid date') !!}
+                  <div id="due_date" class="input-group date date-box">
+                      {!! Form:: text('payment_date', null, array('class' => 'form-control due_date', 'id' =>'pay-date-picker')) !!}
+                      <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                      </span>
+                  </div>
             </div><br />
             <div class="form-group clearfix">
                 <div>
@@ -30,5 +31,5 @@
 </div>
 
 <script type="text/javascript">
-    $(".date-picker").datepicker({'format': 'yyyy-mm-dd'});
+    $('#pay-date-picker').datepicker({format: 'yyyy-mm-dd',endDate :new Date()});
 </script>
