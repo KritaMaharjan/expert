@@ -249,7 +249,7 @@
     }
 
     $(document).on('submit', '#bill-form', function (e) {
-        $('.bill-submit').val('loading...').attr('disabled', true);
+        $('.bill-submit').html('loading...').attr('disabled', true);
     });
 
     //creation of customer
