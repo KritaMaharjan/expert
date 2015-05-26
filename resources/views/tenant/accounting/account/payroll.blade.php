@@ -7,6 +7,7 @@ Payroll Report
 
 @section('breadcrumb')
     @parent
+    <li>Accounting</li>
     <li>Payroll Report</li>
 @stop
 
