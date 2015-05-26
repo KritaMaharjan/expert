@@ -70,9 +70,10 @@ class OfferController extends BaseController {
 
         $months = \Config::get('tenant.month');         
         $currencies = \Config::get('tenant.currencies');
+        $vat = \Config::get('tenant.vat');
         $data = array('months' => $months, 'currencies' => \Config::get('tenant.currencies'));
         $company_details = $this->getCompanyDetails();
-        return view('tenant.invoice.bill.create', compact('company_details','months','currencies','customer_id','customer_details'))->with('pageTitle', 'Add new offer')->with($data);
+        return view('tenant.invoice.bill.create', compact('company_details','months','currencies','customer_id','customer_details', 'vat'))->with('pageTitle', 'Add new offer')->with($data);
     }
 
     function getCompanyDetails()
