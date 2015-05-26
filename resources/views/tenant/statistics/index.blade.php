@@ -160,11 +160,11 @@ Statistics
                    </div>
                    <div class="form-group">
                      <label>Expenses:</label>
-                     <span>{{ $account_stats['total_expenses'] }}- NOK</span>
+                     <span>{{ $account_stats['total_expenses'] }} NOK</span>
                    </div>
                    <div class="form-group">
                      <label>Salaries:</label>
-                     <span>{{ $account_stats['total_paid_salary'] }}- NOK</span>
+                     <span>{{ $account_stats['total_paid_salary'] }} NOK</span>
                    </div>
                    {{--<div class="form-group">
                      <label>Advertising expenses:</label>
@@ -172,7 +172,7 @@ Statistics
                    </div>--}}
                    <div class="form-group">
                      <label>Cost of sale:</label>
-                     <span>{{ $account_stats['total_sales_cost'] }} - NOK</span>
+                     <span>{{ $account_stats['total_sales_cost'] }} NOK</span>
                    </div>   
                 </div>
               </div>
