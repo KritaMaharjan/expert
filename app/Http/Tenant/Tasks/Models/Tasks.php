@@ -74,7 +74,7 @@ class Tasks extends Model
                             <i class="fa fa-edit"></i>
                         </a>' : '';
 
-        $completed_date = ($task['is_complete'] == 1)? '<div>
+        $completed_date = ($task['is_complete'] == 1)? '<div class="clearfix">
                           <label>Completed date:</label>
                           <span>'.format_datetime($task['completion_date']).'</span>
                         </div>' : '';
