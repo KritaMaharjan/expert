@@ -157,7 +157,15 @@ $(function () {
                  
                 $('.city').val(label);      
 
-            }
+            },
+            change: function(event,ui)
+                {
+                if (ui.item==null)
+                    {
+                    $(".postal_code").val('');
+                    $(".postal_code").focus();
+                    }
+                }
         });
       });
 
