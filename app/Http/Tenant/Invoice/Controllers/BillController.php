@@ -4,6 +4,7 @@ namespace App\Http\Tenant\Invoice\Controllers;
 
 use App\Fastbooks\Libraries\Pdf;
 use App\Http\Controllers\Tenant\BaseController;
+use App\Http\Tenant\Accounting\Models\AccountingYear;
 use App\Http\Tenant\Collection\Models\Collection;
 use App\Http\Tenant\Invoice\Models\Bill;
 use App\Http\Tenant\Invoice\Models\BillProducts;

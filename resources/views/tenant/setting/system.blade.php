@@ -6,8 +6,8 @@ System Settings
 
 @section('breadcrumb')
     @parent
-    <li><i class="fa fa-cog"></i> Setting</li>
-    <li><i class="fa fa-cog"></i> System</li>
+    <li>Setting</li>
+    <li>System</li>
 @stop
 
 @section('content')
