@@ -39,10 +39,9 @@ class RedirectTenantUser {
 	{
         $this->validateTenant();
 
-        if($this->auth->check())
-        {
-            if($this->auth->user()->status ==0)
-            {
+
+        if(isset($this->auth->user()->status)) {
+            if ($this->auth->user()->status == 0) {
                 $this->auth->logout();
                 flash()->error(lang('Your account has not been activated.'));
             } elseif ($this->auth->user()->status == 2) {
