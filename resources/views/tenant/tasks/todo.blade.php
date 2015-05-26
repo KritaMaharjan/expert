@@ -4,16 +4,16 @@
 <div class="box-body">
     <ul class="todo-list upcoming-tasks">
         @foreach($tasks['todo_tasks'] as $task)
-        <li id = {{$task->id}}>
+        <li id = {{$task->id}} class="clearfix">
           <!-- to do text -->
           <span class="text">{{ $task->subject }}</span>
           {!! calculate_todo_time($task->due_date) !!}
           <div class="todos-box pad-lr-29">
-            <div>
+            <div class="clearfix">
               <label>Added date:</label>
               <span>{{ format_datetime($task->created_at) }}</span>
             </div>
-            <div>
+            <div class="clearfix">
               <label>Due date:</label>
               <span>{{ format_datetime($task->due_date) }}</span>
             </div>

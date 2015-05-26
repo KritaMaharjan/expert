@@ -1096,6 +1096,12 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
 .todos-box label{
     width: 14%;
     font-weight: 600;
+    float: left;
+}
+.todos-box.pad-lr-29 span {
+    display: block;
+    float: left;
+    width: 80%;
 }
 .mg-l-1{
     margin-left: 1px;
