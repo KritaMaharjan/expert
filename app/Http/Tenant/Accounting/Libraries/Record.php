@@ -55,6 +55,7 @@ class Record {
         // debit customer for sales
         $debit1_description = $customer->name();
         $debit1_account_code = new AccountCode(1500);
+
         $subledger = $customer->account();
         $entry->debit(new Debit($amount, $debit1_account_code, $debit1_description, $subledger));
 
