@@ -3,6 +3,11 @@
 @section('heading')
 Accounting Expenses
 @stop
+@section('breadcrumb')
+    @parent
+    <li>Accounting</li>
+    <li>Create Expenses</li>
+@stop
 @section('content')
     <div class="box box-solid">
         <div class="box-body">
