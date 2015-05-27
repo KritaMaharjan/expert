@@ -191,7 +191,6 @@ function getTemplate(data, type) {
         data.name + '</a>' + '</td>' +
         '<td>' + data.purchase_cost + '</td>' +
         '<td>' + data.selling_price + '</td>' +
-        '<td>' + data.vat + '</td>' +
         '<td>' + showActionbtn(data) + '</td>';
 
     if (type == false)
