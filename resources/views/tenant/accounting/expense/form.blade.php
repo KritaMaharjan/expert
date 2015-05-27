@@ -57,7 +57,15 @@
             </div>
             <div class="form-group clearfix {{ ($errors->has('invoice_number'))? 'has-error': '' }}">
                 {!! Form::label('', 'Vat') !!}
-                {!! Form::select('vat', $vat, null, array('class' => 'form-control vat date-box')) !!}
+
+                  @if($vat != false)
+                  {!! Form::select('vat', $vat, $default_vat, array('class' => 'form-control vat date-box')) !!}
+                  @else
+                  <span class="border-bx block no-border pad-0">N/A</span>
+                  {!! Form::hidden('vat', 0, null, array('class' => 'form-control vat')) !!}
+                  @endif
+
+                {{--{!! Form::select('vat', $vat, null, array('class' => 'form-control vat date-box')) !!}--}}
 
                 @if($errors->has('invoice_number'))
                      {!! $errors->first('invoice_number', '<label class="control-label error error-right" for="inputError">:message</label>') !!}
