@@ -5,6 +5,7 @@ use App\Http\Tenant\Accounting\Libraries\Record;
 use App\Models\Tenant\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Tenant\Invoice\Models\Bill;
 
 class BillPayment extends Model
 {
@@ -66,13 +67,8 @@ class BillPayment extends Model
 
     function getBillTemplate(Bill $bill)
     {
-        if ($bill->status == 1)
-            $status = '<span class="label label-success">Paid</span>';
-        elseif ($bill->status == 2)
-            $status = '<span class="label label-warning">Collection</span>';
-        else
-            $status = '<span class="label label-danger">Unpaid</span>';
-
+        $bill_model = new Bill();
+        $status = $bill_model->getStatus($bill->status, $bill->payment);
         $template = '
             <td class="sorting_1"><a href="#" class="link">'.$bill->invoice_number.'</a></td>
             <td>'.$bill->customer->name.'</td>

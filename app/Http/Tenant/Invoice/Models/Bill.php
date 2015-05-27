@@ -199,7 +199,6 @@ class Bill extends Model {
         return false;
     }
 
-
     function dataTablePagination(Request $request, array $select = array(), $is_offer = false)
     {
         if ((is_array($select) AND count($select) < 1)) {

@@ -64,16 +64,22 @@ class OfferController extends BaseController {
                $customer_id = $c_id;
                $customer_details =  \DB::table('fb_customers')->where('id', $c_id)->first();
         }
-         
         else
             $customer_id ='';
 
         $months = \Config::get('tenant.month');         
         $currencies = \Config::get('tenant.currencies');
-        $vat = \Config::get('tenant.vat');
+
+        if($this->getCompanyVatRule() == false)
+            $vat = false;
+        else {
+            $vat = \Config::get('tenant.vat');
+            $default_vat = $this->getCompanyVatRule();
+        }
+
         $data = array('months' => $months, 'currencies' => \Config::get('tenant.currencies'));
         $company_details = $this->getCompanyDetails();
-        return view('tenant.invoice.bill.create', compact('company_details','months','currencies','customer_id','customer_details', 'vat'))->with('pageTitle', 'Add new offer')->with($data);
+        return view('tenant.invoice.bill.create', compact('company_details','months','currencies','customer_id','customer_details', 'vat', 'default_vat'))->with('pageTitle', 'Add new offer')->with($data);
     }
 
     function getCompanyDetails()

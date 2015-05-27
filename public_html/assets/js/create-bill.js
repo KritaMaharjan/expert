@@ -5,17 +5,12 @@
         'format': 'yyyy-mm-dd'
     });
 
-    var d = $('#due-date-pickers').datepicker({format: 'yyyy-mm-dd', startDate: new Date()});
-    var today = new Date();
-    var tomorrow = new Date(today);
-    tomorrow.setDate(today.getDate()+14);
+    $('#due-date-pickers').datepicker({format: 'yyyy-mm-dd', startDate: new Date()});
+    var plus14days = new Date();
+    plus14days.setDate(plus14days.getDate() + 14);
+    $("#due-date-pickers").datepicker("setDate", plus14days);
+    $("#due-date-pickers").datepicker('update');
 
-    $('#due-date-pickers').datepicker('setValue', tomorrow).datepicker('fill');
-    //$('#due-date-pickers').datepicker('update', new Date(tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate()));
-    //$('#due-date-pickers').datepicker('update', tomorrow);
-    /*var dueDate = (today.getDate() + 14);
-    $('#due-date-pickers').datepicker('setDate', dueDate);
-*/
     var invoice_tr = $('.product-table .position-r');
     var invoice_tr_html = invoice_tr.html();
     var invoice_tr_html_wrap = '<tr class="position-r">' + invoice_tr_html + '</tr>';
@@ -32,8 +27,6 @@
             '<span class="border-bx block total"> </span></td></tr>';
         // invoice_tr.after(invoice_tr_html_wrap);
         $('.product-table tr:last').after(html_product);
-
-
         selectProduct();
     });
 
