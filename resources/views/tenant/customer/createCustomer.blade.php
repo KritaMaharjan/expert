@@ -79,13 +79,10 @@
                       <div class="form-group">
                         <label for="">Status</label>
                          <select name="status" class="form-control" id="status">
-                            <option value="0">Inactive</option>
                             <option value="1">Active</option>
-                        </select> 
+                            <option value="0">Inactive</option>
+                        </select>
                       </div>
-             
-                       
-                      
                         
                       </div>
                    

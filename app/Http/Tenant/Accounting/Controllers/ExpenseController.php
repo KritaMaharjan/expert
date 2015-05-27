@@ -28,8 +28,16 @@ class ExpenseController extends BaseController {
         $accounts = $this->getAccountCode('en');
         $tax = \Config::get('tenant.vat');
         $months = \Config::get('tenant.month');
-        $vat = \Config::get('tenant.vat');
-        return view('tenant.accounting.expense.create', compact('accounts', 'tax', 'months', 'vat'));
+        //$vat = \Config::get('tenant.vat');
+
+        if($this->getCompanyVatRule() == false)
+            $vat = false;
+        else {
+            $vat = \Config::get('tenant.vat');
+            $default_vat = $this->getCompanyVatRule();
+        }
+
+        return view('tenant.accounting.expense.create', compact('accounts', 'tax', 'months', 'vat', 'default_vat'));
     }
 
     public function createExpense()
@@ -46,7 +54,7 @@ class ExpenseController extends BaseController {
             return $this->fail(['errors' => $validator->messages()]);
             //return redirect()->back()->withErrors($validator)->withInput();
 
-        $result = $this->expense->createExpense($this->request);
+        $result = $this->expense->createExpense($this->request, $this->current_user()->id);
 
         Flash::success('Expense added successfully!');
         return ($result) ? $this->success(['result' => $result]) : $this->fail(['errors' => 'Something went wrong!']);
@@ -61,7 +69,7 @@ class ExpenseController extends BaseController {
         $expense_total = 0;
         foreach ($products as $key => $product) {
             if (isset($amount[$key]) && $amount[$key] > 0) {
-                $total = $amount[$key] + ($vat[$key] * 0.01 * $amount[$key]);
+                $total = $amount[$key] + ($vat * 0.01 * $amount[$key]);
             }
             $expense_total += $total;
         }

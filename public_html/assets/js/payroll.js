@@ -79,3 +79,18 @@
     });
 
 })();
+
+
+$(document).ready(function(){
+    var type = $('.type').val();
+    if(type == 0) //hourly
+    {
+        $('.rate').html('Rate per hour');
+        $('.worked').html('Hours');
+    }
+    else if (type == 1) //monthly
+    {
+        $('.rate').html('Rate per month');
+        $('.worked').html('Months');
+    }
+});

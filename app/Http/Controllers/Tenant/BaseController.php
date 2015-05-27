@@ -112,6 +112,25 @@ class BaseController extends Controller {
     }
 
     /**
+     * Get Company vat reporting rule
+     * @return string
+     */
+    function getCompanyVatRule()
+    {
+        $company_details = Setting::where('name', 'business')->first();
+
+        if ($company_details->value['vat_reporting_rule'] == 'not-registered')
+            return false;
+        else {
+            $default_vat = Setting::where('name', 'vat')->first();
+            if(empty($default_vat))
+                return 25;
+            else
+                return $default_vat->value;
+        }
+    }
+
+    /**
      * return success json data to view
      * @param array $data
      * @return mixed

@@ -137,12 +137,12 @@ function format_id($id = 0, $zeros = 3)
 
 function data_decode($data)
 {
-    return unserialize($data);
+    return @unserialize($data);
 }
 
 function data_encode($data)
 {
-    return serialize($data);
+    return @serialize($data);
 }
 
 

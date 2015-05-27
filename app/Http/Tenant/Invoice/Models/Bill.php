@@ -199,7 +199,6 @@ class Bill extends Model {
         return false;
     }
 
-
     function dataTablePagination(Request $request, array $select = array(), $is_offer = false)
     {
         if ((is_array($select) AND count($select) < 1)) {
@@ -247,6 +246,7 @@ class Bill extends Model {
 
         foreach ($data as $key => &$value) {
             $value->total = number_format($value->total, 2);
+            $value->remaining = number_format($value->remaining, 2);
             $value->invoice_number = '<a class="link" href="#">' . $value->invoice_number . '</a>';
             //$customer = Customer::find($value->customer_id);
             //if ($customer)

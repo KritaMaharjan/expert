@@ -32,7 +32,7 @@ class Product extends Model {
         $product = new Product();
         $product->number = $request->input('number');
         $product->name = $request->input('name');
-        $product->vat = $request->input('vat');
+        //$product->vat = $request->input('vat');
         $product->selling_price = $request->input('selling_price');
         $product->purchase_cost = $request->input('purchase_cost');
         $product->user_id = current_user()->id;
@@ -72,7 +72,7 @@ class Product extends Model {
         $this->edit_url = tenant()->url('inventory/product/' . $this->id . '/edit');
         $this->purchase_cost = $this->purchase_cost();
         $this->selling_price = $this->selling_price();
-        $this->vat = $this->vat();
+        //$this->vat = $this->vat();
         $this->is_inventory = $this->in_inventory($this->id);
 
         return $this->toArray();

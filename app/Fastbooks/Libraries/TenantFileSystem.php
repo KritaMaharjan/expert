@@ -100,7 +100,7 @@ class TenantFileSystem {
                 $this->folder = $folder;
                 $this->create();
             //} else {
-                throw new Exception('Folder not exist');
+                //throw new Exception('Folder not exist');
             //}
         }
         return $this;

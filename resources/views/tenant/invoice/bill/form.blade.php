@@ -75,33 +75,40 @@
               {!! $errors->first('customer_id', '<label class="control-label" for="inputError">:message</label>') !!}
           @endif
         </div>--}}
-        <div class="form-group clearfix {{ ($errors->has('due_date'))? 'has-error': '' }}">
+      <div class="form-group clearfix {{ ($errors->has('due_date'))? 'has-error': '' }}">
           {!! Form::label('due_date', 'Due date') !!}
               <div id="due_date" class="input-group date date-box">
                   {!! Form::text('due_date', null,['class'=>'form-control due_date', 'id' =>'due-date-pickers']) !!}
                   <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                   </span>
               </div>
-        </div>
+      </div>
          @if($errors->has('due_date'))
                       {!! $errors->first('due_date', '<label class="control-label error" style="position: relative;top: -10px;" for="inputError">:message</label>') !!}
                   @endif
-        <div class="form-group clearfix" style="text-align: left!important;">
+      <div class="form-group clearfix" style="text-align: left!important;">
           {!! Form::label('account_number', 'Account no') !!}
           <span class="border-bx block no-border pad-0">{{ $company_details['account_no'] }}</span>
-        </div>
-        <div class="form-group clearfix" style="text-align: left !important;">
+      </div>
+      <div class="form-group clearfix" style="text-align: left !important;">
           {!! Form::label('Customer Payment Number') !!}
           <span class="border-bx block cus-pay-no no-border pad-0">{{ $bill->customer_payment_number or ''}}</span>
-        </div>
-        <div class="form-group clearfix">
+      </div>
+      <div class="form-group clearfix">
           {!! Form::label('currency', 'Currency') !!}
           {!! Form::select('currency', $currencies, null, array('class' => 'form-control')) !!}
-        </div>
-        <div class="form-group clearfix">
+      </div>
+
+      <div class="form-group clearfix" style="text-align: left!important;">
           {!! Form::label('vat', 'Vat') !!}
-          {!! Form::select('vat', $vat, null, array('class' => 'form-control vat')) !!}
-        </div>
+          @if($vat != false)
+          {!! Form::select('vat', $vat, $default_vat, array('class' => 'form-control vat')) !!}
+          @else
+          <span class="border-bx block no-border pad-0">N/A</span>
+          {!! Form::hidden('vat', 0, null, array('class' => 'form-control vat')) !!}
+          @endif
+      </div>
+
       </div>
 
     </div><!-- /.col -->

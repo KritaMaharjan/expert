@@ -4,7 +4,12 @@
     $("#invoice-date-picker").datepicker({
         'format': 'yyyy-mm-dd'
     });
-    $('#due-date-pickers').datepicker({format: 'yyyy-mm-dd',startDate :new Date()});
+
+    $('#due-date-pickers').datepicker({format: 'yyyy-mm-dd', startDate: new Date()});
+    var plus14days = new Date();
+    plus14days.setDate(plus14days.getDate() + 14);
+    $("#due-date-pickers").datepicker("setDate", plus14days);
+    $("#due-date-pickers").datepicker('update');
 
     var invoice_tr = $('.product-table .position-r');
     var invoice_tr_html = invoice_tr.html();
@@ -22,8 +27,6 @@
             '<span class="border-bx block total"> </span></td></tr>';
         // invoice_tr.after(invoice_tr_html_wrap);
         $('.product-table tr:last').after(html_product);
-
-
         selectProduct();
     });
 
