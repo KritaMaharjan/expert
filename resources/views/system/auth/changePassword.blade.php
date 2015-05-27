@@ -6,7 +6,7 @@ Change Password
 
 @section('breadcrumb')
 @parent
-<li><i class="fa fa-users"></i> Change password</li>
+<li>Change password</li>
 @stop
 
 @section('content')

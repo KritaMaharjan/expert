@@ -10,7 +10,7 @@ Email Settings
 
 @section('breadcrumb')
     @parent
-    <li><i class="fa fa-cog"></i> Setting</li>
+    <li>Setting</li>
     <li>Email</li>
 @stop
 
