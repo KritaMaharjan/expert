@@ -121,8 +121,13 @@ class BaseController extends Controller {
 
         if ($company_details->value['vat_reporting_rule'] == 'not-registered')
             return false;
-        else
-            return true;
+        else {
+            $default_vat = Setting::where('name', 'vat')->first();
+            if(empty($default_vat))
+                return 25;
+            else
+                return $default_vat->value;
+        }
     }
 
     /**

@@ -28,8 +28,16 @@ class ExpenseController extends BaseController {
         $accounts = $this->getAccountCode('en');
         $tax = \Config::get('tenant.vat');
         $months = \Config::get('tenant.month');
-        $vat = \Config::get('tenant.vat');
-        return view('tenant.accounting.expense.create', compact('accounts', 'tax', 'months', 'vat'));
+        //$vat = \Config::get('tenant.vat');
+
+        if($this->getCompanyVatRule() == false)
+            $vat = false;
+        else {
+            $vat = \Config::get('tenant.vat');
+            $default_vat = $this->getCompanyVatRule();
+        }
+
+        return view('tenant.accounting.expense.create', compact('accounts', 'tax', 'months', 'vat', 'default_vat'));
     }
 
     public function createExpense()

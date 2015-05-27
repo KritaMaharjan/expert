@@ -102,7 +102,7 @@
       <div class="form-group clearfix" style="text-align: left!important;">
           {!! Form::label('vat', 'Vat') !!}
           @if($vat != false)
-          {!! Form::select('vat', $vat, null, array('class' => 'form-control vat')) !!}
+          {!! Form::select('vat', $vat, $default_vat, array('class' => 'form-control vat')) !!}
           @else
           <span class="border-bx block no-border pad-0">N/A</span>
           {!! Form::hidden('vat', 0, null, array('class' => 'form-control vat')) !!}
