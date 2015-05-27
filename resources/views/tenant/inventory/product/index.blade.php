@@ -32,7 +32,6 @@ Product
                       <th>Product Name</th>
                       <th>Purchase Cost</th>
                       <th>Sales Price</th>
-                      <th>Vat</th>
                       <th>Action</th>
                     </tr>
                 </thead>

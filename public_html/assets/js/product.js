@@ -13,7 +13,7 @@ $(function () {
 
         "columnDefs": [{
             "orderable": false,
-            "targets": 6,
+            "targets": 5,
             "render": function (data, type, row) {
                 return showActionbtn(row);
             }
@@ -31,8 +31,7 @@ $(function () {
             {"data": "number"},
             {"data": "name"},
             {"data": "purchase_cost"},
-            {"data": "selling_price"},
-            {"data": "vat"}
+            {"data": "selling_price"}
 
         ],
 
