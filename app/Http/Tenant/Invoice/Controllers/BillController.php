@@ -72,14 +72,17 @@ class BillController extends BaseController {
          
         $currencies = \Config::get('tenant.currencies');
 
-        if($this->getCompanyVatRule() == true)
-            $vat = \Config::get('tenant.vat');
-        else
+        if($this->getCompanyVatRule() == false)
             $vat = false;
+        else {
+            $vat = \Config::get('tenant.vat');
+            $default_vat = $this->getCompanyVatRule();
+        }
+
         $data = array('months' => $months, 'currencies' => \Config::get('tenant.currencies'));
         $company_details = $this->getCompanyDetails();
 
-        return view('tenant.invoice.bill.create', compact('company_details','months','currencies','customer_details','customer_id', 'vat'))->with('pageTitle', 'Add new bill')->with($data);
+        return view('tenant.invoice.bill.create', compact('company_details','months','currencies','customer_details','customer_id', 'vat', 'default_vat'))->with('pageTitle', 'Add new bill')->with($data);
     }
 
     function getCompanyDetails()

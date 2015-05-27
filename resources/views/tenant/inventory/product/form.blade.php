@@ -10,10 +10,10 @@
         {!! Form::text('name',null,['class'=>'form-control']) !!}
     </div>
 
-    <div class="form-group">
+    {{--<div class="form-group">
         {!! Form::label('vat', 'Vat(%)') !!}
         {!! Form::text('vat',null,['class'=>'form-control']) !!}
-    </div>
+    </div>--}}
 
     <div class="form-group">
         {!! Form::label('selling_price', 'Selling Price') !!}
