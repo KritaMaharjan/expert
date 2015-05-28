@@ -1075,7 +1075,9 @@ div.zabuto_calendar .table th, div.zabuto_calendar .table td {
 .ui-widget-content{
     background: #fff!important;
     background-image:none!important; 
-
+    overflow-y: auto !important;
+    max-height: 250px;
+    overflow-x: hidden;
 }
 .ui-widget-content .ui-menu-item{background: #fff!important;font-size: 12px!important;}
 .ui-menu-item:hover,.ui-menu-item:focus,.ui-menu-item:link{

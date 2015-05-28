@@ -192,7 +192,7 @@ class SetupController extends BaseController {
     {
 
     	$postal_code = \Input::get('term');
-    	$details = \DB::table('fastbooks.fb_postal_towns')->where('postcode', 'LIKE', '%'.$postal_code.'%')->take(10)->get();
+    	$details = \DB::table('fastbooks.fb_postal_towns')->where('postcode', 'LIKE', '%'.$postal_code.'%')->get();
     	$newResult = array();
 
     	if(!empty($details)) {
