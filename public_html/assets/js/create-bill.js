@@ -318,4 +318,20 @@
         return '<div class="callout callout-' + type + '"><p>' + text + '</p></div>';
     }
 
+    $('.business_div').hide();
+    $(document).on('click', '#business', function () {
+        var modal = $(this).parent().parent().parent();
+
+        if ($(this).is(':checked')) {
+            modal.find('#type').val('2');
+            modal.find('.dob_div').hide();
+            modal.find('.business_div').show();
+        } else {
+            modal.find('#type').val('1');
+            modal.find('.dob_div').show();
+            modal.find('.business_div').hide();
+        }
+
+    });
+
 })();
