@@ -6,7 +6,7 @@ User Details
 
 @section('breadcrumb')
     @parent
-    <li><i class="fa fa-users"></i> User</li>
+    <li><a href="{{ tenant()->url('users') }}"> <i class="fa fa-users"></i> User</a></li>
     <li><i class="fa fa-user"></i> Profile</li>
 @stop
 
@@ -34,7 +34,7 @@ User Details
                   <td>@if($user->status == 0)
                         Pending
                       @elseif($user->status == 1)
-                        Activated
+                        Active
                       @elseif($user->status == 2)
                         Suspended
                       @else

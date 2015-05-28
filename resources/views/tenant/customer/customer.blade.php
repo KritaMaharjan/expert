@@ -6,7 +6,7 @@ Customers
 
 @section('breadcrumb')
     @parent
-    <li><i class="fa fa-cog"></i> Customers</li>
+    <li>Customers</li>
 @stop
 
 
@@ -30,17 +30,19 @@ Customers
          </p>
          
 		    <div class="box-body">
-		      <table id="table-customer" class="table table-hover">
-               <thead>
-                   <tr>
-                     <th>ID</th>
-                     <th>Customer name</th>
-                     <th>Email</th>
-                     <th>Added Date</th>
-                     <th>Action</th>
-                   </tr>
-               </thead>
-             </table>
+          <div class="table-responsive">
+  		      <table id="table-customer" class="table table-hover ">
+                 <thead>
+                     <tr>
+                       <th>ID</th>
+                       <th>Customer name</th>
+                       <th>Email</th>
+                       <th>Added Date</th>
+                       <th>Action</th>
+                     </tr>
+                 </thead>
+               </table>
+          </div>
 		    </div><!-- /.box-body -->
 		  </div><!-- /.box -->
 	  	</div>
@@ -64,7 +66,6 @@ Customers
     {{FB::registerModal()}}
    
     {{FB::js('assets/js/customer.js')}}
-
        
 	@stop
   

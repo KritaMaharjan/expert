@@ -2,6 +2,8 @@
 
 namespace App\Http\Tenant\Invoice\Models;
 
+use App\Http\Tenant\Accounting\Libraries\Record;
+use App\Http\Tenant\Collection\Models\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Tenant\Customer;
@@ -10,6 +12,20 @@ use App\Http\Tenant\Inventory\Models\Product;
 use Illuminate\Support\Facades\DB;
 
 class Bill extends Model {
+
+
+    const TYPE_BILL = 0;
+    const TYPE_OFFER = 1;
+
+    const STATUS_UNPAID = 0;
+    const STATUS_PAID = 1;
+    const STATUS_PARTIAL_PAID = 2;
+
+
+    const STATUS_ACTIVE = 0;
+    const STATUS_COLLECTION = 1;
+    const STATUS_LOSS = 2;
+    const STATUS_CREDITED = 3;
 
     /**
      * The database table used by the model.
@@ -23,7 +39,7 @@ class Bill extends Model {
      *
      * @var array
      */
-    protected $fillable = ['invoice_number', 'customer_id', 'currency', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'status', 'due_date', 'is_offer', 'customer_payment_number'];
+    protected $fillable = ['user_id', 'invoice_number', 'customer_id', 'currency', 'subtotal', 'tax', 'shipping', 'total', 'paid', 'remaining', 'payment', 'full_payment_date', 'status', 'due_date', 'type', 'is_offer', 'customer_payment_number', 'vat'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -33,23 +49,37 @@ class Bill extends Model {
     protected $hidden = [];
 
 
-    function payments()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    function customer()
     {
-        return $this->hasMany('App\Http\Tenant\Invoice\Models\Payment');
+        return $this->belongsTo('App\Models\Tenant\Customer');
     }
 
-    function add(Request $request, $offer = false)
+
+    function payments()
+    {
+        return $this->hasMany('App\Http\Tenant\Invoice\Models\BillPayment');
+    }
+
+    function add(Request $request, $user_id, $offer = false)
     {
         // Start transaction!
         DB::beginTransaction();
         try {
             $customer_id = $request->input('customer');
+            $vat = $request->input('vat');
+
             $bill = Bill::create([
+                'user_id'        => $user_id,
                 'invoice_number' => $this->getPrecedingInvoiceNumber($customer_id),
                 'customer_id'    => $customer_id,
                 'due_date'       => $request->input('due_date'),
                 'currency'       => $request->input('currency'),
-                'is_offer'       => ($offer == true) ? 1 : 0
+                'vat'            => $vat,
+                'is_offer'       => ($offer == true) ? self::TYPE_OFFER : self::TYPE_BILL,
+                'type'           => ($offer == true) ? self::TYPE_OFFER : self::TYPE_BILL,
             ]);
 
             $products = $request->input('product');
@@ -58,21 +88,22 @@ class Bill extends Model {
             $alltotal = 0;
             $subtotal = 0;
             $tax = 0;
-
             foreach ($products as $key => $product) {
                 if (isset($quantity[$key]) && $quantity[$key] > 0 && $product > 0) {
                     $product_details = Product::find($product);
-                    $total = ($product_details->selling_price + $product_details->vat * 0.01 * $product_details->selling_price) * $quantity[$key];
+                    $total = ($product_details->selling_price + $vat * 0.01 * $product_details->selling_price) * $quantity[$key];
+                    //$total = ($product_details->selling_price + $product_details->vat * 0.01 * $product_details->selling_price) * $quantity[$key];
                     $product_bill = BillProducts::create([
                         'product_id' => $product,
                         'bill_id'    => $bill->id,
                         'quantity'   => $quantity[$key],
                         'price'      => $product_details->selling_price,
-                        'vat'        => $product_details->vat,
+                        //'vat' => $product_details->vat,
                         'total'      => $total
                     ]);
                     $alltotal += $total;
-                    $tax += $product_details->vat * 0.01 * $product_details->selling_price * $quantity[$key];
+                    $tax += $vat * 0.01 * $product_details->selling_price * $quantity[$key];
+                    //$tax += $product_details->vat * 0.01 * $product_details->selling_price * $quantity[$key];
                     $subtotal += $product_details->selling_price * $quantity[$key];
                 }
 
@@ -80,13 +111,18 @@ class Bill extends Model {
 
             //$bill->invoice_number = $this->getPrecedingInvoiceNumber($bill->id);
             $bill->subtotal = $subtotal;
-            $bill->tax = $tax;
+            $bill->vat_amount = $tax;
             $bill->total = $alltotal;
             $bill->remaining = $alltotal;
-            $bill->customer_payment_number = format_id($bill->customer_id).format_id($bill->id);
+            $bill->customer_payment_number = format_id($bill->customer_id) . format_id($bill->id);
             $bill->save();
 
             DB::commit();
+
+            if ($offer != true) {
+                $customer = Customer::find($customer_id);
+                Record::sendABill($bill, $customer, $alltotal, $vat);
+            }
 
             return array('bill_details' => $bill);
 
@@ -95,7 +131,6 @@ class Bill extends Model {
             throw $e;
         }
     }
-
 
     function edit(Request $request, $id)
     {
@@ -133,7 +168,6 @@ class Bill extends Model {
                     $tax += $product_details->vat * 0.01 * $product_details->selling_price * $quantity[$key];
                     $subtotal += $product_details->selling_price * $quantity[$key];
                 }
-
             }
 
             $bill->subtotal = $subtotal;
@@ -165,7 +199,6 @@ class Bill extends Model {
         return false;
     }
 
-
     function dataTablePagination(Request $request, array $select = array(), $is_offer = false)
     {
         if ((is_array($select) AND count($select) < 1)) {
@@ -184,7 +217,10 @@ class Bill extends Model {
         $orderdir = $order[0]['dir'];
 
         $products = array();
-        $query = $this->select($select);
+        array_push($select, 'c.name');
+        array_push($select, 'b.id');
+
+        $query = $this->from('fb_bill as b')->select($select)->join('fb_customers as c', 'b.customer_id', '=', 'c.id')->where('b.status','!=', Bill::STATUS_COLLECTION);
 
         if ($is_offer == true)
             $query = $query->where('is_offer', 1);
@@ -195,7 +231,7 @@ class Bill extends Model {
             if ($orderColumn != 'invoice_date')
                 $query = $query->orderBy($orderColumn, $orderdir);
             else
-                $query = $query->orderBy('created_at', $orderdir);
+                $query = $query->orderBy('b.created_at', $orderdir);
         }
 
         if ($search != '') {
@@ -209,23 +245,19 @@ class Bill extends Model {
         $data = $query->get();
 
         foreach ($data as $key => &$value) {
+            $value->total = number_format($value->total, 2);
+            $value->remaining = number_format($value->remaining, 2);
             $value->invoice_number = '<a class="link" href="#">' . $value->invoice_number . '</a>';
-            $customer = Customer::find($value->customer_id);
-            if ($customer)
-                $value->customer = $customer->name;
-            else $value->customer = 'Undefined';
+            //$customer = Customer::find($value->customer_id);
+            //if ($customer)
+            $value->customer = $value->name;
+            //else $value->customer = 'Undefined';
             $value->raw_status = $value->status;
-            if ($value->status == 1)
-                $value->status = '<span class="label label-success">Paid</span>';
-            elseif ($value->status == 2)
-                $value->status = '<span class="label label-warning">Collection</span>';
-            else
-                $value->status = '<span class="label label-danger">Unpaid</span>';
 
-            $value->invoice_date = date('d-M-Y  h:i:s A', strtotime($value->created_at));
+            $value->status = $this->getStatus($value->status, $value->payment);
+            $value->invoice_date = $value->created_at->format('d-M-Y  h:i:s A');
             $value->view_url = tenant()->url('invoice/bill/' . $value->id);
-            //$value->created_at->format('d-M-Y  h:i:s A');
-            $value->DT_RowId = "row-" . $value->guid;
+            $value->DT_RowId = "row-" . $value->id;
         }
 
         $products['data'] = $data->toArray();
@@ -239,6 +271,121 @@ class Bill extends Model {
         return $json;
     }
 
+    function getStatus($status, $payment)
+    {
+        if ($status == static::STATUS_ACTIVE) {
+            if ($payment == static::STATUS_PAID)
+                $status = '<span class="label label-success">Paid</span>';
+            elseif ($payment == static::STATUS_PARTIAL_PAID)
+                $status = '<span class="label label-warning">Partially Paid</span>';
+            elseif ($payment == static::STATUS_UNPAID)
+                $status = '<span class="label label-danger">Unpaid</span>';
+        } elseif ($status == static::STATUS_COLLECTION)
+            $status = '<span class="label label-warning">Collection</span>';
+        elseif ($status == static::STATUS_LOSS)
+            $status = '<span class="label label-danger">Loss</span>';
+        elseif ($status == static::STATUS_CREDITED)
+            $status = '<span class="label label-danger">Credited</span>';
+
+        return $status;
+    }
+
+    function billDetails($id = '')
+    {
+        $bill = Bill::find($id);
+
+        if ($bill != null) {
+            $customer = Customer::find($bill->customer_id);
+            $bill->customer = $customer->name;
+            $bill->customer_details = $customer;
+
+            $bill_products = BillProducts::where('bill_id', $id)->get();
+            if ($bill_products) {
+                foreach ($bill_products as $bill_product) {
+                    $bill_product->product_name = Product::find($bill_product->product_id)->name;
+                }
+                $bill->products = $bill_products;
+            }
+
+            return $bill;
+        }
+
+        return false;
+    }
+
+    function getPrecedingInvoiceNumber($customer_id)
+    {
+        $today = \Carbon::now()->format('Y-m-d');
+        $latest_count = Bill::select('id')->where('customer_id', $customer_id)->where('created_at', '>', $today)->count();
+        //$latest = Bill::select('id')->where('customer_id',$customer_id)->orderBy('id', 'desc')->first();
+        if ($latest_count)
+            $new_invoice_num = date('dmy') . format_id($customer_id) . '-' . ($latest_count + 1);
+        else
+            $new_invoice_num = date('dmy') . format_id($customer_id) . '-1';
+
+        return $new_invoice_num;
+    }
+
+    function getCustomerPayment($id = null)
+    {
+        $latest = Bill::select('id')->orderBy('id', 'desc')->first();
+        if ($latest)
+            $new_cus_no = format_id($id, 3) . sprintf("%03d", ($latest->id + 1));
+        else
+            $new_cus_no = format_id($id, 3) . '001';
+
+        return $new_cus_no;
+    }
+
+    function convertToBill($id)
+    {
+        $bill = Bill::find($id);
+        if ($bill) {
+            $bill->type = self::TYPE_BILL;
+            $bill->is_offer = 0;
+            $bill->save();
+
+            return $bill;
+        } else
+            return false;
+    }
+
+    function getCustomerBill($customer_id)
+    {
+        $bills = Bill::where('customer_id', $customer_id)->get();
+        $invoices = array();
+        $totalbills = 0;
+        $totaloffers = 0;
+        foreach ($bills as $key => $value) {
+            if ($value->is_offer == 0) {
+                $totalbills += $value->total;
+            } else if ($value->is_offer == 1) {
+                $totaloffers += $value->total;
+            }
+        }
+
+        $invoices['bills'] = $bills;
+        $invoices['totalbills'] = $totalbills;
+        $invoices['totaloffers'] = $totaloffers;
+
+        return $invoices;
+
+    }
+
+    function creditBill($id)
+    {
+        $bill = Bill::find($id);
+        if (!empty($bill)) {
+            $bill->status = static::STATUS_CREDITED;;
+            $bill->save();
+            $customer = Customer::find($bill->customer_id);
+            Record::billCredit($bill, $customer, $bill->remaining, $bill->vat);
+
+            return true;
+        }
+
+        return false;
+    }
 
     function dataTablePaginationCustomer(Request $request, array $select = array(), $customer_id)
     {
@@ -280,8 +427,8 @@ class Bill extends Model {
         $data = $query->where('customer_id', $customer_id)->get();
 
         foreach ($data as $key => &$value) {
-         
-             $value->total = $value->total;
+
+            $value->total = number_format($value->total, 2);
 
             $value->raw_status = $value->status;
             if ($value->status == 1)
@@ -292,7 +439,7 @@ class Bill extends Model {
                 $value->status = '<span class="label label-danger">Unpaid</span>';
 
             $value->invoice_date = date('d-M-Y  h:i:s A', strtotime($value->created_at));
-            
+
             $value->DT_RowId = "row-" . $value->guid;
         }
 
@@ -307,85 +454,4 @@ class Bill extends Model {
         return $json;
     }
 
-
-    function billDetails($id = '')
-    {
-        $bill = Bill::find($id);
-
-        if ($bill != null) {
-            $customer = Customer::find($bill->customer_id);
-            $bill->customer = $customer->name;
-            $bill->customer_details = $customer;
-
-            $bill_products = BillProducts::where('bill_id', $id)->get();
-            if ($bill_products) {
-                foreach ($bill_products as $bill_product) {
-                    $bill_product->product_name = Product::find($bill_product->product_id)->name;
-                }
-                $bill->products = $bill_products;
-            }
-
-            return $bill;
-        }
-
-        return false;
-    }
-
-    function getPrecedingInvoiceNumber($customer_id)
-    {
-        $today = \Carbon::now()->format('Y-m-d');
-        $latest_count = Bill::select('id')->where('customer_id',$customer_id)->where('created_at', '>', $today)->count();
-        //$latest = Bill::select('id')->where('customer_id',$customer_id)->orderBy('id', 'desc')->first();
-        if ($latest_count)
-            $new_invoice_num = date('dmy') . format_id($customer_id).'-'.($latest_count + 1);
-        else
-            $new_invoice_num = date('dmy') . format_id($customer_id). '-1';
-
-        return $new_invoice_num;
-    }
-
-    function getCustomerPayment($id = null)
-    {
-        $latest = Bill::select('id')->orderBy('id', 'desc')->first();
-        if ($latest)
-            $new_cus_no = format_id($id, 3).sprintf("%03d", ($latest->id + 1));
-        else
-            $new_cus_no = format_id($id, 3) . '001';
-
-        return $new_cus_no;
-    }
-
-    function convertToBill($id)
-    {
-        $bill = Bill::find($id);
-        if ($bill) {
-            $bill->is_offer = 0;
-            $bill->save();
-
-            return $bill;
-        } else
-            return false;
-    }
-
-    function getCustomerBill($customer_id){
-       $bills =  Bill::where('customer_id', $customer_id)->get();
-     $invoices = array();
-     $totalbills = 0;
-     $totaloffers = 0;
-     foreach ($bills as $key => $value) {
-       if($value->is_offer == 0){
-            $totalbills +=  $value->total;
-       }
-        else if($value->is_offer == 1){
-            $totaloffers +=  $value->total;
-        }
-     }
-
-     $invoices['bills'] = $bills;
-     $invoices['totalbills'] = $totalbills;
-     $invoices['totaloffers'] = $totaloffers;
-
-     return $invoices;
-
-    }
 }

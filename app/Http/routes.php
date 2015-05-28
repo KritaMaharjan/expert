@@ -20,8 +20,21 @@ Validator::extend('validArrayEmail', function ($attribute, $value, $parameters) 
 
 });
 
+Validator::extend('maxValue', function ($attribute, $value, $parameters) {
+    if($parameters[0] >= $value)
+        return true;
+    else
+        return false;
+});
 
-get('getpdf', function(\App\Fastbooks\Libraries\Pdf $pdf){
-    $data['data'] = 'data';
-    $pdf->generate(time(),'template.bill',$data);
+Validator::extend('minPaymentValue', function ($attribute, $value) {
+    if(0 < $value)
+        return true;
+    else
+        return false;
+});
+
+Validator::extend('passcheck', function ($attribute, $value, $parameters)
+{
+    return Hash::check($value, Auth::user()->getAuthPassword());
 });

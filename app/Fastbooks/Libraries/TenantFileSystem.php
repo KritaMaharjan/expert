@@ -91,19 +91,18 @@ class TenantFileSystem {
      * @return $this
      * @throws Exception
      */
-    function folder($folder, $create = false)
+    function folder($folder, $create = true)
     {
         if ($this->isFolderExist($folder)) {
             $this->folder = $folder;
         } else {
-            if ($create) {
+            //if ($create) {
                 $this->folder = $folder;
                 $this->create();
-            } else {
-                throw new Exception('Folder not exist');
-            }
+            //} else {
+                //throw new Exception('Folder not exist');
+            //}
         }
-
         return $this;
     }
 
@@ -183,7 +182,7 @@ class TenantFileSystem {
             $destinationPath = $this->path();
             $fileName = $this->getFilename($fileName, $extension);
             $data = Request::file($file)->move($destinationPath, $fileName);
-            $return = ['pathName' => asset(trim($data->getPathname(), '.')), 'fileName' => $data->getFilename()];
+            $return = ['pathName' => str_replace('\\', '/',asset($data->getPathname())), 'fileName' => $data->getFilename()];
 
             return $return;
         } else {

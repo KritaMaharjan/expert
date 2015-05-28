@@ -7,8 +7,8 @@
 
 @section('breadcrumb')
     @parent
-    <li><a data-push="true" href="{{tenant_route('tenant.invoice.index')}}"><i class="fa fa-cog"></i> Invoice</a></li>
-    <li><i class="fa fa-circle-o"></i> {{ ucfirst($type) }}</li>
+    <li>Invoice</li>
+    <li>{{ ucfirst($type) }}</li>
 @stop
 
 @section('content')
@@ -28,7 +28,8 @@
                     <tr>
                       <th>Invoice Number</th>
                       <th>Name of recipient</th>
-                      <th>Amount</th>
+                      <th>Total Amount</th>
+                      <th>Remaining Amount</th>
                       <th>Invoice Date</th>
                       @if($type == 'bill') <th>Status</th> @endif
                       <th>Action</th>

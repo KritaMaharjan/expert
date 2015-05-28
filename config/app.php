@@ -138,7 +138,7 @@ return [
         'Barryvdh\Debugbar\ServiceProvider',
         'Illuminate\Html\HtmlServiceProvider',
         'Laracasts\Flash\FlashServiceProvider',
-       'Clockwork\Support\Laravel\ClockworkServiceProvider',
+      // 'Clockwork\Support\Laravel\ClockworkServiceProvider',
 
         /*
          * Application Service Providers...
@@ -205,7 +205,7 @@ return [
         'Flash'     => 'Laracasts\Flash\Flash',
         'cURL'      => 'anlutro\cURL\Laravel\cURL',
         'Carbon'    => 'Carbon\Carbon',
-        'Clockwork' => 'Clockwork\Support\Laravel\Facade',
+       // 'Clockwork' => 'Clockwork\Support\Laravel\Facade',
 
     ],
 

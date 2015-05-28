@@ -7,7 +7,7 @@ Email
 
 @section('breadcrumb')
     @parent
-    <li><i class="fa fa-cog"></i> <a href="{{tenant_route('tenant.profile')}}">Email</a></li>
+    <li>Email</li>
 @stop
 
 @section('content')
@@ -20,6 +20,7 @@ Email
 {{FB::js('assets/plugins/plupload/js/plupload.full.min.js')}}
 {{FB::registerModal()}}
 {{FB::js('assets/js/desk/email.js')}}
+
 <?php
 $successCallback ="
   var response = JSON.parse(object.response);
@@ -30,7 +31,7 @@ $successCallback ="
 ?>
 <script type="text/javascript">
 $(function(){
-    {!! plupload()->button('attachment')->maxSize('20mb')->mimeTypes('image')->url(url('/desk/email/upload/data'))->autoStart(true)->success($successCallback)->init() !!}
+    {!! plupload()->button('attachment')->maxSize('20mb')->mimeTypes('image')->url(url('file/upload/data?folder=attachment'))->autoStart(true)->success($successCallback)->init() !!}
 });
 </script>
            <div class="box box-solid">
@@ -69,7 +70,7 @@ $(function(){
                           </div>
                         </div>
                       </div>
-                      <div class="col-md-10 position-relative">
+                      <div class="col-md-10 position-relative clearfix">
                             <div class="email-loader" style="display: none">
                                 
                             </div>
@@ -86,7 +87,7 @@ $(function(){
                             </div><!-- /.box -->
                           </div><!-- bg-white -->
                           </div>
-                          <div id="email-single" class="col-md-7">
+                          <div id="email-single" class="col-md-7 pad-0-sm">
 
                           </div><!-- bg-white -->
                       </div>

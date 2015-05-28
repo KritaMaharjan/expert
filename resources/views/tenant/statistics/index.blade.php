@@ -5,7 +5,7 @@ Statistics
 
 @section('breadcrumb')
     @parent
-    <li><a data-push="true" href="{{tenant_route('tenant.invoice.index')}}"><i class="fa fa-bar-chart"></i> Statistics</a></li>
+    <li>Statistics</li>
 @stop
 
 @section('content')
@@ -23,29 +23,46 @@ Statistics
           <div class="tab-content col-md-12">
             <div class="row">
               <div class="col-md-8">
-                <div class="chart tab-pane active" id="revenue-chart" style="position: relative; height: 300px;"></div>                            
+                <!-- LINE CHART -->
+                <div class="box box-solid">
+                  
+                  <div class="box-body chart-box">
+
+                  </div><!-- /.box-body -->
+                  <div class="processing" style="display: none"><img src="{{ asset('assets/images/loader.gif')}}"></div>
+                  <div class="info-graph">Click on the titles below to view the graph.</div>
+                </div><!-- /.box -->
+
               </div>
               <div class="col-md-4 pad-top-100">
-                <form>
-                  <div class="form-group clearfix {{ ($errors->has('due_date'))? 'has-error': '' }}">
-                    {!! Form::label('due_date', 'Date from') !!}
+                @if(!isset($filter))
+                    {!!Form::open(['id'=>'filter-form', 'method'=>'get'])!!}
+                @else
+                    {!!Form::model($filter, ['id'=>'filter-form', 'method'=>'get'])!!}
+                @endif
+                  <div class="form-group clearfix {{ ($errors->has('start_date'))? 'has-error': '' }}">
+                    {!! Form::label('start_date', 'Date from') !!}
 
                     <div class='input-group date date-box2' id='due-date-picker'>
-                        {!! Form:: text('due_date', null, array('class' => 'form-control', 'id' =>'date-frm-date-pickers')) !!}
+                        {!! Form:: text('start_date', null, array('class' => 'form-control', 'id' =>'date-frm-date-pickers', 'required' => 'required')) !!}
                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
                   </div>
-                  <div class="form-group clearfix {{ ($errors->has('due_date'))? 'has-error': '' }}">
-                    {!! Form::label('due_date', 'Date to') !!}
+                  <div class="form-group clearfix {{ ($errors->has('end_date'))? 'has-error': '' }}">
+                    {!! Form::label('end_date', 'Date to') !!}
 
                     <div class='input-group date date-box2' id='due-date-picker'>
-                        {!! Form:: text('due_date', null, array('class' => 'form-control', 'id' =>'date-to-date-pickers')) !!}
+                        {!! Form:: text('end_date', null, array('class' => 'form-control', 'id' =>'date-to-date-pickers', 'required' => 'required')) !!}
                         <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
                         </span>
                     </div>
                   </div>
-                </form>
+
+                  <div class="form-group clearfix">
+                       <button class="btn btn-primary pull-right filter-submit" type="submit">Filter</button>
+                  </div>
+                {!! Form::close() !!}
               </div>
             </div>
             <!-- <div class="chart tab-pane" id="sales-chart" style="position: relative; height: 300px;"></div> -->
@@ -54,119 +71,108 @@ Statistics
             <div class="col-md-12">
               <div class="stat-info">
                 <div class="col-md-3 ">
-                   <h3 class="align-center">Customers</h3> 
+                   <h3 class="graph-heading">Customers</h3>
                    <div class="form-group">
                      <label>Customer total:</label>
-                     <span>475</span>                   
+                     <span>{{ $customer_stats['total_customers'] }}</span>
                    </div>
                    <div class="form-group">
                      <label>Emails:</label>
-                     <span>15000</span>                   
-                   </div>
-                   <div class="form-group">
-                     <label>Reply time:</label>
-                     <span>4 days</span>                   
+                     <span>{{ $customer_stats['total_emails'] }}</span>
                    </div>
                    <div class="form-group">
                      <label>Active customers:</label>
-                     <span>75</span>                   
+                     <span>{{ $customer_stats['total_active_customers'] }}</span>
                    </div>   
                 </div>
                 <div class="col-md-3">
-                    <h3 class="align-center">Billing</h3> 
+                    <h3 class="graph-heading">Billing</h3>
                     <div class="form-group">
                       <label>Number of bills:</label>
-                      <span>475</span>                   
+                      <span>{{ $bill_stats['total_bills'] }}</span>
                      </div>
                     <div class="form-group">
                        <label>Total billed:</label>
-                       <span>15,000,000</span>                   
+                       <span>{{ float_format($bill_stats['total_billed']) }}</span>
                     </div>
                     <div class="form-group">
                        <label>Total amount paid:</label>
-                       <span>13,000,000</span>                   
+                       <span>{{ float_format($bill_stats['total_paid']) }}</span>
                     </div>
                     <div class="form-group">
                      <label>Average payment time:</label>
-                     <span>19 days</span>                   
+                     <span>{{ $bill_stats['avg_payment_time'] }} days</span>
                   </div>  
                   <div class="form-group">
                      <label>Past due total:</label>
-                     <span>1500</span>                   
+                     <span>{{ $bill_stats['past_due'] }}</span>
                   </div>  
                   <div class="form-group">
                      <label>Not sent to collection:</label>
-                     <span>1500</span>                   
+                     <span>{{ $bill_stats['not_collection'] }}</span>
                   </div>  
                   <div class="form-group">
                      <label>Offers:</label>
-                     <span>123</span>                   
+                     <span>{{ $bill_stats['total_offers'] }}</span>
                   </div>  
                 </div>
                 <div class="col-md-3">
-                   <h3 class="align-center">Collection</h3> 
+                   <h3 class="graph-heading">Collection</h3>
                    <div class="form-group">
                      <label>Number of cases:</label>
-                     <span>45</span>                   
+                     <span>{{ $collection_stats['total_cases'] }}</span>
                    </div>
                    <div class="form-group">
                      <label>Number of bills:</label>
-                     <span>10</span>                   
+                     <span>{{ $collection_stats['total_bills'] }}</span>
                    </div>
                    <div class="form-group">
                      <label>Total amount:</label>
-                     <span>1,500,000</span>                   
+                     <span>{{ $collection_stats['total_amount'] }}</span>
                    </div>
                    <div class="form-group">
                      <label>Purring:</label>
-                     <div class="left-block">
-                       <span>0 cases</span>                   
-                       <span>0,00 NOK</span>   
+                     <div>
+                       <span>{{ $collection_stats['total_purring']['total'] }} cases</span>
+                       <span>{{ $collection_stats['total_purring']['amount'] }} NOK</span>
                      </div>                
                    </div>
                    <div class="form-group">
-                     <label>Inkassovarsel:</label>
-                     <div class="left-block">
-                       <span>0 cases</span>                   
-                       <span>0,00 NOK</span>   
-                     </div>                
-                   </div>
-                   <div class="form-group">
-                     <label>Betalingsoppfordring :</label>
-                     <div class="left-block">
-                       <span>0 cases</span>                   
-                       <span>0,00 NOK</span>   
+                     <label>Inkassovarsel :</label>
+                     <div>
+                       <span>{{ $collection_stats['total_inkassovarsel']['total'] }} cases</span>
+                       <span>{{ $collection_stats['total_inkassovarsel']['amount'] }} NOK</span>
                      </div>                
                    </div>
                    <div class="form-group">
                      <label>Betalingsoppfordring :</label>
-                     <div class="left-block">
-                       <span>0 cases</span>                   
-                       <span>0,00 NOK</span>   
+                     <div>
+                       <span>{{ $collection_stats['total_betalingsappfording']['total'] }} cases</span>
+                       <span>{{ $collection_stats['total_betalingsappfording']['amount'] }} NOK</span>
                      </div>                
                    </div>   
                 </div>
                 <div class="col-md-3">
-                    <h3 class="align-center">Statistics</h3> 
+                    <h3 class="graph-heading">Accounts</h3>
                     <div class="form-group">
                      <label>Income:</label>
-                     <span>15,000,000- NOK</span>                   
+                     <span>{{ $account_stats['total_income'] }} NOK</span>
                    </div>
                    <div class="form-group">
                      <label>Expenses:</label>
-                     <span>12,500,000,- NOK</span>                   
+                     <span>{{ $account_stats['total_expenses'] }} NOK</span>
                    </div>
                    <div class="form-group">
                      <label>Salaries:</label>
-                     <span>7,500,000,- NOK</span>                   
+                     <span>{{ $account_stats['total_paid_salary'] }} NOK</span>
                    </div>
-                   <div class="form-group">
+                   {{--<div class="form-group">
                      <label>Advertising expenses:</label>
-                     <span>5,500,500,- NOK</span>                   
-                   </div>                 
+                     <span>5,500,500 NOK</span>
+                   </div>--}}
                    <div class="form-group">
                      <label>Cost of sale:</label>
-                     <span>250,000,- NOK</span>                   
+                     <span>{{ $account_stats['total_sales_cost'] }} NOK</span>
                    </div>   
                 </div>
               </div>
@@ -178,14 +184,15 @@ Statistics
   </div>
 </div>
 
- {{ FB::js('$(function(){
-        $("#date-frm-date-pickers").datepicker({
-        "format": "yyyy-mm-dd"
-        });
-        $("#date-to-date-pickers").datepicker({
-        "format": "yyyy-mm-dd"
-        });
 
-  })')}}
+<script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+{{ FB::js('assets/plugins/morris/morris.min.js') }}
+{{ FB::js('assets/plugins/morris/morris.min.js') }}
+{{ FB::js('assets/plugins/sparkline/jquery.sparkline.min.js') }}
+{{ FB::js('assets/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js') }}
+{{ FB::js('assets/plugins/jvectormap/jquery-jvectormap-world-mill-en.js') }}
+{{ FB::js('assets/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js') }}
+
+{{ FB::js('assets/js/statistics.js') }}
 
 @stop

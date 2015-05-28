@@ -3,7 +3,6 @@ $(function () {
     $('.business_div').hide();
     var modal = $('.modal-body');
 
-
     $(document).on('click', '#business', function () {
 
         if (modal.find('#business').is(':checked')) {
@@ -21,6 +20,7 @@ $(function () {
 
     var customerDatatable = $("#table-customer").dataTable({
         "dom": '<"top"f>rt<"bottom"lip><"clear">',
+        "order": [[3, "desc"]],
 
         //custom processing message
         "oLanguage": {

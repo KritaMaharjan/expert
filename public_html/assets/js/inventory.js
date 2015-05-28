@@ -53,7 +53,7 @@ $(function () {
             $.ajax({
                 url: appUrl + 'inventory/' + id + '/delete',
                 type: 'GET',
-                dataType: 'json',
+                dataType: 'json'
             })
                 .done(function (response) {
                     if (response.status === 1) {
@@ -136,7 +136,7 @@ $(function () {
                 form.find('.inventory-submit').val(requestType);
             });
     })
-})
+});
 
 
 function notify(type, text) {

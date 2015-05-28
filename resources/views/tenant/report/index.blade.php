@@ -5,7 +5,7 @@ Reports
 
 @section('breadcrumb')
     @parent
-    <li><a data-push="true" href="{{tenant_route('tenant.invoice.index')}}"><i class="fa fa-bar-chart"></i> Reports</a></li>
+    <li><i class="fa fa-bar-chart"></i> Reports</li>
 @stop
 
 @section('content')

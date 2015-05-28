@@ -166,7 +166,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
             'tax_card'               => $details['tax_card'],
             'photo'                  => $fileName,
             'social_security_number' => $details['social_security_number'],
-            'personal_email_setting' => $personal_email_setting
+            'smtp' => $personal_email_setting
         ]);
 
         $this->sendConfirmationMail($user->activation_key, $details['fullname'], $details['email']);
@@ -227,10 +227,12 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         $profile->postcode = $details['postcode'];
         $profile->town = $details['town'];
         $profile->comment = $details['comment'];
-        if ($fileName != null) $profile->photo = $fileName;
+        if ($fileName != null) {
+            $profile->photo = $fileName; //unlink images
+        }
         $profile->tax_card = $details['tax_card'];
         $profile->social_security_number = $details['social_security_number'];
-        $profile->personal_email_setting = $personal_email_setting;
+        $profile->smtp = $personal_email_setting;
         $profile->save();
 
         $updated_user['data'] = $this->toFomatedData($user);

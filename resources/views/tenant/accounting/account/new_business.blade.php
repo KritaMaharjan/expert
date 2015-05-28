@@ -15,7 +15,7 @@ New Business
 			          <label class="date-box">New Business</label>
 			        </div>
 	        		<div class="form-group clearfix {{ ($errors->has('due_date'))? 'has-error': '' }}">
-			          {!! Form::label('due_date', 'Due date') !!}
+			          {!! Form::label('due_date', 'Date you started the business') !!}
 
 			          <div class='input-group date date-box' id='due-date-picker'>
 			              {!! Form:: text('due_date', null, array('class' => 'form-control', 'id' =>'business-date-pickers')) !!}

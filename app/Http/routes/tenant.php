@@ -23,7 +23,7 @@ if (env('APP_ENV') == 'live') {
  *
  */
 
-if(isset($group_cron)) {
+if (isset($group_cron)) {
     Route::group($group_cron, function () {
         /*
          * @todo Change block/account to post request and ensure that only superadmin can block/unblock account
@@ -49,9 +49,14 @@ Route::group($group_auth, function () {
     /*
      * New Modular Routing
      */
+
+    Route::group(['prefix' => 'file', 'namespace' => 'Tenant\File\Controllers'], function () {
+        post('upload/data', 'FileController@upload');
+        get('delete', 'FileController@delete');
+    });
+
     Route::group(['prefix' => 'desk', 'namespace' => 'Tenant\Email\Controllers'], function () {
         get('email', ['as' => 'desk.email', 'uses' => 'EmailController@index']);
-        post('email/upload/data', ['as' => 'desk.email.upload', 'uses' => 'EmailController@attach']);
         post('email/send', ['as' => 'desk.email.send', 'uses' => 'EmailController@send']);
         get('email/customer/search', ['as' => 'tenant.email.customer.search', 'uses' => 'EmailController@customerSearch']);
         get('email/{id}/delete', ['as' => 'tenant.email.delete', 'uses' => 'EmailController@delete']);
@@ -60,34 +65,14 @@ Route::group($group_auth, function () {
         get('email/list', ['as' => 'tenant.email.forward', 'uses' => 'EmailController@listing']);
         get('email/{id}/show', ['as' => 'tenant.email.show', 'uses' => 'EmailController@show']);
         get('email/{id}/get', ['as' => 'tenant.email.get', 'uses' => 'EmailController@get']);
-        get('email/delete/attach', ['as' => 'tenant.email.attach.delete', 'uses' => 'EmailController@deleteAttachment']);
         get('email/search_emails', ['as' => 'tenant.email.search', 'uses' => 'EmailController@search_email']);
-
         get('email/inbox', ['as' => 'tenant.email.inbox', 'uses' => 'IncomingEmailController@inbox']);
-
-
-    });
-
-    Route::group(['prefix' => 'invoice', 'namespace' => 'Tenant'], function () {
-        get('bill', 'Email\Controllers\BillController@index');
-        get('offer', 'Email\Controllers\OfferController@index');
-    });
-
-
-    Route::group(['prefix' => 'accounting', 'namespace' => 'Tenant\Accounting\Controllers'], function () {
-        get('expense', 'AccountingController@expense');
-        get('payroll', 'AccountingController@payroll');
-        get('open', 'AccountingController@open');
-        get('close', 'AccountingController@close');
-        get('vat', 'AccountingController@vat');
-        get('lists', 'AccountingController@lists');
-        get('setup', 'AccountingController@setup');
-        get('new-business', 'AccountingController@newBusiness');
     });
 
     // Registered by Krita
     Route::group(['namespace' => 'Tenant\Statistics\Controllers'], function () {
-        get('statistics', 'StatisticsController@index');
+        get('statistics', ['as' => 'tenant.statistics', 'uses' => 'StatisticsController@index']);
+        get('statistics/graph', ['as' => 'tenant.statistics.graph', 'uses' => 'StatisticsController@graph']);
     });
 
     // Registered by Krita
@@ -96,7 +81,6 @@ Route::group($group_auth, function () {
     });
 
     Route::group(['namespace' => 'Tenant\Inventory\Controllers'], function () {
-
         // product routes
         get('inventory/product', ['as' => 'tenant.inventory.product.index', 'uses' => 'ProductController@index']);
         post('inventory/product', ['as' => 'tenant.inventory.product.post', 'uses' => 'ProductController@create']);
@@ -121,7 +105,7 @@ Route::group($group_auth, function () {
         get('inventory/{id}/delete', ['as' => 'tenant.inventory.delete', 'uses' => 'InventoryController@delete']);
 
         // Registered By Pooja
-         //get('inventory/stock', ['as' => 'tenant.inventory.stock', 'uses' => 'InventoryController@index']);
+        //get('inventory/stock', ['as' => 'tenant.inventory.stock', 'uses' => 'InventoryController@index']);
     });
 
     /** Registered by Krita **/
@@ -140,6 +124,7 @@ Route::group($group_auth, function () {
         get('invoice/bill/{id}/print', ['as' => 'tenant.invoice.bill.download', 'uses' => 'BillController@printBill']);
         get('invoice/bill/{id}/mail', ['as' => 'tenant.invoice.bill.email', 'uses' => 'BillController@sendEmail']);
         post('invoice/bill/{id}/payment', ['as' => 'tenant.invoice.bill.payment', 'uses' => 'BillController@payment']);
+        get('invoice/bill/{id}/credit', ['as' => 'tenant.invoice.bill.credit', 'uses' => 'BillController@credit']);
 
         // invoice routes
         get('invoice', ['as' => 'tenant.invoice.index', 'uses' => 'InvoiceController@index']);
@@ -159,8 +144,19 @@ Route::group($group_auth, function () {
     });
 
     /** Registered by Krita **/
-    Route::group(['namespace' => 'Tenant\Tasks\Controllers'], function () {
+    Route::group(['namespace' => 'Tenant\Supplier\Controllers'], function () {
+        get('supplier', ['as' => 'tenant.supplier.index', 'uses' => 'SupplierController@index']);
+        post('supplier', ['as' => 'tenant.supplier.create', 'uses' => 'SupplierController@create']);
+        get('supplier/{id}/delete', ['as' => 'supplier.delete', 'uses' => 'SupplierController@deleteSupplier']);
+        get('supplier/{id}/edit', ['as' => 'tenant.supplier.edit', 'uses' => 'SupplierController@edit']);
+        post('supplier/{id}/edit', ['as' => 'tenant.supplier.edit', 'uses' => 'SupplierController@update']);
+        post('supplier/data', ['as' => 'tenant.supplier.data', 'uses' => 'SupplierController@dataJson']);
+        post('supplier/upload', ['as' => 'tenant.supplier.upload', 'uses' => 'SupplierController@upload']);
+        post('supplier/changeStatus', ['as' => 'tenant.supplier.changeStatus', 'uses' => 'SupplierController@changeStatus']);
+        get('supplier/suggestions', ['as' => 'tenant.supplier.suggestions', 'uses' => 'SupplierController@getSupplierSuggestions']);
+    });
 
+    Route::group(['namespace' => 'Tenant\Tasks\Controllers'], function () {
         // bill routes
         get('tasks', ['as' => 'tenant.tasks.index', 'uses' => 'TasksController@index']);
         post('tasks', ['as' => 'tenant.tasks.post', 'uses' => 'TasksController@create']);
@@ -173,6 +169,63 @@ Route::group($group_auth, function () {
         get('tasks/{id}/redo', ['as' => 'tenant.tasks.redo', 'uses' => 'TasksController@complete']);
     });
 
+    Route::group(['namespace' => 'Tenant\Accounting\Controllers'], function () {
+        get('accounting', ['as' => 'tenant.accounting.index', 'uses' => 'ListController@index']);
+        get('accounting/{id}/pay', ['as' => 'tenant.accounting.pay', 'uses' => 'ListController@pay']);
+        post('accounting/{id}/pay', ['as' => 'tenant.accounting.register.payment', 'uses' => 'ListController@registerPayment']);
+        post('accounting/data', ['as' => 'tenant.accounting.data', 'uses' => 'ListController@dataJson']);
+        get('delete/expense/{id}', ['as' => 'tenant.expense.delete', 'uses' => 'ListController@deleteExpense']);
+
+        // for expense
+        get('accounting/expense', ['as' => 'tenant.accounting.expense', 'uses' => 'ExpenseController@index']);
+        get('accounting/expense/{id}', ['as' => 'tenant.accounting.expense.details', 'uses' => 'ExpenseController@details']);
+        post('accounting/expense', ['as' => 'tenant.accounting.create.expense', 'uses' => 'ExpenseController@createExpense']);
+        get('expense/{id}/edit', ['as' => 'tenant.expense.edit', 'uses' => 'ExpenseController@edit']);
+        post('expense/{id}/edit', ['as' => 'tenant.expense.update', 'uses' => 'ExpenseController@update']);
+
+        post('accounting', ['as' => 'tenant.accounting.create', 'uses' => 'AccountingController@create']);
+        get('accounting/payroll', ['as' => 'tenant.accounting.payroll', 'uses' => 'AccountingController@payroll']);
+        get('accounting/payroll/add', ['as' => 'tenant.accounting.payroll.add', 'uses' => 'AccountingController@addPayroll']);
+        post('accounting/payroll/add', ['as' => 'tenant.accounting.payroll.create', 'uses' => 'AccountingController@createPayroll']);
+        get('payout/details/{employeeId}', ['as' => 'tenant.accounting.payroll.create', 'uses' => 'AccountingController@employeePayrollDetails']);
+        get('accounting/open', 'AccountingController@open');
+        get('accounting/close', 'AccountingController@close');
+
+        get('accounting/vat', 'AccountingController@vat');
+        post('accounting/vat/entries', 'AccountingController@entries');
+        post('accounting/vat/action/{action}', 'AccountingController@action');
+
+        get('accounting/setup', 'AccountingController@setup');
+        get('accounting/new-business', 'AccountingController@newBusiness');
+        get('accounting/transactions',  ['as' => 'tenant.accounting.transaction', 'uses' =>'TransactionController@index']);
+    });
+
+    Route::group(['namespace' => 'Tenant\Collection\Controllers'], function () {
+        get('collection', ['as' => 'tenant.collection.index', 'uses' => 'CollectionController@index']);
+        get('collection/waiting', ['as' => 'tenant.collection.waiting', 'uses' => 'CollectionController@waiting']);
+        get('collection/case/create', ['as' => 'tenant.collection.case.create', 'uses' => 'CollectionController@addCase']);
+        post('collection/data', ['as' => 'tenant.collection.data', 'uses' => 'CollectionController@data']);
+        post('collection/waiting/data', ['as' => 'tenant.collection.waiting.data', 'uses' => 'CollectionController@waitingData']);
+        get('collection/case/{id}/create', ['as' => 'tenant.collection.case.make', 'uses' => 'CollectionController@makeCollectionCase']);
+        post('collection/court-case/create', [ 'uses' => 'CollectionController@createCourtCase']);
+        get('collection/case/register-date', [ 'uses' => 'CollectionController@registerDate']);
+        get('collection/case/history', [ 'uses' => 'CollectionController@caseHistory']);
+        post('collection/case/{bill}/payment-date', [ 'uses' => 'CollectionController@casePaymentDate']);
+
+        get('collection/{step}/pdf', ['as' => 'tenant.collection.pdf', 'uses' => 'CollectionController@generatePdf']);
+        get('collection/gotostep/{step}', ['as' => 'tenant.collection.goto', 'uses' => 'CollectionController@goToStep']);
+        get('collection/dispute', ['as' => 'tenant.collection.dispute', 'uses' => 'CollectionController@disputeBill']);
+        get('collection/cancel', ['as' => 'tenant.collection.cancel', 'uses' => 'CollectionController@cancel']);
+
+        get('collection/purring', ['as' => 'tenant.collection.purring', 'uses' => 'CollectionController@purring']);
+        get('collection/payment', ['as' => 'tenant.collection.payment', 'uses' => 'CollectionController@payment']);
+        get('collection/debt', ['as' => 'tenant.collection.debt', 'uses' => 'CollectionController@debt']);
+        get('collection/options', ['as' => 'tenant.collection.options', 'uses' => 'CollectionController@options']);
+        get('collection/case', ['as' => 'tenant.collection.case', 'uses' => 'CollectionController@courtCase']);
+        get('collection/case/followUp', ['as' => 'tenant.collection.case.followup', 'uses' => 'CollectionController@followup']);
+        get('collection/utlegg', ['as' => 'tenant.collection.utlegg', 'uses' => 'CollectionController@utlegg']);
+        get('collection/utlegg/followup', ['as' => 'tenant.collection.utlegg.followup', 'uses' => 'CollectionController@utleggFollowup']);
+    });
 
     /*
      * Todo : don't register new routes under this group
@@ -220,10 +273,7 @@ Route::group($group_auth, function () {
         get('user/registerDays/{type}/{guid}', ['as' => 'user.registerDays', 'uses' => 'Tenant\Users\UserController@registerVacation']);
         post('user/addVacation', ['as' => 'user.addVacation', 'uses' => 'Tenant\Users\UserController@addVacation']);
         post('user/deleteVacation', ['as' => 'user.deleteVacation', 'uses' => 'Tenant\Users\UserController@deleteVacation']);
-
-
-        //registered by : Manish
-
+        get('employee/suggestions', ['as' => 'tenant.employee.suggestions', 'uses' => 'Tenant\Users\UserController@getEmployeeSuggestions']);
 
         //registered by : Pooja
 

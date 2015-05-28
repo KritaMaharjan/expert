@@ -2,6 +2,7 @@
 namespace App\Fastbooks\Libraries;
 
 use App;
+use App\Models\Tenant\Profile;
 use DB;
 use Illuminate\Auth\Guard;
 use Illuminate\Http\Request;
@@ -12,6 +13,7 @@ use App\Fastbooks\Libraries\TenantTable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
+use App\Http\Tenant\Accounting\Models\AccountingYear;
 
 /**
  * Class Tenant
@@ -62,7 +64,7 @@ class Tenant {
     }
 
     /**
-     *
+     * initialized Tenant Database
      */
     function init()
     {
@@ -166,20 +168,7 @@ class Tenant {
      */
     function createTenantTables()
     {
-        $this->createTable->users();
-        $this->createTable->settings();
-        $this->createTable->profile();
-        $this->createTable->passwordReset();
-        $this->createTable->customers();
-        $this->createTable->products();
-        $this->createTable->inventory();
-        $this->createTable->bill();
-        $this->createTable->billProducts();
-        $this->createTable->tasks();
-        $this->createTable->emails();
-        $this->createTable->emailReceivers();
-        $this->createTable->attachmentsEmail();
-        $this->createTable->incomingEmails();
+        $this->createTable->run();
     }
 
 
@@ -200,8 +189,8 @@ class Tenant {
         $user->save();
 
         // add profile
-        $profile = App\Models\Tenant\Profile::findOrNew($user->id);
-        $profile->save();
+        $profile = ['user_id' => $user->id];
+        Profile::create($profile);
 
         // update company name in setting table
         $setting = $this->tenantSettings->firstOrNew(['name' => 'company']);
@@ -216,6 +205,7 @@ class Tenant {
         $setting = $this->tenantSettings->firstOrNew(array('name' => 'folder'));
         $setting->value = $tenantInfoInSystem->guid;
         $setting->save();
+
     }
 
 
@@ -224,8 +214,10 @@ class Tenant {
         $this->folder('customer', true);
         $this->folder('attachment', true);
         $this->folder('invoice', true);
-        $this->folder('offer', true);
         $this->folder('user', true);
+        $this->folder('temp', true);
+        $this->folder('expense', true);
+        $this->folder('todo', true);
     }
 
     /**
@@ -347,7 +339,7 @@ class Tenant {
      */
     function rememberAppUrl()
     {
-        // i an using php native cookie function to set cookie i tried laravel functions but not working at this time
+        // i an using php native cookie function to set cookie. i tried laravel functions but not working at this time
         setcookie("APPURL", $this->domain, time() + (86400 * 2.5), '');
     }
 

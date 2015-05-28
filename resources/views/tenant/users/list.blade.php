@@ -6,7 +6,7 @@ All Users
 
 @section('breadcrumb')
     @parent
-    <li><i class="fa fa-users"></i> &nbsp;All Users</li>
+    <li>Users</li>
 @stop
 
 @section('content')
@@ -49,6 +49,7 @@ All Users
 
   </div>
 
+
   @include('tenant.users.create')
   
 @stop
@@ -57,5 +58,3 @@ All Users
 
 {{FB::registerModal()}}
 {{FB::js('assets/js/user.js')}}
-
-{{-- {{ FB::js("blockUser.js") }} --}}

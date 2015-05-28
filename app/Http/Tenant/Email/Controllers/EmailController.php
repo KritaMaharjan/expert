@@ -7,6 +7,7 @@ use App\Http\Tenant\Email\Models\Attachment;
 use App\Http\Tenant\Email\Models\Receiver;
 use App\Models\Tenant\Customer;
 use App\Models\Tenant\Setting;
+use App\Models\Tenant\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Tenant\Email\Models\Email;
@@ -43,23 +44,14 @@ class EmailController extends BaseController {
         return view('tenant.email.index', compact('action'));
     }
 
-    function customerSearch(Customer $customer)
+    function customerSearch(Customer $customer, User $user)
     {
         $query = $this->request->input('term');
         $details = $customer->select('id', 'name as label', 'email as value')->where('email', 'LIKE', '%' . $query . '%')->orWhere('name', 'LIKE', '%' . $query . '%')->get()->toArray();
-
+        $userdetails = $user->select('id', 'fullname as label', 'email as value')->where('email', 'LIKE', '%' . $query . '%')->orWhere('fullname', 'LIKE', '%' . $query . '%')->get()->toArray();
+        $details = array_merge($details, $userdetails);
         return \Response::JSON($details);
     }
-
-    function attach()
-    {
-        if ($return = tenant()->folder('attachment')->upload('file')) {
-            return $this->success($return);
-        }
-
-        return $this->fail(['error' => 'File upload failed']);
-    }
-
 
     function send()
     {
@@ -182,19 +174,6 @@ class EmailController extends BaseController {
         return view('tenant.email.list', $data);
     }
 
-    function deleteAttachment()
-    {
-        if ($this->request->ajax()) {
-            $file = $this->request->input('file');
-            $destinationPath = $this->upload_path . $file;
-            unlink($destinationPath);
-
-            return $this->success(['message' => 'File deleted']);
-        }
-
-        return $this->fail(['error' => 'Something went wrong. Please try again later']);
-    }
-
     function delete()
     {
         if ($this->request->ajax()) {
@@ -259,7 +238,7 @@ class EmailController extends BaseController {
             } else {
                 return array('status'=> 'fail', 'error' => $mailbox->error());
                 //return array('status'=> 'fail', 'error' => $mailbox->error());
-                    //$this->fail(array('error' => $mailbox->error()));
+                //$this->fail(array('error' => $mailbox->error()));
             }
         }
         return array('status'=> 'fail', 'error' => $validSmtp);

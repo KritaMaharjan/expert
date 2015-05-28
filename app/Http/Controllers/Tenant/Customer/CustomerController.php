@@ -11,8 +11,6 @@ use App\Http\Tenant\Email\Models\Attachment;
 use App\Http\Tenant\Email\Models\Receiver;
 use Session;
 
-
-
 class CustomerController extends BaseController {
 
 
@@ -54,29 +52,21 @@ class CustomerController extends BaseController {
     public function create()
     {
 
-
         $validator = \Validator::make($this->request->all(),
             array(
                 'name'          => 'required|between:2,30',
                 'email'         => 'required|unique:fb_customers',
                 'dob'           => '',
-                'street_name'   => 'required',
-                'street_number' => 'required',
-                'telephone'     => 'numeric',
-                'mobile'        => 'numeric',
-
-
-                'postcode'      => 'required|numeric',
-                'town'          => 'alpha|between:2,50',
-
+                //'street_name'   => 'required',
+                'street_number' => 'max:200',
+                'telephone'     => 'numeric|unique:fb_customers,telephone',
+                'mobile'        => 'numeric|unique:fb_customers,mobile',
+                'postcode'      => 'required|numeric'
             )
         );
 
         if ($validator->fails())
             return \Response::json(array('status' => 'fail', 'errors' => $validator->getMessageBag()->toArray()));
-
-
-       
         $result = $this->customer->createCustomer($this->request, $this->current_user->id);
         $redirect_url = tenant_route('tenant.customer.index');
 
@@ -123,15 +113,11 @@ class CustomerController extends BaseController {
                 'name'          => 'required|between:2,30',
                 'email'         => 'required',
                 'dob'           => '',
-                'street_name'   => 'required',
-                'street_number' => 'required',
-
-                'telephone'     => 'numeric',
-                'mobile'        => 'numeric',
-
-                'postcode'      => 'required|numeric',
-                'town'          => 'between:2,50',
-                
+                //'street_name'   => 'required',
+                'street_number' => 'max:200',
+                'telephone'     => 'numeric|unique:fb_customers,telephone,'.$id,
+                'mobile'        => 'numeric|unique:fb_customers,mobile,'.$id,
+                'postcode'      => 'required|numeric'
             )
         );
 

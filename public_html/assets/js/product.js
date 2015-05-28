@@ -13,7 +13,7 @@ $(function () {
 
         "columnDefs": [{
             "orderable": false,
-            "targets": 6,
+            "targets": 5,
             "render": function (data, type, row) {
                 return showActionbtn(row);
             }
@@ -31,8 +31,7 @@ $(function () {
             {"data": "number"},
             {"data": "name"},
             {"data": "purchase_cost"},
-            {"data": "selling_price"},
-            {"data": "vat"}
+            {"data": "selling_price"}
 
         ],
 
@@ -98,7 +97,7 @@ $(function () {
                     if ("errors" in response.data) {
 
                         $.each(response.data.errors, function (id, error) {
-                            $('.modal-body #' + id).parent().addClass('has-error')
+                            $('.modal-body #' + id).parent().addClass('has-error');
                             $('.modal-body #' + id).after('<label class="error error-' + id + '">' + error[0] + '<label>');
                         })
                     }
@@ -192,7 +191,6 @@ function getTemplate(data, type) {
         data.name + '</a>' + '</td>' +
         '<td>' + data.purchase_cost + '</td>' +
         '<td>' + data.selling_price + '</td>' +
-        '<td>' + data.vat + '</td>' +
         '<td>' + showActionbtn(data) + '</td>';
 
     if (type == false)

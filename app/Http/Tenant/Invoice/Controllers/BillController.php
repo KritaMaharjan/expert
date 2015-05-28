@@ -4,6 +4,8 @@ namespace App\Http\Tenant\Invoice\Controllers;
 
 use App\Fastbooks\Libraries\Pdf;
 use App\Http\Controllers\Tenant\BaseController;
+use App\Http\Tenant\Accounting\Models\AccountingYear;
+use App\Http\Tenant\Collection\Models\Collection;
 use App\Http\Tenant\Invoice\Models\Bill;
 use App\Http\Tenant\Invoice\Models\BillProducts;
 use App\Models\Tenant\Customer;
@@ -11,7 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Laracasts\Flash\Flash;
 use App\Models\Tenant\Setting;
-use App\Http\Tenant\Invoice\Models\Payment;
+use App\Http\Tenant\Invoice\Models\BillPayment;
 
 class BillController extends BaseController {
 
@@ -19,13 +21,14 @@ class BillController extends BaseController {
     protected $bill;
     protected $request;
 
-    public function __construct(Bill $bill, Request $request, Setting $setting)
+    public function __construct(Bill $bill, Request $request, Setting $setting, Collection $collection)
     {
         \FB::can('Invoice');
         parent::__construct();
         $this->bill = $bill;
         $this->request = $request;
         $this->setting = $setting;
+        $this->collection = $collection;
     }
 
     protected $rules = [
@@ -46,7 +49,7 @@ class BillController extends BaseController {
     public function dataJson()
     {
         if ($this->request->ajax()) {
-            $select = ['id', 'invoice_number', 'customer_id', 'total', 'due_date', 'created_at', 'status'];
+            $select = ['b.id', 'b.invoice_number', 'b.customer_id', 'b.total', 'b.due_date', 'b.created_at', 'b.status', 'b.payment', 'b.remaining'];
             $json = $this->bill->dataTablePagination($this->request, $select);
             echo json_encode($json, JSON_PRETTY_PRINT);
         } else {
@@ -68,10 +71,18 @@ class BillController extends BaseController {
             $customer_id ='';
          
         $currencies = \Config::get('tenant.currencies');
+
+        if($this->getCompanyVatRule() == false)
+            $vat = false;
+        else {
+            $vat = \Config::get('tenant.vat');
+            $default_vat = $this->getCompanyVatRule();
+        }
+
         $data = array('months' => $months, 'currencies' => \Config::get('tenant.currencies'));
         $company_details = $this->getCompanyDetails();
 
-        return view('tenant.invoice.bill.create', compact('company_details','months','currencies','customer_details','customer_id'))->with('pageTitle', 'Add new bill')->with($data);
+        return view('tenant.invoice.bill.create', compact('company_details','months','currencies','customer_details','customer_id', 'vat', 'default_vat'))->with('pageTitle', 'Add new bill')->with($data);
     }
 
     function getCompanyDetails()
@@ -92,10 +103,9 @@ class BillController extends BaseController {
         if ($validator->fails())
             return redirect()->back()->withErrors($validator)->withInput();
 
-        $this->bill->add($this->request);
+        $this->bill->add($this->request, $this->current_user()->id);
 
         Flash::success('Bill added successfully!');
-
         return tenant()->route('tenant.invoice.bill.index');
     }
 
@@ -197,7 +207,7 @@ class BillController extends BaseController {
     {
         $id = $this->request->route('id');
         $data = $this->getInfo($id);
-        $pdf->generate($data['invoice_number'].'_'.time(), 'template.bill', compact('data'), true);
+        $pdf->generate($data['invoice_number'], 'template.bill', compact('data'), true);
     }
 
     function sendEmail(Pdf $pdf)
@@ -206,7 +216,7 @@ class BillController extends BaseController {
         {
             $id = $this->request->route('id');
             $data = $this->getInfo($id);
-            $pdf_file[] = $pdf->generate(time(), 'template.bill', compact('data'), false, true);
+            $pdf_file[] = $pdf->generate($data['invoice_number'], 'template.bill', compact('data'), false, true);
             $mail = \FB::sendEmail($data['customer_details']['email'], $data['customer'], 'bill_email', ['{{NAME}}' => $data['customer']], $pdf_file);
             if($mail) {
                 return $this->success(['message' => 'Email Sent Successfully!']);
@@ -222,19 +232,29 @@ class BillController extends BaseController {
         return view('template.print', compact('data'));
     }
 
-    function payment(Payment $payment)
+    function payment(BillPayment $payment)
     {
         if($this->request->ajax()) {
+            $id = $this->request->route('id');
+            //$bill_remaining = Bill::find($id, ['remaining'])->remaining;
+            $bill = Bill::find($id);
+
+            $bill_remaining = $bill->remaining;
+
+            if($bill->status == Bill::STATUS_COLLECTION) {
+                $step = $this->request->input('step');
+                $bill_remaining += $this->collection->totalCharge($bill->due_date, $bill->total, $step);
+            }
+
             $payment_rules = [
                 'payment_date' => 'required|date',
-                'paid_amount' => 'required'
+                'paid_amount' => 'required|numeric|maxValue:'.$bill_remaining.'|minPaymentValue'
             ];
 
             $validator = Validator::make($this->request->all(), $payment_rules);
             if ($validator->fails())
                 return $this->fail(['errors' => $validator->getMessageBag()]);
 
-            $id = $this->request->route('id');
             $pay_details = $payment->add($this->request, $id);
             return ($pay_details) ? $this->success($pay_details) : $this->fail(['errors' => 'Something went wrong!']);
         }
@@ -252,6 +272,7 @@ class BillController extends BaseController {
             'invoice_date' => $bill->created_at,
             'due_date' => $bill->due_date,
             'customer' => $bill->customer,
+            'customer_payment_number' => $bill->customer_payment_number,
             'customer_details' => $bill->customer_details->toArray(),
             'company_details' => $company_details
         );
@@ -259,6 +280,13 @@ class BillController extends BaseController {
         return $bill_details;
     }
 
-    
+    function credit()
+    {
+        if($this->request->ajax()) {
+            $id = $this->request->route('id');
+            $bill = $this->bill->creditBill($id);
+            return ($bill) ? $this->success(['result' => $bill]) : $this->fail(['errors' => 'Something went wrong!']);
+        }
+    }
 
 }

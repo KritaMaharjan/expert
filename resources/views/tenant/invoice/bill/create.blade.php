@@ -5,8 +5,8 @@
 
 @section('breadcrumb')
     @parent
-    <li><a data-push="true" href="{{tenant_route('tenant.invoice.index')}}"><i class="fa fa-cog"></i> Invoice</a></li>
-    <li><i class="fa fa-money"></i> {{ ucfirst($type) }}</li>
+    <li>Invoice</li>
+    <li>{{ ucfirst($type) }}</li>
 @stop
 
 @section('content')
@@ -27,12 +27,12 @@
     </div><!-- /.col -->
   </div>
 
-  {!! Form::open(array('method'=>'POST')) !!}
+  {!! Form::open(array('method'=>'POST', 'id'=>'bill-form')) !!}
   <input type="hidden" name="customer_id" value="{{$customer_id}}" id="customer_id"/>
     @include('tenant.invoice.bill.form')
   <div class="row no-print">
     <div class="col-xs-12">
-        {!! Form::button('Submit', array('class'=>'btn btn-primary pull-right', 'type'=>'submit')) !!}
+        {!! Form::button('Submit', array('class'=>'btn btn-primary pull-right bill-submit', 'type'=>'submit')) !!}
     </div>
   </div>
 
@@ -41,6 +41,22 @@
 </div>
 </div><!-- /.content -->
 </div>
+
+{{-- Customer Add Modal--}}
+<div id="customer-modal-data" class="hide">
+    <div class="box box-solid">
+        <div class="box-header">
+            <h3 class="box-title">Add New Customer</h3>
+        </div>
+
+        @include('tenant.customer.createCustomer')
+
+    </div><!-- /.box-body -->
+</div>
+
+{{--Load JS--}}
+{{FB::registerModal()}}
+
 <div class="clearfix"></div>
 
     {{FB::js('assets/plugins/slimScroll/jquery.slimScroll.min.js')}}

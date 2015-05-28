@@ -16,10 +16,25 @@
     @endif
     @if(Session::has('message_success'))
         <div class="callout callout-success">
-         
-          <p>{{Session::get('message_success')}}</p>
-      </div>
+            <p>{{Session::pull('message_success')}}</p>
+        </div>
     @endif
+
+
+    @if (Session::has('flash_notification.message'))
+        @if (Session::has('flash_notification.overlay'))
+            @include('flash::modal', ['modalClass' => 'flash-modal', 'title' => Session::get('flash_notification.title'), 'body' => Session::get('flash_notification.message')])
+        @else
+            <div class="alert alert-{{ Session::get('flash_notification.level') }}">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+
+                {{ Session::get('flash_notification.message') }}
+            </div>
+        @endif
+    @endif
+
+
+
         <form action=" " method="post">
 
        <input type="hidden" name="_token" value="{{csrf_token()}}">

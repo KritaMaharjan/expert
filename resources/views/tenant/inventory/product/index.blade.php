@@ -6,8 +6,8 @@ Product
 
 @section('breadcrumb')
     @parent
-    <li><a data-push="true" href="{{tenant_route('tenant.inventory.index')}}"><i class="fa fa-cog"></i> Inventory</a></li>
-    <li><i class="fa fa-cog"></i> Product</li>
+    <li><a data-push="true" href="{{tenant_route('tenant.inventory.index')}}">Inventory</a></li>
+    <li>Product</li>
 @stop
 
 
@@ -32,7 +32,6 @@ Product
                       <th>Product Name</th>
                       <th>Purchase Cost</th>
                       <th>Sales Price</th>
-                      <th>Vat</th>
                       <th>Action</th>
                     </tr>
                 </thead>

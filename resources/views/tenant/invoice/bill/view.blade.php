@@ -23,27 +23,27 @@
                     </tr>
                     <tr>
                         <td>Subtotal</td>
-                        <td>{{ $bill->subtotal }}</td>
+                        <td>{{ float_format($bill->subtotal) }}</td>
                     </tr>
                     <tr>
                         <td>Tax</td>
-                        <td>{{ $bill->tax }}</td>
+                        <td>{{ float_format($bill->tax) }}</td>
                     </tr>
                     <tr>
                         <td>Total</td>
-                        <td>{{ $bill->total }}</td>
+                        <td>{{ float_format($bill->total) }}</td>
                     </tr>
                     <tr>
                         <td>Total Paid</td>
-                        <td>{{ $bill->paid }}</td>
+                        <td>{{ float_format($bill->paid) }}</td>
                     </tr>
                     <tr>
                         <td>Total Remaining</td>
-                        <td>{{ $bill->remaining }}</td>
+                        <td>{{ float_format($bill->remaining) }}</td>
                     </tr>
                     <tr>
                         <td>Due Date</td>
-                        <td>{{ format_datetime($bill->due_date) }}</td>
+                        <td>{{ format_only_date($bill->due_date) }}</td>
                     </tr>
                     <tr>
                         <td>Issued on</td>
@@ -65,7 +65,7 @@
                 @foreach($bill->payments as $payment)
                     <tr>
                         <td>{{$payment->amount_paid}}</td>
-                        <td>{{ format_datetime($payment->payment_date) }}</td>
+                        <td>{{ format_only_date($payment->payment_date) }}</td>
                     </tr>
                 @endforeach
                 </tbody>

@@ -49,7 +49,7 @@ class OfferController extends BaseController {
     public function dataJson()
     {
         if ($this->request->ajax()) {
-            $select = ['id', 'invoice_number', 'customer_id', 'total', 'due_date', 'created_at', 'status'];
+            $select = ['b.invoice_number', 'b.customer_id', 'b.total', 'b.due_date', 'b.created_at', 'b.status'];
             $json = $this->bill->dataTablePagination($this->request, $select, true);
             echo json_encode($json, JSON_PRETTY_PRINT);
         } else {
@@ -64,15 +64,22 @@ class OfferController extends BaseController {
                $customer_id = $c_id;
                $customer_details =  \DB::table('fb_customers')->where('id', $c_id)->first();
         }
-         
         else
             $customer_id ='';
 
         $months = \Config::get('tenant.month');         
         $currencies = \Config::get('tenant.currencies');
+
+        if($this->getCompanyVatRule() == false)
+            $vat = false;
+        else {
+            $vat = \Config::get('tenant.vat');
+            $default_vat = $this->getCompanyVatRule();
+        }
+
         $data = array('months' => $months, 'currencies' => \Config::get('tenant.currencies'));
         $company_details = $this->getCompanyDetails();
-        return view('tenant.invoice.bill.create', compact('company_details','months','currencies','customer_id','customer_details'))->with('pageTitle', 'Add new offer')->with($data);
+        return view('tenant.invoice.bill.create', compact('company_details','months','currencies','customer_id','customer_details', 'vat', 'default_vat'))->with('pageTitle', 'Add new offer')->with($data);
     }
 
     function getCompanyDetails()
@@ -91,7 +98,7 @@ class OfferController extends BaseController {
         if ($validator->fails())
             redirect()->back()->withErrors($validator)->withInput();
 
-        $this->bill->add($this->request, true);
+        $this->bill->add($this->request, $this->current_user()->id, true);
 
         Flash::success('Offer added successfully!');
         return tenant()->route('tenant.invoice.offer.index');

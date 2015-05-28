@@ -48,8 +48,6 @@ class Inventory extends Model {
 
     function totalSellingPrice()
     {
-
-
         return $this->convertToCurrency($this->selling_price * $this->quantity);
     }
 
@@ -109,6 +107,7 @@ class Inventory extends Model {
             ->leftJoin('fb_products as p', 'p.id', '=', 'i.product_id');
 
         if ($orderColumn != '' AND $orderdir != '') {
+            $orderColumn = ($orderColumn == 'name') ? 'p.' . $orderColumn : 'i.' . $orderColumn;
             $query = $query->orderBy($orderColumn, $orderdir);
         }
 
@@ -140,6 +139,5 @@ class Inventory extends Model {
         return $data;
     }
 
-    
 
 }

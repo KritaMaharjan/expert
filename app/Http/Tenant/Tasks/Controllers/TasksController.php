@@ -27,8 +27,8 @@ class TasksController extends BaseController {
 
     protected $rules = [
         'subject' => 'required|between:2,100',
-        'body' => 'required',
-        'due_date' => 'required|date'
+        'due_date' => 'required|date',
+        'due_time' => 'required'
     ];
 
 
@@ -78,7 +78,6 @@ class TasksController extends BaseController {
         $validator = Validator::make($this->request->all(), $this->rules);
         if ($validator->fails())
             return $this->fail(['errors' => $validator->getMessageBag()]);
-
         $result = $this->task->add($this->request);
         return ($result) ? $this->success($result) : $this->fail(['errors' => 'Something went wrong!']);
 

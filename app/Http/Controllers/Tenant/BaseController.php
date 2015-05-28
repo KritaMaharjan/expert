@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Tenant;
 
 use App\Http\Controllers\Controller;
+use App\Http\Tenant\Accounting\Models\AccountingYear;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
@@ -33,6 +34,12 @@ class BaseController extends Controller {
     protected $current_lang;
 
     /**
+     * Current Accounting Year
+     * @var
+     */
+    protected $current_accounting_year = null;
+
+    /**
      * initialized everything for Tenant Controllers
      */
     function __construct()
@@ -42,9 +49,6 @@ class BaseController extends Controller {
 
         // initialise current user
         $this->current_user();
-
-        //check current user's status
-        $this->authenticate_user();
 
         // share current route in all views
         $this->viewShare();
@@ -65,27 +69,6 @@ class BaseController extends Controller {
     }
 
     /**
-     * Current logged in user status info
-     * @return null
-     */
-    function authenticate_user()
-    {
-        if($this->current_user)
-        {
-            if ($this->current_user->status == 0) {
-                Auth::logout();
-                return tenant()->redirect('tenant.login')->withInput()->with('message', lang('Your account has not been activated.'));
-            } elseif ($this->current_user->status == 2) {
-                Auth::logout();
-                return tenant()->redirect('tenant.login')->withInput()->with('message', lang('Your account has been suspended.'));
-            } elseif ($this->current_user->status == 3) {
-                Auth::logout();
-                return tenant()->redirect('tenant.login')->withInput()->with('message', lang('Your account has been permanently blocked.'));
-            }
-        }
-    }
-
-    /**
      * Share variables to Views
      */
     function viewShare()
@@ -95,12 +78,24 @@ class BaseController extends Controller {
         View::share('current_path', Request::path());
         View::share('domain', session()->get('domain'));
         View::share('current_lang', $this->current_lang);
+      //  View::share('current_accounting_year', $this->accountingYear());
 
         /* View::composer('tenant.layouts.partials.header', function ($view) {
              $view->with('company_logo', $this->getCompanyLogo());
          });*/
     }
 
+    /**
+     * get Current Accounting Year
+     * @return bool|null
+     */
+    function accountingYear()
+    {
+        if (is_null($this->current_accounting_year))
+            $this->current_accounting_year = AccountingYear::CurrentYear();
+
+        return $this->current_accounting_year;
+    }
 
     /**
      * Get Company logo
@@ -114,6 +109,25 @@ class BaseController extends Controller {
             return asset('assets/uploads/' . $company_details['logo']);
         else
             return asset('assets/images/logo.png');
+    }
+
+    /**
+     * Get Company vat reporting rule
+     * @return string
+     */
+    function getCompanyVatRule()
+    {
+        $company_details = Setting::where('name', 'business')->first();
+
+        if ($company_details->value['vat_reporting_rule'] == 'not-registered')
+            return false;
+        else {
+            $default_vat = Setting::where('name', 'vat')->first();
+            if(empty($default_vat))
+                return 25;
+            else
+                return $default_vat->value;
+        }
     }
 
     /**

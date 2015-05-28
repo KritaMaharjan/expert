@@ -86,7 +86,6 @@ $(function () {
 
                     //window.location.replace(response.redirect_url);
                 } //success
-                response.success
             })
             .fail(function () {
                 alert('Something went wrong! Please try again later');

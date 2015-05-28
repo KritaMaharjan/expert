@@ -93,7 +93,6 @@ class AuthController extends BaseController {
             return \Response::json(array('fail' => true, 'errors' => $validator->getMessageBag()->toArray()));
         else {
             $this->createTenant($request);
-
             return \Response::json(array('success' => true, 'redirect_url' => \URL::to('registration/success')));
         }
     }
@@ -130,7 +129,7 @@ class AuthController extends BaseController {
         $string = explode(' ', $string);
         $string = strtolower($string[0]);
         $clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $string);
-        $domain = preg_replace("/[\/_|+ -]+/", '-', $clean);
+        $domain = preg_replace("/[\/_|+ -]+/", '', $clean);
 
         $domain = $this->checkDomainExists($domain);
 
@@ -145,7 +144,6 @@ class AuthController extends BaseController {
     public function getDomainSuggestion($company_name = '')
     {
         $domain = $this->createDomain($company_name);
-
         return \Response::json($domain);
     }
 
@@ -229,7 +227,7 @@ class AuthController extends BaseController {
     {
         $user = Client::where('email', $to_email)->first();
         if ($user) {
-            return \FB::sendEmail($to_email, $user->fullname, 'request_url', ['{{NAME}}' => 'name', '{{APP_URL}}' => \URL::to($user->domain)]);
+            return \FB::sendEmail($to_email, $user->fullname, 'request_url', ['{{NAME}}' => 'name', '{{APP_URL}}' => tenant($user->domain)->url('login')]);
         } else {
             return false;
         }

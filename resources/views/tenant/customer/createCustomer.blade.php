@@ -1,6 +1,5 @@
 {!!Form::open(['id'=>'customer-form', 'enctype'=>'multipart/form-data','files'=>true])!!}
 
- 
               <div class="box-body">
                       <div class="form-group">
                         <label for="">Name</label>
@@ -62,10 +61,9 @@
 
 
                     
- <input type="text" placeholder="postcode"  id="postcode" name="postcode"  value="{{old('postcode')}}" class="form-control postal_code">
-                        <input type="text" placeholder="Town"  id="city" name="town"  value="{{old('town')}}" class="form-control city">
+                        <input type="text" placeholder="Town"  id="city" name="town"  value="{{old('town')}}" class="form-control city pull-right">
+                        <input type="text" placeholder="Postcode"  id="postcode" name="postcode"  value="{{old('postcode')}}" class="form-control postal_code">
 
-                    
                       </div>
                       <div class="form-group">
                         <label for="">Telephone</label>
@@ -81,13 +79,10 @@
                       <div class="form-group">
                         <label for="">Status</label>
                          <select name="status" class="form-control" id="status">
-                            <option value="0">Inactive</option>
                             <option value="1">Active</option>
-                        </select> 
+                            <option value="0">Inactive</option>
+                        </select>
                       </div>
-             
-                       
-                      
                         
                       </div>
                    
@@ -159,7 +154,15 @@ $(function () {
                  
                 $('.city').val(label);      
 
-            }
+            },
+            change: function(event,ui)
+                {
+                if (ui.item==null)
+                    {
+                    $(".postal_code").val('');
+                    $(".postal_code").focus();
+                    }
+                }
         });
       });
 

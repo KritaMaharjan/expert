@@ -12,6 +12,9 @@ Class Plupload {
     protected $mimeTypes = '';
     protected $autoStart = true;
     protected $url = '';
+    protected $resizeHeight = '';
+    protected $resizeWidth = '';
+    protected $resize = false;
     protected $flashUrl = "/assets/plugins/plupload/js/Moxie.swf";
     protected $silverlightUrl = "/assets/plugins/plupload/js/Moxie.xap";
 
@@ -28,7 +31,6 @@ Class Plupload {
     function url($url)
     {
         $this->url = $url;
-
         return $this;
     }
 
@@ -61,7 +63,8 @@ Class Plupload {
         $mimes = [
             'image' => "{title : 'Image files', extensions : 'jpg,gif,png'}",
             'zip'   => "{title : 'Zip files', extensions : 'zip'}",
-            'doc'   => "{title : 'Doc files', extensions : 'doc, docx, exl, exlsx, pdf, ppt, pptx'}"
+            'doc'   => "{title : 'Doc files', extensions : 'doc,docx,xls,xlsx,pdf,ppt,pptx'}",
+            'file' => "{title : 'files', extensions : 'zip,jpg,gif,png,doc,docx,xls,xlsx,pdf,ppt,pptx'}",
         ];
 
         return isset($mimes[$type]) ? $mimes[$type] : die('File Type not supported at the moment');
@@ -86,14 +89,16 @@ Class Plupload {
     {
         $html = "var uploader = new plupload.Uploader({
             runtimes : 'html5,flash,silverlight,html4',
-
+            drop_element : '$this->pickerID',
             browse_button : '$this->pickerID', // you can pass in id...
             container: document.getElementById('$this->container'), // ... or DOM Element itself
 
             url : '$this->url',
 
+            max_file_count : 2,
+
             filters : {
-                    max_file_size : '$this->maxSize',
+                max_file_size : '$this->maxSize',
                 mime_types: [
                    $this->mimeTypes
                 ]
@@ -103,9 +108,16 @@ Class Plupload {
             flash_swf_url : '$this->flashUrl',
 
             // Silverlight settings
-            silverlight_xap_url : '$this->silverlightUrl',
+            silverlight_xap_url : '$this->silverlightUrl',";
+
+        if($this->resize === true)
+            $html .="resize: {
+                width: '$this->resizeWidth',
+                height: '$this->resizeHeight'
+            },";
 
 
+        $html .= "
             init: {
                     PostInit: function() {
                         document.getElementById('$this->filelist').innerHTML = '';";
@@ -119,15 +131,30 @@ Class Plupload {
         $html .= "},
 
                     FilesAdded: function(up, files) {
-                        plupload.each(files, function(file) {
+                              var max_files = 1;
+                              var files_no = up.files.length - up.total.uploaded;
+
+
+                            if (files_no > max_files) {
+                                  alert('You are allowed to add only ' + max_files + ' files.');
+
+                                    plupload.each(files, function(file) {
+                                          up.removeFile(file);
+                                      });
+
+                                  return;
+                              }
+
+
+                           plupload.each(files, function(file) {
                             document.getElementById('$this->filelist').innerHTML += '<div id=\"' + file.id + '\">' + file.name + ' (' + plupload.formatSize(file.size) + ') <b></b></div>';
-                        });";
+                            });";
 
-        if ($this->autoStart):
-            $html .= "setTimeout(function () { up.start(); }, 100);";
-        endif;
+                            if ($this->autoStart):
+                            $html .= "setTimeout(function () { up.start(); }, 100);";
+                            endif;
 
-        $html .= "},
+                      $html .= "},
 
                     UploadProgress: function(up, file) {
                         fileDiv = $('#'+file.id)
@@ -141,6 +168,7 @@ Class Plupload {
                         }
 
                        fileDiv.find('b').html(file.percent + '%');
+
                     },
 
                     Error: function(up, err) {
@@ -150,6 +178,31 @@ Class Plupload {
             });
 
             uploader.init();
+
+
+              uploader.bind('Init', function(up, params) {
+                if (uploader.features.dragdrop) {
+                  var target =  document.getElementById('$this->pickerID');
+
+                  target.ondragover = function(event) {
+                    event.dataTransfer.dropEffect = 'copy';
+                  };
+
+                  target.ondragenter = function() {
+                    this.className = 'dragover';
+                  };
+
+                  target.ondragleave = function() {
+                    this.className = '';
+                  };
+
+                  target.ondrop = function() {
+                    this.className = '';
+                  };
+                }
+              });
+
+
 
              $(document).on('shown.bs.modal', '#compose-modal', function (event) {
                 uploader.refresh();
@@ -166,7 +219,7 @@ Class Plupload {
 
             ";
 
-        echo $html;
+        return $html;
     }
 
 
@@ -192,8 +245,15 @@ Class Plupload {
         $render = "<div id='$this->filelist'>Your browser doesn't have Flash, Silverlight or HTML5 support.</div>";
 
         //   $render .= "<pre id='console'></pre>";
-
         return $render;
+    }
+
+    function resize($height, $width)
+    {
+        $this->resizeHeight = $height;
+        $this->resizeWidth = $width;
+        $this->resize = true;
+        return $this;
     }
 
 }

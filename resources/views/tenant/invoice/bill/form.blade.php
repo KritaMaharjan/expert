@@ -1,4 +1,6 @@
 <!-- info row -->
+
+
   <div class="row invoice-info">
 
     <div class="col-sm-5 invoice-col col-xs-6">
@@ -47,10 +49,11 @@
      <div class="col-sm-7 invoice-col col-xs-6">
       <address class="address-info">
         <strong>{{ $company_details['company_name'] }}</strong><br>
+        {{ $company_details['company_number'] }}<br>
         {{ $company_details['postal_code'] }}, {{ $company_details['town'] }}<br>
         {{ $company_details['address'] }}<br>
         {!! (isset($company_details['telephone']))? 'Phone: '. format_telephone($company_details['telephone']).'<br/>': " " !!}
-        {!! (isset($company_details['service_email']))? 'Email: '. $company_details['service_email'].'<br/>': " " !!}
+        {!! (isset($company_details['website']))? 'Website: '. $company_details['website'].'<br/>': " " !!}
       </address>
 
       <div class="right-from align-right">
@@ -72,31 +75,40 @@
               {!! $errors->first('customer_id', '<label class="control-label" for="inputError">:message</label>') !!}
           @endif
         </div>--}}
-        <div class="form-group clearfix {{ ($errors->has('due_date'))? 'has-error': '' }}">
+      <div class="form-group clearfix {{ ($errors->has('due_date'))? 'has-error': '' }}">
           {!! Form::label('due_date', 'Due date') !!}
-
-          <div class='input-group date date-box' id='due-date-picker'>
-              {!! Form:: text('due_date', null, array('class' => 'form-control', 'id' =>'due-date-pickers')) !!}
-              <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
-              </span>
-          </div>
-
-        </div>
+              <div id="due_date" class="input-group date date-box">
+                  {!! Form::text('due_date', null,['class'=>'form-control due_date', 'id' =>'due-date-pickers']) !!}
+                  <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                  </span>
+              </div>
+      </div>
          @if($errors->has('due_date'))
-                      {!! $errors->first('due_date', '<label class="control-label error" style="position: relative;top: -10px;"for="inputError">:message</label>') !!}
+                      {!! $errors->first('due_date', '<label class="control-label error" style="position: relative;top: -10px;" for="inputError">:message</label>') !!}
                   @endif
-        <div class="form-group clearfix" style="text-align: left!important;">
+      <div class="form-group clearfix" style="text-align: left!important;">
           {!! Form::label('account_number', 'Account no') !!}
-          <span class="border-bx block">{{ $company_details['account_no'] }}</span>
-        </div>
-        <div class="form-group clearfix" style="text-align: left !important;">
+          <span class="border-bx block no-border pad-0">{{ $company_details['account_no'] }}</span>
+      </div>
+      <div class="form-group clearfix" style="text-align: left !important;">
           {!! Form::label('Customer Payment Number') !!}
-          <span class="border-bx block cus-pay-no">{{ $bill->customer_payment_number or ''}}</span>
-        </div>
-        <div class="form-group clearfix">
+          <span class="border-bx block cus-pay-no no-border pad-0">{{ $bill->customer_payment_number or ''}}</span>
+      </div>
+      <div class="form-group clearfix">
           {!! Form::label('currency', 'Currency') !!}
           {!! Form::select('currency', $currencies, null, array('class' => 'form-control')) !!}
-        </div>
+      </div>
+
+      <div class="form-group clearfix" style="text-align: left!important;">
+          {!! Form::label('vat', 'Vat') !!}
+          @if($vat != false)
+          {!! Form::select('vat', $vat, $default_vat, array('class' => 'form-control vat')) !!}
+          @else
+          <span class="border-bx block no-border pad-0">N/A</span>
+          {!! Form::hidden('vat', 0, null, array('class' => 'form-control vat')) !!}
+          @endif
+      </div>
+
       </div>
 
     </div><!-- /.col -->
@@ -113,7 +125,7 @@
             <th width="40%">Product name</th>
             <th width="15%">Quantity</th>
             <th width="15%">Price</th>
-            <th width="15%">VAT %</th>
+            {{--<th width="15%">VAT %</th>--}}
             <th width="15%">Total</th>
           </tr>
         </thead>
@@ -132,7 +144,7 @@
                 <input type="number" name="quantity[]" class="add-quantity quantity form-control" id="quantity" value="{{$product->quantity}}" required="required" />
             </td>
             <td><span class="border-bx block price">{{ $product->price }} </span></td>
-            <td><span class="border-bx block vat">{{ $product->vat }} </span></td>
+            <td><span class="border-bx block vat">{{ $product->vat }} </span></td>--}}
             <td class="position-relative">
                 <div class="action-buttons">
                     <a title="Delete line" class="invoice-delete fa fa-close btn-danger" href="#"></a>
@@ -155,7 +167,6 @@
                 <input type="number" name="quantity[]" class="add-quantity quantity form-control" id="quantity" required="required" />
                 {{--{!! Form:: text('number', 'quantity[]', null, array('class' => 'form-control add-quantity quantity', 'id' => 'quantity', 'required'=>'required')) !!}--}}</td>
               <td><span class="border-bx block price"> </span></td>
-              <td><span class="border-bx block vat"> </span></td>
               <td class="position-relative">
                 <div class="action-buttons">
                     <a title="Delete" class="invoice-delete fa fa-close btn-danger" href="javascript:;"></a>
@@ -177,7 +188,7 @@
   <div class="row">
     <!-- accepted payments column -->
 
-    <div class="col-xs-6 pull-right pad-0-40">
+    <div class="col-xs-6 pull-right pad-0-40 full-wdth-485">
       <p class="lead">Summary</p>
       <div class="table-responsive">
         <table class="table">
@@ -198,19 +209,4 @@
     </div><!-- /.col -->
   </div><!-- /.row -->
 
-{{-- Customer Add Modal--}}
-<div id="customer-modal-data" class="hide">
-    <div class="box box-solid">
-        <div class="box-header">
-            <h3 class="box-title">Add New Customer</h3>
-        </div>
-       
-        @include('tenant.customer.createCustomer')
-       
-    </div><!-- /.box-body -->
-</div>
-
-{{--Load JS--}}
-{{FB::registerModal()}}
-{{FB::js('assets/js/customer.js')}}
 

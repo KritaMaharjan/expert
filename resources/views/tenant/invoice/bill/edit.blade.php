@@ -4,8 +4,8 @@
 
 @section('breadcrumb')
     @parent
-    <li><a data-push="true" href="{{tenant_route('tenant.invoice.index')}}"><i class="fa fa-cog"></i> Invoice</a></li>
-    <li><i class="fa fa-money"></i> {{ ucfirst(Request::segment(2)) }}</li>
+    <li>Invoice</li>
+    <li>{{ ucfirst(Request::segment(2)) }}</li>
 @stop
 
 @section('content')
@@ -41,6 +41,23 @@
 </div>
 </div><!-- /.content -->
 </div>
+
+
+{{-- Customer Add Modal--}}
+<div id="customer-modal-data" class="hide">
+    <div class="box box-solid">
+        <div class="box-header">
+            <h3 class="box-title">Add New Customer</h3>
+        </div>
+
+        @include('tenant.customer.createCustomer')
+
+    </div><!-- /.box-body -->
+</div>
+
+{{--Load JS--}}
+{{FB::registerModal()}}
+
 <div class="clearfix"></div>
 
 {{FB::js('assets/plugins/slimScroll/jquery.slimScroll.min.js')}}

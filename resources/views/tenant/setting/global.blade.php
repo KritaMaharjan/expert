@@ -52,7 +52,7 @@
                                         '0' => 'Foreign Exempt',
                                         '0' => 'Domestic Exempt',
                       
-                            ],isset($vat->value) ? $vat->value : '',  array('class' => 'form-control')) !!}
+                            ],isset($vat->value) ? $vat->value : 25,  array('class' => 'form-control')) !!}
       	
       	@if($errors->has('vat'))
        		{!! $errors->first('vat', '<label class="control-label" for="inputError">:message</label>') !!}

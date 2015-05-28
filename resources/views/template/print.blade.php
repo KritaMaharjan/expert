@@ -11,6 +11,110 @@ Print Invoice
 @section('content')
 <div class="box box-solid">
 <div class="box-body">
+
+
+      <table width="100%">
+        <tr>
+          <td colspan="3">{!! (isset($data['company_details']['logo']))? '<img src ="'.tenant()->folder('system')->url($data['company_details']['logo']).' "/>' : "" !!}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><p>Centco Corporate Services<br />
+                Middelthunsgate 25B<br />
+                0368
+          </p></td>
+          <td style="vertical-align:top;"><h3 style="margin:0;">Faktura <small>00172</small></h3> </td>
+        </tr>
+        <br />
+        <tr>
+          <td style="vertical-align:top;">
+            <p>Remy Andre Johansen<br />
+            Mannsverk 63 BERGEN 5094<br />
+            Norway</p>
+          </td>
+          <td>
+            <p><strong>Tlf</strong> {{ $data['company_details']['telephone'] }}<br />
+              <strong>Fax</strong> {{ $data['company_details']['fax'] }}<br />
+              <strong>Epost</strong> {{ $data['company_details']['service_email'] }}<br />
+              <strong>Org.nr.</strong> {{ $data['company_details']['company_number'] }}<br />
+              <strong>Kontonummer</strong> {{ $data['company_details']['account_no'] }}<br />
+              <strong>Swift</strong> {{ $data['company_details']['swift_num'] }}<br />
+              <strong>IBAN</strong> {{ $data['company_details']['iban_num'] }}
+            </p>
+          </td>
+          <td>
+            <p><strong>Merk betaling</strong> <br />
+              <strong>Kundenummer</strong> {{ $data['customer_details']['id'] }}<br />
+              <strong>Vår ref.</strong> {{ $data['invoice_number'] }}<br />
+              <strong>Fakturadato</strong> {{ date('d-m-y', strtotime($data['invoice_date'])) }}<br />
+              <strong>Forfallsdato</strong> {{ date('d-m-y', strtotime($data['due_date'])) }}<br />
+              <strong>Valuta</strong> {{ $data['currency'] }}
+            </p>
+          </td>
+        </tr>
+      </table><br /><br /><br /><br />
+
+      <table id="inv-tab" cellpadding="4" width="100%">
+        <thead>
+          <tr>
+            <th style="font-size:14px;padding:6px 0px;"><b>Kode</b></th>
+            <th style="font-size:14px;padding:6px 0px;"><b>Navn</b></th>
+            <th style="font-size:14px;padding:6px 0px;"><b>Antall</b></th>
+            <th style="font-size:14px;padding:6px 0px;"><b>Pris</b></th>
+            <th style="font-size:14px;padding:6px 0px;"><b>MVA</b></th>
+            <th style="font-size:14px;padding:6px 0px;"><b>Total</b></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td></td>
+            <td>NUF New registration</td>
+            <td>1</td>
+            <td>1,399.00</td>
+            <td>0.00</td>
+            <td>1,399.00</td>
+          </tr>
+        </tbody>
+
+      </table>
+      <br /><br />
+        <table width="100%">
+          <tr>
+            <td width="52%"></td>
+            <td>
+              <table id="inv-tab2" cellpadding="4" width="100%" style="float:right">
+                <tr>
+                  <th style="font-size:14px;"><b></b></th>
+                  <th style="font-size:14px;"><b>Netto</b></th>
+                  <th style="font-size:14px;"><b>MVA</b></th>
+                  <th style="font-size:14px;"><b>Brutto</b></th>
+                </tr>
+                <tr>
+                  <td><b>Sum</b></td>
+                  <td>1,399.00</td>
+                  <td>0.00</td>
+                  <td>1,399.00</td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+        </table>
+      <br /><br /><br />
+
+      <div>
+        <p style="font-size:14px"><b style="font-size:14px;">Notes</b><br />
+            Så fort faktura er betalt vil vi påbegynne registreringen.
+        </p>
+      </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+
+
+
        <div id="print">
                 <div class="header-wrap clearfix">
                   <header class="col-md-12 col-sm-12">
@@ -22,7 +126,7 @@ Print Invoice
                         </p>
                       </div>
                       <div class="col-md-3 col-sm-3 col-xs-3">
-                        <label>Belop</label>
+                        <label>Beløp</label>
                         <span class="block-f-width">&nbsp;{{ $data['amount'] }}</span>
                       </div>
                       <div class="col-md-3 col-sm-3 pad-0 col-xs-3">
@@ -30,7 +134,7 @@ Print Invoice
                         <span class="block-f-width">&nbsp;</span>                        
                       </div>
                       <div class="col-md-3 col-sm-3 pad-right-0 col-xs-3">
-                        <label>Blankettnr</label>
+                        <label>Blankettnummer</label>
                         <span class="block-f-width">&nbsp;</span>                        
                       </div>
 
@@ -46,17 +150,13 @@ Print Invoice
                             <h3>Betalingsinformasjon</h3>
                             <div class="info-ac">
                               <div class="row">
-                                <label class="col-md-5 font-mid col-sm-5 col-xs-5">Kundenr:</label>
-                                <span class="col-md-7 col-sm-7 col-xs-7">{{ format_id($data['customer_details']['id'], 4) }}</span>
-                              </div>
-                              <div class="row">
-                                <label class="col-md-5 col-sm-5 col-xs-5 font-mid">Fakturanr:</label>
+                                <label class="col-md-5 col-sm-5 col-xs-5 font-mid">Fakturanr</label>
                                 <span class="col-md-7 col-sm-7 col-xs-7">{{ $data['invoice_number']}}</span>
                               </div>
                               <div class="row">
-                                <label class="col-md-5 col-sm-5 col-xs-5 font-mid">Fakturadato:</label>
-                                <span class="col-md-7 col-sm-7 col-xs-7">{{ format_date($data['invoice_date']) }}</span>
-                              </div>
+                                <label class="col-md-5 font-mid col-sm-5 col-xs-5">Kundenummer</label>
+                                <span class="col-md-7 col-sm-7 col-xs-7">{{ format_id($data['customer_details']['id'], 4) }}</span>
+                              </div>                              
                             </div>
                           </div>
                           <div class="info-paid">
@@ -76,8 +176,8 @@ Print Invoice
                             </div>
                             <div class="col-md-7 col-sm-7 col-xs-7">
                               <div id="giro-block" class="row">
-                                <label class="col-md-6 col-sm-5 col-xs-5">Betalings-first</label>
-                                <span class="font-mid border col-md-6 col-sm-7 col-xs-7">{{ format_date($data['invoice_date']) }}</span>
+                                <label class="col-md-6 col-sm-5 col-xs-5">Betalings first</label>
+                                <span class="font-mid border col-md-6 col-sm-7 col-xs-7">{{ format_date($data['due_date']) }}</span>
                               </div>
                             </div>
                           </div>
@@ -132,10 +232,10 @@ Print Invoice
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-4 box1 col-sm-4 col-xs-4">
-                          {{--<h3>Kundeidentifikasjon(KID)</h3>
+                          <h3>Merk betaling</h3>
                           <p class="align-right font-mid">
-                            478507204539453
-                          </p>--}}
+                            {{ $data['customer_payment_number'] }}
+                          </p>
                         </div>
                         <div class="col-md-2 box2 col-sm-2 col-xs-2">
                           <h3>Kroner</h3>
@@ -144,7 +244,7 @@ Print Invoice
                           </p>
                         </div>
                         <div class="col-md-2 col-sm-2 col-xs-2">
-                          <h3>Ore</h3>
+                          <h3>Øre</h3>
                           <p class="font-mid">
                             56 < 6 >
                           </p>

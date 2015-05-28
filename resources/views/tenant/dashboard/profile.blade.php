@@ -6,8 +6,7 @@ Profile
 
 @section('breadcrumb')
     @parent
-    <li><i class="fa fa-cog"></i><a href="{{tenant_route('tenant.profile')}}">Profile</a></li>
-    <li>{{$user->username}}</li>
+    <li>Profile</li>
 @stop
 
 @section('content')

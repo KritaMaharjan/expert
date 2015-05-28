@@ -28,7 +28,7 @@ class ProductController extends BaseController {
     protected $rules = [
         'number'        => 'required|alpha_dash|max:25|unique:fb_products',
         'name'          => 'required|string|max:100|unique:fb_products',
-        'vat'           => 'required|Integer|max:99|min:1',
+        //'vat'           => 'required|Integer|max:99|min:1',
         'selling_price' => 'required|numeric|min:1|max:9999999999',
         'purchase_cost' => 'required|numeric|min:1|max:999999999',
     ];

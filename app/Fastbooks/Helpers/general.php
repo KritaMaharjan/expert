@@ -101,14 +101,30 @@ function format_telephone($phone_number = null)
 function format_date($date)
 {
     $formatted_date = date('d-m-y', strtotime($date));
+    return $formatted_date;
+}
 
+function readable_date($date)
+{
+    $formatted_date = date('M d, Y', strtotime($date));
     return $formatted_date;
 }
 
 function format_datetime($date)
 {
     $formatted_date = date('M d, Y h:i a', strtotime($date));
+    return $formatted_date;
+}
 
+function format_only_date($date)
+{
+    $formatted_date = date('M d, Y', strtotime($date));
+    return $formatted_date;
+}
+
+function short_date($date)
+{
+    $formatted_date = date('jS M', strtotime($date));
     return $formatted_date;
 }
 
@@ -121,12 +137,12 @@ function format_id($id = 0, $zeros = 3)
 
 function data_decode($data)
 {
-    return unserialize($data);
+    return @unserialize($data);
 }
 
 function data_encode($data)
 {
-    return serialize($data);
+    return @serialize($data);
 }
 
 
@@ -162,4 +178,34 @@ function calculate_todo_time($date, $completed = false)
         return '<small class="label label-info"><i class="fa fa-clock-o"></i> ' . $time . '</small>';
     else
         return '<small class="label label-default"><i class="fa fa-clock-o"></i> ' . $time . '</small>';
+}
+
+function force_redirect($url)
+{
+    header('location:' . $url);
+    exit;
+}
+
+function float_format($number, $digits = 2)
+{
+    return number_format($number, $digits);
+}
+
+function get_name($user_id)
+{
+    $user = \App\Models\Tenant\User::select('fullname')->find($user_id);
+    $name = (!empty($user)) ? $user->fullname : 'Undefined';
+
+    return $name;
+}
+
+
+function display_vat($code)
+{
+    $vat = \App\Http\Tenant\Accounting\Entity\Vat::isAccountCode($code);
+    if (!is_null($vat)) {
+        return $vat['description'];
+    }
+
+    return '';
 }

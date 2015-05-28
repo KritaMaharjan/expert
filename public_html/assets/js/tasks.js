@@ -1,49 +1,5 @@
 $(function () {
 
-    var tasksDatatable = $("#table-tasks").dataTable({
-        "dom": '<"top"f>rt<"bottom"lip><"clear">',
-        "order": [[0, "desc"]],
-        "processing": true,
-        "serverSide": true,
-        "ajax": {
-            "url": appUrl + 'tasks/data',
-            "type": "POST"
-        },
-
-
-        "columnDefs": [{
-            "orderable": false,
-            "targets": 4,
-            "render": function (data, type, row) {
-                return showActionbtn(row);
-            }
-        },
-            {
-                "targets": 2,
-                "render": function (data, type, row) {
-                    return '<a href="#" data-toggle="modal" data-url="' + row.show_url + '" data-target="#fb-modal">' +
-                    data + '</a>';
-                }
-            }
-        ],
-        "columns": [
-            {"data": "id"},
-            {"data": "subject"},
-            {"data": "due_date"},
-            {"data": "is_complete"}
-
-        ],
-
-        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
-
-            $(nRow).attr('id', 'tasks-' + aData.id);
-            return nRow;
-        }
-
-    });
-
-  
-
     function loadTaskList(type,page) {
 
         if (type != 0 && type != 1)
@@ -84,8 +40,6 @@ $(function () {
         var page = href.replace('#', '');
         loadCompletedList(1,page);
     });
-
-
 
 
 $(document).on('submit', '#task-form', function (e) {

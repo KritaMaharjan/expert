@@ -19,7 +19,15 @@
             @endif
 
             @if(FB::can_view('Invoice'))
-            <li class="treeview">
+            <li class="<?php echo (strpos($current_path, 'supplier') !==false)? 'active' : '';?>">
+              <a href="{{tenant_route('tenant.supplier.index')}}" title="Suppliers">
+                <i class="fa fa-users"></i> <span>Suppliers</span>
+              </a>
+            </li>
+            @endif
+
+            @if(FB::can_view('Invoice'))
+            <li class="treeview <?php echo (strpos($current_path, 'invoice') !==false)? 'active' : '' ?>" >
               <a href="#" title="Invoices">
                 <i class="fa fa-file"></i> <span>Invoices</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
@@ -27,24 +35,30 @@
                 <li><a data-push="true" href="{{tenant_route('tenant.invoice.bill.index')}}" title="Manage Bills"><i class="fa fa-circle-o"></i >Bills</a></li>
                 <li><a href="{{tenant_route('tenant.invoice.offer.index')}}" title="Manage Offers"><i class="fa fa-circle-o"></i> Offers</a></li>
               </ul>
-            </li> 
+            </li>
             @endif 
 
-         {{--   @if(FB::can_view('Collections'))
-            <li>
-              <a href="#" title="Collections">
-                <i class="fa fa-files-o"></i> <span>Collections</span>
+            @if(FB::can_view('Collections'))
+            <li class="treeview <?php echo (strpos($current_path, 'collection') !==false)? 'active' : '';?>">
+              <a href="{{tenant_route('tenant.collection.index')}}" title="Collections">
+                <i class="fa fa-files-o"></i> <span>Collections</span></i>
               </a>
             </li>
-            @endif--}}
+            @endif
 
-      {{--      @if(FB::can_view('Accounting'))
-            <li>
+            @if(FB::can_view('Accounting'))
+            <li class="treeview <?php echo (strpos($current_path, 'accounting') !==false)? 'active' : '';?>">
               <a href="#" title="Accounting">
-                <i class="fa fa-book"></i> <span>Accounting</span>
+                <i class="fa fa-book"></i> <span>Accounting</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
+              <ul class="treeview-menu">
+                <li><a data-push="true" href="{{tenant_route('tenant.accounting.index')}}" title="Accounting List"><i class="fa fa-circle-o"></i> Accounting List</a></li>
+                <li><a data-push="true" href="{{tenant_route('tenant.accounting.payroll')}}" title="Payroll Report"><i class="fa fa-circle-o"></i> Payroll</a></li>
+                <li><a data-push="true" href="{{tenant_route('tenant.accounting.expense')}}" title="Account Expenses"><i class="fa fa-circle-o"></i> Create Expenses</a></li>
+                <li><a data-push="true" href="{{tenant_route('tenant.accounting.transaction')}}" title="Transactions"><i class="fa fa-circle-o"></i> Transactions</a></li>
+              </ul>
             </li>
-            @endif --}}
+            @endif
 
             @if(FB::can_view('Inventory'))
             <li class="<?php echo (strpos($current_path, 'inventory') !==false)? 'active' : '';?>">
@@ -66,6 +80,12 @@
               </a>
             </li> 
             @endif--}}
+
+            <li class="<?php echo ($current_path =='statistics')? 'active' : '';?>">
+              <a href="{{tenant_route('tenant.statistics')}}" title="Statistics">
+                <i class="fa fa-bar-chart-o"></i> <span>Statistics</span>
+              </a>
+            </li>
 
             @if(FB::can_view('Users'))
             <li class="<?php echo ($current_path =='users')? 'active' : '';?>">
