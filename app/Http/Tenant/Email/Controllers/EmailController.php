@@ -238,7 +238,7 @@ class EmailController extends BaseController {
             } else {
                 return array('status'=> 'fail', 'error' => $mailbox->error());
                 //return array('status'=> 'fail', 'error' => $mailbox->error());
-                    //$this->fail(array('error' => $mailbox->error()));
+                //$this->fail(array('error' => $mailbox->error()));
             }
         }
         return array('status'=> 'fail', 'error' => $validSmtp);

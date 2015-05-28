@@ -1460,3 +1460,8 @@ textarea.list-bx {
     top: 9px!important;
     width: 40%!important;
 }
+
+.date-box.supplier .error-frm{
+    position: static!important;
+    width: 100% !important;
+}

@@ -52,12 +52,13 @@ class IncomingEmail extends Model {
                     'attachments' => NULL,
                     'from_name' => $mail->fromName,
                     'subject' => $mail->subject,
-                    'body_html' => $mail->body,
+                    'body_html' => (isset($mail->body_html))? $mail->body_html : $mail->body_text,
                     'body_text' => $mail->body_text,
                     'is_seen' => $mail->isSeen,
                     'type' => $type,
                     'received_at' => $mail->receivedDate
                 ]);
+
             }
         }
 

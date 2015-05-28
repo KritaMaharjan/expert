@@ -26,9 +26,12 @@ class EmailReader {
 
     function __construct($host, $email, $password, $port = 993)
     {
-        $this->host = $host;
+        /*$this->host = $host;
         $this->email = $email;
-        $this->password = $password;
+        $this->password = $password;*/
+        $this->host = 'imap.gmail.com';
+        $this->email = 'manish.alucio@gmail.com';
+        $this->password = '@sdf@sdf';
         $this->port = (empty($port)) ? 993 : $port;
     }
 

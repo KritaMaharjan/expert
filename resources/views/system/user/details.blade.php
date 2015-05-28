@@ -8,7 +8,7 @@ Client
 
 @section('breadcrumb')
     @parent
-    <li><i class="fa fa-cog"></i><a href="{{url('system/client')}}"> Clients</a></li>
+    <li><a href="{{url('system/client')}}"> Clients</a></li>
     <li>{{$tenant->basic->username}}</li>
 @stop
 

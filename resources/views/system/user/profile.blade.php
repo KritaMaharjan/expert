@@ -8,7 +8,7 @@ Profile
 
 @section('breadcrumb')
     @parent
-    <li><i class="fa fa-cog"></i> Profile</li>
+    <li>Profile</li>
     <li>{{$user->username}}</li>
 @stop
 

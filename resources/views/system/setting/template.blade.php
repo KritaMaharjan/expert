@@ -8,8 +8,8 @@ Template Settings
 
 @section('breadcrumb')
     @parent
-    <li><i class="fa fa-cog"></i> Setting</li>
-    <li><i class="fa fa-cog"></i> Template</li>
+    <li>Setting</li>
+    <li>Template</li>
 @stop
 
 @section('content')

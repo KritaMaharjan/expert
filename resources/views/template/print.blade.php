@@ -15,7 +15,7 @@ Print Invoice
 
       <table width="100%">
         <tr>
-          <td colspan="3">{!! (isset($data['company_details']['logo']))? '<img src ="'.tenant()->folder('system')->url($data['company_details']['logo']).' "/>' : "<h1>Logo</h1>" !!}</td>
+          <td colspan="3">{!! (isset($data['company_details']['logo']))? '<img src ="'.tenant()->folder('system')->url($data['company_details']['logo']).' "/>' : "" !!}</td>
         </tr>
         <tr>
           <td></td>
@@ -23,7 +23,7 @@ Print Invoice
                 Middelthunsgate 25B<br />
                 0368
           </p></td>
-          <td style="vertical-align:top;"><h3 style="margin:0;">Invoice <small>00172</small></h3> </td>
+          <td style="vertical-align:top;"><h3 style="margin:0;">Faktura <small>00172</small></h3> </td>
         </tr>
         <br />
         <tr>
@@ -33,22 +33,22 @@ Print Invoice
             Norway</p>
           </td>
           <td>
-            <p><strong>Tlf </strong>{{ $data['company_details']['telephone'] }}<br />
-              <strong>Fax </strong>{{ $data['company_details']['fax'] }}<br />
-              <strong>Epost </strong>{{ $data['company_details']['service_email'] }}<br />
+            <p><strong>Tlf</strong> {{ $data['company_details']['telephone'] }}<br />
+              <strong>Fax</strong> {{ $data['company_details']['fax'] }}<br />
+              <strong>Epost</strong> {{ $data['company_details']['service_email'] }}<br />
               <strong>Org.nr.</strong> {{ $data['company_details']['company_number'] }}<br />
-              <strong>Account Number</strong> {{ $data['company_details']['account_no'] }}<br />
-              <strong>Swift -</strong> {{ $data['company_details']['swift_num'] }}<br />
-              <strong>IBAN -</strong> {{ $data['company_details']['iban_num'] }}
+              <strong>Kontonummer</strong> {{ $data['company_details']['account_no'] }}<br />
+              <strong>Swift</strong> {{ $data['company_details']['swift_num'] }}<br />
+              <strong>IBAN</strong> {{ $data['company_details']['iban_num'] }}
             </p>
           </td>
           <td>
-            <p><strong>Note payment:</strong> <br />
-              <strong>Customer number</strong> {{ $data['customer_details']['id'] }}<br />
-              <strong>Var ref.</strong> {{ $data['invoice_number'] }}<br />
-              <strong>Invoice date</strong> {{ date('d-m-y', strtotime($data['invoice_date'])) }}<br />
-              <strong>Due date</strong> {{ date('d-m-y', strtotime($data['due_date'])) }}<br />
-              <strong>Currency:</strong> {{ $data['currency'] }}
+            <p><strong>Merk betaling</strong> <br />
+              <strong>Kundenummer</strong> {{ $data['customer_details']['id'] }}<br />
+              <strong>Vår ref.</strong> {{ $data['invoice_number'] }}<br />
+              <strong>Fakturadato</strong> {{ date('d-m-y', strtotime($data['invoice_date'])) }}<br />
+              <strong>Forfallsdato</strong> {{ date('d-m-y', strtotime($data['due_date'])) }}<br />
+              <strong>Valuta</strong> {{ $data['currency'] }}
             </p>
           </td>
         </tr>
@@ -57,10 +57,10 @@ Print Invoice
       <table id="inv-tab" cellpadding="4" width="100%">
         <thead>
           <tr>
-            <th style="font-size:14px;padding:6px 0px;"><b>Code</b></th>
-            <th style="font-size:14px;padding:6px 0px;"><b>Name</b></th>
-            <th style="font-size:14px;padding:6px 0px;"><b>No.</b></th>
-            <th style="font-size:14px;padding:6px 0px;"><b>Price</b></th>
+            <th style="font-size:14px;padding:6px 0px;"><b>Kode</b></th>
+            <th style="font-size:14px;padding:6px 0px;"><b>Navn</b></th>
+            <th style="font-size:14px;padding:6px 0px;"><b>Antall</b></th>
+            <th style="font-size:14px;padding:6px 0px;"><b>Pris</b></th>
             <th style="font-size:14px;padding:6px 0px;"><b>MVA</b></th>
             <th style="font-size:14px;padding:6px 0px;"><b>Total</b></th>
           </tr>
@@ -85,9 +85,9 @@ Print Invoice
               <table id="inv-tab2" cellpadding="4" width="100%" style="float:right">
                 <tr>
                   <th style="font-size:14px;"><b></b></th>
-                  <th style="font-size:14px;"><b>Net</b></th>
+                  <th style="font-size:14px;"><b>Netto</b></th>
                   <th style="font-size:14px;"><b>MVA</b></th>
-                  <th style="font-size:14px;"><b>Gross</b></th>
+                  <th style="font-size:14px;"><b>Brutto</b></th>
                 </tr>
                 <tr>
                   <td><b>Sum</b></td>
@@ -102,8 +102,8 @@ Print Invoice
       <br /><br /><br />
 
       <div>
-        <p style="font-size:14px"><b style="font-size:14px;">Terms</b><br />
-            As soon as the invoice is paid, we will commence the registration.
+        <p style="font-size:14px"><b style="font-size:14px;">Notes</b><br />
+            Så fort faktura er betalt vil vi påbegynne registreringen.
         </p>
       </div>
       <br />
@@ -126,7 +126,7 @@ Print Invoice
                         </p>
                       </div>
                       <div class="col-md-3 col-sm-3 col-xs-3">
-                        <label>Belop</label>
+                        <label>Beløp</label>
                         <span class="block-f-width">&nbsp;{{ $data['amount'] }}</span>
                       </div>
                       <div class="col-md-3 col-sm-3 pad-0 col-xs-3">
@@ -134,7 +134,7 @@ Print Invoice
                         <span class="block-f-width">&nbsp;</span>                        
                       </div>
                       <div class="col-md-3 col-sm-3 pad-right-0 col-xs-3">
-                        <label>Blankettnr</label>
+                        <label>Blankettnummer</label>
                         <span class="block-f-width">&nbsp;</span>                        
                       </div>
 
@@ -150,17 +150,13 @@ Print Invoice
                             <h3>Betalingsinformasjon</h3>
                             <div class="info-ac">
                               <div class="row">
-                                <label class="col-md-5 font-mid col-sm-5 col-xs-5">Kundenr:</label>
-                                <span class="col-md-7 col-sm-7 col-xs-7">{{ format_id($data['customer_details']['id'], 4) }}</span>
-                              </div>
-                              <div class="row">
-                                <label class="col-md-5 col-sm-5 col-xs-5 font-mid">Fakturanr:</label>
+                                <label class="col-md-5 col-sm-5 col-xs-5 font-mid">Fakturanr</label>
                                 <span class="col-md-7 col-sm-7 col-xs-7">{{ $data['invoice_number']}}</span>
                               </div>
                               <div class="row">
-                                <label class="col-md-5 col-sm-5 col-xs-5 font-mid">Fakturadato:</label>
-                                <span class="col-md-7 col-sm-7 col-xs-7">{{ format_date($data['invoice_date']) }}</span>
-                              </div>
+                                <label class="col-md-5 font-mid col-sm-5 col-xs-5">Kundenummer</label>
+                                <span class="col-md-7 col-sm-7 col-xs-7">{{ format_id($data['customer_details']['id'], 4) }}</span>
+                              </div>                              
                             </div>
                           </div>
                           <div class="info-paid">
@@ -180,7 +176,7 @@ Print Invoice
                             </div>
                             <div class="col-md-7 col-sm-7 col-xs-7">
                               <div id="giro-block" class="row">
-                                <label class="col-md-6 col-sm-5 col-xs-5">Betalings-first</label>
+                                <label class="col-md-6 col-sm-5 col-xs-5">Betalings first</label>
                                 <span class="font-mid border col-md-6 col-sm-7 col-xs-7">{{ format_date($data['due_date']) }}</span>
                               </div>
                             </div>
@@ -236,7 +232,7 @@ Print Invoice
                     <div class="col-md-12">
                       <div class="row">
                         <div class="col-md-4 box1 col-sm-4 col-xs-4">
-                          <h3>Customer Payment Number</h3>
+                          <h3>Merk betaling</h3>
                           <p class="align-right font-mid">
                             {{ $data['customer_payment_number'] }}
                           </p>
@@ -248,7 +244,7 @@ Print Invoice
                           </p>
                         </div>
                         <div class="col-md-2 col-sm-2 col-xs-2">
-                          <h3>Ore</h3>
+                          <h3>Øre</h3>
                           <p class="font-mid">
                             56 < 6 >
                           </p>
