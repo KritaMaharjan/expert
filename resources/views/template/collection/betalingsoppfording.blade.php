@@ -29,7 +29,7 @@
    
       <table width="800px">
         <tr>
-            <td colspan="3">{!! (isset($data['company_details']['logo']))? '<img src ="'.tenant()->folder('system')->url($data['company_details']['logo']).' "/>' : "" !!}</td>
+            <td colspan="3">{!! (isset($data['company_details']['logo']) && file_exists(tenant()->folder('system')->url($data['company_details']['logo'])) )? '<img src ="'.tenant()->folder('system')->url($data['company_details']['logo']).' "/>' : "" !!}</td>
         </tr>
         <tr>
           <td width="43.3%"></td>
