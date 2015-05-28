@@ -216,7 +216,7 @@ class BillController extends BaseController {
         {
             $id = $this->request->route('id');
             $data = $this->getInfo($id);
-            $pdf_file[] = $pdf->generate(time(), 'template.bill', compact('data'), false, true);
+            $pdf_file[] = $pdf->generate($data['invoice_number'], 'template.bill', compact('data'), false, true);
             $mail = \FB::sendEmail($data['customer_details']['email'], $data['customer'], 'bill_email', ['{{NAME}}' => $data['customer']], $pdf_file);
             if($mail) {
                 return $this->success(['message' => 'Email Sent Successfully!']);
