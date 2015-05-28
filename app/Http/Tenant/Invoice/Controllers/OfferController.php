@@ -98,7 +98,7 @@ class OfferController extends BaseController {
         if ($validator->fails())
             redirect()->back()->withErrors($validator)->withInput();
 
-        $this->bill->add($this->request, true);
+        $this->bill->add($this->request, $this->current_user()->id, true);
 
         Flash::success('Offer added successfully!');
         return tenant()->route('tenant.invoice.offer.index');
