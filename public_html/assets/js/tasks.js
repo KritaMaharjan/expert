@@ -194,9 +194,10 @@ $(document).on('ifChecked', '.upcoming-tasks .icheck', function (e) {
 
     var down = $('.completedtaskpage').text();
     //alert(up);
-    var totaldown = up.split("of");
-    var res1down = up.split("-");
+    var totaldown = down.split("of");
+    var res1down = down.split("-");
     var l = totaldown[1].trim();
+
     var totalingdown = parseFloat(l)+1;
     var onpagedown = res1down[1].split("of");
     var ll =  onpagedown[0].trim();
@@ -246,8 +247,8 @@ $(document).on('ifUnchecked', '.completed-tasks .icheck', function (e) {
 
     var down = $('.upcomingtaskpage').text();
     //alert(up);
-    var totaldown = up.split("of");
-    var res1down = up.split("-");
+    var totaldown = down.split("of");
+    var res1down = down.split("-");
     var l = totaldown[1].trim();
     var totalingdown = parseFloat(l)+1;
     var onpagedown = res1down[1].split("of");
