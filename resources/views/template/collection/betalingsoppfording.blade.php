@@ -29,28 +29,28 @@
    
       <table width="800px">
         <tr>
-            <td colspan="3" class="center">{!! (isset($data['company_details']['logo']))? '<img src ="'.tenant()->folder('system')->url($data['company_details']['logo']).' "/>' : "<h1>Logo</h1>" !!}</td>
+            <td colspan="3">{!! (isset($data['company_details']['logo']))? '<img src ="'.tenant()->folder('system')->url($data['company_details']['logo']).' "/>' : "" !!}</td>
         </tr>
         <tr>
-          <td></td>
-          <td width="50%">
+          <td width="43.3%"></td>
+          <td width="56.7%">
             <table>
               <tr>
-                <td><p><strong>Date:</strong> {{ date('d-m-y') }}<br />
+                <td><p><strong>Dato:</strong> {{ date('d-m-y') }}<br />
                        <strong>Org.nr:</strong> {{ $data['company_details']['company_number'] }}<br />
                        <strong>Telefon:</strong> {{ $data['company_details']['telephone'] }}
                     </p>
                 </td>
-                <td><p><strong>Due date:</strong> {{ format_date($data['due_date']) }}<br />
-                       <strong>Account no:</strong> {{ $data['company_details']['account_no'] }}<br />
-                       <strong>Case number:</strong> {{ $data['invoice_number'] }}
-                    </p>                  
+                <td><p><strong>Forfallsdato:</strong> {{ format_date($data['due_date']) }}<br />
+                       <strong>Kontonr:</strong> {{ $data['company_details']['account_no'] }}<br />
+                       <strong>Saksnr:</strong> {{ $data['invoice_number'] }}
+                    </p><br />                  
                 </td>
               </tr>  
               <tr>
-                <td colspan="2"><p>Fullname: {{ $current_user->fullname }}<br />
+                <td colspan="2"><p>Saksbehandler: {{ $current_user->fullname }}<br />
                                    E-post: {{ $current_user->email }}<br />
-                                   Website: {{ $data['company_details']['website'] }}
+                                   Nettsted: {{ $data['company_details']['website'] }}
                                 </p>                  
                 </td>
               </tr>
@@ -80,46 +80,46 @@
 
       <table>
         <tr>
-          <td colspan="2" align="center"><h1 class="uppercase" style="margin-bottom:2px;"><b>Payment solicitation</b></h1></td>              
+          <td colspan="2" align="center"><h1 class="uppercase" style="margin-bottom:2px;"><b>BETALINGSOPPFORDRING</b></h1></td>              
         </tr>
         <tr>
-          <td colspan="2" align="center">Notification pursuant to the Enforcement Act § 4-18 and Dispute Act § 5.2</td>
+          <td colspan="2" align="center">Varsel etter Tvangsfullbyrdelsesloven § 4-18 og Tvisteloven § 5.2</td>
         </tr><br /><br />
         <tr>
           <td colspan="2">
             <table>
               <tr>
-                <th width="80%"><b style="font-size:10px">Principal</b></th>
-                <th width="20%"><b style="font-size:10px">Amounts</b></th>
+                <th width="80%"><b style="font-size:10px">Hovedstol</b></th>
+                <th width="20%"><b style="font-size:10px">Beløp</b></th>
               </tr>
               <tr>
-                <td width="80%"><p>Invoice number: {{ $data['invoice_number'] }}</p></td>
+                <td width="80%"><p>Faktura nr: {{ $data['invoice_number'] }}</p></td>
                 <td width="20%">{{ $data['amount'] }} {{ $data['currency'] }}</td>
               </tr>
               <tr>
-                <td width="80%"><p>9.50% rate of Interest date even {{ $data['due_date'] }}: </p></td>
+                <td width="80%"><p>9,50 % rente fra Interest date til og med {{ $data['due_date'] }}: </p></td>
                 <td width="20%">{{ $data['interest'] }} {{ $data['currency'] }}</td>
               </tr>
               <tr>
-                <td width="80%"><p>Reminder fee according to regulations:</p></td>
+                <td width="80%"><p>Purregebyr ihht regelverk:</p></td>
                 <td width="20%">{{ $data['fee'] }} {{ $data['currency'] }}</td>
               </tr>
               <tr>
-                <td width="80%"><p>Paid:</p></td>
+                <td width="80%"><p>Innbetalt:</p></td>
                 <td width="20%">{{ $data['paid'] }} {{ $data['currency'] }}</td>
               </tr>
               <tr>
-                <td><b>To pay:</b></td>
-                <td>{{ $data['remaining'] }} {{ $data['currency'] }}</td>
+                <td><b>Å betale:</b></td>
+                <td><b>{{ $data['remaining'] }} {{ $data['currency'] }}</b></td>
               </tr><br />
               <tr>
-                <td colspan="2" style="border-top:1px solid #444;">If the claim is paid, please disregard this notice.</td>
+                <td colspan="2" style="border-top:1px solid #444;">Dersom kravet er betalt, vennligst se bort fra dette varselet.</td>
               </tr><br /><br />
               <tr>
-                <td colspan="2">The total amount requested paid within 14 days and no later than the DUE DATE. A possible objection to the claim must be submitted in writing within the same period.<br /><br />
-                Please note that the claim in full, including interest and legal costs must be paid by the due date. Failure to pay will result in the rules of the Bankruptcy Code § 63 are implemented or enforcement will be filed, cf. Enforcement Act § 4-18. This will entail additional costs for you.<br /><br />
+                <td colspan="2">Totalbeløpet bes innbetalt innen 14 dager og senest den <b>DUE DATE</b>. En eventuell innsigelse mot kravet må fremsettes skriftlig innen samme frist.<br /><br />
+                Vi gjør oppmerksom på at kravet i sin helhet, inkludert renter og sakskostnader, må være betalt innen forfallsdato. Unnlatt betaling vil medføre at reglene i Konkurslovens § 63 blir iverksatt eller tvangsfullbyrdelse vil bli begjært, jamfør Tvangsfullbyrdelsesloven § 4-18. Dette vil medføre ytterligere omkostninger for Dem.<br /><br />
 
-                Statutory penalty interest is calculated from the due date and are valid until the claim is paid.
+                Lovbestemt forsinkelsesrente er beregnet fra forfall og løper videre til kravet blir betalt.
                 <br />
                 <br />
                 <br />
@@ -131,12 +131,12 @@
       </table>
 
       <table id="print">
-          <tr bgcolor="#FFFF00"><td colspan="4"><h1 style="text-indent: 5px;">Receipt</h1></td></tr>
+          <tr bgcolor="#FFFF00"><td colspan="4"><h1 style="text-indent: 5px;"><b>Kvittering</b></h1></td></tr>
           <tr bgcolor="#FFFF00">
-              <th> <span style="text-indent: 10px;">Paid till account</span></th>
-              <th style="font-size:9px;">Amounts</th>
-              <th style="font-size:9px;">Payer account number</th>
-              <th style="font-size:9px;">Blankettnr</th>
+              <th> <span style="text-indent: 10px;"><b>Innbetalt til konto</b></span></th>
+              <th style="font-size:10px;"><b>Beløp</b></th>
+              <th style="font-size:10px;"><b>Betalerens kontonummer</b></th>
+              <th style="font-size:10px;"><b>Blankettnummer</b></th>
           </tr>
       </table>
       <table cellpadding="4">
@@ -152,20 +152,16 @@
             <td colspan="2">
              <table>
               <tbody>
-               <tr><td colspan="2" style="font-size:9px;">Payment information</td></tr>
+               <tr><td colspan="2" style="font-size:9px;">Betalingsinformasjon</td></tr>
                <br />
                <tr>
-                <td style="text-indent:15px;">Kundenr:</td>
-                <td>4785007</td>
-               </tr>
-               <tr>
-                <td style="text-indent:15px;">Invoice:</td>
+                <td style="text-indent:15px;"><b>Faktura</b></td>
                 <td>{{ $data['invoice_number']}}</td>
                </tr>
                <tr>
-                <td style="text-indent:15px;">Invoice date:</td>
-                <td><?php echo date('d-m-y', strtotime($data['invoice_date'])) ?></td>
-               </tr>
+                <td style="text-indent:15px;"><b>Kundenummer</b></td>
+                <td>4785007</td>
+               </tr>               
               </tbody>
              </table>
             </td>
@@ -173,13 +169,13 @@
               <tbody>
                <tr>
                 <td style="font-size:13px;">GIRO</td>
-                <td>Payment deadline</td>
+                <td><b>Betalings frist</b></td>
                 <td class="border-block" bgcolor="#ffffff">{{ $data['due_date'] }}</td>
                </tr>
               </tbody>
              </table>
             <table cellpadding="0">
-              <tr><td style="font-size:9px;">Signature by Giro</td>
+              <tr><td><b>Underskrift ved girering</b></td>
               </tr>
             </table>
             <table cellpadding="0">
@@ -192,7 +188,7 @@
       </table>
       <table cellpadding="6">
         <tr>
-          <td><table><tr><td>Paid</td></tr></table>
+          <td><table><tr><td><b>Betalt av</b></td></tr></table>
              <table class="border" cellpadding="2">
               <tbody>
                <tr>
@@ -207,7 +203,7 @@
               </tbody>
              </table>
             </td>
-            <td><table><tr><td>Paid to</td></tr></table>
+            <td><table><tr><td><b>Betalt til</b></td></tr></table>
                 <table class="border" cellpadding="2">
                   <tbody>
                    <tr>
@@ -241,7 +237,7 @@
           <td width="75%">
               <table>
                 <tr>
-                  <td width="50px">Charge account</td>
+                  <td width="50px"><b>Belast konto</b></td>
                   <td width="30px"><p class="sm-box border" bgcolor="#ffffff"></p></td>
                   <td width="30px"><p class="sm-box border" bgcolor="#ffffff"></p></td>
                   <td width="30px"><p class="sm-box border" bgcolor="#ffffff"></p></td>
@@ -259,7 +255,7 @@
             <table>
               <tr>
                 <td width="120px">
-                    Receipt back
+                    <b>Kvittering tilbake</b>
                 </td>
                 <td width="30px"><p class="sm-box border" bgcolor="#ffffff"></p></td>
               </tr>
@@ -270,28 +266,28 @@
       <table class="footer" cellpadding="6">
         <tr>
           <td width="30%" style="border-right:1px solid #ccc;">
-            <table><tr><td>Note Payment</td></tr></table>
+            <table><tr><td><b>Merk betaling</b></td></tr></table>
             <table cellpadding="5"><tr style="text-align: right;">
               <td>{{ $data['invoice_number'] }}</td>
               </tr>
             </table>
           </td>
           <td width="20%" style="border-right:1px solid #fff000;">
-            <table><tr><td>Crowns</td></tr></table>
+            <table><tr><td><b>Kroner</b></td></tr></table>
             <table  cellpadding="5"><tr style="text-align: right;">
               <td>{{ $data['currency'] }}</td>
               </tr>
             </table>
           </td>
           <td width="11%">
-            <table><tr><td>Ore</td></tr></table>
+            <table><tr><td><b>Øre</b></td></tr></table>
             <table  cellpadding="5"><tr>
               <td>{{ $data['amount'] * 100 }}</td>
               </tr>
             </table>
           </td>
           <td width="39%">
-            <table><tr><td>To account</td></tr></table>
+            <table><tr><td><b>Til konto</b></td></tr></table>
             <table  cellpadding="5"><tr>
               <td>{{ $data['customer_payment_number'] }}</td>
               </tr>

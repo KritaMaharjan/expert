@@ -8,7 +8,7 @@ Manage Client
 
 @section('breadcrumb')
 @parent
-<li><i class="fa fa-users"></i> Clients</li>
+<li>Clients</li>
 @stop
 
 @section('content')
