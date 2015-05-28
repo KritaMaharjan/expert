@@ -80,7 +80,7 @@ Print Invoice
       <br /><br />
         <table width="100%">
           <tr>
-            <td width="50%"></td>
+            <td width="52%"></td>
             <td>
               <table id="inv-tab2" cellpadding="4" width="100%" style="float:right">
                 <tr>
