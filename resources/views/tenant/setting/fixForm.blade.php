@@ -138,7 +138,7 @@ $successCallback ="
   $('.logo').remove();
   $('#container').before('<img class=\"logo\" src='+response.data.pathName+'/>');
 ";
-FB::js(plupload()->button('uploader')->maxSize('2mb')->mimeTypes('image')->resize(200, 135)->url(url('file/upload/data?folder=system'))->autoStart(true)->success($successCallback)->init());
+FB::js(plupload()->button('uploader')->maxSize('2mb')->mimeTypes('image')->resize(200,200)->url(url('file/upload/data?folder=system'))->autoStart(true)->success($successCallback)->init());
 
 $js ="$(document).on('click', '.cancel_upload', function (e) {
               e.preventDefault();

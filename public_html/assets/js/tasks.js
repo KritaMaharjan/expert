@@ -183,8 +183,20 @@ $(document).on('ifChecked', '.upcoming-tasks .icheck', function (e) {
     parentLi.find('.text').toggleClass('strike');
 
     var html = parentLi.clone();
+    var up = $('.upcomingtaskpage').text();
+    //alert(up);
+    var total = up.split("of");
+    var res1 = up.split("-");
+    var totaling = total[1]-1;
+    var totaling1 = total[1] +1;
+    var onpage = res1[1].split("of");
+    var on = onpage[0]-1;
+    var on1 = onpage[0] +1;
+    $('.upcomingtaskpage').text(res1[0]+'-'+on +'of'+ totaling);
+    $('.completedtaskpage').text(res1[0]+'-'+on1 +'of'+ totaling1);
     parentLi.hide('slow', function(){
         parentLi.remove();
+
     });
     var completedUl = $('.completed-tasks');
     completedUl.find('.no-results').remove();
@@ -211,6 +223,18 @@ $(document).on('ifUnchecked', '.completed-tasks .icheck', function (e) {
     parentLi.find('.text').toggleClass('strike');
 
     var html = parentLi.clone();
+
+    var up = $('.completedtaskpage').text();
+    //alert(up);
+    var total = up.split("of");
+    var res1 = up.split("-");
+    var totaling = total[1]-1;
+    var totaling1 = total[1] +1;
+    var onpage = res1[1].split("of");
+    var on = onpage[0]-1;
+    var on1 = onpage[0] +1;
+    $('.completedtaskpage').text(res1[0]+'-'+on +'of'+ totaling);
+    $('.upcomingtaskpage').text(res1[0]+'-'+on1 +'of'+ totaling1);
     parentLi.hide('slow', function(){
         parentLi.remove();
     });
