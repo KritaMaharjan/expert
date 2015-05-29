@@ -13,7 +13,7 @@ Print Invoice
 <div class="box-body">
 
 
-      <table width="100%">
+      <table class="invoice-table-container">
         <tr>
           <td colspan="3">{!! (isset($data['company_details']['logo']))? '<img src ="'.tenant()->folder('system')->url($data['company_details']['logo']).' "/>' : "" !!}</td>
         </tr>
@@ -54,7 +54,7 @@ Print Invoice
         </tr>
       </table><br /><br /><br /><br />
 
-      <table id="inv-tab" cellpadding="4" width="100%">
+      <table id="inv-tab" class="invoice-table-container" cellpadding="4">
         <thead>
           <tr>
             <th style="font-size:14px;padding:6px 0px;"><b>Kode</b></th>
@@ -78,7 +78,7 @@ Print Invoice
 
       </table>
       <br /><br />
-        <table width="100%">
+        <table class="invoice-table-container">
           <tr>
             <td width="52%"></td>
             <td>
@@ -101,17 +101,34 @@ Print Invoice
         </table>
       <br /><br /><br />
 
-      <div>
+      <div class="invoice-table-container">
         <p style="font-size:14px"><b style="font-size:14px;">Notes</b><br />
             Så fort faktura er betalt vil vi påbegynne registreringen.
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br /><br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br /><br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
         </p>
       </div>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
+      
 
 
 
