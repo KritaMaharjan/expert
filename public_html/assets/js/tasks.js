@@ -184,24 +184,39 @@ $(document).on('ifChecked', '.upcoming-tasks .icheck', function (e) {
 
     var html = parentLi.clone();
     var up = $('.upcomingtaskpage').text();
-    //alert(up);
-    var total = up.split("of");
-    var res1 = up.split("-");
-    var totaling = total[1]-1;
-    var onpage = res1[1].split("of");
-    var on = onpage[0]-1;
+    if(!up) {
+        var total = up.split("of");
+        var res1 = up.split("-");
+        var totaling = total[1] - 1;
+        var onpage = res1[1].split("of");
+        var on = onpage[0] - 1;
+    } else {
+        var total = 0;
+        var res1 = 0;
+        var totaling = 0;
+        var onpage = 0;
+        var on = 0;
+    }
 
 
     var down = $('.completedtaskpage').text();
-    //alert(up);
-    var totaldown = down.split("of");
-    var res1down = down.split("-");
-    var l = (typeof totaldown[1] !== 'undefined')? totaldown[1].trim() : 0;
-
-    var totalingdown = parseFloat(l)+1;
-    var onpagedown = res1down[1].split("of");
-    var ll = (typeof onpagedown[1] !== 'undefined')? onpagedown[1].trim() : 0;
-    var ondown = parseFloat(ll) + 1;
+    if(!down) {
+        var totaldown = down.split("of");
+        var res1down = down.split("-");
+        var l = (typeof totaldown[1] !== 'undefined') ? totaldown[1].trim() : 0;
+        var totalingdown = parseFloat(l) + 1;
+        var onpagedown = res1down[1].split("of");
+        var ll = (typeof onpagedown[1] !== 'undefined') ? onpagedown[1].trim() : 0;
+        var ondown = parseFloat(ll) + 1;
+    } else {
+        var totaldown = 0;
+        var res1down = 0;
+        var l = 0;
+        var totalingdown = 1;
+        var onpagedown = 0;
+        var ll = 0;
+        var ondown = 1;
+    }
 
     $('.upcomingtaskpage').text(res1[0]+'-'+ on +' of '+ totaling);
     $('.completedtaskpage').text(res1down[0]+'-'+ondown +' of '+ totalingdown);
@@ -237,23 +252,39 @@ $(document).on('ifUnchecked', '.completed-tasks .icheck', function (e) {
     var html = parentLi.clone();
 
     var up = $('.completedtaskpage').text();
-    //alert(up);
-    var total = up.split("of");
-    var res1 = up.split("-");
-    var totaling = total[1]-1;
-    var onpage = res1[1].split("of");
-    var on = onpage[0]-1;
-
+    if(!up) {
+        var total = up.split("of");
+        var res1 = up.split("-");
+        var totaling = total[1]-1;
+        var onpage = res1[1].split("of");
+        var on = onpage[0]-1;
+    } else {
+        var total = 0;
+        var res1 = 0;
+        var totaling = 0;
+        var onpage = 0;
+        var on = 0;
+    }
 
     var down = $('.upcomingtaskpage').text();
-    //alert(up);
-    var totaldown = down.split("of");
-    var res1down = down.split("-");
-    var l = totaldown[1].trim();
-    var totalingdown = parseFloat(l)+1;
-    var onpagedown = res1down[1].split("of");
-    var ll =  onpagedown[0].trim();
-    var ondown = parseFloat(ll) + 1;
+    if(!down) {
+        var totaldown = down.split("of");
+        var res1down = down.split("-");
+        var l = totaldown[1].trim();
+        var totalingdown = parseFloat(l)+1;
+        var onpagedown = res1down[1].split("of");
+        var ll =  onpagedown[0].trim();
+        var ondown = parseFloat(ll) + 1;
+    } else {
+        var totaldown = 0;
+        var res1down = 0;
+        var l = 0;
+        var totalingdown = 1;
+        var onpagedown = 0;
+        var ll = 0;
+        var ondown = 1;
+    }
+
 
     $('.completedtaskpage').text(res1[0]+'-'+ on +' of '+ totaling);
     $('.upcomingtaskpage').text(res1down[0]+'-'+ondown +' of '+ totalingdown);
