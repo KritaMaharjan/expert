@@ -101,7 +101,8 @@ Class Plupload {
                 max_file_size : '$this->maxSize',
                 mime_types: [
                    $this->mimeTypes
-                ]
+                ],
+
             },
 
             // Flash settings
@@ -209,9 +210,6 @@ Class Plupload {
              });
 
              uploader.bind('FileUploaded', function(upldr, file, object) {";
-
-
-
 
         $html .= $this->successCallback;
 

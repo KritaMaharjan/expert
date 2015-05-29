@@ -39,6 +39,7 @@ class RedirectTenantUser {
 	{
         $this->validateTenant();
 
+
         if(isset($this->auth->user()->status)) {
             if ($this->auth->user()->status == 0) {
                 $this->auth->logout();
@@ -51,6 +52,7 @@ class RedirectTenantUser {
                 flash()->error(lang('Your account has been permanently blocked.'));
             }
         }
+
 
         if ($this->auth->guest())
         {
