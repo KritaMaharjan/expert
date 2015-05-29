@@ -196,15 +196,15 @@ $(document).on('ifChecked', '.upcoming-tasks .icheck', function (e) {
     //alert(up);
     var totaldown = down.split("of");
     var res1down = down.split("-");
-    var l = totaldown[1].trim();
+    var l = (typeof totaldown[1] !== 'undefined')? totaldown[1].trim() : 0;
 
     var totalingdown = parseFloat(l)+1;
     var onpagedown = res1down[1].split("of");
-    var ll =  onpagedown[0].trim();
+    var ll = (typeof onpagedown[1] !== 'undefined')? onpagedown[1].trim() : 0;
     var ondown = parseFloat(ll) + 1;
 
     $('.upcomingtaskpage').text(res1[0]+'-'+ on +' of '+ totaling);
-   $('.completedtaskpage').text(res1down[0]+'-'+ondown +' of '+ totalingdown);
+    $('.completedtaskpage').text(res1down[0]+'-'+ondown +' of '+ totalingdown);
 
     parentLi.hide('slow', function(){
         parentLi.remove();
