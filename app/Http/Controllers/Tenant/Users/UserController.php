@@ -209,6 +209,28 @@ class UserController extends BaseController
         $type = $this->request['type'];
         $vacation = $this->request['vacation_days'];
 
+         $vacationDays = \DB::table('fb_settings')->where('name', 'vacation')->first();
+        $vacationDetails = @unserialize($vacationDays->value);
+
+        $leaves = $this->vacation->getUserVacation($user_id);
+        $sick_total = 0;
+        $vacation_total = 0;
+
+        if (!empty($leaves)) {
+            foreach ($leaves as $key => $value) {
+                $sick_total += $value->sick_days;
+                $vacation_total += $value->vacation_days;
+                $sick_leave_left = $vacationDetails['sick_days'] - $sick_total;
+                $vacation_leave_left = $vacationDetails['vacation_days'] - $vacation_total;
+            }
+
+        } else {
+            $sick_total = 0;
+            $vacation_total = 0;
+            $sick_leave_left = $vacationDetails['sick_days'];
+            $vacation_leave_left = $vacationDetails['vacation_days'];
+        }
+
 
         $date1 = date_create($this->request['from']);
         $date2 = date_create($this->request['to']);
@@ -221,8 +243,15 @@ class UserController extends BaseController
             $total_leave = $this->vacation->totalVacation($this->request['user_id'], $type, $leave);
             // dd($total_leave);
 
+            if($type != 'vacation_days'){
+                $leave_left = $sick_leave_left - $leave;
+            }else
+            {
+                $leave_left = $vacation_leave_left - $leave  ;
+            }
 
-            $leave_left = $vacation - $total_leave;
+
+            
 
             return \Response::json(array('status' => true, 'vacation_days' => $leave_left, 'vacation_used' => $total_leave, 'leave_taken' => $leave, 'leave_left' => $leave_left));
 
