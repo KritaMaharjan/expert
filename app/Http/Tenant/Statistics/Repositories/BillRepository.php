@@ -56,8 +56,9 @@ class BillRepository {
      * Total number of bills that past the due date and not paid yet
      */
     function getPastDue() {
-        $today = Carbon::today();
-        $total = Bill::where('due_date', '>',  $today)->where('payment', '!=', 1)->whereBetween('created_at', array($this->from, $this->to))->count();
+        $today = Carbon::now();
+        $total = Bill::where('type', Bill::TYPE_BILL)->where('status', Bill::STATUS_ACTIVE)->where('due_date', '<',  $today)->where('payment', '!=', Bill::STATUS_PAID)->whereNotIn('type', array(Bill::STATUS_COLLECTION, Bill::STATUS_LOSS))->whereBetween('created_at', array($this->from, $this->to))->count();
+        //dd($total->toArray());
         return $total;
     }
 
@@ -66,7 +67,7 @@ class BillRepository {
      * Total number of bills that are not in collection
      */
     function getNotCollection() {
-        $total = Bill::where('status', '!=', 1)->where('type', 0)->whereBetween('created_at', array($this->from, $this->to))->count();
+        $total = Bill::where('status', '!=', 1)->whereNotIn('type', array(Bill::STATUS_COLLECTION, Bill::STATUS_LOSS))->where('payment', '!=', Bill::STATUS_PAID)->whereBetween('created_at', array($this->from, $this->to))->count();
         return $total;
     }
 
