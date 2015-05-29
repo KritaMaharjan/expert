@@ -907,6 +907,7 @@ fieldset.wrapper-box legend {
 .no-print {
     padding: 20px 0;
 }
+.invoice-table-container{width: 100%;}
 
 /*print*/
 
@@ -916,11 +917,15 @@ fieldset.wrapper-box legend {
         print-color-adjust: exact;
     }
 
-    #print {
+
+    #print,.invoice-table-container {
         width: 700px;
         margin-top: -20px;
         margin-left: -275px;
         padding: 10px 0 10px 10px!important;
+    }
+    .invoice-table-container{
+        margin-left: -250px!important;
     }
     #print .header-wrap {
         background-color: #fff34d!important;
