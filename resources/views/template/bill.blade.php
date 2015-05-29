@@ -28,7 +28,7 @@
   </style>
 
 
-          <table width="100%">
+        <table width="100%">
         <tr>
           <td colspan="3">{!! (isset($data['company_details']['logo']) && file_exists(tenant()->folder('system')->url($data['company_details']['logo'])) )? '<img src ="'.tenant()->folder('system')->url($data['company_details']['logo']).' "/>' : "" !!}</td>
         </tr>
@@ -94,8 +94,8 @@
       <br /><br />
         <table width="100%">
           <tr>
-            <td width="50%"></td>
-            <td>
+            <td width="32.5%"></td>
+            <td width="67.5%">
               <table id="inv-tab2" cellpadding="4" width="100%" style="float:right">
                 <tr>
                   <th style="font-size:10px;"><b></b></th>
@@ -118,6 +118,10 @@
       <div>
         <p style="font-size:10px"><b style="font-size:10px;">Notes</b><br />
             Så fort faktura er betalt vil vi påbegynne registreringen.
+            <br />
+            <br />
+            <br />
+            <br />
             <br />
             <br />
             <br />
