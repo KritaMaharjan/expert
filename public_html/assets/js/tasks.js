@@ -184,7 +184,7 @@ $(document).on('ifChecked', '.upcoming-tasks .icheck', function (e) {
 
     var html = parentLi.clone();
     var up = $('.upcomingtaskpage').text();
-    if(!up) {
+    if(!up && up != '') {
         var total = up.split("of");
         var res1 = up.split("-");
         var totaling = total[1] - 1;
@@ -200,7 +200,7 @@ $(document).on('ifChecked', '.upcoming-tasks .icheck', function (e) {
 
 
     var down = $('.completedtaskpage').text();
-    if(!down) {
+    if(!down && down != '') {
         var totaldown = down.split("of");
         var res1down = down.split("-");
         var l = (typeof totaldown[1] !== 'undefined') ? totaldown[1].trim() : 0;
@@ -252,7 +252,7 @@ $(document).on('ifUnchecked', '.completed-tasks .icheck', function (e) {
     var html = parentLi.clone();
 
     var up = $('.completedtaskpage').text();
-    if(!up) {
+    if(!up && up != '') {
         var total = up.split("of");
         var res1 = up.split("-");
         var totaling = total[1]-1;
@@ -267,7 +267,7 @@ $(document).on('ifUnchecked', '.completed-tasks .icheck', function (e) {
     }
 
     var down = $('.upcomingtaskpage').text();
-    if(!down) {
+    if(!down && down != '') {
         var totaldown = down.split("of");
         var res1down = down.split("-");
         var l = totaldown[1].trim();
