@@ -104,14 +104,31 @@ Print Invoice
       <div class="invoice-table-container">
         <p style="font-size:14px"><b style="font-size:14px;">Notes</b><br />
             Så fort faktura er betalt vil vi påbegynne registreringen.
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br /><br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br /><br />
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
         </p>
       </div>
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
+      
 
 
 
