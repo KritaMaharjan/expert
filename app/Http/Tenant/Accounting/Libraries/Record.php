@@ -43,6 +43,7 @@ class Record {
         $vat = new Vat($vat);
         $amount = new Amount($amount);
 
+
         $amount_vat = $amount->vat($vat);
         $amount_without_vat = $amount->withoutVat($vat);
 
@@ -179,11 +180,16 @@ class Record {
      */
     public static function billCredit(Bill $bill, Customer $customer, $amount, $vat)
     {
-        $vat = new Vat($vat);
+        if($vat != 0) {
+            $vat = new Vat($vat);
+            $amount_vat = $amount->vat($vat);
+            $amount_without_vat = $amount->withoutVat($vat);
+        } else {
+            $vat = 0;
+            $amount_vat = 0;
+            $amount_without_vat = $amount;
+        }
         $amount = new Amount($amount);
-        $amount_vat = $amount->vat($vat);
-        $amount_without_vat = $amount->withoutVat($vat);
-
         // initialised entry object
         $entry = new Entry();
 

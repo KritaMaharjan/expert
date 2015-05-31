@@ -431,8 +431,7 @@ return [
         20 => ['account_code' => '2712', 'display' => 'Imported services', 'description' => 'Domestic Exempt'],
         25 => ['account_code' => '2711', 'display' => '25', 'description' => 'High Tax'],
         15 => ['account_code' => '2713', 'display' => '15', 'description' => 'Medium Tax'],
-        8  => ['account_code' => '2714', 'display' => '8', 'description' => 'Low Tax'],
-
+        8  => ['account_code' => '2714', 'display' => '8', 'description' => 'Low Tax']
     ],
 
     'vat_code'   => [
