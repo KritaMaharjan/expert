@@ -70,6 +70,7 @@ class Bill extends Model {
         try {
             $customer_id = $request->input('customer');
             $vat = $request->input('vat');
+            if($vat == null) $vat = 0;
 
             $bill = Bill::create([
                 'user_id'        => $user_id,

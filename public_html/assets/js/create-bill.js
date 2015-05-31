@@ -243,6 +243,7 @@
         });
 
         var vat = parseFloat($('.vat').val());
+        if(vat == '' || typeof(vat) == 'undefined' || vat == null || isNaN(vat)) vat = 0;
         //withVat = (subtotal + vat * 0.01 * subtotal) * totalQuantity;
         vatTotal = vat * 0.01 * subtotal;
         allTotal = subtotal + vatTotal;

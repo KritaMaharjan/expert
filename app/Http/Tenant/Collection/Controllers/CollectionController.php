@@ -42,6 +42,11 @@ class CollectionController extends BaseController {
         return view('tenant.collection.add_case');
     }
 
+    public function createCase()
+    {
+
+    }
+
     public function makeCollectionCase()
     {
         if ($this->request->ajax()) {

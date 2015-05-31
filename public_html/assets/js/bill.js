@@ -2,7 +2,7 @@ $(function () {
 
     var billDatatable = $("#table-bill").DataTable({
         "dom": '<"top"f>rt<"bottom"lip><"clear">',
-        "order": [[3, "desc"]],
+        "order": [[4, "desc"]],
 
         //custom processing message
         "oLanguage": {
