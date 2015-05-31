@@ -126,9 +126,9 @@ $('#to').datepicker({
                  success: function(response) {
                     if (response.status == true) {
 
-                  $('#sick_days').text(response.vacation_days+'days');
-                   $('#sick_used').text(response.vacation_used+'days');
-                   $('.table-mailbox').append('<tr><td width="40%" class="name">'+from +'-'+ to +'</td><td width="60%" class="subject position-relative"><div class="action-buttons"><a title="Delete" class="fa fa-close btn-danger pad-4 delete-leave" href="javascript:;"></a></div> '+response.leave_taken+' day</td></tr>');
+                  $('#sick_days').text(response.vacation_days+' days');
+                   $('#sick_used').text(response.vacation_used+' used');
+                   $('.table-mailbox').append('<tr><td width="40%" class="name">'+ from +' - '+ to +'</td><td width="60%" class="subject position-relative"><div class="action-buttons"><a title="Delete" class="fa fa-close btn-danger pad-4 delete-leave" href="javascript:;"></a></div> '+response.leave_taken+' day</td></tr>');
 
                     $('#add_part').hide();
                     $('#from').val('');
