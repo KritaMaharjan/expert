@@ -118,15 +118,15 @@ $(function () {
 
         if(d.step == 'betalingsoppfording')
         {
-            if(d.deadline < 1) {
+            //uncomment this later if(d.deadline < 1) {
                 register_dispute = '<li>' +
                 '<a href="#"  data-original-title="Court Case" data-target="#fb-modal" data-toggle="modal" data-url="' + appUrl + 'collection/dispute?bill=' + bill + '&token=' + token + '">Court Case</a>' +
                 ' OR ' +
                 '<a href="' + appUrl + 'collection/gotostep/utlegg?bill=' + bill + '&token=' + token + '">Send directly to sheriff </a>';
                 '</li>';
-            }
-            else
-                register_dispute = ' OR ';
+            //}
+            //else
+                //register_dispute = ' OR ';
         }
         else if(d.step == 'court') {
             if(d.payment_date =='')
