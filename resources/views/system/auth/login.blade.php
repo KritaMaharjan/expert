@@ -4,7 +4,7 @@
     <div class="login-page">
     <div class="login-box">
       <div class="login-logo">
-        <a href="{{url()}}"><b>Fast</b>Books</a>
+        <a href="{{url()}}">Expert Financial Solutions</a>
       </div><!-- /.login-logo -->
       <div class="login-box-body">
         <p class="login-box-msg">Sign in</p>
@@ -56,7 +56,7 @@
 
       </div><!-- /.login-box-body -->
       <div class="login-box-footer">
-        <p><small>&copy; copyright 2015 | FastBooks </small></p>
+        <p><small>&copy; copyright 2015 | Expert Financial Solutions </small></p>
       </div>
     </div><!-- /.login-box -->
 

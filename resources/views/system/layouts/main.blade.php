@@ -11,10 +11,7 @@
 @include('system.layouts.partials.content')
 
 @if (!Request::ajax())
-
     @section('footer')
         @include('system.layouts.partials.footer')
     @show
 @endif
-
-

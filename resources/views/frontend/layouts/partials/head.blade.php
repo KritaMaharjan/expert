@@ -5,7 +5,7 @@
         <!-- Set latest rendering mode for IE -->
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-        <title>FastBooks</title>
+        <title>Expert Finance Solutions</title>
 
         <!-- Set viewport for mobile devices to zoom to 100% -->
         <meta name="viewport" content="width=device-width, initial-scale=1.0">

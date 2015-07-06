@@ -12,7 +12,7 @@
 */
 
 
-$app = new App\Fastbooks\Utilities\MyApplication(
+$app = new App\Expert\Utilities\MyApplication(
 	realpath(__DIR__.'/../')
 );
 

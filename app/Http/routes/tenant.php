@@ -1,37 +1,4 @@
 <?php
-/*
-|--------------------------------------------------------------------------
-| Tenant Routes
-|--------------------------------------------------------------------------
-|
-| Here is where we register tenant (sub-domain) related routes
-|
-*/
-
-if (env('APP_ENV') == 'live') {
-    $group_cron = ['domain' => '{account}.mashbooks.no'];
-    $group_guest = ['domain' => '{account}.mashbooks.no', 'namespace' => 'Controllers', 'middleware' => 'guest.tenant'];
-    $group_auth = ['domain' => '{account}.mashbooks.no', 'middleware' => 'auth.tenant'];
-} elseif (env('APP_ENV') == 'dev') {
-    $group_cron = ['domain' => '{account}.mashbooks.app'];
-    $group_guest = ['domain' => '{account}.mashbooks.app', 'namespace' => 'Controllers', 'middleware' => 'guest.tenant'];
-    $group_auth = ['domain' => '{account}.mashbooks.app', 'middleware' => 'auth.tenant'];
-}
-
-/*
- * For Cron
- *
- */
-
-if (isset($group_cron)) {
-    Route::group($group_cron, function () {
-        /*
-         * @todo Change block/account to post request and ensure that only superadmin can block/unblock account
-         */
-        get('block/account', 'Controllers\Tenant\AuthController@blockAccount');
-    });
-}
-
 
 Route::group($group_guest, function () {
     get('login', ['as' => 'tenant.login', 'uses' => 'Tenant\AuthController@getLogin']);

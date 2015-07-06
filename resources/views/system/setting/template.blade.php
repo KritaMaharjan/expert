@@ -26,9 +26,10 @@ Template Settings
                    </p>
                 @endif
 
-                <input type="hidden" name="_token" value="{{csrf_token()}}">
+            <input type="hidden" name="_token" value="{{csrf_token()}}">
 
-                <input type="hidden" name="group"  class="form-control" value="template">
+            <input type="hidden" name="group"  class="form-control" value="template">
+
             <div class="form-group">
                 <label>Account confirmation email</label><br>
                 <label>Subject : </label>
@@ -39,30 +40,6 @@ Template Settings
 
 
             </div>
-            <div class="form-group">
-                <label>User Account setup complete</label><br>
-                <label>Subject : </label>
-                <input type="text" name="domain_setup_subject" class="form-control" value="{{ $setting->domain_setup_subject or old('domain_setup_subject') }}"><br>
-
-                 <label>Body : </label>
-                    <textarea id="domain_setup" rows="3" name="domain_setup" class="form-control">{{ $setting->domain_setup or old('domain_setup') }}</textarea>
-
-
-            </div>
-
-
-            <div class="form-group">
-                <label>User request APP url</label><br>
-                <label>Subject : </label>
-                <input type="text" name="request_url_subject" class="form-control" value="{{ $setting->request_url_subject or old('request_url_subject') }}"><br>
-
-                 <label>Body : </label>
-                    <textarea id="request_url" rows="3" name="request_url" class="form-control">{{ $setting->request_url or old('request_url') }}</textarea>
-
-
-            </div>
-
-
 
             <div class="form-group">
                 <label>Forgot password request</label><br>
@@ -70,30 +47,16 @@ Template Settings
                 <input type="text" name="forgot_password_subject" class="form-control" value="{{ $setting->forgot_password_subject or old('forgot_password_subject') }}"><br>
 
                  <label>Body : </label>
-                    <textarea id="forgot_password" rows="3" name="forgot_password" class="form-control">{{ $setting->forgot_password or old('forgot_password') }}</textarea>
-
-
+                 <textarea id="forgot_password" rows="3" name="forgot_password" class="form-control">{{ $setting->forgot_password or old('forgot_password') }}</textarea>
             </div>
 
-               <div class="form-group">
+            <div class="form-group">
                 <label>Password Reset Confirm</label><br>
                  <label>Subject : </label>
                  <input type="text" name="password_confirm_subject" class="form-control" value="{{ $setting->password_confirm_subject or old('password_confirm_subject') }}"><br>
 
                  <label>Body : </label>
-                    <textarea id="password_confirm" rows="3" name="password_confirm" class="form-control">{{ $setting->password_confirm or old('password_confirm') }}</textarea>
-
-            </div>
-
-            <div class="form-group">
-                <label>Bill email</label><br>
-                <label>Subject : </label>
-                <input type="text" name="bill_email_subject" class="form-control" value="{{ $setting->bill_email_subject or old('bill_email_subject') }}"><br>
-
-                 <label>Body : </label>
-                    <textarea id="bill_email" rows="3" name="bill_email" class="form-control">{{ $setting->bill_email or old('bill_email') }}</textarea>
-
-
+                 <textarea id="password_confirm" rows="3" name="password_confirm" class="form-control">{{ $setting->password_confirm or old('password_confirm') }}</textarea>
             </div>
 
             <div class="box-footer">
@@ -110,10 +73,7 @@ Template Settings
     $(function () {
         CKEDITOR.replace('password_confirm');
         CKEDITOR.replace('confirmation_email');
-        CKEDITOR.replace('domain_setup');
         CKEDITOR.replace('forgot_password');
-        CKEDITOR.replace('request_url');
-         CKEDITOR.replace('bill_email');
       });
     ")}}
 

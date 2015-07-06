@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Frontend;
 use Session;
 use App\Models\System\Tenant as Client;
 use Illuminate\Http\Request;
-use App\Fastbooks\Libraries\Tenant as LibTenant;
 
 /**
  *  Class AuthController
@@ -182,22 +181,6 @@ class AuthController extends BaseController {
         \Flash::success($message);
 
         return redirect('/');
-    }
-
-
-    /**
-     * Display Login page or redirect user's APP url
-     * @param LibTenant $tenant
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\View\View
-     */
-    function login(LibTenant $tenant)
-    {
-        $domain = $tenant->redirectIfRemembered();
-        if ($domain != '') {
-            return tenant($domain)->redirect('/');
-        }
-
-        return view('frontend.pages.login');
     }
 
     /**

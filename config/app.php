@@ -199,7 +199,7 @@ return [
         'Validator' => 'Illuminate\Support\Facades\Validator',
         'View'      => 'Illuminate\Support\Facades\View',
         'Debugbar'  => 'Barryvdh\Debugbar\Facade',
-        'FB'        => 'App\Fastbooks\Facades\General',
+        'FB'        => 'App\Expert\Facades\General',
         'Form'      => 'Illuminate\Html\FormFacade',
         'Html'      => 'Illuminate\Html\HtmlFacade',
         'Flash'     => 'Laracasts\Flash\Flash',

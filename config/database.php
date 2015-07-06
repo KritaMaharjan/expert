@@ -64,18 +64,6 @@ return [
 			'strict'    => false,
 		],
 
-        'tenant' => [
-            'driver'    => 'mysql',
-            'host'      => env('TENANT_DB_HOST', ''),
-            'database'  => env('TENANT_DATABASE', ''),
-            'username'  => env('TENANT_USERNAME', ''),
-            'password'  => env('TENANT_PASSWORD', ''),
-            'charset'   => 'utf8',
-            'collation' => 'utf8_unicode_ci',
-            'prefix'    => env('TENANT_PREFIX', ''),
-            'strict'    => false,
-        ],
-
 		'pgsql' => [
 			'driver'   => 'pgsql',
 			'host'     => env('DB_HOST', 'localhost'),

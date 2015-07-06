@@ -4,7 +4,7 @@
   <body class="login-page">
     <div class="login-box">
       <div class="login-logo">
-        <a href="{{url()}}"><b>Fast</b>Books</a>
+        <a href="{{url()}}">Expert Financial Solutions</a>
       </div><!-- /.login-logo -->
       <div class="login-box-body">
         @if(Session::has('message'))
@@ -14,7 +14,7 @@
       </div>
     @endif
         <h3>Forgot your password?</h3>
-        <p class="login-box-msg">To reset your password, enter the email address you used to sign in to FastBooks.</p>
+        <p class="login-box-msg">To reset your password, enter the email address you used to sign in to Expert Financial Solutions.</p>
         <form action="{{url('system/forgot-password')}}" method="post" name="resetpassword">
                  <input type="hidden" name="_token" value="{{csrf_token()}}">
           <div class="form-group has-feedback">
@@ -30,7 +30,7 @@
         </form>
       </div><!-- /.login-box-body -->
       <div class="login-box-footer">
-        <p><small>&copy; copyright 2015 | FastBooks </small></p>
+        <p><small>&copy; copyright 2015 | Expert Financial Solutions </small></p>
       </div>
     </div><!-- /.login-box -->
     @stop
