@@ -1,0 +1,8 @@
+/vendor
+/node_modules
+.env
+tests
+.idea
+/public_html/assets/uploads
+/public_html/files
+/resources/views/tenant

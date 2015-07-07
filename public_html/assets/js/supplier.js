@@ -1,0 +1,261 @@
+$(function () {
+
+    $('.business_div').hide();
+    var modal = $('.modal-body');
+
+    $(document).on('click', '#business', function () {
+
+        if (modal.find('#business').is(':checked')) {
+            modal.find('#type').val('2');
+            modal.find('.dob_div').hide();
+            modal.find('.business_div').show();
+        } else {
+            modal.find('#type').val('1');
+            modal.find('.dob_div').show();
+            modal.find('.business_div').hide();
+        }
+
+    });
+
+
+    var supplierDatatable = $("#table-supplier").dataTable({
+        "dom": '<"top"f>rt<"bottom"lip><"clear">',
+
+        //custom processing message
+        "oLanguage": {
+            "sProcessing": "<i class = 'fa fa-spinner'></i>  Processing..."
+        },
+        "order": [[0, "desc"]],
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": appUrl + 'supplier/data',
+            "type": "POST"
+        },
+        "columnDefs": [{
+            "orderable": false,
+            "targets": 4,
+            "render": function (data, type, row) {
+                return showActionbtn(row);
+            }
+        }],
+        "columns": [
+            {"data": "id"},
+            {"data": "name"},
+            {"data": "email"},
+            {"data": "created_at"}
+        ],
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+
+            $(nRow).attr('id', 'supplier-' + aData.id);
+            return nRow;
+        }
+
+    });
+
+    var InvoiceDatatable = $("#table-invoices").dataTable({
+        "dom": '<"top"f>rt<"bottom"lip><"clear">',
+
+        //custom processing message
+        "oLanguage": {
+            "sProcessing": "<i class = 'fa fa-spinner'></i>  Processing..."
+        },
+
+        "processing": true,
+        "serverSide": true,
+        "ajax": {
+            "url": appUrl + 'supplier/invoices/data',
+            "type": "POST"
+        },
+        "columnDefs": [{
+            "orderable": false,
+
+            "render": function (data, type, row) {
+                // return showActionbtn(row);
+            }
+        }],
+
+        "columns": [
+            {"data": "id"},
+            {"data": "total"},
+            {"data": "due_date"},
+            {"data": "status"}
+        ],
+        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+
+
+        }
+
+    });
+
+
+    $(document).on('click', '.btn-delete-supplier', function (e) {
+        e.preventDefault();
+        var $this = $(this);
+
+        var parentTr = $this.parent().parent().parent();
+        var id = $this.attr('data-id');
+        var doing = false;
+
+        if (!confirm('Are you sure you want to delete? This action will delete data permanently and can\'t be undone.')) {
+            return false;
+        }
+
+        if (id != '' && doing == false) {
+            doing = true;
+            parentTr.hide('slow');
+
+            $.ajax({
+                url: appUrl + 'supplier/' + id + '/delete',
+                type: 'GET',
+                dataType: 'json'
+            })
+                .done(function (response) {
+                    if (response.status === 1) {
+                        $('.mainContainer .box-solid').before(notify('success', response.data.message));
+                        parentTr.remove();
+                    } else {
+                        $('.mainContainer .box-solid').before(notify('error', response.data.message));
+                        parentTr.show('fast');
+                    }
+                    setTimeout(function () {
+                        $('.callout').remove()
+                    }, 2500);
+                })
+                .fail(function () {
+                    alert('something went wrong');
+                    parentTr.show('fast');
+                })
+                .always(function () {
+                    doing = false;
+                });
+        }
+
+    });
+
+
+    $(document).on('click', '#search-email', function (e) {
+        e.preventDefault();
+
+        var search_option = $('#search_option').val();
+        var user_id = $('#user_id').val();
+
+        var doing = false;
+
+        if (doing == false) {
+            doing = true;
+            $('#email-list').load(appUrl + 'desk/email/search_emails/?user_id=' + user_id + '&search_option=' + search_option);
+
+        }
+
+    });
+
+    $(document).on('submit', '#supplier-form', function (e) {
+        e.preventDefault();
+        var form = $(this);
+        var formAction = form.attr('action');
+        var formData = new FormData(form[0]);
+        var requestType = form.find('.supplier-submit').val();
+        form.find('.supplier-submit').val('loading...');
+        form.find('.supplier-submit').attr('disabled', true);
+
+        form.find('.has-error').removeClass('has-error');
+        form.find('label.error').remove();
+        form.find('.callout').remove();
+
+        $.ajax({
+            url: formAction,
+            type: 'POST',
+            dataType: 'json',
+            data: formData,
+
+            //required for ajax file upload
+            processData: false,
+            contentType: false
+        })
+            .done(function (response) {
+                if (response.success == true || response.status == 1) {
+
+                    $('#fb-modal').modal('hide');
+                    var tbody = $('.box-body table tbody');
+                    if (requestType == 'Add') {
+                        $('.mainContainer .box-solid').before(notify('success', 'Supplier added Successfully'));
+                        tbody.prepend(getTemplate(response, false));
+                        //window.location.replace(response.redirect_url);
+                    }
+                    else {
+
+                        $('.mainContainer .box-solid').before(notify('success', 'Supplier updated Successfully'));
+                        tbody.find('#supplier-' + response.data.id).html(getTemplate(response, true));
+
+                    }
+                    setTimeout(function () {
+                        $('.callout').remove()
+                    }, 2500);
+                }
+                else {
+                    if (response.status == 'fail') {
+                        $.each(response.errors, function (i, v) {
+                            // form.closest('form').find('input[name='+i+']').after('<label class="error ">'+v+'</label>');
+                            $('.modal-body #' + i).parent().addClass('has-error')
+                            $('.modal-body #' + i).after('<label class="error error-' + i + '">' + v + '<label>');
+                        });
+                    }
+
+                    // if ("error" in response.data) {
+                    //     form.prepend(notify('danger', response.data.error));
+                    // }
+
+                }
+            })
+            .fail(function () {
+                alert('something went wrong');
+            })
+            .always(function () {
+                form.find('.supplier-submit').removeAttr('disabled');
+                form.find('.supplier-submit').val(requestType);
+            });
+    })
+
+});
+
+
+
+function notify(type, text) {
+    return '<div class="callout callout-' + type + '"><p>' + text + '</p></div>';
+}
+
+function showActionbtn(row) {
+    return '<div class="box-tools">' +
+    '<a href="#" title="Edit" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' + appUrl + 'supplier/' + row.id + '/edit' + '" data-target="#fb-modal">' +
+    '<i class="fa fa-edit"></i>' +
+    '</a>' +
+    '<button class="btn btn-box-tool btn-delete-supplier" data-toggle="tooltip" data-id="' + row.id + '" data-original-title="Remove"><i class="fa fa-times"></i></button>' +
+    '</div>';
+
+}
+
+
+function getTemplate(response, type) {
+
+    var html = '<td>' + response.data.id + '</td>' +
+        '<td>' +
+        response.data.name +
+        '</td>' +
+        '<td>' + response.data.email + '</td>' +
+        '<td>' + response.data.created_at + '</td>' +
+
+        '<td><div class="box-tools" style="float:left;">' +
+        '<a href="#" title="Edit" data-original-title="Edit" class="btn btn-box-tool" data-toggle="modal" data-url="' + response.edit_url + '" data-target="#fb-modal">' +
+        '<i class="fa fa-edit"></i>' +
+        '</a>' +
+        '<button class="btn btn-box-tool btn-delete-supplier" data-toggle="tooltip" data-id="' + response.data.id + '" data-original-title="Remove"><i class="fa fa-times"></i></button>' +
+        '</div>' +
+        '</td>';
+
+    if (type == false)
+        return '<tr class="supplier-' + response.data.id + '">' + html + '</tr>';
+    else
+        return html;
+}
+
