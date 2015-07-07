@@ -6,3 +6,4 @@ tests
 /public_html/assets/uploads
 /public_html/files
 /resources/views/tenant
+/bootstrap/compiled.php
