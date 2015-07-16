@@ -1,51 +1,44 @@
 <?php
-/**
- * User: manishg.singh
- * Date: 2/19/2015
- * Time: 2:50 PM
- */
 
 namespace App\Http\Controllers\System;
 
-use anlutro\cURL\Laravel\cURL;
-use App\Models\System\Tenant;
-use App\Models\System\User;
-use Response;
-use Auth;
-use Input;
-use DB;
-use stdclass;
-use Schema;
+use App\Models\System\Client;
 use Illuminate\Http\Request;
-
 
 class ClientController extends BaseController {
 
 
     protected $client;
     protected $request;
+    protected $rules = [
+        'username' => 'required|unique:ex_clients|alpha_dash',
+        'fname' => 'required|alpha|min:2|max:55',
+        'lname' => 'required|alpha|min:2|max:55',
+        'phone1' => 'required|min:10|max:15',
+        'phone2' => 'min:10|max:15',
+        'email' => 'required|email|min:5|max:55',
+        'salary' => 'required|numeric',
+        'occupation' => 'required|min:2|max:55',
+        'address' => 'required|min:2',
+        'introducer' => 'min:2|max:55',
+    ];
 
-
-    public function __construct(Tenant $client, Request $request)
+    public function __construct(Client $client, Request $request)
     {
         parent::__construct();
         $this->client = $client;
         $this->request = $request;
-
     }
 
     function index()
     {
-
-
-        return view('system.user.index', compact('tenants'));
+        return view('system.user.index');
     }
 
     public function dataJson()
     {
         if ($this->request->ajax()) {
-            $select = ['id', 'domain', 'email', 'status', 'guid'];
-
+            $select = ['id', 'username', 'fname', 'lname', 'email', 'created_at'];
             $json = $this->client->dataTablePagination($this->request, $select);
             echo json_encode($json, JSON_PRETTY_PRINT);
         } else {
@@ -53,190 +46,21 @@ class ClientController extends BaseController {
         }
     }
 
-
-    function show($id)
+    function add()
     {
-        $tenant = new stdclass;
-        $tenant->basic = Tenant::find($id);
-        if($tenant->basic->activation_key =='')
-        {
-            $dbname = env('ROOT_DB_PREFIX') . $tenant->basic->domain;
-            $table_profile = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'profile';
-            $tenant->profile = DB::table($table_profile . ' as profile')
-                ->select('profile.*')
-                ->where('user_id', 1)// Admin profile / later weill join table get profile by guid
-                ->first();
-            $table_settings = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'settings';
-            $company = DB::table($table_settings . ' as setting')
-                ->select('setting.value','setting.name')
-                ->where('setting.name', 'company')
-                ->orWhere('setting.name', 'business')
-                ->get();
-
-
-            foreach ($company as $key => $com) {
-                $k = $com->name;
-                $tenant->$k = @unserialize($com->value);
-            }
-
-        }
-
-        return view('system.user.show', compact('tenant'));
+        return view('system.user.create');
     }
 
-    function profile()
+    function create()
     {
-        $user = Auth::user();
+        $validator = \Validator::make($this->request->all(), $this->rules);
 
-        return view('system.user.profile', compact('user'));
+        if ($validator->fails())
+            return redirect()->back()->withErrors($validator)->withInput();
 
+        $this->client->add($this->request->all());
+
+        \Flash::success('Client added successfully!');
+        return tenant()->route('system.user');
     }
-
-    function block()
-    {
-
-
-        if (\Input::get('code') == '') {
-            return \Response::json(['status' => 'false', 'message' => 'Error Message']);
-        }
-
-        $tenant = Tenant::where('guid', \Input::get('code'))->first();
-
-        if (is_null($tenant)) {
-
-            return \Response::json(['status' => 'false', 'message' => 'Invaid Tenant ID']);
-
-        } else {
-
-            if ($tenant->status == 1) {
-                Tenant::where('guid', \Input::get('code'))->update(array('status' => 0));
-
-                return \Response::json(['status' => 'true', 'message' => 'Account blocked success', 'block' => 'Unblock']);
-
-            } else {
-                Tenant::where('guid', \Input::get('code'))->update(array('status' => 1));
-
-                return \Response::json(['status' => 'true', 'message' => 'Account unblocked success', 'block' => 'Block']);
-
-            }
-
-        }
-
-    }
-
-    function deleteTenant(){
-        $domain = $this->request->route('domain'); 
-        $tenant = new stdclass;
-          $tenant->basic  = Tenant::where('domain',$domain)->first();
-
-       
-        if($tenant->basic->activation_key =='')
-        {
-            $dbname = env('ROOT_DB_PREFIX') . $tenant->basic->domain;
-            $table_profile = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'profile';
-            $tenant->profile = DB::table($table_profile . ' as profile')
-                ->select('profile.*')
-                ->where('user_id', 1)// Admin profile / later weill join table get profile by guid
-                ->first();
-            $table_settings = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'settings';
-            $company = DB::table($table_settings . ' as setting')
-                ->select('setting.value','setting.name')
-                ->where('setting.name', 'company')
-                ->orWhere('setting.name', 'business')
-                ->get();
-
-
-            foreach ($company as $key => $com) {
-                $k = $com->name;
-                $tenant->$k = @unserialize($com->value);
-            }
-
-            $table_customers = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'customers';
-            $tenant->customers = DB::table($table_customers . ' as customers')
-                ->select('customers.*')
-                ->where('user_id', 1)// Admin profile / later weill join table get profile by guid
-                ->count();
-
-                 $table_bill = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'bill';
-            $tenant->bill = DB::table($table_bill . ' as bill')
-                ->select('bill.*')
-               // ->where('user_id',1)// Admin profile / later weill join table get profile by guid
-                ->count();
-
-                   $table_inventory = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'inventory';
-            $tenant->inventory = DB::table($table_inventory . ' as inventory')
-                ->select('inventory.*')
-               // ->where('user_id',1)// Admin profile / later weill join table get profile by guid
-                ->count();
-
-
-                   $table_users = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'users';
-            $tenant->users = DB::table($table_users . ' as users')
-                ->select('users.*')
-               // ->where('user_id',1)// Admin profile / later weill join table get profile by guid
-                ->count();
-        }
-
-        return view('system.user.details', compact('tenant'));
-    }
-
-    function confirmDelete(){
-        $domain = $this->request->route('domain'); 
-        $tenant = new stdclass;
-          $tenant->basic  = Tenant::where('domain',$domain)->first();
-
-       
-        if($tenant->basic->activation_key =='')
-        {
-            $dbname = env('ROOT_DB_PREFIX') . $tenant->basic->domain;
-           
-                 $table_settings = $dbname . '.' . env('ROOT_TABLE_PREFIX') . 'settings';
-
-                $company = DB::table($table_settings . ' as setting')
-                    ->select('setting.value','setting.name')
-                    ->where('setting.name', 'folder')->first();
-
-                $company_folder = $company->value;
-                \DB::statement('drop database '.$dbname.';');
-                $folder_path = public_path().'\files'.'\\' .$company_folder;
-                //dd($folder_path);
-
-                $this->rrmdir($folder_path);
-
-            $client = Tenant::where('id', $tenant->basic->id)->first();
-             $client->delete();
-
-            return redirect('system/client');
-               
-        }else{
-             $client = Tenant::where('id', $tenant->basic->id)->first();
-             $client->delete();
-             return redirect('system/client')->with('message', 'Client deleted successfully');
-        }
-
-    }
-
-
-function rrmdir($dir) {
-   // dd($dir);
-  if (is_dir($dir)) {
-
-    $objects = scandir($dir);
-    foreach ($objects as $object) {
-      if ($object != "." && $object != "..") {
-        if (filetype($dir."/".$object) == "dir") 
-           $this->rrmdir($dir."/".$object); 
-        else unlink   ($dir."/".$object);
-      }
-    }
-    reset($objects);
-    rmdir($dir);
-  }else{
-    return true;
-  }
-  
- }
-
-
-
 }

@@ -1,53 +1,42 @@
 @extends('system.layouts.main')
-@section('title')
-Client
-@stop
+
+<?php $type = Request::segment(2); ?>
 @section('heading')
-Manage Client
+    Clients
 @stop
 
 @section('breadcrumb')
-@parent
-<li>Clients</li>
+    @parent
+    <li>Clients</li>
 @stop
 
 @section('content')
-<div class="box box-solid">
-    <div class="box-body">
-        <div class="box box-solid">
-                               <!--  <div class="box-header">
-                                    <h3 class="box-title"></h3>
-                                    <div class="box-tools">
-                                        
-                                    </div>
-                                </div>/.box-header -->
-                                <div class="box-body table-responsive no-padding">
-                                    <table id="table-client" class="table table-hover">
-                                        <thead>
-                                            <tr>
-                                            <th>ID</th>
-                                            <th>Domain</th>
-                                            <th>Email</th>
-                                            <th>Action</th>
-                                          
-                                            </tr>
-                                        <thead>
-                                        
-                                        
-                                </table>
-                                </div><!-- /.box-body -->
-                            </div>
-     </div>
-     <script type="text/javascript">
-$(document).ready(function () {
- 
-    
-});
-</script>
 
-
-{{--Load JS--}}
-    {{FB::registerModal()}}
+    <div class="row">
+        <div class="col-xs-12 mainContainer">
+            @include('flash::message')
+            <div class="box box-solid">
+                <p class="align-right btn-inside">
+                    <a class="btn btn-primary" href="{{route('system.client.add')}}">
+                        <i class="fa fa-plus"></i> Add new client
+                    </a>
+                </p>
+                <div class="box-body table-responsive">
+                    <table id="table-client" class="table table-hover table-bill">
+                        <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Full Name</th>
+                            <th>Email</th>
+                            <th>Created Date</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div><!-- /.box-body -->
+            </div><!-- /.box -->
+        </div>
+    </div>
     {{FB::js('assets/js/system/client.js')}}
-@stop
 
+@stop

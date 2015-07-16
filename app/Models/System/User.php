@@ -20,7 +20,7 @@ class User extends Model {
      *
      * @var string
      */
-    protected $table = 'fb_users';
+    protected $table = 'ex_users';
 
     /**
      * The attributes that are mass assignable.

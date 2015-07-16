@@ -15,7 +15,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	 *
 	 * @var string
 	 */
-	protected $table = 'fb_users';
+	protected $table = 'ex_users';
 
 	/**
 	 * The attributes that are mass assignable.
@@ -42,7 +42,7 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
         parent::boot();
         static::creating(function($user) {
             if($user->guid === null)
-                $user->guid = FB::uniqueKey('fb_users','guid');
+                $user->guid = FB::uniqueKey('ex_users','guid');
         });
     }
 

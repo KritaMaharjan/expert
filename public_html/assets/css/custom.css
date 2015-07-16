@@ -215,6 +215,10 @@ a {
     margin-right: 19%;
 }
 
+.clear-both {
+    clear: both;
+}
+
 .right-from {
     clear: both;
     margin-right: 17%;
@@ -1460,12 +1464,12 @@ textarea.list-bx {
 .datepicker-dropdown::before,.datepicker-dropdown::after{
     display: none!important;
 }
-.error-frm {
+.error-frm1 {
     display: block!important;
-    left: 60%!important;
+    left: 40%!important;
     position: relative!important;
     top: 9px!important;
-    width: 40%!important;
+    width: 60%!important;
 }
 
 .date-box.supplier .error-frm{
