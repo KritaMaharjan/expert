@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\System;
 
 use App\Models\System\Client;
@@ -10,6 +9,7 @@ class ClientController extends BaseController {
 
     protected $client;
     protected $request;
+
     protected $rules = [
         'username' => 'required|unique:ex_clients|alpha_dash',
         'fname' => 'required|alpha|min:2|max:55',
@@ -39,6 +39,7 @@ class ClientController extends BaseController {
     {
         if ($this->request->ajax()) {
             $select = ['id', 'username', 'fname', 'lname', 'email', 'created_at'];
+
             $json = $this->client->dataTablePagination($this->request, $select);
             echo json_encode($json, JSON_PRETTY_PRINT);
         } else {
@@ -63,4 +64,5 @@ class ClientController extends BaseController {
         \Flash::success('Client added successfully!');
         return tenant()->route('system.user');
     }
+
 }

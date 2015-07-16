@@ -94,7 +94,11 @@ class RemindersController extends BaseController {
 
             $newpassword = Hash::make(Input::get('new_password'));
 
+<<<<<<< HEAD
             \DB::table('ex_users')->where('email', Input::only('email'))->update(['password' => $newpassword]);
+=======
+            \DB::table('fb_users')->where('email', Input::only('email'))->update(['password' => $newpassword]);
+>>>>>>> 7697996c9e8ebe753c3ac40c53fe0ae4f8787867
             DB::table('password_resets')->where('email', '=', Input::only('email'))->delete();
 
             return redirect('system/login')->with('message_success', 'Password Reset successfully.');

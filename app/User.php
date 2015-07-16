@@ -32,19 +32,4 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 	protected $hidden = ['password', 'remember_token'];
 
 
-    /**
-     * Model events observe
-     *
-     * @return void
-     **/
-    public static function boot()
-    {
-        parent::boot();
-        static::creating(function($user) {
-            if($user->guid === null)
-                $user->guid = FB::uniqueKey('ex_users','guid');
-        });
-    }
-
-
 }

@@ -215,10 +215,13 @@ a {
     margin-right: 19%;
 }
 
+<<<<<<< HEAD
 .clear-both {
     clear: both;
 }
 
+=======
+>>>>>>> 7697996c9e8ebe753c3ac40c53fe0ae4f8787867
 .right-from {
     clear: both;
     margin-right: 17%;
@@ -1464,12 +1467,21 @@ textarea.list-bx {
 .datepicker-dropdown::before,.datepicker-dropdown::after{
     display: none!important;
 }
+<<<<<<< HEAD
 .error-frm1 {
     display: block!important;
     left: 40%!important;
     position: relative!important;
     top: 9px!important;
     width: 60%!important;
+=======
+.error-frm {
+    display: block!important;
+    left: 60%!important;
+    position: relative!important;
+    top: 9px!important;
+    width: 40%!important;
+>>>>>>> 7697996c9e8ebe753c3ac40c53fe0ae4f8787867
 }
 
 .date-box.supplier .error-frm{

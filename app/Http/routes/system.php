@@ -32,7 +32,6 @@ Route::group(['prefix' => 'system', 'middleware' => ['preventSystem','auth.syste
     //get('client/{id}', ['as' => 'system.user.show', 'uses' => 'System\ClientController@show']);
     get('client/add', ['as' => 'system.client.add', 'uses' => 'System\ClientController@add']);
     post('client/add', ['as' => 'system.client.create', 'uses' => 'System\ClientController@create']);
-
     get('profile', ['as' => 'system.user.profile', 'uses' => 'System\ClientController@profile']);
     get('change-password', ['as' => 'system.auth.changePassword', 'uses' => 'System\AuthController@changePassword']);
     post('change-password', ['as' => 'system.auth.postUserPasswordChange', 'uses' => 'System\AuthController@postUserPasswordChange']);
