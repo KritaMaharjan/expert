@@ -6,7 +6,4 @@ tests
 /public_html/assets/uploads
 /public_html/files
 /resources/views/tenant
-<<<<<<< HEAD
-=======
 /bootstrap/compiled.php
->>>>>>> 7697996c9e8ebe753c3ac40c53fe0ae4f8787867
