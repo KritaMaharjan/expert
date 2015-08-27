@@ -4,6 +4,7 @@ namespace App\Http\Controllers\System;
 use App\Models\System\Application\BankAccount;
 use App\Models\System\Application\Car;
 use App\Models\System\Application\CreditCard;
+use App\Models\System\Application\EmploymentDetails;
 use App\Models\System\Application\OtherAsset;
 use App\Models\System\Application\OtherIncome;
 use App\Models\System\Client\Client;
@@ -44,7 +45,7 @@ class ReviewController extends BaseController {
         'limit' => 'numeric',
     ];
 
-    public function __construct(Client $client, Application $application, Property $property, Lead $lead, Request $request, Car $car, BankAccount $bankAccount, OtherAsset $otherAssets, CreditCard $cards, OtherIncome $otherIncome)
+    public function __construct(Client $client, Application $application, Property $property, Lead $lead, Request $request, Car $car, BankAccount $bankAccount, OtherAsset $otherAssets, CreditCard $cards, OtherIncome $otherIncome, EmploymentDetails $employment)
     {
         parent::__construct();
         $this->client = $client;
@@ -56,6 +57,7 @@ class ReviewController extends BaseController {
         $this->otherAssets = $otherAssets;
         $this->cards = $cards;
         $this->otherIncome = $otherIncome;
+        $this->employment = $employment;
         $this->request = $request;
     }
 
@@ -70,6 +72,7 @@ class ReviewController extends BaseController {
         $data['other_details'] = $this->otherAssets->getLeadAssetsDetails($lead_id);
         $data['card_details'] = $this->cards->getLeadCardDetails($lead_id);
         $data['other_income_details'] = $this->otherIncome->getLeadIncomeDetails($lead_id);
+        $data['income_details'] = $this->employment->getIncomeDetails($lead_id);
         $data['applicants'] = $this->getApplicantsArray($applicants);
         return view('system.application.review', $data);
     }

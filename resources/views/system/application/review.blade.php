@@ -1,6 +1,6 @@
 @extends('system.layouts.main')
 @section('heading')
-    Reeview - Application
+    Review - Application
 @stop
 
 @section('breadcrumb')
@@ -31,6 +31,7 @@
                     @include('system.application.applicantReview')
                     @include('system.application.propertyReview')
                     @include('system.application.otherReview')
+                    @include('system.application.incomeReview')
                 </div>
 
                 <div class="box-footer col-lg-12 clear-both">

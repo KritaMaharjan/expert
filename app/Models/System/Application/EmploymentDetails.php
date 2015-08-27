@@ -10,4 +10,15 @@ class EmploymentDetails extends Model {
 
     public $timestamps = false;
 
+    function getIncomeDetails($lead_id)
+    {
+        $query = DB::table('ex_leads as leads')
+            ->join('applications', 'applications.ex_lead_id', '=', 'leads.id')
+            ->join('application_applicants as aa', 'applications.id', '=', 'aa.application_id')
+            ->join('employment_type as e', 'aa.applicant_id', '=', 'e.id')
+            ->select('e.*')
+            ->where('leads.id', $lead_id);
+        $result = $query->get();
+        return $result;
+    }
 }
