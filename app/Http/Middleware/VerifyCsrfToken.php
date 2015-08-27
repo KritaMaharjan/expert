@@ -1,22 +1,26 @@
-<?php namespace App\Http\Middleware;
+<?php
+
+namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as BaseVerifier;
 
-class VerifyCsrfToken extends BaseVerifier {
-
-
+class VerifyCsrfToken extends BaseVerifier
+{
     /**
-     * Handle an incoming request.
-     * @param Request $request
-     * @param callable $next
-     * @return \Illuminate\Http\Response
-     * @throws TokenMismatchException
+     * The URIs that should be excluded from CSRF verification.
+     *
+     * @var array
      */
+    protected $except = [
+        //
+    ];
+
+    /* Work around for ajax requests */
     public function handle($request, Closure $next)
     {
-       // return parent::handle($request, $next);
+        // return parent::handle($request, $next);
         $path = $request->path();
         $data = explode('/', $path);
         $data = end($data);
@@ -28,8 +32,4 @@ class VerifyCsrfToken extends BaseVerifier {
 
         throw new TokenMismatchException;
     }
-
-
-
-
 }

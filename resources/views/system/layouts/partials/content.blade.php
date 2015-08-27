@@ -2,7 +2,7 @@
        <h1> @yield('heading')</h1>
         <ol class="breadcrumb">
               @section('breadcrumb')
-                  <li><a href="{{ url()}}" data-push="true"><i class="fa fa-dashboard"></i> @lang('menu.dashboard') </a></li>
+                  <li><a href="{{ url()}}" data-push="true"><i class="fa fa-dashboard"></i> Dashboard </a></li>
               @show
         </ol>
     </section>

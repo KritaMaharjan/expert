@@ -1,12 +1,5 @@
 <?php
-/**
- * User: manishg.singh
- * Date: 2/13/2015
- * Time: 3:15 PM
- */
-
 namespace App\Models\System;
-
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Reminders\RemindableTrait;
@@ -43,7 +36,6 @@ class User extends Model {
     {
         if ($user->status == 0) {
             \Auth::logout();
-
             return redirect()->route('system.login')->withInput()->with('message', lang('Your account has not been activated.'));
         } elseif ($user->status == 2) {
             \Auth::logout();

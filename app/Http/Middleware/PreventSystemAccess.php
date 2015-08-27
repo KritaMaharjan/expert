@@ -15,9 +15,9 @@ class PreventSystemAccess {
     {
         $host = $request->getHost();
         $parts = explode('.', $host);
-        if (count($parts) > 2) {
+        /*if (count($parts) > 2) {
             show_404();
-        }
+        }*/
 
         return $next($request);
 

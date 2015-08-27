@@ -55,10 +55,9 @@ class RemindersController extends BaseController {
 
         $link = \URL::to('system/reset-password') . '/' . $confirmation_code . "  ";
 
-        $mail = \FB::sendEmail($user->email, $user->fullname, 'forgot_password', ['{{RESET_URL}}' => $link, '{{ USERNAME }}' => $user->fullname, '{{ NAME }}' => $user->fullname]);
-
-
+        $mail = \EX::sendEmail($user->email, $user->fullname, 'forgot_password', ['{{RESET_URL}}' => $link, '{{ USERNAME }}' => $user->fullname, '{{ NAME }}' => $user->fullname]);
     }
+
 
     /**
      * Display the password reset view for the given token.

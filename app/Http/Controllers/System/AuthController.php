@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\System;
 
 use App\Models\System\User;
-use App\Models\System\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Auth\Guard;
 use Illuminate\Support\Facades\Hash;
@@ -12,7 +11,6 @@ use Auth;
 use FB;
 use URL;
 use Session;
-
 
 class AuthController extends BaseController {
 
@@ -56,12 +54,10 @@ class AuthController extends BaseController {
     function changePassword()
     {
         return view('system.auth.changePassword');
-
     }
 
     public function postUserPasswordChange()
     {
-
         $rules = array(
             'password'                  => 'required',
             'new_password'              => 'required|min:6',
@@ -73,22 +69,18 @@ class AuthController extends BaseController {
 
         //Is the input valid? new_password confirmed and meets requirements
         if ($validator->fails()) {
-            return \Redirect::back()->withErrors($validator)->withInput();
+            return \Redirect::back()->withErrors($validator);
         }
-
         //Is the old password correct?
         if (!Hash::check(\Input::get('password'), $user->password)) {
-            return \Redirect::back()->withErrors($validator)->withInput();
+            $errorMessages = ($validator->messages());
+            $errorMessages->add('password', "The provided password doesn't match with our records.");
+            return \Redirect::back()->withErrors($validator);
         }
-
         //Set new password to user
         $user->password = Hash::make(\Input::get('new_password'));
-
         $user->save();
-
         return \Redirect::to('system')->withMessage('Password has been changed.');
-
-
     }
 
 

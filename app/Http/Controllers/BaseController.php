@@ -10,7 +10,7 @@ class BaseController extends Controller {
     function __construct()
     {
         // share current route in all views
-        View::share('current_route', Route::current()->getPath());
+        View::share('current_url', Route::current()->getPath());
     }
 
 }

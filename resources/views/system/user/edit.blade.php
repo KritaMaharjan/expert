@@ -2,12 +2,12 @@
 
 <?php $type = Request::segment(2); ?>
 @section('heading')
-    Update Client
+    Update User
 @stop
 
 @section('breadcrumb')
     @parent
-    <li>Clients</li>
+    <li>Users</li>
     <li>Update</li>
 @stop
 
@@ -17,9 +17,9 @@
         <div class="col-xs-12 mainContainer">
             @include('flash::message')
             <div class="box box-solid">
-                {!!Form::model($product)!!}
-                    @include('system.user.form')
-                    <div class="box-footer col-lg-6 clear-both">
+                {!!Form::model($user)!!}
+                    @include('system.user.formEdit')
+                    <div class="box-footer col-lg-12 clear-both">
                         <input type="submit" class="btn btn-primary" value="Update" />
                     </div>
                 {!!Form::close()!!}

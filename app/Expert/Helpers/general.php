@@ -8,19 +8,9 @@ function show_404()
     App()->abort('404');
 }
 
-
 function current_user()
 {
     $user = \Auth::user();
-
-    // cache for 5 min.
-    $user->profile = \Cache::remember('users', 5, function () use ($user) {
-        return \App\Models\Tenant\Profile::firstOrCreate(['user_id' => $user->id]);
-    });
-
-    $user->display_name = $user->fullname;
-    $user->smtp = (object)$user->profile->smtp;
-    $user->smtp->email = (isset($user->smtp->email)) ? $user->smtp->email : $user->email;
     $user->isAdmin = ($user->role == 1);
     $user->isUser = ($user->role == 2);
 
@@ -116,45 +106,10 @@ function data_encode($data)
     return @serialize($data);
 }
 
-
-function calculate_todo_time($date, $completed = false)
+function get_today_date()
 {
-    $actual_difference = strtotime($date) - strtotime(date('Y-m-d H:i:s'));
-    $seconds = abs($actual_difference);
-
-    $months = floor($seconds / (3600 * 24 * 30));
-    $day = floor($seconds / (3600 * 24));
-    $hours = floor($seconds / 3600);
-    $mins = floor(($seconds - ($hours * 3600)) / 60);
-    $secs = floor($seconds % 60);
-
-    if ($seconds < 60)
-        $time = $secs . " seconds";
-    else if ($seconds < 60 * 60)
-        $time = $mins . " min";
-    else if ($seconds < 24 * 60 * 60)
-        $time = $hours . " hours";
-    else if ($seconds > 24 * 60 * 60 && $seconds < 24 * 60 * 60 * 30)
-        $time = $day . " days";
-    else
-        $time = $months . " months";
-
-    if ($completed == true)
-        return '<small class="label label-success"><i class="fa fa-clock-o"></i> ' . $time . ' ago</small>';
-    elseif ($actual_difference < 0)
-        return '<small class="label label-danger"><i class="fa fa-warning"></i> ' . $time . '</small>';
-    elseif ($seconds < 24 * 60 * 60)
-        return '<small class="label label-warning"><i class="fa fa-clock-o"></i> ' . $time . '</small>';
-    else if ($seconds > 24 * 60 * 60 && $seconds < 24 * 60 * 60 * 30)
-        return '<small class="label label-info"><i class="fa fa-clock-o"></i> ' . $time . '</small>';
-    else
-        return '<small class="label label-default"><i class="fa fa-clock-o"></i> ' . $time . '</small>';
-}
-
-function force_redirect($url)
-{
-    header('location:' . $url);
-    exit;
+    $today = Carbon\Carbon::now();
+    return $today->toDateString();
 }
 
 function float_format($number, $digits = 2)
@@ -162,10 +117,50 @@ function float_format($number, $digits = 2)
     return number_format($number, $digits);
 }
 
-function get_name($user_id)
+function get_client_name($client_id)
 {
-    $user = \App\Models\Tenant\User::select('fullname')->find($user_id);
-    $name = (!empty($user)) ? $user->fullname : 'Undefined';
+    $client = \App\Models\System\Client\Client::select('given_name', 'surname')->find($client_id);
+    $name = (!empty($client)) ? $client->given_name.' '.$client->surname : 'Undefined';
 
     return $name;
+}
+
+function get_user_name($user_id)
+{
+    $user = \App\Models\System\User\User::select('given_name', 'surname')->find($user_id);
+    $name = (!empty($user)) ? $user->given_name.' '.$user->surname : 'Undefined';
+    return $name;
+}
+
+function get_applicant_name($applicant_id)
+{
+    $applicant = \App\Models\System\Application\Applicant::select('given_name', 'surname')->find($applicant_id);
+    $name = (!empty($applicant)) ? $applicant->given_name.' '.$applicant->surname : 'Undefined';
+    return $name;
+}
+
+function get_role($user_id = '')
+{
+    if($user_id == '') $role = current_user()->role;
+    else $role = \App\Models\System\User\User::select('role')->find($user_id)->role;
+    $user_roles = \Config::get('general.user_role');
+    return $user_roles[$role];
+}
+
+function get_phone_icon($type)
+{
+    switch ($type) {
+        case 'home':
+            return 'fa-home';
+            break;
+        case 'work':
+            return 'fa-suitcase';
+            break;
+        case 'mobile':
+            return 'fa-mobile';
+            break;
+        default:
+            return 'fa-phone';
+    }
+
 }

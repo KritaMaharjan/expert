@@ -2,12 +2,12 @@
 
 <?php $type = Request::segment(2); ?>
 @section('heading')
-    Clients
+    Users
 @stop
 
 @section('breadcrumb')
     @parent
-    <li>Clients</li>
+    <li>Users</li>
 @stop
 
 @section('content')
@@ -17,16 +17,17 @@
             @include('flash::message')
             <div class="box box-solid">
                 <p class="align-right btn-inside">
-                    <a class="btn btn-primary" href="{{route('system.client.add')}}">
-                        <i class="fa fa-plus"></i> Add new client
+                    <a class="btn btn-primary" href="{{route('system.user.add')}}">
+                        <i class="fa fa-plus"></i> Add new user
                     </a>
                 </p>
                 <div class="box-body table-responsive">
-                    <table id="table-client" class="table table-hover table-bill">
+                    <table id="table-user" class="table table-hover table-bill">
                         <thead>
                         <tr>
                             <th>Username</th>
                             <th>Full Name</th>
+                            <th>User role</th>
                             <th>Email</th>
                             <th>Created Date</th>
                             <th>Action</th>
@@ -37,6 +38,6 @@
             </div><!-- /.box -->
         </div>
     </div>
-    {{FB::js('assets/js/system/client.js')}}
+    {{EX::js('assets/js/user/user.js')}}
 
 @stop

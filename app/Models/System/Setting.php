@@ -5,12 +5,10 @@ use Illuminate\Database\Eloquent\Model;
 class Setting extends Model {
 
     protected $table = "settings";
-
-    protected $connection = "master";
-
     protected $primaryKey = "name";
 
-  
+    protected $fillable = array('name', 'value', 'autoload');
+
     function scopeEmail($query)
     {
         return $query->where('name', 'email');

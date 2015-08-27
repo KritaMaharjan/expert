@@ -59,6 +59,15 @@ Template Settings
                  <textarea id="password_confirm" rows="3" name="password_confirm" class="form-control">{{ $setting->password_confirm or old('password_confirm') }}</textarea>
             </div>
 
+            <div class="form-group">
+                <label>Email Log</label><br>
+                <label>Subject : </label>
+                <input type="text" name="email_log_subject" class="form-control" value="{{ $setting->email_log_subject or old('email_log_subject') }}"><br>
+
+                <label>Body : </label>
+                <textarea id="email_log" rows="3" name="email_log" class="form-control">{{ $setting->email_log or old('email_log') }}</textarea>
+            </div>
+
             <div class="box-footer">
                 <button class="btn btn-primary" type="submit">Submit</button>
             </div>
@@ -67,13 +76,14 @@ Template Settings
     <div>
 
 
-    {{FB::js('assets/plugins/ckeditor/ckeditor.js')}}
-    {{FB::js('assets/plugins/ckeditor/styles.js')}}
-    {{FB::js("
+    {{EX::js('assets/plugins/ckeditor/ckeditor.js')}}
+    {{EX::js('assets/plugins/ckeditor/styles.js')}}
+    {{EX::js("
     $(function () {
-        CKEDITOR.replace('password_confirm');
+        CKEDITOR.replace('email_log');
         CKEDITOR.replace('confirmation_email');
         CKEDITOR.replace('forgot_password');
+        CKEDITOR.replace('password_confirm');
       });
     ")}}
 

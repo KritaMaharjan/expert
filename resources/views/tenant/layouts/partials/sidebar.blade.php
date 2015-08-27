@@ -95,6 +95,7 @@
             </li>
             @endif
 
+
             <li class="treeview <?php echo (strpos($current_path, 'setting') !==false)? 'active' : '';?>">
               <a href="#" title="Settings">
                 <i class="fa fa-cog"></i> <span>Settings</span> <i class="fa fa-angle-left pull-right"></i>

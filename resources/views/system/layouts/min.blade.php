@@ -1,10 +1,9 @@
 @section('head')
-    @include('tenant.layouts.partials.min.head')
-    @include('tenant.layouts.partials.min.header')
+    @include('system.layouts.partials.min.head')
 @show
 
 @yield('content')
 
 @section('footer')
-    @include('tenant.layouts.partials.min.footer')
+    @include('system.layouts.partials.min.footer')
 @show

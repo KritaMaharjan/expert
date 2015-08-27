@@ -2,18 +2,13 @@
 namespace App\Expert\Libraries;
 
 use App;
-use App\Models\Tenant\Profile;
 use DB;
 use Illuminate\Auth\Guard;
 use Illuminate\Http\Request;
-use App\Models\System\Tenant as SystemTenant;
-use App\Models\Tenant\User;
-use App\Models\Tenant\Setting as TenantSettings;
 use App\Fastbooks\Libraries\TenantTable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Cookie;
-use App\Http\Tenant\Accounting\Models\AccountingYear;
 
 /**
  * Class Tenant
@@ -21,27 +16,6 @@ use App\Http\Tenant\Accounting\Models\AccountingYear;
  */
 class Tenant {
 
-    // prefix for database
-    /**
-     *
-     */
-    /**
-     * Database settings
-     */
-    protected $DB_username;
-    protected $DB_password;
-    protected $DB_prefix;
-
-    /**
-     * @var string
-     */
-    protected $connection = 'tenant';
-    protected $tenant_db;
-    protected $request;
-    protected $tenantUser;
-    protected $createTable;
-    protected $auth;
-    protected $domain;
 
 
     /**
@@ -50,164 +24,13 @@ class Tenant {
      * @param TenantTable $TenantTable
      * @param Guard $auth
      */
-    function __construct(Request $request, User $user, TenantTable $TenantTable, TenantSettings $TenantSettings, Guard $auth)
+    function __construct(Request $request, User $user, Guard $auth)
     {
         $this->init();
         $this->tenatUser = $user;
-        $this->tenantSettings = $TenantSettings;
-        $this->createTable = $TenantTable;
         $this->auth = $auth;
         $this->request = $request;
-        $this->setDomain($this->getSubdomain());
-        $this->tenant_db = $this->DB_prefix . $this->domain;
-
     }
-
-    /**
-     * initialized Tenant Database
-     */
-    function init()
-    {
-        $config = App::make('config');
-        $setting = $config->get('tenant.database');
-        $this->DB_username = $setting['username'];
-        $this->DB_password = $setting['password'];
-        $this->DB_prefix = $setting['db_prefix'];
-
-    }
-
-
-    /**
-     * Connect to Tenant database
-     * @param string $username
-     * @param string $password
-     */
-    function connectTenantDB($username = '', $password = '')
-    {
-        // Just get access to the config.
-        $config = App::make('config');
-
-        // Now we simply copy the Tenant connection information to our new connection.
-        $newConnection = $config->get('database.connections.' . $this->connection);
-
-        // Override the database name.
-        $newConnection['database'] = $this->tenant_db;
-        $newConnection['username'] = ($username == '') ? $this->DB_username : $username;
-        $newConnection['password'] = ($password == '') ? $this->DB_password : $password;
-        // This will add our new connection to the run-time configuration for the duration of the request.
-        App::make('config')->set('database.connections.' . $this->connection, $newConnection);
-
-        // make tenant as default connection
-        App::make('config')->set('database.default', $this->connection);
-
-        //  Config::set('session.domain', $this->domain.'.'.Config::get('session.domain'));
-
-    }
-
-
-    /**
-     * Validate Subdomain and authenticate tenant if first time then auto login
-     */
-    function authenticateTenant()
-    {
-        if ($this->isValidSubDomain()):
-
-            if ($this->isFirstTime()) {
-                // register tenant database
-                $this->setupTenantDatabase();
-
-                $this->doAutologin();
-
-                $this->resetSetup();
-
-            } else {
-                $this->connectTenantDB();
-                try {
-                    DB::getDatabaseName();
-                } catch (Exception $e) {
-                    die('Could not connect to database');
-                }
-            }
-        endif;
-    }
-
-
-    /**
-     * Create database and tables for a tenant when first time landed on APP
-     */
-    function setupTenantDatabase()
-    {
-        // create tenant DB
-        $this->createNewTenantDB();
-
-        //Connect to Tenant DB
-        $this->connectTenantDB();
-
-
-        //create Tenant Tables
-        $this->createTenantTables();
-
-        //insert tenant admin data
-        $this->dataInsert();
-
-        //create folders
-        $this->createFolders();
-
-    }
-
-    /**
-     * Create Database for tenant
-     */
-    public function createNewTenantDB()
-    {
-        DB::statement('CREATE DATABASE IF NOT EXISTS ' . $this->tenant_db);
-    }
-
-    /**
-     * Create tables for tenant
-     */
-    function createTenantTables()
-    {
-        $this->createTable->run();
-    }
-
-
-    /**
-     * Add Data to tables
-     */
-    function dataInsert()
-    {
-
-        //add Admin user
-        $tenantInfoInSystem = $this->getTenantinfo();
-        $user = $this->tenatUser->findOrNew(1);
-        $user->email = $tenantInfoInSystem->email;
-        $user->role = 1; // Admin Role
-        $user->guid = $tenantInfoInSystem->guid;
-        $user->status = 1; // Activated
-        $user->first_time = 1; // yes first time
-        $user->save();
-
-        // add profile
-        $profile = ['user_id' => $user->id];
-        Profile::create($profile);
-
-        // update company name in setting table
-        $setting = $this->tenantSettings->firstOrNew(['name' => 'company']);
-        $setting->value = serialize(array('company_name' => $tenantInfoInSystem->company));
-        $setting->save();
-
-        // update domain in setting table
-        $setting = $this->tenantSettings->firstOrNew(array('name' => 'domain'));
-        $setting->value = $tenantInfoInSystem->domain;
-        $setting->save();
-
-        $setting = $this->tenantSettings->firstOrNew(array('name' => 'folder'));
-        $setting->value = $tenantInfoInSystem->guid;
-        $setting->save();
-
-    }
-
 
     function createFolders()
     {

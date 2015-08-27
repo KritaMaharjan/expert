@@ -71,14 +71,14 @@ class General {
         if(isset($attachment) && !is_null($attachment) && !empty($attachment)){ 
                 $data = ['to_email'   => $to,
                          'to_name'    => ($to_name == '') ? $to : $to_name,
-                         'subject'    => (isset($template->subject))?$template->subject:'Expert Email',
+                         'subject'    => (isset($template->subject))?$template->subject:'Expert Financial Solutions Email',
                          'from_email' => $template->from_email,
                          'from_name'  => $template->from_name,
                          'attachment' => $attachment];
 
-                $param = ['content'    => (isset($template->body))?$template->body:'Expert Body',
-                          'subject'    => (isset($template->subject))?$template->subject:'Expert Email',
-                          'heading'    => 'FastBooks',
+                $param = ['content'    => (isset($template->body))?$template->body:'Expert Financial Solutions Body',
+                          'subject'    => (isset($template->subject))?$template->subject:'Expert Financial Solutions Email',
+                          'heading'    => 'Expert Financial Solutions',
                           'subheading' => 'All your business in one space',
                 ];
 
@@ -103,7 +103,7 @@ class General {
 
                 $param = ['content'    => (isset($template->body))?$template->body:'Expert Body',
                           'subject'    => (isset($template->subject))?$template->subject:'Expert Email',
-                          'heading'    => 'FastBooks',
+                          'heading'    => 'Expert Financial Solutions',
                           'subheading' => 'All your business in one space',
                          ];
 
@@ -197,12 +197,12 @@ class General {
     function registerModal($type='right', $fade=true)
     {
         $data = array();
-        $data['id'] = 'fb-modal';
+        $data['id'] = 'ex-modal';
         $fade = ($fade==true)?'fade':'';
         $type = ($type =='right')?'modal-right':'';
         $data['class'] = $type .' '. $fade;
         $data['options'] = 'data-backdrop="static" data-keyboard="false" tabindex="-1"  role="dialog" aria-hidden="true"';
-        $modal  = view('tenant.layouts.partials.modal', $data);
+        $modal  = view('system.layouts.partials.modal', $data);
         $this->modals[] = $modal;
         if (\Request::ajax()) {
             echo $modal;

@@ -2,9 +2,6 @@
 
 use App\Models\System\Setting;
 use Illuminate\Http\Request;
-use Response;
-use Validator;
-
 
 class SettingController extends BaseController {
 
@@ -44,7 +41,7 @@ class SettingController extends BaseController {
     {
         $all = $request->except('_token', 'group');
         $group = $request->input('group');
-        $validator = Validator::make($request->all(),
+        $validator = \Validator::make($request->all(),
                                         array(
                                             'name' => 'required',
                                             'email' => 'required|email',
@@ -71,18 +68,16 @@ class SettingController extends BaseController {
     {
         $all = $request->except('_token', 'group');
         $group = $request->input('group');
-        $validator = Validator::make($request->all(),
+        $validator = \Validator::make($request->all(),
             array(
                 'confirmation_email_subject' => 'required|max:100',
                 'confirmation_email' => 'required',
-                'domain_setup_subject' => 'required|max:100',
-                'domain_setup' => 'required',
-                'request_url_subject' => 'required|max:100',
-                'request_url' => 'required',
                 'forgot_password_subject' => 'required|max:100',
                 'forgot_password' => 'required',
                 'password_confirm_subject' => 'required|max:100',
-                'password_confirm' => 'required'
+                'password_confirm' => 'required',
+                'email_log_subject' => 'required|max:100',
+                'email_log' => 'required'
             )
         );
 
