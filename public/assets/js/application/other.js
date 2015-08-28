@@ -12,12 +12,13 @@ $(document).ready(function() {
         }
     });
 
-    $('input[type=radio][name=car_loans]').change(function() {
+
+    $(".car-details").on('change', "input[type='radio'][name='car_loan[]']", function() {
         if (this.value == 1) {
-            $('.car-loan-details').fadeIn('slow');
+            $(this).closest('.new-car').find('.car-loan-details').fadeIn('slow');
         }
         else if (this.value == 0) {
-            $('.car-loan-details').fadeOut('slow');
+            $(this).closest('.new-car').find('.car-loan-details').fadeOut('slow');
         }
     });
 
@@ -55,6 +56,7 @@ $(document).ready(function() {
         if(numCars == 10) $('.add-car-div').show();
     });
 
+
     // Bank accounts functions
     $('input[type=radio][name=banks]').change(function() {
         if (this.value == 1) {
@@ -64,6 +66,7 @@ $(document).ready(function() {
             $('.bank-details').fadeOut('slow');
         }
     });
+
 
     $('.add-bank').click(function(e){
         e.preventDefault();

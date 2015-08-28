@@ -30,8 +30,8 @@
                     <div class="form-group">
                         <div class='col-md-2 control-label'>{!!Form::label('Any Cars?') !!}</div>
                         <div class='col-md-6'>
-                            <label>{!! Form::radio('cars', 1) !!} Yes</label>
-                            <label>{!! Form::radio('cars', 0, true) !!} No</label>
+                            <label>{!! Form::radio('cars', '1') !!} Yes</label>
+                            <label>{!! Form::radio('cars', '0', true) !!} No</label>
                         </div>
                     </div>
 
@@ -92,8 +92,8 @@
                             <div class="form-group">
                                 <div class='col-md-2 control-label'>{!!Form::label('Car Loan') !!}</div>
                                 <div class='col-md-6'>
-                                    <label><input type="radio" name="car_loan[]" value=1 /> Yes</label>
-                                    <label><input type="radio" name="car_loan[]" value=0 checked="checked" /> No</label>
+                                    <label>{!! Form::radio('car_loan[]', '1', true) !!} Yes</label>
+                                    <label>{!! Form::radio('car_loan[]', '0') !!} No</label>
                                 </div>
                             </div>
 
