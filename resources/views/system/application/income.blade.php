@@ -409,7 +409,7 @@
                             </div>
 
                         </div>
-                    </div>
+
                     <div class="add-income-div">
                         <hr/>
                         <div class="form-group">
@@ -418,6 +418,7 @@
                                 <button type="button" class="btn btn-success add-income">Add an Income Source</button>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
 

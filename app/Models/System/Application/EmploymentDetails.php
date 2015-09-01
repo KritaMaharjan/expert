@@ -2,6 +2,7 @@
 namespace App\Models\System\Application;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class EmploymentDetails extends Model {
 
@@ -15,8 +16,9 @@ class EmploymentDetails extends Model {
         $query = DB::table('ex_leads as leads')
             ->join('applications', 'applications.ex_lead_id', '=', 'leads.id')
             ->join('application_applicants as aa', 'applications.id', '=', 'aa.application_id')
-            ->join('employment_type as e', 'aa.applicant_id', '=', 'e.id')
-            ->select('e.*')
+            ->join('employment_details as e', 'aa.applicant_id', '=', 'e.applicant_id')
+            ->join('employment_incomes as ei', 'aa.applicant_id', '=', 'ei.applicant_id')
+            ->select('e.*','ei.*')
             ->where('leads.id', $lead_id);
         $result = $query->get();
         return $result;

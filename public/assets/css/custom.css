@@ -1506,6 +1506,11 @@ textarea.list-bx {
     padding-bottom: 20px;
 }
 
+.new-applicant .box:first-of-type > .box-header > .box-title {
+    font-weight: bold;
+    font-size: 30px;
+}
+
 /* For steps in application */
 .smpl-step {
     margin-top: 40px;
