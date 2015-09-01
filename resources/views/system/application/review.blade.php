@@ -32,6 +32,7 @@
                     @include('system.application.propertyReview')
                     @include('system.application.otherReview')
                     @include('system.application.incomeReview')
+                    @include('system.application.expenseReview')
                 </div>
 
                 <div class="box-footer col-lg-12 clear-both">

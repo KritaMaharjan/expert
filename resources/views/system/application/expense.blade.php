@@ -67,7 +67,7 @@
                             </div>
 
                         </div>
-                    </div>
+
                     <div class="add-expense-div">
                         <hr/>
                         <div class="form-group">
@@ -76,6 +76,7 @@
                                 <button type="button" class="btn btn-success add-expense">Add an Expense Source</button>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
 
