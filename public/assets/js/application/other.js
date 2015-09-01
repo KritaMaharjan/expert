@@ -13,7 +13,7 @@ $(document).ready(function() {
     });
 
 
-    $(".car-details").on('change', "input[type='radio'][name='car_loan[]']", function() {
+    $(".car-details").on('change', "input[type='radio'][class='car_loan']", function() {
         if (this.value == 1) {
             $(this).closest('.new-car').find('.car-loan-details').fadeIn('slow');
         }
@@ -24,8 +24,13 @@ $(document).ready(function() {
 
     $('.add-car').click(function(e){
         e.preventDefault();
+        var numCars_before_insert = $('.car-details .new-car').length;
         var newCar = '<div class="new-car">'+$('.new-car').last().html()+'</div>';
-        var newCarElement = $(newCar).insertAfter($('.new-car').last());
+        $nc = $(newCar);
+        $nc.find('.car_loan').removeAttr('name').attr('name', 'car_loan['+numCars_before_insert+']');
+        $nc.find('.car_to_be_cleared').removeAttr('name').attr('name', 'to_be_cleared['+numCars_before_insert+']');
+        console.log($nc.find('.car_loan'));
+        var newCarElement = $nc.insertAfter($('.new-car').last());
         var numCars = $('.car-details .new-car').length;
         newCarElement.find('.car-num').html(numCars);
 
@@ -155,10 +160,27 @@ $(document).ready(function() {
         }
     });
 
+    $('.card_types').on('change', function(){
+        console.log($(this).val());
+        if($(this).val()=='Other') {
+            $('.card_types').show();
+        } else {
+            $('.other_text').hide();
+        }
+    });
+
     $('.add-card').click(function(e){
         e.preventDefault();
+        var numCards_before_insert = $('.card-details .new-card').length;
         var newCard = '<div class="new-card">'+$('.new-card').last().html()+'</div>';
-        var newCardElement = $(newCard).insertAfter($('.new-card').last());
+        $ncard = $(newCard);
+        //$ncard.find('.card_types').removeAttr('name').attr('name', 'card_type['+numCards_before_insert+']');
+        $ncard.find('.card_to_be_cleared').removeAttr('name').attr('name', 'card_to_be_cleared['+numCards_before_insert+']');
+        //$ncard.find('.others_text').removeAttr('name').attr('name', 'others['+numCards_before_insert+']');
+        //console.log($ncard.find('.card_loan'));
+        //console.log(numCards_before_insert);
+
+        var newCardElement = $ncard.insertAfter($('.new-card').last());
         var numCards = $('.card-details .new-card').length;
         newCardElement.find('.card-num').html(numCards);
 

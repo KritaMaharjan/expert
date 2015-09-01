@@ -92,8 +92,8 @@
                             <div class="form-group">
                                 <div class='col-md-2 control-label'>{!!Form::label('Car Loan') !!}</div>
                                 <div class='col-md-6'>
-                                    <label>{!! Form::radio('car_loan[]', '1', true) !!} Yes</label>
-                                    <label>{!! Form::radio('car_loan[]', '0') !!} No</label>
+                                    <label>{!! Form::radio('car_loan[]', '1', true,['class'=>'car_loan']) !!} Yes</label>
+                                    <label>{!! Form::radio('car_loan[]', '0',false,['class'=>'car_loan']) !!} No</label>
                                 </div>
                             </div>
 
@@ -101,8 +101,8 @@
                                 <div class="form-group">
                                     <div class='col-md-2 control-label'>{!!Form::label('To Be Cleared') !!}</div>
                                     <div class='col-md-6'>
-                                        <label><input type="radio" name="to_be_cleared[]" value=1 checked="checked" /> Yes</label>
-                                        <label><input type="radio" name="to_be_cleared[]" value=0 /> No</label>
+                                        <label><input type="radio" class="car_to_be_cleared" name="to_be_cleared[]" value=1 checked="checked" /> Yes</label>
+                                        <label><input type="radio" class="car_to_be_cleared" name="to_be_cleared[]" value=0 /> No</label>
                                     </div>
                                 </div>
 
@@ -388,19 +388,24 @@
                             <div class="form-group">
                                 <div class='col-md-2 control-label'>{!!Form::label('Credit Card Type') !!}</div>
                                 <div class='col-md-6'>
-                                    <select name="card_type[]" class="form-control">
+                                    <select name="card_type[]" class="form-control card_types">
                                         @foreach(config('general.credit_card_type') as $key => $type)
                                             <option value="{{$key}}">{{$type}}</option>
                                         @endforeach
                                     </select>
+
                                 </div>
+
+                                {{--<div class="col-md-6">--}}
+                                    {{--<input type="text" class="form-control others_text" name="others[]">--}}
+                                {{--</div>--}}
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group others">
                                 <div class='col-md-2 control-label'>{!!Form::label('To Be Cleared') !!}</div>
                                 <div class='col-md-6'>
-                                    <label><input type="radio" name="card_to_be_cleared[]" value=1 checked="checked" /> Yes</label>
-                                    <label><input type="radio" name="card_to_be_cleared[]" value=0 /> No</label>
+                                    <label><input type="radio" class="card_to_be_cleared" name="card_to_be_cleared[]" value=1 checked="checked" /> Yes</label>
+                                    <label><input type="radio" class="card_to_be_cleared" name="card_to_be_cleared[]" value=0 /> No</label>
                                 </div>
                             </div>
 
