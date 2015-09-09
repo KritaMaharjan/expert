@@ -12,7 +12,7 @@ $(document).ready(function () {
         }
     });
 
-    $('input[type=radio][name=car_loans]').change(function () {
+    $("input[type=radio][name='car_loan[]']").change(function () {
         if (this.value == 1) {
             $('.car-loan-details').fadeIn('slow');
         }
@@ -22,9 +22,11 @@ $(document).ready(function () {
             $(".car-details").on('change', "input[type='radio'][class='car_loan']", function () {
                 if (this.value == 1) {
                     $(this).closest('.new-car').find('.car-loan-details').fadeIn('slow');
+                    $(this).closest('.new-car').find('.balance').fadeIn('slow');
                 }
                 else if (this.value == 0) {
                     $(this).closest('.new-car').find('.car-loan-details').fadeOut('slow');
+                    $(this).closest('.new-car').find('.balance').fadeOut('slow');
                 }
             });
         }

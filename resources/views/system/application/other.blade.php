@@ -141,7 +141,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group @if($errors->has('balance')) {{'has-error'}} @endif">
+                            <div class="form-group @if($errors->has('balance')) {{'has-error'}} @endif balance">
                                 <div class='col-md-2 control-label'>{!!Form::label('Balance') !!}</div>
                                 <div class='col-md-6'>
                                     <input type="text" class="form-control" name="balance[]">
@@ -386,7 +386,7 @@
                             </div>
 
                             <div class="form-group card_types">
-                                <div class="form-group">
+                                <div class="field">
                                     <div class='col-md-2 control-label'>{!!Form::label('Credit Card Type') !!}</div>
                                     <div class='col-md-6'>
                                     <select name="card_type[]" class="form-control card_type">
@@ -397,7 +397,7 @@
 
                                     </div>
                                 </div>
-                            <div class="row other-name" style="display: none">
+                            <div class="field other-name" style="display: none">
                                     <div class="col-md-2">&nbsp;</div>
                                     <div class="col-md-6">
                                         <input type="text" class="form-control others_text" name="others[]">

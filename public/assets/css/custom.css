@@ -1674,3 +1674,8 @@ li.active span.round-tabs.six{
 .nav-tabs > li.active > a span.round-tabs{
     background: #fafafa;
 }
+
+.field {
+    overflow: hidden;
+    margin-bottom: 7px;
+}
