@@ -385,21 +385,27 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <div class='col-md-2 control-label'>{!!Form::label('Credit Card Type') !!}</div>
-                                <div class='col-md-6'>
-                                    <select name="card_type[]" class="form-control card_types">
-                                        @foreach(config('general.credit_card_type') as $key => $type)
-                                            <option value="{{$key}}">{{$type}}</option>
-                                        @endforeach
-                                    </select>
+                            <div class="form-group card_types">
+                                <div class="form-group">
+                                    <div class='col-md-2 control-label'>{!!Form::label('Credit Card Type') !!}</div>
+                                    <div class='col-md-6'>
+                                    <select name="card_type[]" class="form-control card_type">
+                                            @foreach(config('general.credit_card_type') as $key => $type)
+                                                <option value="{{$key}}">{{$type}}</option>
+                                            @endforeach
+                                        </select>
 
+                                    </div>
                                 </div>
-
-                                {{--<div class="col-md-6">--}}
-                                    {{--<input type="text" class="form-control others_text" name="others[]">--}}
-                                {{--</div>--}}
+                            <div class="row other-name" style="display: none">
+                                    <div class="col-md-2">&nbsp;</div>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control others_text" name="others[]">
+                                    </div>
+                                </div>
                             </div>
+
+
 
                             <div class="form-group others">
                                 <div class='col-md-2 control-label'>{!!Form::label('To Be Cleared') !!}</div>

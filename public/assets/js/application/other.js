@@ -29,7 +29,7 @@ $(document).ready(function() {
         $nc = $(newCar);
         $nc.find('.car_loan').removeAttr('name').attr('name', 'car_loan['+numCars_before_insert+']');
         $nc.find('.car_to_be_cleared').removeAttr('name').attr('name', 'to_be_cleared['+numCars_before_insert+']');
-        console.log($nc.find('.car_loan'));
+        //console.log($nc.find('.car_loan'));
         var newCarElement = $nc.insertAfter($('.new-car').last());
         var numCars = $('.car-details .new-car').length;
         newCarElement.find('.car-num').html(numCars);
@@ -160,34 +160,35 @@ $(document).ready(function() {
         }
     });
 
-    $('.card_types').on('change', function(){
-        console.log($(this).val());
-        if($(this).val()=='Other') {
-            $('.card_types').show();
-        } else {
-            $('.other_text').hide();
-        }
-    });
-
-    $('.add-card').click(function(e){
+	$(".card-details").on('change',".card_types .card_type" , function(e){
         e.preventDefault();
-        var numCards_before_insert = $('.card-details .new-card').length;
-        var newCard = '<div class="new-card">'+$('.new-card').last().html()+'</div>';
-        $ncard = $(newCard);
-        //$ncard.find('.card_types').removeAttr('name').attr('name', 'card_type['+numCards_before_insert+']');
-        $ncard.find('.card_to_be_cleared').removeAttr('name').attr('name', 'card_to_be_cleared['+numCards_before_insert+']');
-        //$ncard.find('.others_text').removeAttr('name').attr('name', 'others['+numCards_before_insert+']');
-        //console.log($ncard.find('.card_loan'));
-        //console.log(numCards_before_insert);
+        console.log($(this).closest('.new-card').find('.card_type option:selected').val());
+	        if($(this).closest('.new-card').find('.card_type option:selected').val()== "Other") {
+                $(this).closest('.new-card').find('.other-name').show();
+	        } else {
+                $(this).closest('.new-card').find('.other-name').hide();
+	        }
+	    });
 
-        var newCardElement = $ncard.insertAfter($('.new-card').last());
-        var numCards = $('.card-details .new-card').length;
-        newCardElement.find('.card-num').html(numCards);
 
-        if(numCards == 10) {
-            $('.add-card-div').hide();
-        }
-    });
+	    $('.add-card').click(function(e){
+	        e.preventDefault();
+	        var numCards_before_insert = $('.card-details .new-card').length;
+	        var newCard = '<div class="new-card">'+$('.new-card').last().html()+'</div>';
+
+	        $nCard = $(newCard);
+	        $nCard.find('.card_type').removeAttr('name').attr('name', 'card_type['+numCards_before_insert+']');
+	        $nCard.find('.others_text').removeAttr('name').attr('name', 'others['+numCards_before_insert+']');
+	        $nCard.find('.card_to_be_cleared').removeAttr('name').attr('name', 'card_to_be_cleared['+numCards_before_insert+']');
+
+	        var newCardElement = $nCard.insertAfter($('.new-card').last());
+	        var numCards = $('.card-details .new-card').length;
+	        newCardElement.find('.card-num').html(numCards);
+
+	        if(numCards == 10) {
+	            $('.add-card-div').hide();
+	        }
+	    });
 
     $(document).on('click', '.remove-card', function(e) {
         e.preventDefault();
