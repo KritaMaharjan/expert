@@ -58,7 +58,7 @@ class ClientController extends BaseController
         $users = User::select('id', 'email', 'given_name', 'surname')->get()->toArray();
         $data['users'][0] = 'Select user';
         foreach ($users as $user) {
-            $data['users'][$user['id']] = $user['given_name'] . ' ' . $user['surname'];
+            $data['users'][$user['id']] = $user['given_name'].' '.$user['surname'];
         }
         return $data['users'];
     }
@@ -86,7 +86,7 @@ class ClientController extends BaseController
 
     function edit()
     {
-        $client_id = $this->request->route('id');
+        $client_id= $this->request->route('id');
         $data['users'] = $this->get_users_array();
         $data['client'] = Client::where('id', $client_id)->with('client_addresses.address', 'client_phones.phone')->first();
         //dd($data['client']->toArray());
@@ -95,9 +95,9 @@ class ClientController extends BaseController
 
     function update()
     {
-        $client_id = $this->request->route('id');
-        $this->rules['preferred_name'] = 'required|unique:ex_clients,preferred_name,' . $client_id . '|alpha_dash';
-        $this->rules['email'] = 'required|email|min:5|max:55|unique:ex_clients,email,' . $client_id;
+        $client_id= $this->request->route('id');
+        $this->rules['preferred_name'] = 'required|unique:ex_clients,preferred_name,'.$client_id.'|alpha_dash';
+        $this->rules['email'] = 'required|email|min:5|max:55|unique:ex_clients,email,'.$client_id;
 
         $validator = \Validator::make($this->request->all(), $this->rules);
         if ($validator->fails())
@@ -107,16 +107,6 @@ class ClientController extends BaseController
 
         \Flash::success('Client updated successfully!');
         return redirect()->route('system.client');
-    }
-
-    function details()
-    {
-        $client_id = $this->request->route('id');
-        $client = Client::select('id', 'preferred_name', 'given_name', 'surname')->find($client_id);
-        $client->phone = $client->currentPhone();
-        $view = view('system.client.details', ['client' => $client]);
-        $template = $view->render();
-        return $this->success(['template' => $template]);
     }
 
     function delete()

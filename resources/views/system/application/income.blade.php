@@ -81,8 +81,8 @@
                             <div class="form-group">
                                 <div class='col-md-2 control-label'>{!!Form::label('Salary Crediting') !!}</div>
                                 <div class='col-md-6'>
-                                    <label><input type="radio" name="salary_crediting[]" value=1 checked="checked"/> Yes</label>
-                                    <label><input type="radio" name="salary_crediting[]" value=0"> No</label>
+                                    <label><input type="radio" class="salary_credit" name="salary_crediting[]" value=1 checked="checked"/> Yes</label>
+                                    <label><input type="radio" class="salary_credit" name="salary_crediting[]" value=0"> No</label>
                                 </div>
                             </div>
 

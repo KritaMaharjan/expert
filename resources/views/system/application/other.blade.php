@@ -92,8 +92,8 @@
                             <div class="form-group">
                                 <div class='col-md-2 control-label'>{!!Form::label('Car Loan') !!}</div>
                                 <div class='col-md-6'>
-                                    <label><input type="radio" name="car_loan[]" value=1 /> Yes</label>
-                                    <label><input type="radio" name="car_loan[]" value=0 checked="checked" /> No</label>
+                                    <label><input type="radio" class="car_loan" name="car_loan[]" value=1 /> Yes</label>
+                                    <label><input type="radio" class="car_loan" name="car_loan[]" value=0 checked="checked" /> No</label>
                                 </div>
                             </div>
 
@@ -101,8 +101,8 @@
                                 <div class="form-group">
                                     <div class='col-md-2 control-label'>{!!Form::label('To Be Cleared') !!}</div>
                                     <div class='col-md-6'>
-                                        <label><input type="radio" name="to_be_cleared[]" value=1 checked="checked" /> Yes</label>
-                                        <label><input type="radio" name="to_be_cleared[]" value=0 /> No</label>
+                                        <label><input type="radio" class="car_to_be_cleared" name="to_be_cleared[]" value=1 checked="checked" /> Yes</label>
+                                        <label><input type="radio" class="car_to_be_cleared" name="to_be_cleared[]" value=0 /> No</label>
                                     </div>
                                 </div>
 
@@ -385,22 +385,31 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <div class='col-md-2 control-label'>{!!Form::label('Credit Card Type') !!}</div>
-                                <div class='col-md-6'>
-                                    <select name="card_type[]" class="form-control">
-                                        @foreach(config('general.credit_card_type') as $key => $type)
-                                            <option value="{{$key}}">{{$type}}</option>
-                                        @endforeach
-                                    </select>
+                            <div class="form-group card_types">
+                                <div class="form-group">
+                                    <div class='col-md-2 control-label'>{!!Form::label('Credit Card Type') !!}</div>
+                                    <div class='col-md-6'>
+                                    <select name="card_type[]" class="form-control card_type">
+                                            @foreach(config('general.credit_card_type') as $key => $type)
+                                                <option value="{{$key}}">{{$type}}</option>
+                                            @endforeach
+                                        </select>
+
+                                    </div>
+                                </div>
+                            <div class="row other-name" style="display: none">
+                                    <div class="col-md-2">&nbsp;</div>
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control others_text" name="others[]">
+                                    </div>
                                 </div>
                             </div>
 
-                            <div class="form-group">
+                            <div class="form-group others">
                                 <div class='col-md-2 control-label'>{!!Form::label('To Be Cleared') !!}</div>
                                 <div class='col-md-6'>
-                                    <label><input type="radio" name="card_to_be_cleared[]" value=1 checked="checked" /> Yes</label>
-                                    <label><input type="radio" name="card_to_be_cleared[]" value=0 /> No</label>
+                                    <label><input type="radio" class="card_to_be_cleared" name="card_to_be_cleared[]" value=1 checked="checked" /> Yes</label>
+                                    <label><input type="radio" class="card_to_be_cleared" name="card_to_be_cleared[]" value=0 /> No</label>
                                 </div>
                             </div>
 

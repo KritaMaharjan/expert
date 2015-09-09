@@ -14,8 +14,14 @@ class LeadController extends BaseController {
     protected $lead;
     protected $request;
 
-    protected $rules = [
-        'referral_notes' => 'required|min:2|max:55'
+    protected $rules = [ 
+        'ex_clients_id' => 'required|exists:ex_clients,id',
+        'property_search_area' => 'required|min:2|max:55',
+        'bank_name' => 'required|min:2|max:55',
+        'area' => 'required|min:2|max:55',
+        'interest_rate' => 'required|numeric',
+        'interest_date_till' => 'required',
+        'amount' => 'required|numeric'
     ];
 
     protected $assign_rules = [
@@ -89,14 +95,11 @@ class LeadController extends BaseController {
 
     function create()
     {
-        if($this->request->input('ex_clients_id') == 0) {
-            $this->rules['preferred_name'] = 'required|min:2|max:55';
-            $this->rules['phone'] = 'required|min:2|numeric';
-        }
         $validator = \Validator::make($this->request->all(), $this->rules);
 
         if ($validator->fails())
             return redirect()->back()->withErrors($validator)->withInput();
+
         $lead_id = $this->lead->add($this->request->all());
         if($lead_id) {
             if($this->request->input('submit')){
@@ -112,8 +115,7 @@ class LeadController extends BaseController {
     {
         $lead_id= $this->request->route('id');
 
-        $data['lead'] = $this->lead->getLeadDetails($lead_id);
-        //$data['lead'] = Lead::where('id', $lead_id)->with('loan')->first();
+        $data['lead'] = Lead::where('id', $lead_id)->with('loan')->first();
         $sales_people = User::select('id', 'given_name', 'surname')->where('role', 4)->get()->toArray();
         $data['sales_people'][0] = 'Select user';
         foreach($sales_people as $sales_person)
@@ -229,14 +231,6 @@ class LeadController extends BaseController {
     {
         $lead_id = $this->request->route('id');
         $data['lead_details'] = $this->lead->getLeadDetails($lead_id);
-
-        $data['logs'] = Lead::with('leadlogs.log')->find($lead_id);
-        $users = User::select('id', 'email', 'given_name', 'surname')->get()->toArray();
-        $data['users'][''] = 'Don\'t Email';
-        foreach($users as $user)
-        {
-            $data['users'][$user['email']] = $user['given_name'].' '.$user['surname'];
-        }
         return view('system.lead.view', $data);
     }
 
