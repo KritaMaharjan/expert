@@ -93,10 +93,23 @@ class Property extends Model
             ->join('application_applicants as aa', 'applications.id', '=', 'aa.application_id')
             ->join('properties as p', 'aa.applicant_id', '=', 'p.applicant_id')
             ->join('addresses as address', 'address.id', '=', 'p.address_id')
-            ->select('p.*', 'address.*')
+            ->join('valuation_access as va', 'va.property_id', '=', 'p.id')
+            ->select('p.*', 'p.id as property_id', 'address.*', 'va.*')
             ->where('leads.id', $lead_id)
             ->get();
         return $query;
+    }
+
+    function getRentalIncome($property_id)
+    {
+        $income = Income::where('property_id', $property_id)->first();
+        return $income;
+    }
+
+    function getExistingLoans($property_id)
+    {
+        $loans = ExistingLoan::where('property_id', $property_id)->first();
+        return $loans;
     }
 
     function getLeadPropertiesArray($lead_id)

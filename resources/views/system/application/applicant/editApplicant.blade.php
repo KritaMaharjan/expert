@@ -20,7 +20,7 @@
                 <div class='col-md-6'>
                     <select name="title[{{$app_key}}]" class="form-control">
                         @foreach(config('general.title') as $key => $title)
-                            <option value="{{$key}}" {{($applicant->title == $key)? 'selected="selected"' : ""}}}>{{$title}}</option>
+                            <option value="{{$key}}" {{($applicant->title == $key)? 'selected="selected"' : ""}}>{{$title}}</option>
                         @endforeach
                     </select>
                 </div>
@@ -192,7 +192,7 @@
         </div>
     </div>
     <!-- /.box -->
-    @include('system.application.applicantAddress')
-    @include('system.application.applicantPhone')
+    @include('system.application.applicant.applicantAddress')
+    @include('system.application.applicant.applicantPhone')
 
 </div>

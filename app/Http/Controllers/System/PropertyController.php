@@ -54,8 +54,15 @@ class PropertyController extends BaseController {
         $data['lead_details'] = $this->lead->getLeadDetails($lead_id);
         $applicants = $this->lead->getLeadApplicants($lead_id);
         $data['applicants'] = $this->getApplicantsArray($applicants);
+        $properties = $this->property->getLeadPropertiesDetails($lead_id);
+        foreach($properties as $key => $property)
+        {
+            $properties[$key]->income = $this->property->getRentalIncome($property->property_id);
+            $properties[$key]->existing_loans = $this->property->getExistingLoans($property->property_id);
+        }
+        $data['properties'] = $properties;
         $data['total_properties'] = $this->property->getLeadPropertiesCount($lead_id);
-        return view('system.application.property', $data);
+        return view('system.application.property.property', $data);
     }
 
     function create()
@@ -67,11 +74,8 @@ class PropertyController extends BaseController {
             return redirect()->back()->withErrors($validator)->withInput();
 
         $this->property->add($this->request->all(), $lead_id);
-        \Flash::success('Applicant added successfully!');
-        if($this->request->input('submit'))
-            return redirect()->route('system.application.other', [$lead_id]);
-        else
-            return redirect()->route('system.application.property', [$lead_id]);
+        \Flash::success('Property added successfully!');
+        return redirect()->route('system.application.other', [$lead_id]);
     }
 
     function getApplicantsArray($details)

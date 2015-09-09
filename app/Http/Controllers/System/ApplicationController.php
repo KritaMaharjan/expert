@@ -87,7 +87,7 @@ class ApplicationController extends BaseController {
         $lead_id = $this->request->route('id');
         $data['applicants'] = $this->lead->getLeadApplicantsDetails($lead_id);
         $data['total_applicants'] = $this->lead->getLeadApplicantsCount($lead_id);
-        return view('system.application.prepare1', $data);
+        return view('system.application.applicant.prepare1', $data);
     }
 
     function create()
