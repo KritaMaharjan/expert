@@ -141,7 +141,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group @if($errors->has('balance')) {{'has-error'}} @endif">
+                            <div class="form-group @if($errors->has('balance')) {{'has-error'}} @endif balance">
                                 <div class='col-md-2 control-label'>{!!Form::label('Balance') !!}</div>
                                 <div class='col-md-6'>
                                     <input type="text" class="form-control" name="balance[]">
