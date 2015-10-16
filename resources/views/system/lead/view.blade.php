@@ -30,8 +30,14 @@
                         </thead>
                         <tbody>
                         <tr>
-                            <td>{{format_datetime($lead_details->created_at)}}</td>
+                            <td>{{$lead_status['added_on']['date']}}</td>
+                            <td>{{$lead_status['assign']['date']}}</td>
                             <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr><tr>
+                            <td>{{$lead_status['added_on']['person']}}</td>
+                            <td>{{$lead_status['assign']['person']}}</td>
                             <td></td>
                             <td></td>
                             <td></td>

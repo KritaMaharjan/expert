@@ -76,3 +76,10 @@ ADD CONSTRAINT `fk_other_income_ownership1_idx` FOREIGN KEY (`applicant_id`) REF
 
 
 ALTER TABLE `lenders` ADD `job_title` VARCHAR(255) NOT NULL AFTER `contact_name`, ADD `title` VARCHAR(255) NOT NULL AFTER `job_title`, ADD `preferred_name` VARCHAR(100) NOT NULL AFTER `title`, ADD `first_name` VARCHAR(55) NOT NULL AFTER `preferred_name`, ADD `last_name` VARCHAR(55) NOT NULL AFTER `first_name`, ADD `phone` VARCHAR(20) NOT NULL AFTER `last_name`, ADD `email` VARCHAR(255) NOT NULL AFTER `phone`, ADD `abn` VARCHAR(255) NOT NULL AFTER `email`, ADD `occupation` VARCHAR(255) NOT NULL AFTER `abn`, ADD `commission` DECIMAL(11,2) NOT NULL AFTER `occupation`;
+
+
+ALTER TABLE `ex_client_leads_assign` ADD `added_by_users_id` INT NOT NULL AFTER `assign_to`;
+
+ALTER TABLE `ex_client_leads_assign` ADD INDEX(`added_by_users_id`);
+
+SET foreign_key_checks = 0;# MySQL returned an empty result set (i.e. zero rows). ALTER TABLE `ex_client_leads_assign` ADD FOREIGN KEY (`added_by_users_id`) REFERENCES `expert_finance`.`ex_users`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;# MySQL returned an empty result set (i.e. zero rows). SET foreign_key_checks = 1;# MySQL returned an empty result set (i.e. zero rows).

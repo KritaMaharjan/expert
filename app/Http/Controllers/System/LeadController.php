@@ -249,6 +249,7 @@ class LeadController extends BaseController
         $lead_id = $this->request->route('id');
         $data['logs'] = Lead::with('leadlogs.log')->find($lead_id);
         $data['lead_details'] = $this->lead->getLeadDetails($lead_id);
+        $data['lead_status'] = $this->lead->getLeadStatus($lead_id);
         return view('system.lead.view', $data);
     }
 

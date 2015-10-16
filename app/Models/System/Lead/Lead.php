@@ -12,6 +12,7 @@ use App\Models\System\Profile\Phone;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use MyProject\Proxies\__CG__\OtherProject\Proxies\__CG__\stdClass;
 
 class Lead extends Model
 {
@@ -236,6 +237,22 @@ class Lead extends Model
         $client = Client::find($query->client_id);
         $query->current_phone = (!empty($client) ? $client->currentPhone() : '');
         return $query;
+    }
+
+    function getLeadStatus($lead_id)
+    {
+        $lead = Lead::select('created_at', 'added_by_users_id', 'status')->find($lead_id);
+        $status = array();
+        $status['added_on']['date'] = format_datetime($lead->created_at);
+        $status['added_on']['person'] = get_user_name($lead->added_by_users_id);
+
+        $assign = ClientLeadAssign::select('assign_to', 'added_by_users_id', 'created_at', 'status')->where('ex_leads_id', $lead_id)->first();
+        $status['assign']['date'] = (!empty($assign))? format_datetime($assign->created_at) : '';
+        $status['assign']['person'] = (!empty($assign))? get_user_name($assign->added_by_users_id) : '';
+
+        $status['received']['person'] = (!empty($assign))? get_user_name($assign->added_by_users_id) : '';
+        $status['received']['person'] = (!empty($assign))? get_user_name($assign->assign_to) : '';
+        return $status;
     }
 
     function getExpenseDetails($lead_id)
