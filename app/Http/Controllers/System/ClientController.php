@@ -117,4 +117,14 @@ class ClientController extends BaseController
         return $this->success(['message' => 'Client deleted Successfully']);
     }
 
+    function details()
+    {
+        $client_id = $this->request->route('id');
+        $client = Client::select('id', 'preferred_name', 'given_name', 'surname')->find($client_id);
+        $client->phone = $client->currentPhone();
+        $view = view('system.client.details', ['client' => $client]);
+        $template = $view->render();
+        return $this->success(['template' => $template]);
+    }
+
 }

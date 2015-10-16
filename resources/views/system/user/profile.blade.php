@@ -13,6 +13,7 @@
 @stop
 
 @section('content')
+    @include('flash::message')
     <div class="box">
         <div class="box-body">
             <div class="box-header with-border">
@@ -87,6 +88,10 @@
                 </table>
                 <br/>
                 @endforeach
+            </div>
+
+            <div class="box-footer">
+                <a class="btn btn-primary" href="{{route('system.user.update', $user->id)}}">Update Profile</a>
             </div>
         </div>
     </div>

@@ -32,7 +32,10 @@ class Client extends Model
     function currentPhone()
     {
         $phone = ClientPhone::where('ex_clients_id', $this->id)->where('is_current', 1)->with('phone')->first();
-        return $phone->phone->number;
+        if(!empty($phone))
+            return $phone->phone->number;
+        else
+            return '';
     }
 
     function add(array $request)
@@ -245,6 +248,11 @@ class Client extends Model
         if ($search != '') {
             $query = $query->where('domain', 'LIKE', "%$search%")->orwhere('email', 'LIKE', "%$search%");
         }
+
+        //if not super admin
+        if(!current_user()->isSuperAdmin)
+            $query = $query->where('added_by_users_id', current_user_id());
+
         $client['total'] = $query->count();
 
         $query->skip($start)->take($take);
@@ -254,6 +262,8 @@ class Client extends Model
         foreach ($data as $key => &$value) {
             $value->fullname = $value->given_name . " " . $value->surname;
             $value->DT_RowId = "row-" . $value->id;
+            $phone = ClientPhone::where('ex_clients_id', $value->id)->where('is_current', 1)->with('phone')->first();
+            $value->phone = (!empty($phone)? $phone->phone->number : '');
         }
         $client['data'] = $data->toArray();
         $json = new \stdClass();

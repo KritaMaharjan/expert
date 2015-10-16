@@ -35,7 +35,7 @@
 </script>
 
 </head>
-<body class="skin-blue">
+<body class="skin-blue layout-top-nav">
 <div class="wrapper">
   <!-- header logo: style can be found in header.less -->
 @include('system.layouts.partials.header')

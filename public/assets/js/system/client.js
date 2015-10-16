@@ -11,7 +11,7 @@ $(function () {
 
         "columnDefs": [{
             "orderable": false,
-            "targets": 4,
+            "targets": 5,
             "render": function (data, type, row) {
                 return showActionbtn(row);
             }
@@ -20,6 +20,7 @@ $(function () {
             {"data": "preferred_name"},
             {"data": "fullname"},
             {"data": "email"},
+            {"data": "phone"},
             {"data": "created_at"}
         ]
     });
@@ -27,7 +28,7 @@ $(function () {
 
     function showActionbtn(row) {
         return '<div class="box-tools">' +
-            '<a class="block" href ="' + appUrl + '/system/client/edit/' + row.id + '">Edit</a> <a href="' + appUrl + '/system/client/delete/' + row.id + '" class="delete-client">Delete</a>' +
+            '<a href ="' + appUrl + '/system/client/edit/' + row.id + '"><i class ="fa fa-pencil"></i></a>  &nbsp;&nbsp;<a href="' + appUrl + '/system/client/delete/' + row.id + '" class="delete-client"><i class ="fa fa-trash"></i></a>' +
             '</div>';
     }
 

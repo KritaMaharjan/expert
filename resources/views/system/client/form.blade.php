@@ -9,15 +9,20 @@
             <!-- /.box-header -->
             <div class="box-body">
                 <div class="form-group @if($errors->has('preferred_name')) {{'has-error'}} @endif">
-                    {!!Form::label('Preferred Name') !!}
+                    {!!Form::label('Preferred Name *') !!}
                     {!!Form::text('preferred_name', null, array('class' => 'form-control', 'id'=>'preferred_name'))!!}
                     @if($errors->has('preferred_name'))
                         {!! $errors->first('preferred_name', '<label class="control-label"
                                                                      for="inputError">:message</label>') !!}
                     @endif
                 </div>
+                <div class="form-group @if($errors->has('title')) {{'has-error'}} @endif">
+                    {!!Form::label('Title *') !!}
+                    {!!Form::select('title', config('general.title'), null, array('class' =>
+                    'form-control')) !!}
+                </div>
                 <div class="form-group @if($errors->has('given_name')) {{'has-error'}} @endif">
-                    {!!Form::label('Given Name') !!}
+                    {!!Form::label('Given Name *') !!}
                     {!!Form::text('given_name', null, array('class' => 'form-control', 'id'=>'given_name'))!!}
                     @if($errors->has('given_name'))
                         {!! $errors->first('given_name', '<label class="control-label"
@@ -25,7 +30,7 @@
                     @endif
                 </div>
                 <div class="form-group @if($errors->has('surname')) {{'has-error'}} @endif">
-                    {!!Form::label('Surname') !!}
+                    {!!Form::label('Surname *') !!}
                     {!!Form::text('surname', null, array('class' => 'form-control', 'id'=>'surname'))!!}
                     @if($errors->has('surname'))
                         {!! $errors->first('surname', '<label class="control-label"
@@ -64,7 +69,7 @@
                 </div>
 
                 <div class="form-group @if($errors->has('email')) {{'has-error'}} @endif">
-                    {!!Form::label('Email Address') !!}
+                    {!!Form::label('Email Address *') !!}
                     {!!Form::text('email', null, array('class' => 'form-control', 'id'=>'email'))!!}
                     @if($errors->has('email'))
                         {!! $errors->first('email', '<label class="control-label"
@@ -73,7 +78,7 @@
                     @endif
                 </div>
                 <div class="form-group @if($errors->has('salary')) {{'has-error'}} @endif">
-                    {!!Form::label('Annual Salary') !!}
+                    {!!Form::label('Annual Salary *') !!}
                     {!!Form::text('salary', null, array('class' => 'form-control', 'id'=>'salary'))!!}
                     @if($errors->has('salary'))
                         {!! $errors->first('salary', '<label class="control-label"
@@ -83,7 +88,7 @@
                 </div>
 
                 <div class="form-group @if($errors->has('occupation')) {{'has-error'}} @endif">
-                    {!!Form::label('Occupation') !!}
+                    {!!Form::label('Occupation *') !!}
                     {!!Form::text('occupation', null, array('class' => 'form-control', 'id'=>'occupation'))!!}
                     @if($errors->has('occupation'))
                         {!! $errors->first('occupation', '<label class="control-label"
@@ -104,16 +109,6 @@
                 <div class="form-group">
                     {!!Form::label('Introduced By') !!}
                     {!!Form::select('introducer', $users, null, array('class' => 'form-control', 'id'=>'introducer'))!!}
-                </div>
-
-                <div class="form-group @if($errors->has('title')) {{'has-error'}} @endif">
-                    {!!Form::label('Title') !!}
-                    {!!Form::text('title', null, array('class' => 'form-control', 'id'=>'title'))!!}
-                    @if($errors->has('title'))
-                        {!! $errors->first('title', '<label class="control-label"
-                                                            for="inputError">:message</label>
-                        ') !!}
-                    @endif
                 </div>
             </div>
 

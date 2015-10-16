@@ -97,7 +97,10 @@ class UserController extends BaseController
         $this->user->edit($this->request->all(), $user_id);
 
         \Flash::success('User updated successfully!');
-        return redirect()->route('system.user');
+        if($user_id != $this->current_user()->id)
+            return redirect()->route('system.user');
+        else
+            return redirect()->route('system.user.profile');
     }
 
     function delete()

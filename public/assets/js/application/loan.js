@@ -5,20 +5,45 @@ $(document).ready(function() {
     /* Add Loan */
     $('.add-loan').click(function(e){
         e.preventDefault();
-        var newLoan = '<div class="new-loan">'+$('.new-loan').last().html()+'</div>';
-        var numLoansBefore = $('.loan-details .new-loan').length;
-        $nl = $(newLoan);
-        $nl.find('.loan_type').removeAttr('name').attr('name', 'loan_type['+numLoansBefore+']');
-        $nl.find('.repayment_type').removeAttr('name').attr('name', 'repayment_type['+numLoansBefore+']');
-        var newLoanElement = $nl.insertAfter($('.new-loan').last());
+        $this = $(this);
+        $this.html('Loading...');
+        $this.attr('disabled', true);
+        $.ajax({
+            url: appUrl + '/system/application/loan/template/'+ leadID,
+            type: 'GET',
+            dataType: 'json'
+        })
+            .done(function (response) {
+                if (response.success == true || response.status == 1) {
+                    var newLoan = response.data.template;
+                    var numLoansBefore = $('.loan-details .new-loan').length;
+                    $nl = $(newLoan);
+                    $nl.find('.loan_type').removeAttr('name').attr('name', 'loan_type['+numLoansBefore+']');
+                    $nl.find('.repayment_type').removeAttr('name').attr('name', 'repayment_type['+numLoansBefore+']');
+                    var newLoanElement = $nl.insertAfter($('.new-loan').last());
 
-        var numLoans = $('.loan-details .new-loan').length;
-        newLoanElement.find('.loan-num').html(numLoans);
+                    var numLoans = $('.loan-details .new-loan').length;
+                    newLoanElement.find('.loan-num').html(numLoans);
 
-        $('.expiry_date').datepicker({format: 'yyyy-mm-dd', startDate: new Date()});
-        if(numLoans == 10) {
-            $('.add-loan-div').hide();
-        }
+                    $('.expiry_date').datepicker({format: 'yyyy-mm-dd', startDate: new Date()});
+                    if(numLoans == 10) {
+                        $('.add-loan-div').hide();
+                    }
+                }
+                else {
+                    $('.mainContainer .box-solid').before(notify('error', 'Something went wrong!'));
+                    setTimeout(function () {
+                        $('.callout').remove();
+                    }, 3000);
+                }
+            })
+            .fail(function () {
+                alert('Something went wrong!');
+            })
+            .always(function() {
+                $this.html('Add a Loan');
+                $this.attr('disabled', false);
+            });
     });
 
     function chainItWithId(id) {

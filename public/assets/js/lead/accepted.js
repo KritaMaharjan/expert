@@ -11,7 +11,7 @@ $(function () {
 
         "columnDefs": [{
             "orderable": false,
-            "targets": 7,
+            "targets": 6,
             "render": function (data, type, row) {
                 return showActionbtn(row);
             }
@@ -21,7 +21,6 @@ $(function () {
             {"data": "client_name"},
             {"data": "email"},
             {"data": "loan_type"},
-            {"data": "amount"},
             {"data": "meeting_datetime"},
             {"data": "meeting_place"}
         ]
@@ -30,7 +29,7 @@ $(function () {
 
     function showActionbtn(row) {
         return '<div class="box-tools">' +
-            '<a href="' + appUrl + '/system/application/add/' + row.id + '" class="block">Prepare Application</a> <a href="' + appUrl + '/system/lead/view/' + row.id + '">View</a> <a class="block" href ="' + appUrl + '/system/lead/log/' + row.id + '">View Logs</a>' +
+            '<a href="' + appUrl + '/system/application/loan/' + row.id + '" class="block">Prepare Application</a> <a href="' + appUrl + '/system/lead/view/' + row.id + '">View</a> <br/><a href="' + appUrl + '/system/lead/attachment/' + row.id + '">Interview Notes</a> <br/>' +
             '</div>';
     }
 

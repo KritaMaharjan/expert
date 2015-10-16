@@ -1,6 +1,7 @@
 <?php
 namespace App\Models\System\Lead;
 
+use App\Models\System\Lead\Attachment;
 use App\Models\System\Client\Client;
 use App\Models\System\Client\ClientPhone;
 use App\Models\System\Loan\Loan;
@@ -21,6 +22,12 @@ class Lead extends Model
     public function loan()
     {
         return $this->hasOne('App\Models\System\Loan\Loan', 'ex_leads_id');
+    }
+
+    //Lead can have many attachments
+    public function attachments()
+    {
+        return $this->hasMany('App\Models\System\Lead\Attachment', 'lead_id');
     }
 
     //Lead can have many logs
@@ -53,9 +60,10 @@ class Lead extends Model
 
         try {
 
-            if($request['ex_clients_id'] == 0) {
+            if ($request['ex_clients_id'] == 0) {
                 $client = Client::create([
                     'preferred_name' => $request['preferred_name'],
+                    'title' => $request['title'],
                     'given_name' => $request['given_name'],
                     'surname' => $request['surname'],
                     'added_by_users_id' => \Auth::user()->id
@@ -124,7 +132,8 @@ class Lead extends Model
                 'meeting_datetime' => $request['meeting_datetime'],
                 'meeting_place' => $request['meeting_place'],
                 'description' => $request['description'],
-                'assign_to' => $request['assign_to']
+                'assign_to' => $request['assign_to'],
+                'status' => ($request['assign_to'] == current_user_id())? 1 : 0
             ]);
 
             $lead->status = 1;
@@ -148,21 +157,21 @@ class Lead extends Model
             $lead = Lead::find($lead_id);
 
             $lead->referral_notes = $request['referral_notes'];
-            $lead->feedback = $request['feedback'];
-            $lead->property_search_area = $request['property_search_area'];
+            /*$lead->feedback = $request['feedback'];
+            $lead->property_search_area = $request['property_search_area'];*/
             $lead->ex_clients_id = $request['ex_clients_id'];
 
             $lead->save();
 
             $loan = Loan::where('ex_leads_id', $lead->id)->first();
             $loan->loan_purpose = $request['loan_purpose'];
-            $loan->amount = $request['amount'];
-            $loan->area = $request['area'];
+            /*$loan->amount = $request['amount'];
+            $loan->area = $request['area'];*/
             $loan->loan_type = $request['loan_type'];
-            $loan->interest_rate = $request['interest_rate'];
+            /*$loan->interest_rate = $request['interest_rate'];
             $loan->bank_name = $request['bank_name'];
             $loan->interest_type = $request['interest_type'];
-            $loan->interest_date_till = $request['interest_date_till'];
+            $loan->interest_date_till = $request['interest_date_till'];*/
             /*foreach($request['loan'] as $key => $loan_element) {
                 $loan->$key = $loan_element;
             }*/
@@ -176,7 +185,7 @@ class Lead extends Model
             return false;
         }
     }
-    
+
     /*
      * Delete lead
      * parameter lead id int
@@ -201,7 +210,7 @@ class Lead extends Model
             $lead_logs = LeadLog::where('ex_lead_id', $lead_id)->get();
             $lead_logs->delete();
 
-            foreach($lead_logs as $lead_log) {
+            foreach ($lead_logs as $lead_log) {
                 $log = Log::find($lead_log->log_id);
                 $log->delete();
             }
@@ -224,7 +233,8 @@ class Lead extends Model
             ->select('leads.*', 'clients.given_name', 'clients.id as client_id', 'clients.preferred_name', 'clients.surname', 'clients.email', 'loans.loan_purpose', 'loans.amount', 'loans.loan_type', 'loans.bank_name', 'loans.area', 'loans.interest_rate', 'loans.interest_type', 'loans.interest_date_till')
             ->where('leads.id', $lead_id)
             ->first();
-        $query->current_phone = Client::find($query->client_id)->currentPhone();
+        $client = Client::find($query->client_id);
+        $query->current_phone = (!empty($client) ? $client->currentPhone() : '');
         return $query;
     }
 
@@ -253,11 +263,22 @@ class Lead extends Model
         return $result;
     }
 
+    function getLeadApplicantIds($lead_id)
+    {
+        $query = DB::table('ex_leads as leads')
+            ->join('applications', 'applications.ex_lead_id', '=', 'leads.id')
+            ->join('application_applicants as aa', 'applications.id', '=', 'aa.application_id')
+            ->select('aa.applicant_id')
+            ->where('leads.id', $lead_id);
+        $result = $query->lists('aa.applicant_id');
+        return $result;
+    }
+
     function getLeadApplicantsDetails($lead_id)
     {
         $result = $this->getLeadApplicants($lead_id);
 
-        foreach($result as $key => $applicant) {
+        foreach ($result as $key => $applicant) {
             $result[$key]->address = $this->getApplicantAddress($applicant->id);
             $result[$key]->phone = $this->getApplicantPhone($applicant->id);
         }
@@ -295,6 +316,30 @@ class Lead extends Model
             ->where('leads.id', $lead_id)
             ->count();
         return $query;
+    }
+
+    /* Upload Attachment */
+    function uploadAttachment($lead_id, $fileName)
+    {
+        //check if other attachment still exists
+        $attachment = Attachment::where('lead_id', $lead_id)->first();
+        if(!empty($attachment)) {
+            //delete file if exists
+            $destinationPath = 'resources/uploads/attachments/'; // upload path
+            unlink($destinationPath.$attachment->filename);
+            $attachment->filename = $fileName;
+            $attachment->uploaded_date = get_today_datetime();
+            $attachment->added_by_users_id = \Auth::user()->id;
+            $attachment->save();
+        } else {
+
+            Attachment::create([
+                'filename' => $fileName,
+                'lead_id' => $lead_id,
+                'uploaded_date' => get_today_datetime(),
+                'added_by_users_id' => \Auth::user()->id
+            ]);
+        }
     }
 
     /* *
@@ -353,7 +398,6 @@ class Lead extends Model
         foreach ($data as $key => &$value) {
             $value->client_name = $value->given_name . " " . $value->surname;
             //$value->amount = $value->amount;
-            $value->type = $value->loan_type;
             $value->meeting_time = format_datetime($value->meeting_datetime);
             //$value->meeting_place = $value->meeting_place;
         }
@@ -447,36 +491,40 @@ class Lead extends Model
             $query = $query->orderBy($orderColumn, $orderdir);
         }
 
-        /*if ($search != '') {
+        if ($search != '') {
             $query = $query->where('domain', 'LIKE', "%$search%")->orwhere('email', 'LIKE', "%$search%");
-        }*/
+        }
+
+        if(!current_user()->isSuperAdmin)
+            $query = $query->where('added_by_users_id', current_user_id());
+
         $lead['total'] = $query->count();
 
         $query->skip($start)->take($take);
 
-        if($unassigned_only == true)
-        $query = $query->where('status', 0);
+        if ($unassigned_only == true)
+            $query = $query->where('status', 0);
 
         $data = $query->get();
 
         foreach ($data as $key => &$value) {
             $client = Client::find($value->ex_clients_id);
 
-            if($value->status == 1) {
+            if ($value->status == 1) {
                 $meeting_date = ClientLeadAssign::where('ex_leads_id', $value->id)->first()->meeting_datetime;
                 $meeting_date = format_datetime($meeting_date);
-            }
-            else
-                $meeting_date = 'Not Assigned Yet';
+            } else
+                $meeting_date = "Not Assigned Yet <a class = 'btn btn-primary btn-xs' href =".url('system/lead/assign', $value->id).">Assign Now</a>";
 
             $phone_number = $client->currentPhone();
             $value->client = $client->given_name . " " . $client->surname;
             $value->preferred_name = $client->preferred_name;
             $value->phone_number = $phone_number;
+            $value->loan_type = $value->loan->loan_type;
             $value->meeting_date = $meeting_date;
             $value->actual_status = $value->status;
             $value->amount = $value->loan->amount;
-            $value->status = ($value->status == 0)?'<span class="label label-danger">Unassigned</span>':'<span class="label label-success">Assigned</span>';
+            $value->status = ($value->status == 0) ? '<span class="label label-danger">Unassigned</span>' : '<span class="label label-success">Assigned</span>';
         }
         $lead['data'] = $data->toArray();
         $json = new \stdClass();
@@ -505,7 +553,7 @@ class Lead extends Model
                 'added_by' => \Auth::user()->id,
                 'comment' => $request['comment'],
                 'emailed_to' => $request['emailed_to'],
-                'email' => ($request['emailed_to'] == '')? 0 : 1,
+                'email' => ($request['emailed_to'] == '') ? 0 : 1,
             ]);
 
             LeadLog::create([
@@ -526,9 +574,16 @@ class Lead extends Model
     /* Accept lead by sales person */
     function accept($lead_id)
     {
-        //$lead = ClientLeadAssign::where(array('ex_leads_id' => $lead_id, 'assign_to' => \Auth::user()->id))->first();
-        $lead = ClientLeadAssign::where(array('ex_leads_id' => $lead_id, 'assign_to' => 2))->first(); //change this later
+        $lead = ClientLeadAssign::where(array('ex_leads_id' => $lead_id, 'assign_to' => \Auth::user()->id))->first();
         $lead->status = 1;
+        $lead->save();
+    }
+
+    /* Declined lead by sales person */
+    function decline($lead_id)
+    {
+        $lead = ClientLeadAssign::where(array('ex_leads_id' => $lead_id, 'assign_to' => \Auth::user()->id))->first();
+        $lead->status = 2;
         $lead->save();
     }
 } 

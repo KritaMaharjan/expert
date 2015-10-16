@@ -14,7 +14,6 @@
 @section('content')
     @include('system.application.steps')
     <div class="row">
-        @include('flash::message')
         {!!Form::open(['class' => 'form-horizontal'])!!}
         <div class="col-xs-12 mainContainer">
             @include('flash::message')

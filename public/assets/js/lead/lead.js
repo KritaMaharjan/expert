@@ -11,25 +11,26 @@ $(function () {
 
         "columnDefs": [{
             "orderable": false,
-            "targets": 6,
+            "targets": 7,
             "render": function (data, type, row) {
                 return showActionbtn(row);
             }
         }],
         "columns": [
             {"data": "id"},
-            {"data": "client"},
-            {"data": "preferred_name"},
+            {"data": "client", "orderable": false},
+            {"data": "preferred_name", "orderable": false},
             {"data": "ex_clients_id"},
-            {"data": "phone_number"},
-            {"data": "meeting_date"},
+            {"data": "phone_number", "orderable": false},
+            {"data": "loan_type", "orderable": false},
+            {"data": "meeting_date", "orderable": false},
             {"data": "status"}
         ]
     });
 
 
     function showActionbtn(row) {
-        if(row.actual_status == 0) var assign = ' <a class="block" href ="' + appUrl + '/system/lead/assign/' + row.id + '">Assign</a>';
+        if(row.actual_status == 'remove_this') var assign = ' <a class="block" href ="' + appUrl + '/system/lead/assign/' + row.id + '">Assign</a>';
         else var assign = '';
         return '<div class="box-tools">' +
             '<a class="block" href ="' + appUrl + '/system/lead/edit/' + row.id + '">Edit</a> <a class="block" href ="' + appUrl + '/system/lead/view/' + row.id + '">View</a>' + assign +

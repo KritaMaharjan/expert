@@ -11,7 +11,6 @@
                         <th>Id</th>
                         <th>Name</th>
                         <th>Loan Type</th>
-                        <th>Loan Amount</th>
                         <th>Meeting Time</th>
                         <th>Location</th>
                         <th>Processing</th>

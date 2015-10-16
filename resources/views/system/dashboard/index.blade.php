@@ -71,6 +71,7 @@
                             <th>Preferred Name</th>
                             <th>Client ID</th>
                             <th>Phone Number</th>
+                            <th>Loan Type</th>
                             <th>Meeting Date</th>
                             <th>Action</th>
                         </tr>

@@ -10,4 +10,9 @@ class ApplicationStatus extends Model {
 
     public $timestamps = false;
 
+    function status()
+    {
+        return $this->belongsTo('App\Models\System\Application\Status', 'status_id');
+    }
+
 }

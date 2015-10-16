@@ -11,6 +11,7 @@ use App\Models\System\Application\OtherIncome;
 use App\Models\System\Client\Client;
 use App\Models\System\Application\Application;
 use App\Models\System\Lead\Lead;
+use App\Models\System\Loan\NewApplicantLoan;
 use App\Models\System\Property\Property;
 use Illuminate\Http\Request;
 use App\Models\System\User;
@@ -46,10 +47,11 @@ class ReviewController extends BaseController {
         'limit' => 'numeric',
     ];
 
-    public function __construct(Client $client, Application $application, Property $property, Lead $lead, Request $request, Car $car, BankAccount $bankAccount, OtherAsset $otherAssets, CreditCard $cards, OtherIncome $otherIncome, EmploymentDetails $employment, LivingExpense $expense)
+    public function __construct(Client $client, NewApplicantLoan $loan, Application $application, Property $property, Lead $lead, Request $request, Car $car, BankAccount $bankAccount, OtherAsset $otherAssets, CreditCard $cards, OtherIncome $otherIncome, EmploymentDetails $employment, LivingExpense $expense)
     {
         parent::__construct();
         $this->client = $client;
+        $this->loan = $loan;
         $this->application = $application;
         $this->property = $property;
         $this->lead = $lead;
@@ -67,6 +69,7 @@ class ReviewController extends BaseController {
     {
         $lead_id = $data['lead_id'] = $this->request->route('id');
         $data['lead_details'] = $this->lead->getLeadDetails($lead_id);
+        $data['loan_details'] = $this->loan->getApplicantLoanDetails($lead_id);
         $applicants = $data['applicant_details'] = $this->lead->getLeadApplicantsDetails($lead_id);
         $data['property_details'] = $this->property->getLeadPropertiesDetails($lead_id);
         $data['car_details'] = $this->car->getLeadCarDetails($lead_id);

@@ -25,7 +25,6 @@
                             <th>Client Name</th>
                             <th>Email</th>
                             <th>Loan Type</th>
-                            <th>Loan Amount</th>
                             <th>Meeting Time</th>
                             <th>Location</th>
                             <th>Action</th>

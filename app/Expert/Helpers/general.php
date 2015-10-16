@@ -11,12 +11,18 @@ function show_404()
 function current_user()
 {
     $user = \Auth::user();
-    $user->isAdmin = ($user->role == 1);
-    $user->isUser = ($user->role == 2);
+    $user->isSuperAdmin = ($user->role == 1);
+    $user->isAdmin = ($user->role == 2);
+    $user->isSales = ($user->role == 3);
+    $user->isMarketer = ($user->role == 4);
 
     return $user;
 }
 
+function current_user_id()
+{
+    return \Auth::user()->id;
+}
 
 function page_title()
 {
@@ -110,6 +116,12 @@ function get_today_date()
 {
     $today = Carbon\Carbon::now();
     return $today->toDateString();
+}
+
+function get_today_datetime()
+{
+    $today = Carbon\Carbon::now();
+    return $today;
 }
 
 function float_format($number, $digits = 2)

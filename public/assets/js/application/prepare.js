@@ -8,14 +8,39 @@ $(document).ready(function() {
     /* Add Applicant */
     $('.add-applicant').click(function(e){
         e.preventDefault();
-        var newApplicant = '<div class="new-applicant">'+$('.new-applicant').last().html()+'</div>';
-        var newApplicantElement = $(newApplicant).insertAfter($('.new-applicant').last());
-        var numApplicants = $('.applicant-details .new-applicant').length;
-        newApplicantElement.find('.applicant-num').html(numApplicants);
+        $this = $(this);
+        $this.html('Loading...');
+        $this.attr('disabled', true);
+        $.ajax({
+            url: appUrl + '/system/application/applicant/template/'+ leadID,
+            type: 'GET',
+            dataType: 'json'
+        })
+            .done(function (response) {
+                if (response.success == true || response.status == 1) {
+                    var newApplicant = response.data.template;
+                    var newApplicantElement = $(newApplicant).insertAfter($('.new-applicant').last());
+                    var numApplicants = $('.applicant-details .new-applicant').length;
+                    newApplicantElement.find('.applicant-num').html(numApplicants);
 
-        if(numApplicants == 10) {
-            $('.add-applicant-div').hide();
-        }
+                    if(numApplicants == 10) {
+                        $('.add-applicant-div').hide();
+                    }
+                }
+                else {
+                    $('.mainContainer .box-solid').before(notify('error', 'Something went wrong!'));
+                    setTimeout(function () {
+                        $('.callout').remove();
+                    }, 3000);
+                }
+            })
+            .fail(function () {
+                alert('Something went wrong!');
+            })
+            .always(function() {
+                $this.html('Add an Applicant');
+                $this.attr('disabled', false);
+            });
     });
 
     $(document).on('click', '.remove-applicant', function(e) {
@@ -39,7 +64,7 @@ $(document).ready(function() {
         if(numApplicants == 10) $('.add-applicant-div').show();
     });
 
-    $('input[type=radio][name="dependent[]"]').change(function() {
+    $(document).on('change', '.dependent', function(e) {
         if (this.value == 1) {
             $(this).parents().find('.dependant').fadeIn('slow');
         }
@@ -48,7 +73,7 @@ $(document).ready(function() {
         }
     });
 
-    $('input[type=radio][name=credit_card_issue]').change(function() {
+    $(document).on('change', 'input[type=radio][name="credit_card_issue[]"]', function(e) {
         if (this.value == "1") {
             $('.issue-comments').fadeIn('slow');
         }
@@ -57,7 +82,7 @@ $(document).ready(function() {
         }
     });
 
-    $('.add-dependant').click(function(e) {
+    $(document).on('click', '.add-dependant', function(e) {
         e.preventDefault();
         $('.ages').append('<input type="text" name="age[]" class="form-control text-digit" />');
     });

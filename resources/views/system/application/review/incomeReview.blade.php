@@ -36,10 +36,10 @@
                         <td class="col-md-4">Salary Crediting</td>
                         <td class="col-md-6 applicant-content">{{($income_detail->salary_crediting == 0)? 'No' : 'Yes'}}</td>
                     </tr>
-                    @if($income_detail->salary_crediting == 1)
+                    @if($income_detail->salary_crediting == 1 && isset($income_detail->credit_to_where))
                         <tr>
                             <td class="col-md-4">Credits To</td>
-                            <td class="col-md-6 applicant-content">{{$income_detail->credits_to_where}}</td>
+                            <td class="col-md-6 applicant-content">{{$income_detail->credit_to_where}}</td>
                         </tr>
                     @endif
                     <tr>

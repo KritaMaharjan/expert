@@ -1,0 +1,11 @@
+env file 
+
+DB_HOST=localhost
+DB_DATABASE=jyotishd_rashifal
+DB_USERNAME=jyotishd_manish
+DB_PASSWORD=A2~h}&MemSyR
+
+
+client current phone
+
+https://www.zeemaps.com/edit/ulLNPjwVYml1BV1PWPUtnA

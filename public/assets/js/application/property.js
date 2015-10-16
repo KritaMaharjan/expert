@@ -1,35 +1,59 @@
 $('.expiry_date').datepicker({format: 'yyyy-mm-dd', startDate: new Date()});
 
 $(document).ready(function() {
-    $('input[type=radio][name=rental_income]').change(function() {
+    $(document).on('change', '.rental_income', function(e) {
         if (this.value == 1) {
-            $('.rental-details').fadeIn('slow');
+            $(this).closest('.box-body').find('.rental-details').fadeIn('slow');
         }
         else if (this.value == 0) {
-            $('.rental-details').fadeOut('slow');
+            $(this).closest('.box-body').find('.rental-details').fadeOut('slow');
         }
     });
 
-    $('input[type=radio][name=existing_loans]').change(function() {
+    $(document).on('change', '.existing_loans', function(e) {
         if (this.value == 1) {
-            $('.loans-details').fadeIn('slow');
+            $(this).closest('.box-body').find('.loans-details').fadeIn('slow');
         }
         else if (this.value == 0) {
-            $('.loans-details').fadeOut('slow');
+            $(this).closest('.box-body').find('.loans-details').fadeIn('slow');
         }
     });
 
-    /* Add Property */
     $('.add-property').click(function(e){
         e.preventDefault();
-        var newProperty = '<div class="new-property">'+$('.new-property').last().html()+'</div>';
-        var newPropertyElement = $(newProperty).insertAfter($('.new-property').last());
-        var numProperties = $('.property-details .new-property').length;
-        newPropertyElement.find('.property-num').html(numProperties);
+        $this = $(this);
+        $this.html('Loading...');
+        $this.attr('disabled', true);
+        $.ajax({
+            url: appUrl + '/system/application/property/template/'+ leadID,
+            type: 'GET',
+            dataType: 'json'
+        })
+            .done(function (response) {
+                if (response.success == true || response.status == 1) {
+                    var newProperty = response.data.template;
+                    var newPropertyElement = $(newProperty).insertAfter($('.new-property').last());
+                    var numProperties = $('.property-details .new-property').length;
+                    newPropertyElement.find('.property-num').html(numProperties);
 
-        if(numProperties == 10) {
-            $('.add-property-div').hide();
-        }
+                    if(numProperties == 10) {
+                        $('.add-property-div').hide();
+                    }
+                }
+                else {
+                    $('.mainContainer .box-solid').before(notify('error', 'Something went wrong!'));
+                    setTimeout(function () {
+                        $('.callout').remove();
+                    }, 3000);
+                }
+            })
+            .fail(function () {
+                alert('Something went wrong!');
+            })
+            .always(function() {
+                $this.html('Add a Property');
+                $this.attr('disabled', false);
+            });
     });
 
     $(document).on('click', '.remove-property', function(e) {

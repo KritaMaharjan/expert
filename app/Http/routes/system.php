@@ -55,12 +55,21 @@ Route::group(['prefix' => 'system', 'middleware' => ['preventSystem','auth.syste
     post('lead/assign/{id}', ['as' => 'system.lead.assign', 'uses' => 'System\LeadController@postAssign']);
     get('lead/log/{id}', ['as' => 'system.lead.log', 'uses' => 'System\LeadController@log']);
     post('lead/log/{id}', ['as' => 'system.lead.log', 'uses' => 'System\LeadController@postLog']);
+
     get('lead/accept/{id}', ['as' => 'system.lead.accept', 'uses' => 'System\LeadController@accept']);
+    get('lead/decline/{id}', ['as' => 'system.lead.decline', 'uses' => 'System\LeadController@decline']);
+
     post('lead/data',['as'=>'system.lead.data', 'uses'=>'System\LeadController@dataJson']);
     post('lead/accepted/data',['as'=>'system.lead.data.accepted', 'uses'=>'System\LeadController@acceptedDataJson']);
     get('lead/pending',['as'=>'system.lead.pending', 'uses'=>'System\LeadController@pending']);
 
+    get('lead/attachment/{id}', ['as' => 'system.lead.attachment', 'uses' => 'System\LeadController@attachment']);
+    post('lead/attachment/{id}', ['as' => 'system.lead.uploadAttachment', 'uses' => 'System\LeadController@uploadAttachment']);
+    get('lead/attachment/download/{id}', ['as' => 'system.lead.downloadAttachment', 'uses' => 'System\LeadController@downloadAttachment']);
+
     /* Loan for Application */
+
+    get('application/loan/template/{id}', ['as' => 'system.application.template', 'uses' => 'System\LoanController@template']);
     get('application/loan/{id}', ['as' => 'system.application.loan', 'uses' => 'System\LoanController@add']);
     post('application/loan/{id}', ['as' => 'system.application.createLoan', 'uses' => 'System\LoanController@create']);
 
@@ -68,7 +77,9 @@ Route::group(['prefix' => 'system', 'middleware' => ['preventSystem','auth.syste
     get('application', ['as' => 'system.application', 'uses' => 'System\ApplicationController@index']);
     get('application/add/{id}', ['as' => 'system.application.add', 'uses' => 'System\ApplicationController@add']);
     post('application/add/{id}', ['as' => 'system.application.create', 'uses' => 'System\ApplicationController@create']);
+    get('application/applicant/template/{id}', ['as' => 'system.application.template', 'uses' => 'System\ApplicationController@template']);
 
+    get('application/property/template/{id}', ['as' => 'system.property.template', 'uses' => 'System\PropertyController@template']);
     get('application/property/{id}', ['as' => 'system.application.property', 'uses' => 'System\PropertyController@add']);
     post('application/property/{id}', ['as' => 'system.application.createProperty', 'uses' => 'System\PropertyController@create']);
 
@@ -77,28 +88,50 @@ Route::group(['prefix' => 'system', 'middleware' => ['preventSystem','auth.syste
 
     get('application/income/{id}', ['as' => 'system.application.income', 'uses' => 'System\IncomeController@add']);
     post('application/income/{id}', ['as' => 'system.application.createIncome', 'uses' => 'System\IncomeController@create']);
+    get('application/income/template/{id}', ['as' => 'system.application.incomeTemplate', 'uses' => 'System\IncomeController@template']);
 
     get('application/expense/{id}', ['as' => 'system.application.expense', 'uses' => 'System\ExpenseController@add']);
     post('application/expense/{id}', ['as' => 'system.application.createExpense', 'uses' => 'System\ExpenseController@create']);
+    get('application/expense/template/{id}', ['as' => 'system.application.expenseTemplate', 'uses' => 'System\ExpenseController@template']);
 
     get('application/review/{id}', ['as' => 'system.application.review', 'uses' => 'System\ReviewController@index']);
 
     get('application/view/{id}', ['as' => 'system.application.view', 'uses' => 'System\ApplicationController@view']);
+
     get('application/edit/{id}', ['as' => 'system.application.edit', 'uses' => 'System\ApplicationController@edit']);
     post('application/edit/{id}', ['as' => 'system.application.update', 'uses' => 'System\ApplicationController@update']);
+
     get('application/delete/{id}', ['as' => 'system.application.delete', 'uses' => 'System\ApplicationController@delete']);
-    get('application/log/delete/{id}', ['as' => 'system.application.log.delete', 'uses' => 'System\ApplicationController@deleteLog']);
+
     get('application/assign/{id}', ['as' => 'system.application.assign', 'uses' => 'System\ApplicationController@assign']);
     post('application/assign/{id}', ['as' => 'system.application.assign', 'uses' => 'System\ApplicationController@postAssign']);
-    get('application/log/{id}', ['as' => 'system.application.log', 'uses' => 'System\ApplicationController@log']);
-    post('application/log/{id}', ['as' => 'system.application.log', 'uses' => 'System\ApplicationController@postLog']);
+
     get('application/accept/{id}', ['as' => 'system.application.accept', 'uses' => 'System\ApplicationController@accept']);
+    get('application/decline/{id}', ['as' => 'system.application.accept', 'uses' => 'System\ApplicationController@decline']);
     post('application/data',['as'=>'system.application.data', 'uses'=>'System\ApplicationController@dataJson']);
+
+    get('application/accepted', ['as' => 'system.application.accepted', 'uses' => 'System\ApplicationController@accepted']);
+    post('application/accepted/data',['as'=>'system.application.data.accepted', 'uses'=>'System\ApplicationController@acceptedDataJson']);
+    get('application/pending',['as'=>'system.application.pending', 'uses'=>'System\ApplicationController@pending']);
+
+    post('application/status',['as'=>'system.application.changeStatus', 'uses'=>'System\ApplicationController@changeStatus']);
 
     get('profile', ['as' => 'system.user.profile', 'uses' => 'System\UserController@profile']);
     get('change-password', ['as' => 'system.auth.changePassword', 'uses' => 'System\AuthController@changePassword']);
     post('change-password', ['as' => 'system.auth.postUserPasswordChange', 'uses' => 'System\AuthController@postUserPasswordChange']);
     get('block', ['as' => 'system.client.block', 'uses' => 'System\ClientController@block']);
+
+    /* Lender routes */
+    get('lender', ['as' => 'system.lender', 'uses' => 'System\LenderController@index']);
+    get('lender/add', ['as' => 'system.lender.add', 'uses' => 'System\LenderController@add']);
+    post('lender/add', ['as' => 'system.lender.create', 'uses' => 'System\LenderController@create']);
+    get('lender/edit/{id}', ['as' => 'system.lender.edit', 'uses' => 'System\LenderController@edit']);
+    post('lender/edit/{id}', ['as' => 'system.lender.update', 'uses' => 'System\LenderController@update']);
+    get('lender/delete/{id}', ['as' => 'system.lender.delete', 'uses' => 'System\LenderController@delete']);
+    post('lender/data',['as'=>'system.lender.data', 'uses'=>'System\LenderController@dataJson']);
+
+    get('lender/assign/{id}', ['as' => 'system.lender.assign', 'uses' => 'System\LenderController@assign']);
+    post('lender/assign/{id}', ['as' => 'system.lender.assign', 'uses' => 'System\LenderController@postAssign']);
 
     /* User routes */
     get('user', ['as' => 'system.user', 'uses' => 'System\UserController@index']);

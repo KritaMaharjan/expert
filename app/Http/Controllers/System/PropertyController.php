@@ -53,6 +53,12 @@ class PropertyController extends BaseController {
         $lead_id = $this->request->route('id');
         $data['lead_details'] = $this->lead->getLeadDetails($lead_id);
         $applicants = $this->lead->getLeadApplicants($lead_id);
+
+        if(empty($applicants)) {
+            \Flash::error('No Applicants Found! Applicant should be added first to proceed');
+            return redirect()->route('system.application.add', [$lead_id]);
+        }
+
         $data['applicants'] = $this->getApplicantsArray($applicants);
         $properties = $this->property->getLeadPropertiesDetails($lead_id);
         foreach($properties as $key => $property)
@@ -62,16 +68,26 @@ class PropertyController extends BaseController {
         }
         $data['properties'] = $properties;
         $data['total_properties'] = $this->property->getLeadPropertiesCount($lead_id);
-        return view('system.application.property.property', $data);
+        $data['action'] = (empty($properties))? 'add' : 'edit';
+        return view('system.application.property.main', $data);
+    }
+
+    function template($lead_id)
+    {
+        $applicants = $this->lead->getLeadApplicants($lead_id);
+        $data['applicants'] = $this->getApplicantsArray($applicants);
+        $data['total_properties'] = $this->property->getLeadPropertiesCount($lead_id);
+        $template = \View::make('system.application.property.add', $data)->render();
+        return $this->success(['template' => $template]);
     }
 
     function create()
     {
         $lead_id = $this->request->route('id');
-        $validator = \Validator::make($this->request->all(), $this->rules);
+        /*$validator = \Validator::make($this->request->all(), $this->rules);
 
         if ($validator->fails())
-            return redirect()->back()->withErrors($validator)->withInput();
+            return redirect()->back()->withErrors($validator)->withInput();*/
 
         $this->property->add($this->request->all(), $lead_id);
         \Flash::success('Property added successfully!');

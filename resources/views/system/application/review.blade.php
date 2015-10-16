@@ -10,7 +10,9 @@
 @stop
 
 @section('content')
-    @include('system.application.steps')
+    @if($current_user->role == 3) {{--Sales User--}}
+        @include('system.application.steps')
+    @endif
     <div class="row">
         @include('flash::message')
         <div class="col-xs-12 mainContainer">
@@ -28,6 +30,7 @@
                         right hand side of the page.
                     </p>
 
+                    @include('system.application.review.loanReview')
                     @include('system.application.review.applicantReview')
                     @include('system.application.review.propertyReview')
                     @include('system.application.review.otherReview')

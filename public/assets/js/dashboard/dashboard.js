@@ -11,18 +11,19 @@ $(function () {
 
         "columnDefs": [{
             "orderable": false,
-            "targets": 6,
+            "targets": 7,
             "render": function (data, type, row) {
                 return showActionbtn(row);
             }
         }],
         "columns": [
             {"data": "id"},
-            {"data": "client"},
-            {"data": "preferred_name"},
+            {"data": "client", "orderable": false},
+            {"data": "preferred_name", "orderable": false},
             {"data": "ex_clients_id"},
-            {"data": "phone_number"},
-            {"data": "meeting_date"},
+            {"data": "phone_number", "orderable": false},
+            {"data": "loan_type", "orderable": false},
+            {"data": "meeting_date", "orderable": false},
             {"data": "status"}
         ]
     });
@@ -31,7 +32,7 @@ $(function () {
     function showActionbtn(row) {
         var assign = ' <a class="block" href ="' + appUrl + '/system/lead/assign/' + row.id + '">Assign</a>';
         return '<div class="box-tools">' +
-            '<a class="block" href ="' + appUrl + '/system/lead/edit/' + row.id + '">Edit</a> <a href="' + appUrl + '/system/lead/delete/' + row.id + '" class="delete-lead">Delete</a> <a class="block" href ="' + appUrl + '/system/lead/log/' + row.id + '">View Logs</a>' + assign +
+            '<a class="block" href ="' + appUrl + '/system/lead/edit/' + row.id + '">Edit</a> <a class="block" href ="' + appUrl + '/system/lead/view/' + row.id + '">View</a>' +
             '</div>';
     }
 

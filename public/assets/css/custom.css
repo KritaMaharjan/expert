@@ -1675,6 +1675,15 @@ li.active span.round-tabs.six{
     background: #fafafa;
 }
 
+.skin-blue .main-header .navbar .nav>.active>a {
+    background: rgba(0,0,0,0.1);
+    color: #f6f6f6;
+}
+
+.main-header .navbar-brand {
+    color: #fff;
+}
+
 .field {
     overflow: hidden;
     margin-bottom: 7px;

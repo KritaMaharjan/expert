@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\System;
 
+use App\Models\System\Application\LivingExpense;
 use App\Models\System\Client\Client;
 use App\Models\System\Application\Application;
 use App\Models\System\Lead\Lead;
@@ -15,12 +16,13 @@ class ExpenseController extends BaseController {
     protected $property;
     protected $request;
 
-    public function __construct(Client $client, Application $application, Lead $lead, Request $request)
+    public function __construct(Client $client, Application $application, Lead $lead, LivingExpense $expense, Request $request)
     {
         parent::__construct();
         $this->client = $client;
         $this->application = $application;
         $this->lead = $lead;
+        $this->expense = $expense;
         $this->request = $request;
     }
 
@@ -29,8 +31,17 @@ class ExpenseController extends BaseController {
         $lead_id = $this->request->route('id');
         $data['lead_details'] = $this->lead->getLeadDetails($lead_id);
         $applicants = $this->lead->getLeadApplicants($lead_id);
+
+        if(empty($applicants)) {
+            \Flash::error('No Applicants Found! Applicant should be added first to proceed');
+            return redirect()->route('system.application.add', [$lead_id]);
+        }
+
         $data['applicants'] = $this->getApplicantsArray($applicants);
-        return view('system.application.expense', $data);
+        $data['expense_details'] = $expense_details = $this->expense->getExpenseDetails($lead_id);
+        $data['total_expenses'] = count($expense_details);
+        $data['action'] = (empty($expense_details))? 'add' : 'edit';
+        return view('system.application.expense.main', $data);
     }
 
     function create()
@@ -41,7 +52,7 @@ class ExpenseController extends BaseController {
         if ($validator->fails())
             return redirect()->back()->withErrors($validator)->withInput();*/
 
-        $this->application->add_expense($this->request->all(), $lead_id);
+        $this->expense->add($this->request->all(), $lead_id);
         return redirect()->route('system.application.review', [$lead_id]);
     }
 
@@ -55,4 +66,11 @@ class ExpenseController extends BaseController {
         return $applicants;
     }
 
+    function template($lead_id)
+    {
+        $applicants = $this->lead->getLeadApplicants($lead_id);
+        $data['applicants'] = $this->getApplicantsArray($applicants);
+        $template = \View::make('system.application.expense.add', $data)->render();
+        return $this->success(['template' => $template]);
+    }
 }

@@ -13,15 +13,37 @@ $(document).ready(function() {
 
     $('.add-income').click(function(e){
         e.preventDefault();
-        var newIncome = '<div class="new-income">'+$('.new-income').last().html()+'</div>';
-        var newIncomeElement = $(newIncome).insertAfter($('.new-income').last());
-        var numIncomes = $('.income-details .new-income').length;
-        newIncomeElement.find('.income-num').html(numIncomes);
-        $('.date-picker').datepicker({format: 'yyyy-mm-dd'});
+        $this = $(this);
+        $this.html('Loading...');
+        $this.attr('disabled', true);
+        $.ajax({
+            url: appUrl + '/system/application/income/template/'+ leadID,
+            type: 'GET',
+            dataType: 'json'
+        })
+            .done(function (response) {
+                if (response.success == true || response.status == 1) {
+                    var newIncome = response.data.template;
+                    var newIncomeElement = $(newIncome).insertAfter($('.new-income').last());
+                    var numIncomes = $('.income-details .new-income').length;
+                    newIncomeElement.find('.income-num').html(numIncomes);
+                    $('.date-picker').datepicker({format: 'yyyy-mm-dd'});
 
-        if(numIncomes == 10) {
-            $('.add-income-div').hide();
-        }
+                    if(numIncomes == 10) {
+                        $('.add-income-div').hide();
+                    }
+                }
+                else {
+                    $('.mainContainer .box-solid').before(notify('error', 'Something went wrong!'));
+                }
+            })
+            .fail(function () {
+                alert('Something went wrong!');
+            })
+            .always(function() {
+                $this.html('Add an Income Source');
+                $this.attr('disabled', false);
+            });
     });
 
     $(document).on('click', '.remove-income', function(e) {

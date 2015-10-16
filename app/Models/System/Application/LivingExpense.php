@@ -1,6 +1,7 @@
 <?php
 namespace App\Models\System\Application;
 
+use App\Models\System\Lead\Lead;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
@@ -18,9 +19,67 @@ class LivingExpense extends Model {
             ->join('application_applicants as aa', 'applications.id', '=', 'aa.application_id')
             ->join('living_expense as le', 'aa.applicant_id', '=', 'le.applicant_id')
             ->select('le.*')
-            ->where('leads.id', $lead_id);
+            ->where('leads.id', $lead_id)
+            ->orderBy('le.id');
         $result = $query->get();
         return $result;
+    }
+
+    /*
+     *  Add Expense sources
+     *  Input array
+     * */
+    function add(array $request, $lead_id)
+    {
+        DB::beginTransaction();
+
+        try {
+            if($request['action'] == 'edit')
+                $this->deleteRemoved($lead_id, $request['expense_id']);
+
+            if ($request['expense'] == 1) {
+                foreach ($request['applicant_id'] as $key => $applicant_id) {
+                    if(!isset($request['expense_id'][$key])) {
+                        $this->addExpense($request['monthly_living_expense'][$key], $applicant_id);
+                    } else {
+                        $this->editExpense($request['expense_id'][$key], $request['monthly_living_expense'][$key], $applicant_id);
+                    }
+                }
+            }
+
+
+            DB::commit();
+            return true;
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+            return false;
+        }
+    }
+
+    function addExpense($monthly_living_key, $applicant_id)
+    {
+        LivingExpense::create([
+            'monthly_living_expense' => $monthly_living_key,
+            'applicant_id' => $applicant_id
+        ]);
+    }
+
+    function editExpense($expense_id, $monthly_living_key, $applicant_id)
+    {
+        $living_expense = LivingExpense::find($expense_id);
+        $living_expense->monthly_living_expense = $monthly_living_key;
+        $living_expense->applicant_id = $applicant_id;
+        $living_expense->save();
+    }
+
+    function deleteRemoved($lead_id, $expense_ids)
+    {
+        $lead = new Lead();
+        $applicantIds = $lead->getLeadApplicantIds($lead_id);
+        $old_ids= LivingExpense::whereIn('applicant_id', $applicantIds)->lists('id')->toArray();
+        $removed_expenses = array_diff($old_ids, $expense_ids);
+        LivingExpense::whereIn('id', $removed_expenses)->delete();
     }
 
 }

@@ -1,3 +1,4 @@
+<div class="container">
     <section class="content-header">
        <h1> @yield('heading')</h1>
         <ol class="breadcrumb">
@@ -18,3 +19,4 @@
             </div>
          </div>
     </section>
+</div>

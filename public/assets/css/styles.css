@@ -48,11 +48,11 @@ body {
 .layout-boxed {
     background: url("../img/boxed-bg.jpg") repeat fixed 0 0 rgba(0, 0, 0, 0);
 }
-.content-wrapper, .right-side, .main-footer {
+/*.content-wrapper, .right-side, .main-footer {
     margin-left: 230px;
     transition: margin-left 0.3s cubic-bezier(0.32, 1.25, 0.375, 1.15) 0s;
     z-index: 820;
-}
+}*/
 .layout-top-nav .content-wrapper, .layout-top-nav .right-side, .layout-top-nav .main-footer {
     margin-left: 0;
 }
@@ -145,7 +145,6 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     border: medium none;
     border-radius: 0;
     margin-bottom: 0;
-    margin-left: 230px;
     min-height: 50px;
 }
 .main-header #navbar-search-input {
@@ -169,11 +168,18 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     background: none repeat scroll 0 0 transparent;
     color: inherit;
 }
+
+    .navbar-collapse.pull-left {
+        float: none!important;
+    }
 }
 @media (max-width: 767px) {
 .main-header .navbar-right {
     float: none;
 }
+    .navbar-collapse.pull-left {
+        float: none!important;
+    }
 .navbar-collapse .main-header .navbar-right {
     margin: 7.5px -15px;
 }

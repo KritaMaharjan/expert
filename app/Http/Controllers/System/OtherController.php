@@ -56,6 +56,12 @@ class OtherController extends BaseController {
         $lead_id = $this->request->route('id');
         $data['lead_details'] = $this->lead->getLeadDetails($lead_id);
         $applicants = $this->lead->getLeadApplicants($lead_id);
+
+        if(empty($applicants)) {
+            \Flash::error('No Applicants Found! Applicant should be added first to proceed');
+            return redirect()->route('system.application.add', [$lead_id]);
+        }
+
         $data['applicants'] = $this->getApplicantsArray($applicants);
         return view('system.application.other', $data);
     }

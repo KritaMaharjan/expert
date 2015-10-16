@@ -71,6 +71,9 @@
 
             <div class="box-footer">
                 <input name="submit" type="submit" class="btn btn-primary pull-left" value="Submit"/>
+                @if(!isset($lead))
+                    <input name="assign" type="submit" class="btn btn-primary pull-right" value="Submit And Assign"/>
+                @endif
             </div>
         </div>
         <!-- /.box -->

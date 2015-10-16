@@ -13,15 +13,40 @@ $(document).ready(function() {
 
     $('.add-expense').click(function(e){
         e.preventDefault();
-        var newIncome = '<div class="new-expense">'+$('.new-expense').last().html()+'</div>';
-        var newIncomeElement = $(newIncome).insertAfter($('.new-expense').last());
-        var numIncomes = $('.expense-details .new-expense').length;
-        newIncomeElement.find('.expense-num').html(numIncomes);
-        $('.date-picker').datepicker({format: 'yyyy-mm-dd'});
+        $this = $(this);
+        $this.html('Loading...');
+        $this.attr('disabled', true);
+        $.ajax({
+            url: appUrl + '/system/application/expense/template/'+ leadID,
+            type: 'GET',
+            dataType: 'json'
+        })
+            .done(function (response) {
+                if (response.success == true || response.status == 1) {
+                    var newIncome = response.data.template;
+                    var newIncomeElement = $(newIncome).insertAfter($('.new-expense').last());
+                    var numIncomes = $('.expense-details .new-expense').length;
+                    newIncomeElement.find('.expense-num').html(numIncomes);
+                    $('.date-picker').datepicker({format: 'yyyy-mm-dd'});
 
-        if(numIncomes == 10) {
-            $('.add-expense-div').hide();
-        }
+                    if(numIncomes == 10) {
+                        $('.add-expense-div').hide();
+                    }
+                }
+                else {
+                    $('.mainContainer .box-solid').before(notify('error', 'Something went wrong!'));
+                    setTimeout(function () {
+                        $('.callout').remove();
+                    }, 3000);
+                }
+            })
+            .fail(function () {
+                alert('Something went wrong!');
+            })
+            .always(function() {
+                $this.html('Add an Expense');
+                $this.attr('disabled', false);
+            });
     });
 
     $(document).on('click', '.remove-expense', function(e) {

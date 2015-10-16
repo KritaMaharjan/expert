@@ -73,3 +73,6 @@ ADD CONSTRAINT `fk_existing_loans_ownership1_idx` FOREIGN KEY (`ownership`) REFE
 
 ALTER TABLE `other_income`
 ADD CONSTRAINT `fk_other_income_ownership1_idx` FOREIGN KEY (`applicant_id`) REFERENCES `applicants` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+
+ALTER TABLE `lenders` ADD `job_title` VARCHAR(255) NOT NULL AFTER `contact_name`, ADD `title` VARCHAR(255) NOT NULL AFTER `job_title`, ADD `preferred_name` VARCHAR(100) NOT NULL AFTER `title`, ADD `first_name` VARCHAR(55) NOT NULL AFTER `preferred_name`, ADD `last_name` VARCHAR(55) NOT NULL AFTER `first_name`, ADD `phone` VARCHAR(20) NOT NULL AFTER `last_name`, ADD `email` VARCHAR(255) NOT NULL AFTER `phone`, ADD `abn` VARCHAR(255) NOT NULL AFTER `email`, ADD `occupation` VARCHAR(255) NOT NULL AFTER `abn`, ADD `commission` DECIMAL(11,2) NOT NULL AFTER `occupation`;

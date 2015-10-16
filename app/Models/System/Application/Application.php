@@ -1,13 +1,14 @@
 <?php
 namespace App\Models\System\Application;
 
+use App\Models\System\Application\ApplicationAssign;
 use App\Models\System\Lead\Lead;
+use App\Models\System\Lender\ApplicationLender;
+use App\Models\System\Lender\Lender;
 use App\Models\System\Loan\CarLoan;
 use App\Models\System\Loan\NewApplicantLoan;
 use App\Models\System\Log\ApplicationLog;
 use App\Models\System\Log\Log;
-use App\Models\System\Profile\Addresses;
-use App\Models\System\Profile\Phone;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
@@ -24,199 +25,30 @@ class Application extends Model
         return $this->hasOne('App\Models\System\Loan\Loan', 'application_id');
     }
 
-    public function applicationLogs()
+    public function assigned()
+    {
+        return $this->hasOne('App\Models\System\Application\ApplicationAssign', 'application_id');
+    }
+
+    public function lead()
+    {
+        return $this->belongsTo('App\Models\System\Lead\Lead', 'ex_lead_id');
+    }
+
+    //Application can have many logs
+    public function logs()
     {
         return $this->hasMany('App\Models\System\Log\ApplicationLog', 'application_id');
     }
 
-    function add(array $request, $lead_id)
+    public function statuses()
     {
-        dd($request['age']);
-        foreach ($request['title'] as $key => $title) {
-            if ($request['dependent'][$key] == 'yes') {
-                foreach ($request['age'][$key] as $ages) {
-                    foreach ($ages as $age) {
-                        if ($age != '')
-                            echo $age . "<br/>";
-                    }
-                }
-            }
-        }
-        DB::beginTransaction();
+        return $this->hasMany('App\Models\System\Application\ApplicationStatus', 'application_id');
+    }
 
-        try {
-            $application_id = Application::select('id')->where('ex_leads_id', $lead_id)->first()->id;
-
-            /* For each applicant */
-            foreach ($request['title'] as $key => $title) {
-                $applicant = Applicant::create([
-                    'preferred_name' => 'app',
-                    'title' => $request['title'][$key],
-                    'given_name' => $request['given_name'][$key],
-                    'surname' => $request['surname'][$key],
-                    'dob' => $request['dob'][$key],
-                    'residency_status' => $request['residency_status'][$key],
-                    'years_in_au' => $request['years_in_au'][$key],
-                    'marital_status' => $request['marital_status'][$key],
-                    'email' => $request['email'][$key],
-                    'mother_maiden_name' => $request['mother_maiden_name'][$key],
-                    'credit_card_issue' => $request['credit_card_issue'][$key],
-                    'issue_comments' => $request['issue_comments'][$key],
-                    'driver_licence_number' => $request['driver_licence_number'][$key],
-                    'licence_state' => $request['licence_state'][$key],
-                    'licence_expiry_date' => $request['licence_expiry_date'][$key],
-                ]);
-
-                $application_applicant = ApplicationApplicant::create([
-                    'application_id' => $application_id,
-                    'applicant_id' => $applicant->id
-                ]);
-
-                /* Contact Details */
-
-                $mobile_phone = Phone::create([
-                    'number' => $request['mobile'][$key],
-                    'type' => 'mobile'
-                ]);
-
-                ApplicantPhone::create([
-                    'phones_id' => $mobile_phone->id,
-                    'applicants_id' => $applicant->id
-                ]);
-
-                $home_phone = Phone::create([
-                    'number' => $request['home'][$key],
-                    'type' => 'home'
-                ]);
-
-                ApplicantPhone::create([
-                    'phones_id' => $home_phone->id,
-                    'applicants_id' => $applicant->id
-                ]);
-
-                $work_phone = Phone::create([
-                    'number' => $request['work'][$key],
-                    'type' => 'work'
-                ]);
-
-                ApplicantPhone::create([
-                    'phones_id' => $work_phone->id,
-                    'applicants_id' => $applicant->id
-                ]);
-
-                /* Add code here for additional phones */
-
-                /* Address Details */
-                $home_address = Addresses::create([
-                    'line1' => $request['home_line1'][$key],
-                    'line2' => $request['home_line2'][$key],
-                    'suburb' => $request['home_suburb'][$key],
-                    'state' => $request['home_state'][$key],
-                    'postcode' => $request['home_postcode'][$key],
-                    'country' => $request['home_country'][$key]
-                ]);
-
-                ApplicantAddress::create([
-                    'address_id' => $home_address->id,
-                    'applicant_id' => $applicant->id,
-                    'iscurrent' => 1,
-                    'address_type_id' => 1, //1 home, 2 work, 3 postal
-                    'live_there_since' => $request['live_there_since'][$key]
-                ]);
-
-                RentExpense::create([
-                    'weekly_rent_expense' => $request['weekly_rent_expense'][$key],
-                    'applicant_id' => $applicant->id,
-                    'debit_from' => $request['debit_from'][$key]
-                ]);
-
-                $postal_address = Addresses::create([
-                    'line1' => $request['postal_line1'][$key],
-                    'line2' => $request['postal_line2'][$key],
-                    'suburb' => $request['postal_suburb'][$key],
-                    'state' => $request['postal_state'][$key],
-                    'postcode' => $request['postal_postcode'][$key],
-                    'country' => $request['postal_country'][$key]
-                ]);
-
-                ApplicantAddress::create([
-                    'address_id' => $postal_address->id,
-                    'applicant_id' => $applicant->id,
-                    'iscurrent' => 0,
-                    'address_type_id' => 3, //1 home, 2 work, 3 postal
-                ]);
-
-                $previous_address = Addresses::create([
-                    'line1' => $request['previous_line1'][$key],
-                    'line2' => $request['previous_line2'][$key],
-                    'suburb' => $request['previous_suburb'][$key],
-                    'state' => $request['previous_state'][$key],
-                    'postcode' => $request['previous_postcode'][$key],
-                    'country' => $request['previous_country'][$key]
-                ]);
-
-                ApplicantAddress::create([
-                    'address_id' => $previous_address->id,
-                    'applicant_id' => $applicant->id,
-                    'iscurrent' => 0,
-                    'address_type_id' => 1, //1 home, 2 work, 3 postal
-                ]);
-
-                $employment_address = Addresses::create([
-                    'line1' => $request['employment_line1'][$key],
-                    'line2' => $request['employment_line2'][$key],
-                    'suburb' => $request['employment_suburb'][$key],
-                    'state' => $request['employment_state'][$key],
-                    'postcode' => $request['employment_postcode'][$key],
-                    'country' => $request['employment_country'][$key]
-                ]);
-
-                EmploymentDetails::create([
-                    'employment_type' => $request['employment_type'][$key],
-                    'job_title' => $request['job_title'][$key],
-                    'starting_date' => $request['starting_date'][$key],
-                    'business_name' => $request['business_name'][$key],
-                    'abn' => $request['abn'][$key],
-                    'contact_person' => $request['contact_person'][$key],
-                    'contact_person_job_title' => $request['contact_person_job_title'][$key],
-                    'contact_number' => $request['contact_number'][$key],
-                    'address_id' => $employment_address->id,
-                    'applicant_id' => $applicant->id,
-                    'is_current' => 0 //because ... previous. Its obvious
-                ]);
-
-                /* Dependent */
-                if ($request['dependent'][$key] == 'yes') {
-                    foreach ($request['age'][$key] as $ages) {
-                        foreach ($ages as $age) {
-                            if ($age != '')
-                                Dependent::create([
-                                    'age_of_dependents' => $age,
-                                    'applicant_id' => $applicant->id
-                                ]);
-                        }
-                    }
-                }
-
-            }
-            //add logs for application addition
-            $log = Log::create([
-                'added_by' => \Auth::user()->id,
-                'comment' => 'Application Created'
-            ]);
-
-            ApplicationLog::create([
-                'application_id' => $application_id,
-                'log_id' => $log->id
-            ]);
-
-            DB::commit();
-            return $applicant->id;
-        } catch (\Exception $e) {
-            DB::rollback();
-            dd($e);
-            return false;
-        }
+    function deleteApplicantDetails($lead_id)
+    {
+        /* Check if the applicant is used elsewhere */
     }
 
     /*
@@ -308,111 +140,6 @@ class Application extends Model
         }
     }
 
-    /*
-     *  Add Other Entities
-     *  Input array
-     * */
-    function add_income(array $request, $lead_id)
-    {
-        DB::beginTransaction();
-
-        try {
-            if ($request['income'] == 1) {
-
-                foreach ($request['car_applicant_id'] as $key => $applicant_id) {
-                    $address = Addresses::create([
-                        'line1' => $request['line1'][$key],
-                        'line2' => $request['line2'][$key],
-                        'suburb' => $request['suburb'][$key],
-                        'state' => $request['state'][$key],
-                        'postcode' => $request['postcode'][$key],
-                        'country' => $request['country'][$key]
-                    ]);
-
-                    $employment = EmploymentDetails::create([
-                        'employment_type' => $request['employment_type'][$key],
-                        'job_title' => $request['job_title'][$key],
-                        'starting_date' => $request['starting_date'][$key],
-                        'business_name' => $request['business_name'][$key],
-                        'abn' => $request['abn'][$key],
-                        'contact_person' => $request['contact_person'][$key],
-                        'contact_person_job_title' => $request['contact_person_job_title'][$key],
-                        'contact_number' => $request['contact_number'][$key],
-                        'address_id' => $address->id,
-                        'is_current' => 1,
-                        'applicant_id' => $applicant_id
-                    ]);
-
-                    if ($request['employment_type'][$key] == "Self Employed") {
-                        $business_address = Addresses::create([
-                            'line1' => $request['accountant_line1'][$key],
-                            'line2' => $request['accountant_line2'][$key],
-                            'suburb' => $request['accountant_suburb'][$key],
-                            'state' => $request['accountant_state'][$key],
-                            'postcode' => $request['accountant_postcode'][$key],
-                            'country' => $request['accountant_country'][$key]
-                        ]);
-
-                        AccountantDetails::create([
-                            'accountant_business_name' => $request['accountant_business_name'][$key],
-                            'contact_person' => $request['accountant_contact_person'][$key],
-                            'phone_number' => $request['accountant_phone_number'][$key],
-                            'business_address_id' => $business_address->id,
-                            'employment_details_id' => $employment->id
-                        ]);
-                    }
-
-                    EmploymentIncome::create([
-                        'annual_gross_income' => $request['annual_gross_income'][$key],
-                        'pay_frequency' => $request['pay_frequency'][$key],
-                        'salary_crediting' => $request['salary_crediting'][$key], //radio
-                        'credit_to_where' => $request['credit_to_where'][$key],
-                        'latest_pay_date' => $request['latest_pay_date'][$key],
-                        'latest_payslip_period_from' => $request['latest_payslip_period_from'][$key],
-                        'latest_payslip_period_to' => $request['latest_payslip_period_to'][$key],
-                        'employment_detail_id' => $employment->id,
-                        'applicant_id' => $applicant_id
-                    ]);
-                }
-            }
-
-            DB::commit();
-            return true;
-        } catch (\Exception $e) {
-            DB::rollback();
-            dd($e);
-            return false;
-        }
-    }
-
-    /*
-     *  Add Expense sources
-     *  Input array
-     * */
-    function add_expense(array $request, $lead_id)
-    {
-        DB::beginTransaction();
-
-        try {
-            if ($request['expense'] == 1) {
-
-                foreach ($request['applicant_id'] as $key => $applicant_id) {
-                    LivingExpense::create([
-                        'monthly_living_expense' => $request['monthly_living_expense'][$key],
-                        'applicant_id' => $applicant_id
-                    ]);
-                }
-            }
-
-            DB::commit();
-            return true;
-        } catch (\Exception $e) {
-            DB::rollback();
-            dd($e);
-            return false;
-        }
-    }
-
     /* *
      *  Display data for ajax pagination
      *  Output stdClass
@@ -448,7 +175,7 @@ class Application extends Model
 
         $query->skip($start)->take($take);
 
-        $data = $query->get();
+        $data = $query->groupBy('ex_lead_id')->get();
 
         foreach ($data as $key => &$value) {
             $value->created_by = get_user_name($value->ex_user_id);
@@ -502,31 +229,79 @@ class Application extends Model
     /* Add new loan for the lead */
     function add_loan(array $request, $lead_id)
     {
-        /* Create application */
-        $application = Application::create([
-            'date_created' => get_today_date(),
-            'ex_user_id' => \Auth::user()->id,
-            'ex_lead_id' => $lead_id,
-            'submitted' => 0
-        ]);
-
         DB::beginTransaction();
         try {
-            foreach ($request['loan_purpose'] as $key => $loan_purpose) {
-                NewApplicantLoan::create([
-                    'application_id' => $application->id,
-                    'amount' => $request['amount'][$key],
-                    'loan_purpose' => $loan_purpose,
-                    'deposit_paid' => $request['deposit_paid'][$key],
-                    'settlement_date' => $request['settlement_date'][$key],
-                    'loan_usage' => $request['loan_usage'][$key],
-                    'total_loan_term' => $request['total_loan_term'][$key],
-                    'loan_type' => $request['loan_type'][$key],
-                    'fixed_rate_term' => $request['fixed_rate_term'][$key],
-                    'repayment_type' => $request['repayment_type'][$key],
-                    'io_term' => $request['io_term'][$key],
-                    'interest_rate' => $request['interest_rate'][$key]
+            /* Lead converted to application */
+            $lead = Lead::find($lead_id);
+
+            /* If application is not created before and this is the first time */
+            if($lead->status != 2) {
+                $lead->status = 2;
+                $lead->save();
+
+                /* Create application */
+                $application = Application::create([
+                    'date_created' => get_today_date(),
+                    'ex_user_id' => \Auth::user()->id,
+                    'ex_lead_id' => $lead_id,
+                    'submitted' => 0
                 ]);
+
+                $this->changeStatus($application->id, 1);
+
+                //add logs for application addition
+                $log = Log::create([
+                    'added_by' => \Auth::user()->id,
+                    'comment' => 'Application Created'
+                ]);
+
+                ApplicationLog::create([
+                    'application_id' => $application->id,
+                    'log_id' => $log->id
+                ]);
+            } else {
+                /* Delete removed loans */
+                $application = Application::where('ex_lead_id', $lead_id)->first();
+                if(isset($request['loan_id'])) {
+                    $loan_ids = NewApplicantLoan::where('application_id', $application->id)->lists('id')->toArray();
+                    $removed_loans = array_diff($loan_ids, $request['loan_id']);
+                    NewApplicantLoan::whereIn('id', $removed_loans)->delete();
+                }
+            }
+
+            foreach ($request['loan_purpose'] as $key => $loan_purpose) {
+                if(!isset($request['loan_id'][$key])) {
+                    NewApplicantLoan::create([
+                        'application_id' => $application->id,
+                        'amount' => $request['amount'][$key],
+                        'loan_purpose' => $loan_purpose,
+                        'deposit_paid' => $request['deposit_paid'][$key],
+                        'settlement_date' => $request['settlement_date'][$key],
+                        'loan_usage' => $request['loan_usage'][$key],
+                        'total_loan_term' => $request['total_loan_term'][$key],
+                        'loan_type' => $request['loan_type'][$key],
+                        'fixed_rate_term' => $request['fixed_rate_term'][$key],
+                        'repayment_type' => $request['repayment_type'][$key],
+                        'io_term' => $request['io_term'][$key],
+                        'interest_rate' => $request['interest_rate'][$key]
+                    ]);
+                }
+                else {
+                    $loan = NewApplicantLoan::find($request['loan_id'][$key]);
+                    $loan->application_id = $application->id;
+                    $loan->amount = $request['amount'][$key];
+                    $loan->loan_purpose = $loan_purpose;
+                    $loan->deposit_paid = $request['deposit_paid'][$key];
+                    $loan->settlement_date = $request['settlement_date'][$key];
+                    $loan->loan_usage = $request['loan_usage'][$key];
+                    $loan->total_loan_term = $request['total_loan_term'][$key];
+                    $loan->loan_type = $request['loan_type'][$key];
+                    $loan->fixed_rate_term = $request['fixed_rate_term'][$key];
+                    $loan->repayment_type = $request['repayment_type'][$key];
+                    $loan->io_term = $request['io_term'][$key];
+                    $loan->interest_rate = $request['interest_rate'][$key];
+                    $loan->save();
+                }
             }
             DB::commit();
             return true;
@@ -535,5 +310,198 @@ class Application extends Model
             dd($e);
             return false;
         }
+    }
+
+    function getApplicationDetails($application_id)
+    {
+        $lead_id = Application::select('ex_lead_id')->find($application_id)->ex_lead_id;
+        $lead = new Lead();
+        $details = $lead->getLeadDetails($lead_id);
+        return $details;
+    }
+
+    function getApplicationViewDetails($application_id)
+    {
+        $application = Application::with('lead', 'logs.log', 'statuses', 'assigned')->find($application_id);
+        /*$application = DB::table('applications as app')
+            ->join('ex_leads as leads', 'leads.id', '=', 'app.ex_lead_id')
+            ->join('ex_clients as clients', 'leads.ex_clients_id', '=', 'clients.id')
+            ->join('loans', 'loans.ex_leads_id', '=', 'leads.id')
+            ->join('application_assign as assign', 'assign.application_id', '=', 'app.id')
+            ->select('app.id', 'clients.given_name', 'clients.surname', 'loans.amount', 'loans.loan_type', 'app.ex_lead_id as leadId')
+            ->where('app.id', $application_id)
+            ->first();*/
+        //dd($application->toArray());
+        return $application;
+    }
+
+    /* Assign lead to admin person */
+    function assign(array $request, $application_id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $application = Application::find($application_id);
+
+            ApplicationAssign::create([
+                'description' => $request['description'],
+                'assign_to' => $request['assign_to'],
+                'application_id' => $application_id,
+                'status' => 0,
+                'assigned_date' => get_today_datetime(),
+                'assigned_by' => \Auth::user()->id
+            ]);
+
+            $application->submitted = 1;
+            $application->save();
+
+            $this->changeStatus($application_id, 2);
+
+            DB::commit();
+            return true;
+
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+            return false;
+        }
+    }
+
+    /* *
+     *  Display data for ajax pagination of sales
+     *  Output stdClass
+     * */
+    function pendingTablePagination(Request $request, array $select = array(), $user_id)
+    {
+        if ((is_array($select) AND count($select) < 1)) {
+            $select = "*";
+        }
+        $take = ($request->input('length') > 0) ? $request->input('length') : 10;
+        $start = ($request->input('start') > 0) ? $request->input('start') : 0;
+
+        $search = $request->input('search');
+        $search = $search['value'];
+        $order = $request->input('order');
+        $column_id = $order[0]['column'];
+        $columns = $request->input('columns');
+        $orderColumn = $columns[$column_id]['data'];
+        $orderdir = $order[0]['dir'];
+
+        $lead = array();
+
+        $adminquery = DB::table('applications as app')
+            ->join('ex_leads as leads', 'leads.id', '=', 'app.ex_lead_id')
+            ->join('ex_clients as clients', 'leads.ex_clients_id', '=', 'clients.id')
+            ->join('loans', 'loans.ex_leads_id', '=', 'leads.id')
+            ->join('application_assign as assign', 'assign.application_id', '=', 'app.id')
+            ->select('app.id', 'clients.given_name', 'clients.surname', 'loans.amount', 'loans.loan_type', 'app.ex_lead_id as leadId')
+            ->where('app.submitted', 1)
+            ->where('assign.status', 0)
+            ->where('assign.assign_to', $user_id);
+        $lead['total'] = $adminquery->count();
+
+        $adminquery->skip($start)->take($take);
+
+        $data = $adminquery->get();
+
+        foreach ($data as $key => &$value) {
+            $value->client_name = $value->given_name . " " . $value->surname;
+            $value->type = $value->loan_type;
+        }
+
+        $lead['data'] = $data;
+        $json = new \stdClass();
+        $json->draw = ($request->input('draw') > 0) ? $request->input('draw') : 1;
+        $json->recordsTotal = $lead['total'];
+        $json->recordsFiltered = $lead['total'];
+        $json->data = $lead['data'];
+
+        return $json;
+    }
+
+    function dataAcceptedTablePagination(Request $request, $user_id)
+    {
+        $take = ($request->input('length') > 0) ? $request->input('length') : 10;
+        $start = ($request->input('start') > 0) ? $request->input('start') : 0;
+
+        $search = $request->input('search');
+        $search = $search['value'];
+        $order = $request->input('order');
+        $column_id = $order[0]['column'];
+        $columns = $request->input('columns');
+        $orderColumn = $columns[$column_id]['data'];
+        $orderdir = $order[0]['dir'];
+
+        $lead = array();
+
+        $adminquery = DB::table('applications as app')
+            ->join('ex_leads as leads', 'leads.id', '=', 'app.ex_lead_id')
+            ->join('ex_clients as clients', 'leads.ex_clients_id', '=', 'clients.id')
+            ->join('loans', 'loans.ex_leads_id', '=', 'leads.id')
+            ->join('application_assign as assign', 'assign.application_id', '=', 'app.id')
+            ->select('app.id', 'clients.given_name', 'clients.surname', 'clients.email', 'loans.amount', 'loans.loan_type', 'app.ex_lead_id as leadId')
+            ->where('app.submitted', 1)
+            ->where('assign.status', 1)
+            ->where('assign.assign_to', $user_id);
+
+        $lead['total'] = $adminquery->count();
+
+        $adminquery->skip($start)->take($take);
+
+        $data = $adminquery->get();
+
+        foreach ($data as $key => &$value) {
+            $assigned_lender = ApplicationLender::where('application_id', $value->id)->first();
+            if(empty($assigned_lender)) {
+                $value->isAssigned = false;
+                $value->assigned = "Not Assigned";
+            }
+            else {
+                $value->isAssigned = false;
+                $lender = Lender::select('company_name')->find($assigned_lender->lender_id);
+                $value->assigned = $lender->company_name;
+            }
+            $value->client_name = $value->given_name . " " . $value->surname;
+            $value->type = $value->loan_type;
+        }
+
+        $lead['data'] = $data;
+        $json = new \stdClass();
+        $json->draw = ($request->input('draw') > 0) ? $request->input('draw') : 1;
+        $json->recordsTotal = $lead['total'];
+        $json->recordsFiltered = $lead['total'];
+        $json->data = $lead['data'];
+
+        return $json;
+    }
+
+    /* Accept application by admin */
+    function accept($application_id)
+    {
+        $application = ApplicationAssign::where(array('application_id' => $application_id, 'assign_to' => \Auth::user()->id))->first();
+        $application->status = 1;
+        $application->accepted_date = get_today_datetime();
+        $application->save();
+
+        $this->changeStatus($application_id, 3);
+        $this->changeStatus($application_id, 3);
+    }
+
+    /* Accept application by admin */
+    function decline($application_id)
+    {
+        $application = ApplicationAssign::where(array('application_id' => $application_id, 'assign_to' => \Auth::user()->id))->first();
+        $application->status = 2;
+        $application->save();
+    }
+
+    function changeStatus($application_id, $status)
+    {
+        ApplicationStatus::create([
+            'status_id' => $status,
+            'date_created' => get_today_datetime(),
+            'application_id' => $application_id,
+            'updated_by' => current_user_id()
+        ]);
     }
 } 

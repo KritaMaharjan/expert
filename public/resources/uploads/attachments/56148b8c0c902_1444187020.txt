@@ -1,0 +1,12 @@
+https://www.watchfreakusa.com/store/checkout/cart/
+
+Shopping cart empty
+
+Responsive
+============
+Brands page
+Product listing page
+
+mime type
+===========
+extension=php_fileinfo.dll

@@ -28,6 +28,7 @@
                             <th>Preferred Name</th>
                             <th>Full Name</th>
                             <th>Email</th>
+                            <th>Current Phone</th>
                             <th>Created Date</th>
                             <th>Action</th>
                         </tr>

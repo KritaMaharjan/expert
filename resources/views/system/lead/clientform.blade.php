@@ -32,7 +32,14 @@
 
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            {!!Form::label('Title *') !!}
+                            {!!Form::select('title', config('general.title'), null, array('class' =>
+                    'form-control')) !!}
+                        </div>
+                    </div>
+                    <div class="col-md-5">
                         <div class="form-group @if($errors->has('given_name')) {{'has-error'}} @endif">
                             {!!Form::label('Given Name') !!}
                             {!!Form::text('given_name', null, array('class' => 'form-control', 'id'=>'given_name'))!!}
@@ -42,7 +49,7 @@
                             @endif
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <div class="form-group @if($errors->has('surname')) {{'has-error'}} @endif">
                             {!!Form::label('Surname') !!}
                             {!!Form::text('surname', null, array('class' => 'form-control', 'id'=>'surname'))!!}

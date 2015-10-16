@@ -1,13 +1,18 @@
 <?php
 namespace App\Http\Controllers\System;
 
+use App\Models\System\Application\Applicant;
+use App\Models\System\Application\ApplicantAddress;
+use App\Models\System\Application\Status;
 use App\Models\System\Client\Client;
 use App\Models\System\Application\Application;
+use App\Models\System\Lead\Attachment;
 use App\Models\System\Lead\Lead;
 use App\Models\System\Log\ApplicationLog;
 use App\Models\System\Log\Log;
 use Illuminate\Http\Request;
 use App\Models\System\User;
+use Illuminate\Support\Facades\Input;
 
 class ApplicationController extends BaseController {
 
@@ -57,13 +62,18 @@ class ApplicationController extends BaseController {
         'employment_postcode' => 'required|min:2',
     ];
 
-    public function __construct(Client $client, Application $application, Lead $lead, Request $request)
+    protected $assign_rules = [
+        'assign_to' => 'required|exists:ex_users,id'
+    ];
+
+    public function __construct(Client $client, Application $application,  Applicant $applicant, Lead $lead, Request $request)
     {
         parent::__construct();
         $this->client = $client;
         $this->application = $application;
         $this->lead = $lead;
         $this->request = $request;
+        $this->applicant = $applicant;
     }
 
     function index()
@@ -85,9 +95,10 @@ class ApplicationController extends BaseController {
     function add()
     {
         $lead_id = $this->request->route('id');
-        $data['applicants'] = $this->lead->getLeadApplicantsDetails($lead_id);
+        $data['applicants'] = $applicants = $this->lead->getLeadApplicantsDetails($lead_id);
         $data['total_applicants'] = $this->lead->getLeadApplicantsCount($lead_id);
-        return view('system.application.applicant.prepare1', $data);
+        $data['action'] = (empty($applicants))? 'add' : 'edit';
+        return view('system.application.applicant.main', $data);
     }
 
     function create()
@@ -98,26 +109,31 @@ class ApplicationController extends BaseController {
         if ($validator->fails())
             return redirect()->back()->withErrors($validator)->withInput();*/
 
-        $application_id = $this->application->add($this->request->all(), $lead_id);
+        $application_id = $this->applicant->add($this->request->all(), $lead_id);
         if($application_id) {
             \Flash::success('Applicant added successfully!');
-            if($this->request->input('submit'))
-                return redirect()->route('system.application.property', [$lead_id]);
-            else
-                return redirect()->route('system.application.add', [$lead_id]);
+            return redirect()->route('system.application.property', [$lead_id]);
         }
+    }
+
+    function template($lead_id)
+    {
+        $data['applicants'] = $applicants = $this->lead->getLeadApplicantsDetails($lead_id);
+        $data['total_applicants'] = $this->lead->getLeadApplicantsCount($lead_id);
+        $template = \View::make('system.application.applicant.add', $data)->render();
+        return $this->success(['template' => $template]);
     }
 
     function assign()
     {
         $application_id= $this->request->route('id');
-
-        $data['application'] = Application::where('id', $application_id)->with('loan')->first();
-        $sales_people = User::select('id', 'given_name', 'surname')->where('role', 4)->get()->toArray();
-        $data['sales_people'][0] = 'Select user';
-        foreach($sales_people as $sales_person)
+        $data['application'] = $this->application->getApplicationDetails($application_id);
+        //admin team
+        $admin_team = User::select('id', 'given_name', 'surname')->where('role', 1)->get()->toArray();
+        $data['admin_team'][''] = 'Choose Admin Team';
+        foreach($admin_team as $sales_person)
         {
-            $data['sales_people'][$sales_person['id']] = $sales_person['given_name'].' '. $sales_person['surname'];
+            $data['admin_team'][$sales_person['id']] = $sales_person['given_name'].' '. $sales_person['surname'];
         }
 
         return view('system.application.assign', $data);
@@ -171,48 +187,13 @@ class ApplicationController extends BaseController {
         \Flash::success('Application updated successfully!');
         return redirect()->route('system.application');
     }
-
-    function log()
-    {
-        $application_id = $this->request->route('id');
-
-        //nested relationship
-        $data['logs'] = Application::with('applicationlogs.log')->find($application_id);
-        $users = User::select('id', 'email', 'given_name', 'surname')->get()->toArray();
-        $data['users'][''] = 'Don\'t Email';
-        foreach($users as $user)
-        {
-            $data['users'][$user['email']] = $user['given_name'].' '.$user['surname'];
-        }
-        return view('system.application.logs', $data);
-    }
-
-    function postLog()
-    {
-        $application_id = $this->request->route('id');
-        $validator = \Validator::make($this->request->all(), [
-            'comment' => 'required|max:255',
-            'emailed_to' => 'email'
-        ]);
-
-        if ($validator->fails())
-            return redirect()->back()->withErrors($validator)->withInput();
-
-        $application_id = $this->application->addLog($this->request->all(), $application_id);
-
-        if($this->request->input('emailed_to') != '') {
-            $mail = \EX::sendEmail($this->request->input('emailed_to'), '', 'email_log', ['{{LEAD_ID}}' => $application_id, '{{COMMENT}}' => $this->request->input('comment')]);
-        }
-
-        \Flash::success('Log added successfully!');
-        return redirect()->back();
-    }
     
     function delete()
     {
         $application_id = $this->request->route('id');
         $this->application->remove($application_id);
 
+        \Flash::success('Application updated successfully!');
         return $this->success(['message' => 'Application deleted Successfully']);
     }
 
@@ -220,15 +201,41 @@ class ApplicationController extends BaseController {
     {
         $application_id = $this->request->route('id');
         $this->application->accept($application_id);
-
         return $this->success(['message' => 'Application accepted Successfully']);
+    }
+
+    function decline()
+    {
+        $application_id = $this->request->route('id');
+        $this->application->decline($application_id);
+        return $this->success(['message' => 'Application declined Successfully']);
     }
 
     function view()
     {
         $application_id = $this->request->route('id');
-        $data['application_details'] = $this->application->getApplicationDetails($application_id);
-        return view('system.application.view', $data);
+        $data['application_details'] = $application_details = $this->application->getApplicationViewDetails($application_id);
+        $data['attachment'] = Attachment::where('lead_id', $data['application_details']->lead->id)->first();
+        $data['statuses'] = Status::lists('name', 'id');
+
+        $completed = array();
+        foreach($application_details->statuses as $key => $completed_stat)
+        {
+            $completed[$completed_stat->status_id]['id'] = $completed_stat->status_id;
+            $completed[$completed_stat->status_id]['date_created'] = readable_date($completed_stat->date_created);
+            $completed[$completed_stat->status_id]['updated_by'] = get_user_name($completed_stat->updated_by);
+        }
+        $data['completed'] = $completed;
+        return view('system.application.overview.show', $data);
+    }
+
+    function changeStatus()
+    {
+        $application_id = $this->request->get('application_id');
+        $status = $this->request->get('status');
+        $this->application->changeStatus($application_id, $status);
+
+        return $this->success(['message' => 'Application accepted Successfully']);
     }
 
     function deleteLog()
@@ -239,4 +246,24 @@ class ApplicationController extends BaseController {
         return $this->success(['message' => 'Log deleted Successfully']);
     }
 
+    function pending()
+    {
+        return view('system.application.pending');
+    }
+
+    /* For accepted applications - Admin team*/
+    function accepted()
+    {
+        return view('system.application.accepted');
+    }
+
+    public function acceptedDataJson()
+    {
+        if ($this->request->ajax()) {
+            $json = $this->application->dataAcceptedTablePagination($this->request, $this->current_user()->id);
+            echo json_encode($json, JSON_PRETTY_PRINT);
+        } else {
+            show_404();
+        }
+    }
 }

@@ -28,7 +28,7 @@ $(function () {
 
     function showActionbtn(row) {
         return '<div class="box-tools">' +
-            '<a href="' + appUrl + '/system/application/add/' + row.ex_lead_id + '" class="block">Edit</a> <a href="' + appUrl + '/system/application/view/' + row.ex_lead_id + '">View</a>' +
+            '<a href="' + appUrl + '/system/application/loan/' + row.ex_lead_id + '" class="block">Edit</a> <a href="' + appUrl + '/system/application/review/' + row.ex_lead_id + '">View</a> <br/><a href="' + appUrl + '/system/application/assign/' + row.id + '">Assign Application</a>' +
             '</div>';
     }
 

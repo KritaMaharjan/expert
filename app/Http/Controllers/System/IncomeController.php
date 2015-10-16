@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers\System;
 
+use App\Models\System\Application\EmploymentDetails;
 use App\Models\System\Client\Client;
 use App\Models\System\Application\Application;
 use App\Models\System\Lead\Lead;
@@ -38,13 +39,14 @@ class IncomeController extends BaseController {
         'limit' => 'numeric',
     ];
 
-    public function __construct(Client $client, Application $application, Lead $lead, Request $request)
+    public function __construct(Client $client, Application $application, EmploymentDetails $employment, Lead $lead, Request $request)
     {
         parent::__construct();
         $this->client = $client;
         $this->application = $application;
         $this->lead = $lead;
         $this->request = $request;
+        $this->employment = $employment;
     }
 
     function add()
@@ -52,8 +54,17 @@ class IncomeController extends BaseController {
         $lead_id = $this->request->route('id');
         $data['lead_details'] = $this->lead->getLeadDetails($lead_id);
         $applicants = $this->lead->getLeadApplicants($lead_id);
+
+        if(empty($applicants)) {
+            \Flash::error('No Applicants Found! Applicant should be added first to proceed');
+            return redirect()->route('system.application.add', [$lead_id]);
+        }
+
+        $data['income_details'] = $income_details = $this->employment->getIncomeDetails($lead_id);
+        $data['total_incomes'] = (count($income_details));
+        $data['action'] = (empty($income_details))? 'add' : 'edit';
         $data['applicants'] = $this->getApplicantsArray($applicants);
-        return view('system.application.income', $data);
+        return view('system.application.income.main', $data);
     }
 
     function create()
@@ -63,8 +74,7 @@ class IncomeController extends BaseController {
 
         if ($validator->fails())
             return redirect()->back()->withErrors($validator)->withInput();*/
-
-        $this->application->add_income($this->request->all(), $lead_id);
+        $this->employment->add($this->request->all(), $lead_id);
         return redirect()->route('system.application.expense', [$lead_id]);
     }
 
@@ -76,6 +86,14 @@ class IncomeController extends BaseController {
             $applicants[$detail->id] = $detail->given_name . ' ' . $detail->surname;
         }
         return $applicants;
+    }
+
+    function template($lead_id)
+    {
+        $applicants = $this->lead->getLeadApplicants($lead_id);
+        $data['applicants'] = $this->getApplicantsArray($applicants);
+        $template = \View::make('system.application.income.add', $data)->render();
+        return $this->success(['template' => $template]);
     }
 
 }

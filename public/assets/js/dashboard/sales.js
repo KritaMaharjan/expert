@@ -11,7 +11,7 @@ $(function () {
 
         "columnDefs": [{
             "orderable": false,
-            "targets": 6,
+            "targets": 5,
             "render": function (data, type, row) {
                 return showActionbtn(row);
             }
@@ -19,8 +19,7 @@ $(function () {
         "columns": [
             {"data": "id"},
             {"data": "client_name"},
-            {"data": "type"},
-            {"data": "amount"},
+            {"data": "loan_type"},
             {"data": "meeting_time"},
             {"data": "meeting_place"},
         ]
@@ -29,7 +28,7 @@ $(function () {
 
     function showActionbtn(row) {
         return '<div class="box-tools">' +
-            '<a class="block accept-lead" href ="' + appUrl + '/system/lead/accept/' + row.id + '">Accept</a> <a href="' + appUrl + '/system/lead/view/' + row.id + '" >View</a> <a class="block" href ="' + appUrl + '/system/lead/log/' + row.id + '">View Logs</a>' +
+            '<a class="block accept-lead" href ="' + appUrl + '/system/lead/accept/' + row.id + '">Accept</a> <a class="block accept-lead" href ="' + appUrl + '/system/lead/decline/' + row.id + '">Decline</a> <a href="' + appUrl + '/system/lead/view/' + row.id + '" >View</a> ' +
             '</div>';
     }
 
