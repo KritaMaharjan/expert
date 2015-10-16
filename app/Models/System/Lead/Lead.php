@@ -250,8 +250,8 @@ class Lead extends Model
         $status['assign']['date'] = (!empty($assign))? format_datetime($assign->created_at) : '';
         $status['assign']['person'] = (!empty($assign))? get_user_name($assign->added_by_users_id) : '';
 
-        $status['received']['person'] = (!empty($assign))? get_user_name($assign->added_by_users_id) : '';
-        $status['received']['person'] = (!empty($assign))? get_user_name($assign->assign_to) : '';
+        $status['received']['date'] = (!empty($assign) && $assign->status == 1)? format_datetime($assign->accepted_date) : '';
+        $status['received']['person'] = (!empty($assign) && $assign->status == 1)? get_user_name($assign->assign_to) : '';
         return $status;
     }
 

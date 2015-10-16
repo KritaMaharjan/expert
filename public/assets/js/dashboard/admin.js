@@ -26,7 +26,7 @@ $(function () {
 
     function showActionbtn(row) {
         return '<div class="box-tools">' +
-            '<a class="block accept-lead" href ="' + appUrl + '/system/application/accept/' + row.id + '">Accept</a> <a class="block decline-lead" href ="' + appUrl + '/system/application/decline/' + row.id + '">Decline</a> <a href="' + appUrl + '/system/application/review/' + row.leadId + '" >View</a> ' +
+            '<a class="block accept-lead" href ="' + appUrl + '/system/application/accept/' + row.id + '">Accept</a> <a class="block decline-lead" href ="' + appUrl + '/system/application/decline/' + row.id + '">Decline</a> <a href="' + appUrl + '/system/application/view/' + row.id + '" >View</a> ' +
             '</div>';
     }
 

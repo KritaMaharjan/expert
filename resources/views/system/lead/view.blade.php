@@ -32,13 +32,13 @@
                         <tr>
                             <td>{{$lead_status['added_on']['date']}}</td>
                             <td>{{$lead_status['assign']['date']}}</td>
-                            <td></td>
+                            <td>{{$lead_status['received']['date']}}</td>
                             <td></td>
                             <td></td>
                         </tr><tr>
                             <td>{{$lead_status['added_on']['person']}}</td>
                             <td>{{$lead_status['assign']['person']}}</td>
-                            <td></td>
+                            <td>{{$lead_status['received']['person']}}</td>
                             <td></td>
                             <td></td>
                         </tr>

@@ -83,3 +83,8 @@ ALTER TABLE `ex_client_leads_assign` ADD `added_by_users_id` INT NOT NULL AFTER 
 ALTER TABLE `ex_client_leads_assign` ADD INDEX(`added_by_users_id`);
 
 SET foreign_key_checks = 0;# MySQL returned an empty result set (i.e. zero rows). ALTER TABLE `ex_client_leads_assign` ADD FOREIGN KEY (`added_by_users_id`) REFERENCES `expert_finance`.`ex_users`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;# MySQL returned an empty result set (i.e. zero rows). SET foreign_key_checks = 1;# MySQL returned an empty result set (i.e. zero rows).
+
+ALTER TABLE `ex_client_leads_assign` ADD `accepted_date` DATETIME NOT NULL AFTER `added_by_users_id`;
+
+ALTER TABLE `ex_client_leads_assign` CHANGE `accepted_date` `accepted_date` DATETIME NULL;
+
