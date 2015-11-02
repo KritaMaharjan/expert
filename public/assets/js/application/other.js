@@ -231,35 +231,35 @@ $(document).ready(function () {
         if (numCards == 10) $('.add-card-div').show();
     });
 
-    // Other income functions
-    $('input[type=radio][name=incomes]').change(function () {
+    // Other other-income functions
+    $('input[type=radio][name=other-incomes]').change(function () {
         if (this.value == 1) {
-            $('.income-details').fadeIn('slow');
+            $('.other-income-details').fadeIn('slow');
         }
         else if (this.value == 0) {
-            $('.income-details').fadeOut('slow');
+            $('.other-income-details').fadeOut('slow');
         }
     });
 
-    $('.add-income').click(function (e) {
+    $('.add-other-income').click(function (e) {
         e.preventDefault();
-        var newIncome = '<div class="new-income">' + $('.new-income').last().html() + '</div>';
-        var newIncomeElement = $(newIncome).insertAfter($('.new-income').last());
-        var numIncomes = $('.income-details .new-income').length;
-        newIncomeElement.find('.income-num').html(numIncomes);
+        var newIncome = '<div class="new-other-income">' + $('.new-other-income').last().html() + '</div>';
+        var newIncomeElement = $(newIncome).insertAfter($('.new-other-income').last());
+        var numIncomes = $('.other-income-details .new-other-income').length;
+        newIncomeElement.find('.other-income-num').html(numIncomes);
 
         if (numIncomes == 10) {
-            $('.add-income-div').hide();
+            $('.add-other-income-div').hide();
         }
     });
 
-    $(document).on('click', '.remove-income', function (e) {
-        //$('.remove-income').click(function(e) {
+    $(document).on('click', '.remove-other-income', function (e) {
+        //$('.remove-other-income').click(function(e) {
         e.preventDefault();
-        var numIncomes = $('.income-details .new-income').length;
+        var numIncomes = $('.other-income-details .new-other-income').length;
         if (numIncomes == 1) {
-            $('input[type=radio][name=incomes][value = "0"]').prop('checked', true);
-            $('.income-details').fadeOut('slow');
+            $('input[type=radio][name=other-incomes][value = "0"]').prop('checked', true);
+            $('.other-income-details').fadeOut('slow');
             return false;
         }
 
@@ -268,10 +268,10 @@ $(document).ready(function () {
         var parentDiv = $(this).parent().parent().parent();
         parentDiv.hide('slow', function () {
             $(this).remove();
-            $(".new-income").each(function (index) {
-                $(this).find('.income-num').html(index + 1);
+            $(".new-other-income").each(function (index) {
+                $(this).find('.other-income-num').html(index + 1);
             });
         });
-        if (numIncomes == 10) $('.add-income-div').show();
+        if (numIncomes == 10) $('.add-other-income-div').show();
     });
 });

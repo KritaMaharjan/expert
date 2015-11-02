@@ -7,8 +7,8 @@
     <div class="box-body">
         @foreach($applicant->phone as $phone)
             <div class="form-group">
-                <div class='col-md-2 control-label'>{!!Form::label(ucfirst($phone->type).' Number') !!}</div>
-                <div class='col-md-6'>
+                <div class='col-md-3 control-label'>{!!Form::label(ucfirst($phone->type).' Number') !!}</div>
+                <div class='col-md-9'>
                     <input type="text" value="{{$phone->number}}" class="form-control" name="{{$phone->type}}[{{$app_key}}]" />
                 </div>
             </div>

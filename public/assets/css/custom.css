@@ -1506,6 +1506,15 @@ textarea.list-bx {
     padding-bottom: 20px;
 }
 
+.new-applicant {
+    float: left;
+    width: 50%;
+}
+
+.add-applicant-div {
+    clear: both;
+}
+
 .new-applicant .box:first-of-type > .box-header > .box-title {
     font-weight: bold;
     font-size: 30px;
@@ -1518,6 +1527,11 @@ textarea.list-bx {
 .smpl-step {
     border-bottom: solid 1px #e0e0e0;
     padding: 0 0 10px 0;
+}
+
+.step-col {
+    float: left;
+    width: 20%;
 }
 
 .smpl-step > .smpl-step-step {

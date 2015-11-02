@@ -11,7 +11,7 @@
     <div class="form-group">
         <div class='col-md-2 control-label'>{!!Form::label('Ownership') !!}</div>
         <div class='col-md-6'>
-            <select name="applicant_id[]" class="form-control">
+            <select name="expense_applicant_id[]" class="form-control">
                 @foreach($applicants as $key => $applicant)
                     <option value="{{$key}}">{{$applicant}}</option>
                 @endforeach

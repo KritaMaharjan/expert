@@ -60,6 +60,9 @@ class Application extends Model
         DB::beginTransaction();
 
         try {
+            $expense = new LivingExpense();
+            $expense->add($request, $lead_id);
+            return true;
             if ($request['cars'] == 1) {
 
                 foreach ($request['car_applicant_id'] as $key => $applicant_id) {
@@ -130,6 +133,10 @@ class Application extends Model
                     ]);
                 }
             }
+
+            //add or edit expense
+            $expense = new LivingExpense();
+            $expense->add($request, $lead_id);
 
             DB::commit();
             return true;

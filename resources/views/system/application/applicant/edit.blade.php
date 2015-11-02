@@ -10,8 +10,8 @@
                 <input type="hidden" name="applicant_id[{{$app_key}}]" value="{{$applicant->id}}"/>
 
                 <div class="form-group">
-                    <div class='col-md-2 control-label'>{!!Form::label('Title') !!}</div>
-                    <div class='col-md-6'>
+                    <div class='col-md-3 control-label'>{!!Form::label('Title') !!}</div>
+                    <div class='col-md-9'>
                         <select name="title[{{$app_key}}]" class="form-control">
                             @foreach(config('general.title') as $key => $title)
                                 <option value="{{$key}}" {{($applicant->title == $key)? 'selected="selected"' : ""}}>{{$title}}</option>
@@ -21,8 +21,8 @@
                 </div>
 
                 <div class="form-group @if($errors->has('given_name')) {{'has-error'}} @endif">
-                    <div class='col-md-2 control-label'>{!!Form::label('First Name') !!}</div>
-                    <div class='col-md-6'>
+                    <div class='col-md-3 control-label'>{!!Form::label('First Name') !!}</div>
+                    <div class='col-md-9'>
                         <input type="text" value="{{$applicant->given_name}}" class="form-control"
                                name="given_name[{{$app_key}}]"/>
                         @if($errors->has('given_name'))
@@ -33,8 +33,8 @@
                 </div>
 
                 <div class="form-group @if($errors->has('surname')) {{'has-error'}} @endif">
-                    <div class='col-md-2 control-label'>{!!Form::label('Family Name') !!}</div>
-                    <div class='col-md-6'>
+                    <div class='col-md-3 control-label'>{!!Form::label('Family Name') !!}</div>
+                    <div class='col-md-9'>
                         <input type="text" value="{{$applicant->surname}}" class="form-control"
                                name="surname[{{$app_key}}]"/>
                         @if($errors->has('surname'))
@@ -45,8 +45,8 @@
                 </div>
 
                 <div class="form-group @if($errors->has('mother_maiden_name')) {{'has-error'}} @endif">
-                    <div class='col-md-2 control-label'>{!!Form::label('Mother Maiden Name') !!}</div>
-                    <div class='col-md-6'>
+                    <div class='col-md-3 control-label'>{!!Form::label('Mother Maiden Name') !!}</div>
+                    <div class='col-md-9'>
                         <input type="text" value="{{$applicant->mother_maiden_name}}" class="form-control"
                                name="mother_maiden_name[{{$app_key}}]"/>
                         @if($errors->has('mother_maiden_name'))
@@ -57,8 +57,8 @@
                 </div>
 
                 <div class="form-group @if($errors->has('email')) {{'has-error'}} @endif">
-                    <div class='col-md-2 control-label'>{!!Form::label('Email Address') !!}</div>
-                    <div class='col-md-6'>
+                    <div class='col-md-3 control-label'>{!!Form::label('Email Address') !!}</div>
+                    <div class='col-md-9'>
                         <input type="text" value="{{$applicant->email}}" class="form-control"
                                name="email[{{$app_key}}]"/>
                         @if($errors->has('email'))
@@ -69,8 +69,8 @@
                 </div>
 
                 <div class="form-group clearfix {{ ($errors->has('dob'))? 'has-error': '' }}">
-                    <div class='col-md-2 control-label'>{!! Form::label('Date of Birth') !!}</div>
-                    <div class='col-md-6'>
+                    <div class='col-md-3 control-label'>{!! Form::label('Date of Birth') !!}</div>
+                    <div class='col-md-9'>
                         <div id="due_date" class="input-group date">
                             <input type="text" value="{{$applicant->dob}}" class="form-control date-picker"
                                    name="dob[{{$app_key}}]"/>
@@ -85,8 +85,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class='col-md-2 control-label'>{!!Form::label('Residency Status') !!}</div>
-                    <div class='col-md-6'>
+                    <div class='col-md-3 control-label'>{!!Form::label('Residency Status') !!}</div>
+                    <div class='col-md-9'>
                         <select name="residency_status[{{$app_key}}]" class="form-control">
                             @foreach(config('general.residency_status') as $key => $residency_status)
                                 <option value="{{$key}}" {{($applicant->residency_status == $key)? 'selected="selected"' : ""}}>{{$residency_status}}</option>
@@ -96,8 +96,8 @@
                     </div>
                 </div>
                 <div class="form-group @if($errors->has('years_in_au')) {{'has-error'}} @endif">
-                    <div class='col-md-2 control-label'>{!!Form::label('Years in AU') !!}</div>
-                    <div class='col-md-6'>
+                    <div class='col-md-3 control-label'>{!!Form::label('Years in AU') !!}</div>
+                    <div class='col-md-9'>
                         <input type="text" value="{{$applicant->years_in_au}}" class="form-control"
                                name="years_in_au[{{$app_key}}]"/>
                         @if($errors->has('years_in_au'))
@@ -107,8 +107,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class='col-md-2 control-label'>{!!Form::label('Marital Status') !!}</div>
-                    <div class='col-md-6'>
+                    <div class='col-md-3 control-label'>{!!Form::label('Marital Status') !!}</div>
+                    <div class='col-md-9'>
                         <select name="marital_status[{{$app_key}}]" class="form-control">
                             @foreach(config('general.marital_status') as $key => $marital_status)
                                 <option value="{{$key}}" {{($applicant->marital_status == $key)? 'selected="selected"' : ""}}>{{$marital_status}}</option>
@@ -119,16 +119,16 @@
                 </div>
 
                 <div class="form-group">
-                    <div class='col-md-2 control-label'>{!!Form::label('Credit Cards Issue') !!}</div>
-                    <div class='col-md-6'>
+                    <div class='col-md-3 control-label'>{!!Form::label('Credit Cards Issue') !!}</div>
+                    <div class='col-md-9'>
                         <label><input type="radio" name="credit_card_issue[{{$app_key}}]" value=1 checked="checked"/>
                             Yes</label>
                         <label><input type="radio" name="credit_card_issue[{{$app_key}}]" value=0/> No</label>
                     </div>
                 </div>
                 <div class="issue-comments form-group @if($errors->has('issue_comments')) {{'has-error'}} @endif">
-                    <div class='col-md-2 control-label'>{!!Form::label('Issue Comments') !!}</div>
-                    <div class='col-md-6'>
+                    <div class='col-md-3 control-label'>{!!Form::label('Issue Comments') !!}</div>
+                    <div class='col-md-9'>
                         <input type="text" value="{{$applicant->issue_comments}}" class="form-control"
                                name="issue_comments[{{$app_key}}]"/>
                         @if($errors->has('issue_comments'))
@@ -138,8 +138,8 @@
                     </div>
                 </div>
                 <div class="form-group @if($errors->has('driver_licence_number')) {{'has-error'}} @endif">
-                    <div class='col-md-2 control-label'>{!!Form::label('Driver licence number') !!}</div>
-                    <div class='col-md-6'>
+                    <div class='col-md-3 control-label'>{!!Form::label('Driver licence number') !!}</div>
+                    <div class='col-md-9'>
                         <input type="text" value="{{$applicant->driver_licence_number}}" class="form-control"
                                name="driver_licence_number[{{$app_key}}]"/>
                         @if($errors->has('driver_licence_number'))
@@ -150,8 +150,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <div class='col-md-2 control-label'>{!!Form::label('Licence State') !!}</div>
-                    <div class='col-md-6'>
+                    <div class='col-md-3 control-label'>{!!Form::label('Licence State') !!}</div>
+                    <div class='col-md-9'>
                         <select name="licence_state[{{$app_key}}]" class="form-control">
                             @foreach(config('general.licence_state') as $key => $licence_state)
                                 <option value="{{$key}}" {{($applicant->licence_state == $key)? 'selected="selected"' : ""}}>{{$licence_state}}</option>
@@ -161,8 +161,8 @@
                     </div>
                 </div>
                 <div class="form-group clearfix {{ ($errors->has('licence_expiry_date'))? 'has-error': '' }}">
-                    <div class='col-md-2 control-label'>{!! Form::label('Licence Expiry Dtae') !!}</div>
-                    <div class='col-md-6'>
+                    <div class='col-md-3 control-label'>{!! Form::label('Licence Expiry Dtae') !!}</div>
+                    <div class='col-md-9'>
                         <div id="due_date" class="input-group date">
                             <input type="text" value="{{$applicant->licence_expiry_date}}"
                                    name="licence_expiry_date[{{$app_key}}]" class="form-control expiry_date"/>
@@ -179,15 +179,15 @@
                 </div>
 
                 <div class="form-group">
-                    <div class='col-md-2 control-label'>{!!Form::label('Dependants') !!}</div>
-                    <div class='col-md-6'>
+                    <div class='col-md-3 control-label'>{!!Form::label('Dependants') !!}</div>
+                    <div class='col-md-9'>
                         <label><input type="radio" class="dependent" name="dependent[{{$app_key}}]" value=1/> Yes</label>
                         <label><input type="radio" class="dependent" name="dependent[{{$app_key}}]" value=0 checked="checked"/> No</label>
                     </div>
                 </div>
                 <div class="form-group dependant" style="display: none">
-                    <div class='col-md-2 control-label'>{!!Form::label('Age of Dependants') !!}</div>
-                    <div class='col-md-6'>
+                    <div class='col-md-3 control-label'>{!!Form::label('Age of Dependants') !!}</div>
+                    <div class='col-md-9'>
                                 <span class="ages" value="{{$applicant->age or '' }}"><input type="text"
                                                                                              name="age[{{$app_key}}][{{$app_key}}]"
                                                                                              class="form-control text-digit"/></span>

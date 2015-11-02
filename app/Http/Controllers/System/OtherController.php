@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers\System;
 
+use App\Models\System\Application\EmploymentDetails;
+use App\Models\System\Application\LivingExpense;
 use App\Models\System\Client\Client;
 use App\Models\System\Application\Application;
 use App\Models\System\Lead\Lead;
@@ -41,13 +43,15 @@ class OtherController extends BaseController {
         'limit' => 'numeric',
     ];*/
 
-    public function __construct(Client $client, Application $application, Lead $lead, Property $property, Request $request)
+    public function __construct(Client $client, Application $application, Lead $lead, Property $property, EmploymentDetails $employment, LivingExpense $expense, Request $request)
     {
         parent::__construct();
         $this->client = $client;
         $this->application = $application;
         $this->lead = $lead;
         $this->property = $property;
+        $this->employment = $employment;
+        $this->expense = $expense;
         $this->request = $request;
     }
 
@@ -63,6 +67,17 @@ class OtherController extends BaseController {
         }
 
         $data['applicants'] = $this->getApplicantsArray($applicants);
+
+        //for income
+        $data['income_details'] = $income_details = $this->employment->getIncomeDetails($lead_id);
+        $data['total_incomes'] = (count($income_details));
+        $data['action'] = (empty($income_details))? 'add' : 'edit';
+
+        //for expense
+        $data['expense_details'] = $expense_details = $this->expense->getExpenseDetails($lead_id);
+        $data['total_expenses'] = count($expense_details);
+        $data['expense_action'] = (empty($expense_details))? 'add' : 'edit';
+
         return view('system.application.other', $data);
     }
 
@@ -75,7 +90,8 @@ class OtherController extends BaseController {
             return redirect()->back()->withErrors($validator)->withInput();*/
 
         $this->application->add_others($this->request->all(), $lead_id);
-        return redirect()->route('system.application.income', [$lead_id]);
+
+        return redirect()->route('system.application.review', [$lead_id]);
     }
 
     function getApplicantsArray($details)
